@@ -65,7 +65,7 @@ logs, and code as it's very hard to read otherwise.)
 
   
 
-/label ~bug 
+/label ~"QA:Failed"
 
 /cc @project-manager
 
