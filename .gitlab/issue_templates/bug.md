@@ -67,7 +67,3 @@ logs, and code as it's very hard to read otherwise.)
   
 
 /label ~bug 
-
-/cc @project-manager
-
-/assign @qa-tester
