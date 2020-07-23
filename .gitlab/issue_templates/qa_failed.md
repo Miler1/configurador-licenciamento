@@ -66,7 +66,3 @@ logs, and code as it's very hard to read otherwise.)
   
 
 /label ~"QA:Failed"
-
-/cc @project-manager
-
-/assign @qa-tester
