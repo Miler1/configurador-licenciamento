@@ -1,4 +1,4 @@
-# configurador-licenciamento
+# frontend
 
 ## Project setup
 ```
