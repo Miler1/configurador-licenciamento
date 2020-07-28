@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/autenticacao")
 public class AutenticacaoController {
 
-    @RequestMapping(method = RequestMethod.POST, value="/teste")
-    public ResponseEntity teste() {
+    @RequestMapping(method = RequestMethod.GET, value="/teste")
+    public ResponseEntity<String> teste() {
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Teste OK!", HttpStatus.OK);
 
     }
 
