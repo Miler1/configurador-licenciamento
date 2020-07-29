@@ -9,15 +9,16 @@
 import TesteService from '@/services/teste.service'
 
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  },
-  methods: {
-    chamabackend () {
-      TesteService.baixarManual().then((response) => { console.log(response) })
-    }
-  }
+	name: 'HelloWorld',
+	props: {
+		msg: String,
+		default: {}
+	},
+	methods: {
+		chamabackend () {
+			TesteService.baixarManual().then((response) => { console.log(response) })
+		}
+	}
 
 }
 </script>
