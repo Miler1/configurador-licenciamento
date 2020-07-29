@@ -1,7 +1,7 @@
 {
 	"nome": "Configurador do Licenciamento Ambiental",
 	"sigla": "MCL",
-	"url": "http://localhost:9909",
+	"url": "http://localhost:9909/autenticacao/entradaUnica",
 	"descricao": "Módulo configurador do Licenciamento Ambiental",
 	"cadastrarPerfis": true,
 	"ips": "127.0.0.1,0:0:0:0:0:0:0:1",
