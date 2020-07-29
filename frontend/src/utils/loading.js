@@ -22,10 +22,10 @@ const body = document.querySelector('body')
 body.appendChild(container)
 
 export const loading = {
-  show: () => {
-    container.style.display = 'flex'
-  },
-  hide: () => {
-    container.style.display = 'none'
-  }
+	show: () => {
+		container.style.display = 'flex'
+	},
+	hide: () => {
+		container.style.display = 'none'
+	}
 }

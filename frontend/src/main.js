@@ -7,9 +7,9 @@ import ApiService from './services/api.service'
 Vue.config.productionTip = false
 
 ApiService.init().then(() => {
-  new Vue({
-    router,
-    store,
-    render: h => h(App)
-  }).$mount('#app')
+	new Vue({
+		router,
+		store,
+		render: h => h(App)
+	}).$mount('#app')
 })

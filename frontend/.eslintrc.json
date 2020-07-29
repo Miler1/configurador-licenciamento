@@ -1,0 +1,41 @@
+{
+    "root": true,
+    "env": {
+        "browser": true,
+        "node": true
+    },
+    "parserOptions": {
+        "parser": "babel-eslint"
+    },
+    "extends": [
+        "plugin:vue/base"
+    ],
+    "plugins": [
+        "vue"
+    ],
+    "rules": {
+        "vue/script-indent": [
+            "error",
+            "tab",
+            {
+                "baseIndent": 0,
+                "switchCase": 0,
+                "ignores": []
+            }
+        ],
+        "indent": [
+            "error",
+            "tab"
+        ]
+    },
+    "overrides": [
+        {
+            "files": [
+                "*.vue"
+            ],
+            "rules": {
+                "indent": "off"
+            }
+        }
+    ]
+}
