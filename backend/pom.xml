@@ -18,6 +18,13 @@
         <java.version>14</java.version>
     </properties>
 
+    <repositories>
+        <repository>
+            <id>br.ufla.lemaf</id>
+            <url>http://repo.ti.lemaf.ufla.br/repository/public</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -90,6 +97,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.10</version>
+        </dependency>
+        <dependency>
+            <groupId>br.ufla.lemaf</groupId>
+            <artifactId>cadastro-unificado-oauth-client</artifactId>
+            <version>2.1.8</version>
         </dependency>
     </dependencies>
 
