@@ -1,8 +1,6 @@
-package com.configuradorlicencimento.configuracao.utils;
+package com.configuradorlicenciamento.configuracao.utils;
 
 public class Constants {
-
-    public static final String ESQUEMA = "inventario";
 
     public static String DATA_FORMATO_BR_SIMPLES = "dd/MM/yyyy";
     public static String DATA_FORMATO_BR_COM_HORA = "dd/MM/yyyy HH:mm";
