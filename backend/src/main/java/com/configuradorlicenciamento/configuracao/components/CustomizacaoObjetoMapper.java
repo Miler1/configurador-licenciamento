@@ -1,7 +1,7 @@
-package com.configuradorlicencimento.configuracao.components;
+package com.configuradorlicenciamento.configuracao.components;
 
-import com.configuradorlicencimento.configuracao.deserializer.DateDeserializer;
-import com.configuradorlicencimento.configuracao.deserializer.LocalDateDeserializer;
+import com.configuradorlicenciamento.configuracao.deserializer.DateDeserializer;
+import com.configuradorlicenciamento.configuracao.deserializer.LocalDateDeserializer;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
