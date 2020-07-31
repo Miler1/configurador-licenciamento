@@ -1,8 +1,7 @@
 <template lang="pug">
 
 #main-wrapper
-    v-app
-        MenuLateral
+    MenuLateral
 
 </template>
 

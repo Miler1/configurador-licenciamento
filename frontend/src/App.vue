@@ -2,7 +2,8 @@
 
 #app
     v-app
-		router-view
+		v-main
+			router-view
 
 </template>
 
