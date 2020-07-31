@@ -1,25 +1,18 @@
 <template lang='pug'>
 
-	#app
+#app
+    v-app
 		router-view
 
 </template>
 
 <script>
 
-import MainWrapper from '@/views/MainWrapper'
-import Login from '@/views/Login'
-
 export default {
 	
 	name: 'App',
 
-	components: { MainWrapper, Login },
-
 	data() {
-		return {
-			usuarioLogado: false
-		}
 	}
 
 }
@@ -36,7 +29,7 @@ html{
 		margin: 0;
 
 		#app {
-			font-family: Avenir, Helvetica, Arial, sans-serif;
+			font-family: Roboto, sans-serif;
 			-webkit-font-smoothing: antialiased;
 			-moz-osx-font-smoothing: grayscale;
 		}
