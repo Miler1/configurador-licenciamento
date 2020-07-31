@@ -1,22 +1,34 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+
+import { verificaPermissaoPelaRota } from '@/utils/helpers/permissoes/verificador'
 
 Vue.use(VueRouter)
 
 const routes = [
 	{
-		path: '/',
-		name: 'Home',
-		component: Home
+		path: '/', redirect: to => {
+			if(true) {
+				return '/login'
+			}
+		}
 	},
 	{
-		path: '/about',
-		name: 'About',
-		// route level code-splitting
-		// this generates a separate chunk (about.[hash].js) for this route
-		// which is lazy-loaded when the route is visited.
-		component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+		path: '/configurador',
+		name: 'Configurador',
+		component: () => import('../views/MainWrapper.vue'),
+		children: [
+		  {
+				path: 'cnae',
+				name: 'Cnae',
+				component: () => import('../views/Login.vue')
+		  }
+		]
+	},
+	{
+		path: '/login',
+		name: 'Login',
+		component: () => import('../views/Login.vue')
 	}
 ]
 
@@ -25,5 +37,14 @@ const router = new VueRouter({
 	base: process.env.BASE_URL,
 	routes
 })
+
+
+// function getPermissaoPelaRota (path, next) {
+// 	if (verificaPermissaoPelaRota(path)) {
+// 	  next()
+// 	} else {
+// 	  next(false)
+// 	}
+// }
 
 export default router
