@@ -1,7 +1,7 @@
-package com.configuradorlicencimento.configuracao.deserializer;
+package com.configuradorlicenciamento.configuracao.deserializer;
 
-import com.configuradorlicencimento.configuracao.utils.Constants;
-import com.configuradorlicencimento.configuracao.utils.DateUtil;
+import com.configuradorlicenciamento.configuracao.utils.Constants;
+import com.configuradorlicenciamento.configuracao.utils.DateUtil;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;

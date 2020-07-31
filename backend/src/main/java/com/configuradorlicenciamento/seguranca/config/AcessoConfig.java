@@ -1,6 +1,6 @@
-package com.configuradorlicencimento.seguranca.config;
+package com.configuradorlicenciamento.seguranca.config;
 
-import com.configuradorlicencimento.configuracao.components.CustomizacaoObjetoMapper;
+import com.configuradorlicenciamento.configuracao.components.CustomizacaoObjetoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -13,7 +13,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan("com.configuradorlicencimento")
+@ComponentScan("com.configuradorlicenciamento")
 public class AcessoConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
@@ -28,7 +28,7 @@ public class AcessoConfig extends WebSecurityConfigurerAdapter {
 					.and().headers().frameOptions().disable()
 					.and().csrf().disable()
 				.authorizeRequests()
-					.antMatchers("**").permitAll();
+				.antMatchers("/autenticacao/entradaUnica").permitAll();
 //				.and()
 //				.formLogin()
 //					.loginPage("http://sistemas.sema.ap.gov.br/portal-seguranca");
