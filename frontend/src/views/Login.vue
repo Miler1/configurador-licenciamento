@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import CardLogin from "../components/CardLogin"
+import CardLogin from "@/components/CardLogin"
 
 export default {
 	name: "Login",
@@ -25,8 +25,8 @@ export default {
 
 	#container-login {
 		align-content: center;
-		background: url("../assets/img/bg_login.png") no-repeat center fixed;
-		background-size: 100% 100%;
+		background: url("../assets/img/bg_login.jpeg") no-repeat center fixed;
+		background-size: cover;
 		justify-content: center;
 		max-width: 100% !important;
 		padding: 0;

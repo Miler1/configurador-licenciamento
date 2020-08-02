@@ -1,7 +1,7 @@
 <template lang='pug'>
 
 #app
-    v-app
+	v-app
 		v-main
 			router-view
 

@@ -1,4 +1,4 @@
-const png = require('@/assets/loading.gif')
+const png = require('@/assets/img/loading.gif')
 const image = document.createElement('img')
 image.setAttribute('src', png)
 image.setAttribute('height', '80')
