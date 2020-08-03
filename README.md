@@ -16,28 +16,28 @@ NPM 6.14.6
 
 ## Frontend
 ### NPM
-Atualize seu `NPM*` para última versão (note que a `6.14.6*` era a última quando se iniciou o projeto, mas se sempre utlizar a atual não teremos problemas), para isso
+Atualize seu `NPM` para última versão (note que a `6.14.6*` era a última quando se iniciou o projeto, mas se sempre utlizar a atual não teremos problemas), para isso
 ```bash
 npm install npm@latest -g
 ```
 
 ### Node
-Para gerenciar as versões do `Node*`, recomendamos utilizar o 'n'
+Para gerenciar as versões do `Node`, recomendamos utilizar o 'n'
 Leia sobre ele e sua instalação no link -> https://github.com/tj/n
 
-Após instalar o 'n', faça a instalação da versão `14.6.0*` do `Node*`
+Após instalar o 'n', faça a instalação da versão `14.6.0*` do `Node`
 ```bash
 n 14.6.0
 ``` 
 
 ### Baixar dependências
-Via terminal entre no diretorio `{dir-projeto}/frontend*` e execute:
+Via terminal entre no diretorio `{dir-projeto}/frontend` e execute:
 ```bash
 npm install
 ```
 
 ### Executar
-Via terminal entre no diretorio {dir-projeto}/frontend e execute:
+Via terminal entre no diretorio `{dir-projeto}/frontend` e execute:
 ```bash
 npm run serve
 ```
