@@ -5,7 +5,6 @@ module.exports = {
 	"runtimeCompiler": true,
 	"publicPath": "/",
 	"outputDir": "../backend/src/main/resources/static",
-	"lintOnSave": false,
 	"transpileDependencies": [
 		"vuetify"
 	]

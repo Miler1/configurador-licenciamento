@@ -1,42 +1,40 @@
-<template lang="pug">
+<template lang='pug'>
 
-				v-app
-								v-main
-												Login
+#app
+	v-app
+		v-main
+			router-view
 
 </template>
 
 <script>
-import Login from '@/views/Login';
 
 export default {
+	
 	name: 'App',
 
-	components: {
-		Login,
-	},
+	data() {
+	}
 
-	data: () => ({
-		//
-	}),
-};
+}
 </script>
 
 <style lang="less">
 
-				html {
-								overflow-y: auto !important;
+html{ 
+	
+	overflow-y: auto !important;
 
-								body {
+	body{
 
-												margin: 0;
+		margin: 0;
 
-												#app {
-																font-family: Roboto, sans-serif;
-																-webkit-font-smoothing: antialiased;
-																-moz-osx-font-smoothing: grayscale;
-												}
-								}
-				}
+		#app {
+			font-family: Roboto, sans-serif;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+		}
+	}
+}
 
 </style>

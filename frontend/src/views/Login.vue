@@ -1,12 +1,12 @@
 <template lang="pug">
 
-				v-container(class="fill-height", id="container-login")
-								CardLogin
+	v-container(class="fill-height", id="container-login")
+		CardLogin
 
 </template>
 
 <script>
-import CardLogin from "../components/CardLogin"
+import CardLogin from "@/components/CardLogin"
 
 export default {
 	name: "Login",
@@ -23,14 +23,14 @@ export default {
 
 <style lang="less" scoped>
 
-				#container-login {
-								align-content: center;
-								background: url("../assets/img/bg_login.png") no-repeat center fixed;
-								background-size: 100% 100%;
-								justify-content: center;
-								max-width: 100% !important;
-								padding: 0;
-								position: fixed;
-				}
+	#container-login {
+		align-content: center;
+		background: url("../assets/img/bg_login.jpeg") no-repeat center fixed;
+		background-size: cover;
+		justify-content: center;
+		max-width: 100% !important;
+		padding: 0;
+		position: fixed;
+	}
 
 </style>
