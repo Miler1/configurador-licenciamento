@@ -1,6 +1,6 @@
 <template lang="pug">
 
-v-navigation-drawer.teste(v-model='drawer' :mini-variant.sync='mini' dark, color='#84A98C')
+v-navigation-drawer.teste(app v-model='drawer', :mini-variant.sync='mini', dark, color='#84A98C')
 	v-list-item.px-2.mb-8.mt-3
 		v-btn(icon, @click.stop='mini = !mini')
 			v-icon mdi-menu
@@ -17,13 +17,13 @@ v-navigation-drawer.teste(v-model='drawer' :mini-variant.sync='mini' dark, color
 						v-list-item-content
 							v-list-item-title
 								| {{ item.title }}
-					v-list-item.pl-12(v-for='(child, i) in item.children' :key='child.title' link='')
+					v-list-item.pl-12(v-for='(child, i) in item.children' :key='child.title' :to='child.path')
 						v-list-item-icon(v-if='child.icon')
 							v-icon {{ child.icon }}
 						v-list-item-content
 							v-list-item-title
 								| {{ child.title }}
-				v-list-item(v-else :key='item.title' link='')
+				v-list-item(v-else :key='item.title' :to='item.path')
 					v-list-item-icon
 						v-icon {{ item.icon }}
 					v-list-item-content
@@ -40,33 +40,42 @@ export default {
 	data: () => ({
 		drawer: true,
 		items: [
-			{ title: 'CNAE', icon: 'mdi-home-city', path: 'teste'},
-			{ title: 'Licença', icon: 'mdi-account', path: 'tese'},
-			{ title: 'Municípios capacitados', icon: 'mdi-account-group-outline', path: 'tese'},
-			{ title: 'Tipologia', icon: 'mdi-home-city', path: 'teste'},
-			{ title: 'Parâmetros', icon: 'mdi-home-city', path: 'teste'},
-			{ title: 'Taxa', icon: 'mdi-home-city', path: 'teste'},
-			{ title: 'Requisitos', icon: 'mdi-home-city', model: true,
+			{ title: 'CNAE', icon: 'mdi-home-city', path: 'cnae'},
+			{ title: 'Licença', icon: 'mdi-card-account-details', path: 'licenca'},
+			{ title: 'Municípios capacitados', icon: 'mdi-city', path: 'municipios-capacitados'},
+			{ title: 'Tipologia', icon: 'mdi-format-list-bulleted-square', path: 'tipologia'},
+			{ title: 'Parâmetros', icon: 'mdi-home-city', path: 'parametros'},
+			{ title: 'Taxa', icon: 'mdi-cash-usd-outline', path: 'taxa'},
+			{ title: 'Requisitos', icon: 'mdi-clipboard-list', model: true,
 				children: [
-					{ title: 'Requisitos administrativos', path: 'teste' },
-					{ title: 'Requisitos técnicos', path: 'teste' }
+					{ title: 'Requisitos administrativos', path: 'requisitos-administrativos'},
+					{ title: 'Requisitos técnicos', path: 'requisitos-tecnicos' }
 				],
 			},
-			{ title: 'Atividades licenciáveis', icon: 'mdi-home-city', path: 'teste'},
-			{ title: 'Atividades dispensáveis', icon: 'mdi-home-city', model: true,
+			{ title: 'Atividades licenciáveis', icon: 'mdi-account-multiple-plus', path: 'atividades-licenciaveis'},
+			{ title: 'Atividades dispensáveis', icon: 'mdi-account-multiple-remove', model: true,
 				children: [
-					{ title: 'Perguntas', path: 'teste' },
-					{ title: 'CNAEs dispensáveis', path: 'teste' }
+					{ title: 'Perguntas', path: 'perguntas' },
+					{ title: 'CNAEs dispensáveis', path: 'cnaes-dispensaveis' }
 				],
 			}
 		],
 		mini: false,
-		active: 0
+		active: 1
 	}),
 }
 
 </script>
 
 <style lang="less">
+
+.v-list-item {
+	.v-list-group__header__append-icon {
+
+		margin: 0 !important;
+    	min-width: 25px !important;
+
+	}
+}
 
 </style>

@@ -16,13 +16,15 @@ const routes = [
 	{
 		path: '/configurador',
 		name: 'Configurador',
+		redirect: to => {
+			return '/configurador/cnae'
+		},
 		component: () => import('../views/MainWrapper.vue'),
 		children: [
-		  {
-				path: 'cnae',
-				name: 'Cnae',
-				component: () => import('../views/Login.vue')
-		  }
+			{ 
+				path: '*', 
+				component: () => import('../views/UnderConstruction.vue') 
+			}
 		]
 	},
 	{
