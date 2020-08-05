@@ -15,25 +15,32 @@
 						label(class="label-login") CPF
 						v-text-field(solo,
 							dense,
+							v-model='usuarioAutenticacao.login'
 							name="cpf",
 							type="text",
 							class="pa-0 ma-0",
-							id="QA-btn_cpf")
-
-							v-icon(slot="append") mdi-account
+							id="QA-btn_cpf",
+							append-icon='mdi-account',
+							color="grey",
+							:error='!this.autenticacoValida'
+							:rules='[rules.required]',)
 
 						label(class="label-login") Senha
 						v-text-field(solo,
 							dense,
+							v-model='usuarioAutenticacao.password'
 							name="senha",
-							type="password",
+							:rules='[rules.required]',
+							:type="show? 'text' : 'password'"
 							class="pa-0 ma-0",
-							id="QA-btn_senha")
-
-							v-icon(slot="append") mdi-key
+							id="QA-btn_senha",
+							@click:append='show = !show',
+							color="grey",
+							:error-messages = "this.autenticacoValida ? [] : this.messageError",
+							:append-icon="usuarioAutenticacao.password ? (show ? 'mdi-eye' : 'mdi-eye-off') : 'mdi-key'")
 
 				v-card-actions(class="pa-0")
-					v-btn(id="QA-btn_login", width="100%")
+					v-btn(id="QA-btn_login", width="100%", @click='handleLogar')
 						v-icon(left) mdi-login
 						span(id="teste") Entrar
 
@@ -44,8 +51,51 @@
 
 <script>
 
+import LoginService from '../services/login.service';
+import { SET_SNACKBAR } from '../store/actions.type'
+
 export default {
-	name: "CardLogin"
+
+	name: "CardLogin",
+
+	data: () => {
+		return {
+			autenticacoValida: true,
+			show: false,
+			messageError: '',
+			usuarioAutenticacao: {
+				login: null,
+				password: null
+			},
+			rules: {
+				required: value => !!value || 'Obrigatório.',
+			}
+		}
+	},
+
+	methods: {
+		validNotEmpty() {
+			return this.usuarioAutenticacao.login 
+				&& this.usuarioAutenticacao.login != ''
+				&& this.usuarioAutenticacao.password
+				&& this.usuarioAutenticacao.password != '';
+		},
+
+		handleLogar() {
+			if(this.validNotEmpty()) {
+				LoginService.logar(this.usuarioAutenticacao)
+					.then((response) => {
+						this.$router.push('/');
+					})
+					.catch(erro => {
+						this.autenticacoValida = false;
+						this.messageError = erro.message;
+					});
+			}
+		}
+	}
+
+
 }
 
 </script>
@@ -78,10 +128,10 @@ export default {
 
 				.v-text-field {
 					font-size: 16px;
+				}
 
-					.v-icon {
-						color: @icon-color;
-					}
+				.v-icon {
+					color: @icon-color;
 				}
 			}
 
