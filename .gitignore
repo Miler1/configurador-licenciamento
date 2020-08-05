@@ -36,9 +36,7 @@ frontend/.env.test.local
 frontend/.env.production.local
 
 frontend/npm-debug.log*
-
 frontend/package-lock.json
-
 
 # -- BACKEND --
 backend/HELP.md
@@ -47,6 +45,7 @@ backend/!.mvn/wrapper/maven-wrapper.jar
 backend/!**/src/main/**
 backend/!**/src/test/**
 backend/logs/**
+backend/src/main/resources/static/
 
 ### STS ###
 backend/.apt_generated
@@ -56,6 +55,3 @@ backend/.project
 backend/.settings
 backend/.springBeans
 backend/.sts4-cache
-
-
-
