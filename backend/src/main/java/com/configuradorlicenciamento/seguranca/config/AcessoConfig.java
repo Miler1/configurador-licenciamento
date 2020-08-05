@@ -1,6 +1,9 @@
 package com.configuradorlicenciamento.seguranca.config;
 
 import com.configuradorlicenciamento.configuracao.components.CustomizacaoObjetoMapper;
+import com.configuradorlicenciamento.configuracao.components.VariaveisAmbientes;
+import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
+import com.configuradorlicenciamento.seguranca.components.Logout;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -28,17 +31,17 @@ public class AcessoConfig extends WebSecurityConfigurerAdapter {
 					.and().headers().frameOptions().disable()
 					.and().csrf().disable()
 				.authorizeRequests()
-				.antMatchers("/autenticacao/entradaUnica").permitAll();
-//				.and()
-//				.formLogin()
-//					.loginPage("http://sistemas.sema.ap.gov.br/portal-seguranca");
-//				.and()
-//				.logout()
-//					.clearAuthentication(true)
-//					.invalidateHttpSession(true)
-//					.deleteCookies("JSESSIONID", "io")
-//					.logoutSuccessHandler((new Logout()))
-//					.logoutUrl("/logout");
+				.antMatchers("/autenticacao/entradaUnica").permitAll()
+				.and()
+				.formLogin()
+					.loginPage(VariaveisAmbientes.baseUrlFrontend() + GlobalReferences.AUTENTICACAO_PATH_CONFIGURADOR)
+				.and()
+				.logout()
+					.clearAuthentication(true)
+					.invalidateHttpSession(true)
+					.deleteCookies("JSESSIONID", "io")
+					.logoutSuccessHandler((new Logout()))
+					.logoutUrl("/logout");
 	}
 
 	@Bean

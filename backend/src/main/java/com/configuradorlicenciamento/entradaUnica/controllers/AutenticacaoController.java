@@ -1,6 +1,7 @@
 package com.configuradorlicenciamento.entradaUnica.controllers;
 
 import com.configuradorlicenciamento.configuracao.components.VariaveisAmbientes;
+import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.entradaUnica.dtos.AutenticacaoDTO;
 import com.configuradorlicenciamento.entradaUnica.interfaces.IAutenticacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +26,16 @@ public class AutenticacaoController {
 
 		autenticacaoService.entradaUnica(sessionKey);
 
-		return new RedirectView(VariaveisAmbientes.baseUrlFrontend());
+		return new RedirectView(VariaveisAmbientes.baseUrlFrontend() + GlobalReferences.PATH_CONFIGURADOR);
 
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value="/login")
-	public RedirectView login(@Valid @RequestBody AutenticacaoDTO autenticacao) {
+	public ResponseEntity<Void> login(@Valid @RequestBody AutenticacaoDTO autenticacao) {
 
 		autenticacaoService.login(autenticacao);
 
-		return new RedirectView(VariaveisAmbientes.baseUrlFrontend());
+		return ResponseEntity.ok().build();
 
 	}
 
