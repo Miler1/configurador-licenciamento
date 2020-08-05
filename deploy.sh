@@ -34,7 +34,7 @@ build-frontend() {
 
 	npm install
 
-	npm run build
+	npm run $ambiente
 
 	checkStatus $? "Frontend compilado com sucesso!" "Erro ao compilar o Frontend! Exit: $?"
 
