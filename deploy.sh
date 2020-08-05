@@ -107,7 +107,7 @@ publish() {
 function usage() {
 
 	echo -e "Usage: ./deploy environment [options]"
-	echo -e "Environments: java1test"
+	echo -e "Environments: test, homolog, prod"
 
 }
 
@@ -129,10 +129,14 @@ ambiente=$1
 
 case $ambiente in
 
-teste)
+test)
 
-	echo -e "--> FAZENDO DEPLOY DA APLICAÇÃO NO AMBIENTE DE TESTES"
-	echo -e "\n\n\n|------ ESTEJA NA VPN UFLA ------|\n\n\n"
+	echo -e "--> FAZENDO DEPLOY DA APLICAÇÃO NO AMBIENTE DE TESTES\n\n\n"
+
+	echo -e "|--------------------------------|\n"
+	echo -e "|--------- HOME OFFICE? ---------|\n"
+	echo -e "|------ ESTEJA NA VPN UFLA ------|\n"
+	echo -e "|--------------------------------|\n\n\n"
 
 	server_ssh=$test_server_host
 	server_pass=$test_server_passwd
