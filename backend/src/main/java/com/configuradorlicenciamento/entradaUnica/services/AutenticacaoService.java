@@ -1,5 +1,6 @@
 package com.configuradorlicenciamento.entradaUnica.services;
 
+import br.ufla.lemaf.beans.pessoa.Usuario;
 import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
 import com.configuradorlicenciamento.entradaUnica.dtos.AutenticacaoDTO;
 import com.configuradorlicenciamento.entradaUnica.interfaces.IAutenticacaoService;
@@ -34,7 +35,13 @@ public class AutenticacaoService implements IAutenticacaoService {
 	@Override
 	public Authentication login(AutenticacaoDTO autenticacao) {
 
-		var usuarioEntradaUnica = EntradaUnicaWS.ws.login(autenticacao.getLogin(), autenticacao.getPassword());
+		Usuario usuarioEntradaUnica;
+
+		try {
+			usuarioEntradaUnica = EntradaUnicaWS.ws.login(autenticacao.getLogin(), autenticacao.getPassword());
+		} catch (Exception e){
+			throw new ConfiguradorNotFoundException(e.getMessage());
+		}
 
 		if(usuarioEntradaUnica == null) {
 			throw new ConfiguradorNotFoundException("Usuário não encontrado.");
