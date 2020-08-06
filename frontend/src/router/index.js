@@ -21,6 +21,11 @@ const routes = [
 		},
 		component: () => import('../views/MainWrapper.vue'),
 		children: [
+			{
+				path: 'cnae', 
+				component: () => import('../views/Cnae.vue')
+
+			},
 			{ 
 				path: '*', 
 				component: () => import('../views/UnderConstruction.vue') 

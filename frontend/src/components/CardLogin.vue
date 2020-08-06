@@ -3,9 +3,11 @@
 	v-card.elevation-12(id="card-login")
 		v-row(class="ma-0 pa-5", id="row-login")
 			v-col(id="col-logo", cols="12")
-				v-img(:src="require('@/assets/img/logo_configurador_licenciamento.png')"
+				v-img(
+					:src="require('@/assets/img/logo_configurador_licenciamento.png')"
 					height="116px",
-					width="310px")
+					width="310px"
+				)
 
 			v-col(class="pa-0", cols="12")
 
@@ -13,29 +15,33 @@
 					v-form(id="form-login")
 
 						label(class="label-login") CPF
-						v-text-field(solo,
+						v-text-field(
+							solo,
 							dense,
 							name="cpf",
 							type="text",
 							class="pa-0 ma-0",
-							id="QA-btn_cpf")
+							id="QA-btn-cpf"
+						)
 
 							v-icon(slot="append") mdi-account
 
 						label(class="label-login") Senha
-						v-text-field(solo,
+						v-text-field(
+							solo,
 							dense,
 							name="senha",
 							type="password",
 							class="pa-0 ma-0",
-							id="QA-btn_senha")
+							id="QA-btn_senha"
+						)
 
 							v-icon(slot="append") mdi-key
 
 				v-card-actions(class="pa-0")
-					v-btn(id="QA-btn_login", width="100%")
+					v-btn(id="QA-btn-login", width="100%")
 						v-icon(left) mdi-login
-						span(id="teste") Entrar
+						span Entrar
 
 			v-col(id="col-esqueci-senha", cols="12", align="start")
 				a(id="link-esquecida-senha", href="") Esqueci minha senha
@@ -85,8 +91,8 @@ export default {
 				}
 			}
 
-			#QA-btn_login {
-				background-color: @bg-color-default;
+			#QA-btn-login {
+				background-color: @green-primary;
 				color: @btn-text-color;
 				font-size: 14px;
 				text-transform: none !important;
