@@ -41,8 +41,13 @@ const routes = [
 				}
 			},
 			{
-				path: '*',
-				component: () => import('../views/UnderConstruction.vue')
+				path: 'cnae',
+				name: 'Cnae',
+				component: () => import('../views/Cnae.vue')
+			},
+			{ 
+				path: '*', 
+				component: () => import('../views/UnderConstruction.vue') 
 			}
 		]
 	},

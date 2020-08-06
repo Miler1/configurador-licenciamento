@@ -1,6 +1,6 @@
 <template lang="pug">
 
-	v-container(class="fill-height", id="container-login")
+	v-container#container-login.fill-height
 		CardLogin
 
 </template>
@@ -11,12 +11,12 @@ import CardLogin from "@/components/CardLogin"
 export default {
 	name: "Login",
 	components: {CardLogin},
-	props: {
-		source: String,
-	},
 	container: {
 		CardLogin
-	}
+	},
+	props: {
+		source: String,
+	}	
 }
 
 </script>
