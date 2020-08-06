@@ -9,14 +9,14 @@ Vue.use(VueRouter)
 
 const routes = [
 	{
-		path: '/', 
+		path: '/',
 		redirect: to => {
-			return '/configurador'
+			return '/home'
 		}
 	},
 
 	{
-		path: '/configurador',
+		path: '/home',
 		name: 'Configurador',
 
 		beforeEnter: (to, from, next) => {
@@ -24,14 +24,18 @@ const routes = [
 		},
 
 		redirect: to => {
-			return '/configurador/cnae'
+			return '/home/cnae'
+		},
+
+		meta: {
+			title: 'Configurador do Licenciamento Ambiental'
 		},
 
 		component: () => import('../views/MainWrapper.vue'),
 
 		children: [
 			{
-				path: '/', 
+				path: '/',
 				redirect: to => {
 					return 'cnae'
 				}
@@ -51,15 +55,30 @@ const routes = [
 	{
 		path: '/login',
 		name: 'Login',
-		component: () => import('../views/Login.vue')
+		component: () => import('../views/Login.vue'),
+
+		meta: {
+			title: 'Login | Configurador do Licenciamento Ambiental'
+		},
 	}
 ]
 
 const router = new VueRouter({
-	mode: 'history',
+	mode: 'hash',
 	base: process.env.BASE_URL,
 	routes
 })
+
+router.beforeEach((to, from, next) => {
+
+	const maisProximaComTitulo = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
+
+	if (maisProximaComTitulo) {
+		document.title = maisProximaComTitulo.meta.title;
+	}
+
+	next();
+});
 
 function BuscaUsuarioLogado(next) {
 
@@ -74,7 +93,7 @@ function BuscaUsuarioLogado(next) {
 		.catch(() => {
 			next(false)
 		})
-	
+
 }
 
 // function getPermissaoPelaRota (path, next) {
