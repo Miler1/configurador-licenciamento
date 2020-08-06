@@ -1,57 +1,104 @@
 <template lang="pug">
 
-	v-card.elevation-12(id="card-login")
-		v-row(class="ma-0 pa-5", id="row-login")
-			v-col(id="col-logo", cols="12")
+	v-card#card-login.elevation-12
+		v-row#row-login.ma-0.pa-5
+			v-col#col-logo(cols="12")
 				v-img(
 					:src="require('@/assets/img/logo_configurador_licenciamento.png')"
 					height="116px",
 					width="310px"
 				)
 
-			v-col(class="pa-0", cols="12")
+			v-col.pa-0(cols="12")
 
-				v-card-text(class="pa-0")
-					v-form(id="form-login")
+				v-card-text.pa-0
+					v-form#form-login
 
 						label(class="label-login") CPF
-						v-text-field(
+						v-text-field#QA-btn-cpf.pa-0.ma-0(
 							solo,
 							dense,
+							v-model='usuarioAutenticacao.login'
 							name="cpf",
 							type="text",
-							class="pa-0 ma-0",
-							id="QA-btn-cpf"
+							append-icon="mdi-account",
+							color="#84A98C",
+							:error='!this.autenticacoValida'
+							:rules='[rules.required]'
 						)
-
-							v-icon(slot="append") mdi-account
 
 						label(class="label-login") Senha
-						v-text-field(
+						v-text-field#QA-btn-senha.pa-0.ma-0(
 							solo,
 							dense,
+							v-model='usuarioAutenticacao.password'
 							name="senha",
-							type="password",
-							class="pa-0 ma-0",
-							id="QA-btn_senha"
+							:rules='[rules.required]',
+							:type="show? 'text' : 'password'"
+							@click:append='show = !show',
+							color="#84A98C",
+							:error-messages = "this.autenticacoValida ? [] : this.messageError",
+							:append-icon="usuarioAutenticacao.password ? (show ? 'mdi-eye' : 'mdi-eye-off') : 'mdi-key'"
 						)
 
-							v-icon(slot="append") mdi-key
-
-				v-card-actions(class="pa-0")
-					v-btn(id="QA-btn-login", width="100%")
+				v-card-actions.pa-0
+					v-btn#QA-btn-login(
+						width="100%",
+						@click='handleLogar'
+					)
 						v-icon(left) mdi-login
 						span Entrar
 
-			v-col(id="col-esqueci-senha", cols="12", align="start")
-				a(id="link-esquecida-senha", href="") Esqueci minha senha
+			v-col#col-esqueci-senha(cols="12", align="start")
+				a#link-esquecida-senha(href="") Esqueci minha senha
 
 </template>
 
 <script>
 
+import LoginService from '../services/login.service';
+import { SET_SNACKBAR } from '../store/actions.type'
+
 export default {
-	name: "CardLogin"
+
+	name: "CardLogin",
+
+	data: () => {
+		return {
+			autenticacoValida: true,
+			show: false,
+			messageError: '',
+			usuarioAutenticacao: {
+				login: null,
+				password: null
+			},
+			rules: {
+				required: value => !!value || 'Obrigatório.',
+			}
+		}
+	},
+
+	methods: {
+		validNotEmpty() {
+			return this.usuarioAutenticacao.login 
+				&& this.usuarioAutenticacao.login != ''
+				&& this.usuarioAutenticacao.password
+				&& this.usuarioAutenticacao.password != '';
+		},
+
+		handleLogar() {
+			if(this.validNotEmpty()) {
+				LoginService.logar(this.usuarioAutenticacao)
+					.then((response) => {
+						this.$router.push('/');
+					})
+					.catch(erro => {
+						this.autenticacoValida = false;
+						this.messageError = erro.message;
+					});
+			}
+		}
+	}
 }
 
 </script>
@@ -84,10 +131,10 @@ export default {
 
 				.v-text-field {
 					font-size: 16px;
+				}
 
-					.v-icon {
-						color: @icon-color;
-					}
+				.v-icon {
+					color: @icon-color;
 				}
 			}
 

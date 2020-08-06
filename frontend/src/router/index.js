@@ -2,29 +2,44 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import { verificaPermissaoPelaRota } from '@/utils/helpers/permissoes/verificador'
+import { GET_USUARIO } from '../store/actions.type'
+import Index from '@/store/index.js'
 
 Vue.use(VueRouter)
 
 const routes = [
 	{
-		path: '/', redirect: to => {
-			if(true) {
-				return '/login'
-			}
+		path: '/', 
+		redirect: to => {
+			return '/configurador'
 		}
 	},
+
 	{
 		path: '/configurador',
 		name: 'Configurador',
+
+		beforeEnter: (to, from, next) => {
+			BuscaUsuarioLogado(next)
+		},
+
 		redirect: to => {
 			return '/configurador/cnae'
 		},
+
 		component: () => import('../views/MainWrapper.vue'),
+
 		children: [
 			{
-				path: 'cnae', 
+				path: '/', 
+				redirect: to => {
+					return 'cnae'
+				}
+			},
+			{
+				path: 'cnae',
+				name: 'Cnae',
 				component: () => import('../views/Cnae.vue')
-
 			},
 			{ 
 				path: '*', 
@@ -32,6 +47,7 @@ const routes = [
 			}
 		]
 	},
+
 	{
 		path: '/login',
 		name: 'Login',
@@ -45,6 +61,21 @@ const router = new VueRouter({
 	routes
 })
 
+function BuscaUsuarioLogado(next) {
+
+	Index.dispatch(GET_USUARIO)
+		.then((usuario) => {
+			if (usuario.authenticated) {
+				next()
+			} else {
+				next('/login')
+			}
+		})
+		.catch(() => {
+			next(false)
+		})
+	
+}
 
 // function getPermissaoPelaRota (path, next) {
 // 	if (verificaPermissaoPelaRota(path)) {

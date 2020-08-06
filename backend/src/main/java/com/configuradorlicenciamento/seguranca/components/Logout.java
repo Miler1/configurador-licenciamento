@@ -28,7 +28,7 @@ public class Logout implements LogoutSuccessHandler {
 
 		httpServletResponse.setStatus(HttpServletResponse.SC_OK);
 
-		httpServletResponse.sendRedirect(VariaveisAmbientes.baseUrlFrontend() + GlobalReferences.AUTENTICACAO_PATH_CONFIGURADOR);
+		httpServletResponse.sendRedirect(VariaveisAmbientes.baseUrlFrontend() + "/");
 
 	}
 

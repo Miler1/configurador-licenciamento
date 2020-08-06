@@ -115,6 +115,9 @@ const ApiService = {
 			case 403:
 				this.handling403(error.response.data)
 				break
+			case 404:
+				message = error.response.data.message
+				break
 			case 500:
 				message = this.handling500()
 				break

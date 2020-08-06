@@ -1,6 +1,6 @@
 <template lang="pug">
 
-	v-form(ref="form")
+	v-form(ref="atividadeCnae")
 		v-container.pa-0
 			v-row
 				v-col(cols="12", md="3")
@@ -9,9 +9,9 @@
 						outlined,
 						color="#E0E0E0",
 						:placeholder="placeholder"
-						v-model="formulario.codigo",
-						@click.native="resetErrors",
-						:error-messages="notEmpty || formulario.codigo ? [] : 'Obrigatório'"
+						v-model="atividadeCnae.codigo",
+						@click.native="resetErrorMessage",
+						:error-messages="errorMessageEmpty || atividadeCnae.codigo ? [] : 'Obrigatório'"
 						required						
 					)
 				v-col(cols="12", md="9")
@@ -20,9 +20,9 @@
 						outlined,
 						color="#E0E0E0",
 						:placeholder="placeholder"
-						v-model="formulario.nome",
-						@click.native="resetErrors",
-						:error-messages="notEmpty || formulario.nome ? [] : 'Obrigatório'"
+						v-model="atividadeCnae.nome",
+						@click.native="resetErrorMessage",
+						:error-messages="errorMessageEmpty || atividadeCnae.nome ? [] : 'Obrigatório'"
 						required
 					)
 			v-row
@@ -46,7 +46,7 @@ export default {
 		}
 	},
 	props: {
-		formulario: {
+		atividadeCnae: {
 			type: [Object]
 		},
 		clear: {
@@ -55,10 +55,10 @@ export default {
 		submit: {
 			type: [Function]
 		},
-		resetErrors:{
+		resetErrorMessage:{
 			type: [Function]
 		},
-		notEmpty: {
+		errorMessageEmpty: {
 			type: [Boolean]
 		}
 	}

@@ -7,11 +7,11 @@
 			:clear="clear",
 		)
 			FormCadastroCnae(
-				:formulario="form",
+				:atividadeCnae="atividadeCnae",
 				:clear="clear",
 				:submit="submit",
-				:resetErrors="resetErrors",
-				:notEmpty="notEmpty"
+				:resetErrorMessage="resetErrorMessage",
+				:errorMessageEmpty="errorMessageEmpty"
 			)
 
 </template>
@@ -20,6 +20,9 @@
 
 import PanelCadastro from '@/components/PanelCadastro'
 import FormCadastroCnae from '@/components/FormCadastroCnae'
+import AtividadeCnaeService from '../services/atividadeCnae.service';
+import { SET_SNACKBAR } from '../store/actions.type'
+import { SUCCESS_MESSAGES } from '@/utils/helpers/success-messages'
 
 export default {
 	name:"cnae",
@@ -30,8 +33,8 @@ export default {
 	data: ()=> {
 		return {
 			panelTitle: "Cadastro de CNAE",
-			notEmpty: true,
-			form: {
+			errorMessageEmpty: true,
+			atividadeCnae: {
 				codigo: '',
 				nome: ''
 			},
@@ -39,27 +42,45 @@ export default {
 	},
 	methods: {
 		clear() {
-			this.form.codigo= ''
-			this.form.nome= ''
-			this.notEmpty=true
+			this.atividadeCnae.codigo= ''
+			this.atividadeCnae.nome= ''
+			this.errorMessageEmpty=true
 		},
 		submit() {
 			if (this.checkForm()) {
 
-				console.log("foi")
+				this.$store.dispatch(SET_SNACKBAR,
+					{color: 'success', text: SUCCESS_MESSAGES.cadastrarCnae, timeout: '6000'}
+				)
+					
+				// AtividadeCnaeService.cadastrar(this.atividadeCnae)
+					
+				// 	.then((response) => {
+				// 		this.$store.dispatch(SET_SNACKBAR,
+				// 			{color: 'success', text: SUCCESS_MESSAGES.cadastrarCnae, timeout: '6000'}
+				// 		)
+				// 		this.$router.push('/configurador/cnae')
+				// 		this.clear();
+				// 	})
+				// 	.catch(erro => {
+				// 		console.error(error)
+				// 		this.$store.dispatch(SET_SNACKBAR,
+				// 			{color: 'error', text: ERROR_MESSAGES.cadastrarCnae, timeout: '6000'}
+				// 		)
+				// 	});
 
 			} else {
-				this.notEmpty = false
+				this.errorMessageEmpty = false
 			}
 		},
 		checkForm() {
-			return this.form.codigo 
-				&& this.form.codigo != ''
-				&& this.form.nome
-				&& this.form.nome != ''
+			return this.atividadeCnae.codigo 
+				&& this.atividadeCnae.codigo != ''
+				&& this.atividadeCnae.nome
+				&& this.atividadeCnae.nome != ''
 		},
-		resetErrors() {
-			this.notEmpty = true
+		resetErrorMessage() {
+			this.errorMessageEmpty = true
 		}
 	}
 }
