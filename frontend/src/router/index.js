@@ -23,12 +23,12 @@ const routes = [
 			BuscaUsuarioLogado(next)
 		},
 
-		meta: {
-			title: 'Configurador'
-		},
-
 		redirect: to => {
 			return '/home/cnae'
+		},
+
+		meta: {
+			title: 'Configurador do Licenciamento Ambiental'
 		},
 
 		component: () => import('../views/MainWrapper.vue'),
@@ -51,9 +51,10 @@ const routes = [
 		path: '/login',
 		name: 'Login',
 		component: () => import('../views/Login.vue'),
+
 		meta: {
-			title: 'Login'
-		}
+			title: 'Login | Configurador do Licenciamento Ambiental'
+		},
 	}
 ]
 
