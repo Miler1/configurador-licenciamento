@@ -1,51 +1,56 @@
 <template lang="pug">
 
-	v-card.elevation-12(id="card-login")
-		v-row(class="ma-0 pa-5", id="row-login")
-			v-col(id="col-logo", cols="12")
-				v-img(:src="require('@/assets/img/logo_configurador_licenciamento.png')"
+	v-card#card-login.elevation-12
+		v-row#row-login.ma-0.pa-5
+			v-col#col-logo(cols="12")
+				v-img(
+					:src="require('@/assets/img/logo_configurador_licenciamento.png')"
 					height="116px",
-					width="310px")
+					width="310px"
+				)
 
-			v-col(class="pa-0", cols="12")
+			v-col.pa-0(cols="12")
 
-				v-card-text(class="pa-0")
-					v-form(id="form-login")
+				v-card-text.pa-0
+					v-form#form-login
 
 						label(class="label-login") CPF
-						v-text-field(solo,
+						v-text-field#QA-btn-cpf.pa-0.ma-0(
+							solo,
 							dense,
 							v-model='usuarioAutenticacao.login'
 							name="cpf",
 							type="text",
-							class="pa-0 ma-0",
-							id="QA-btn_cpf",
-							append-icon='mdi-account',
-							color="grey",
+							append-icon="mdi-account",
+							color="#84A98C",
 							:error='!this.autenticacoValida'
-							:rules='[rules.required]',)
+							:rules='[rules.required]'
+						)
 
 						label(class="label-login") Senha
-						v-text-field(solo,
+						v-text-field#QA-btn-senha.pa-0.ma-0(
+							solo,
 							dense,
 							v-model='usuarioAutenticacao.password'
 							name="senha",
 							:rules='[rules.required]',
 							:type="show? 'text' : 'password'"
-							class="pa-0 ma-0",
-							id="QA-btn_senha",
 							@click:append='show = !show',
-							color="grey",
+							color="#84A98C",
 							:error-messages = "this.autenticacoValida ? [] : this.messageError",
-							:append-icon="usuarioAutenticacao.password ? (show ? 'mdi-eye' : 'mdi-eye-off') : 'mdi-key'")
+							:append-icon="usuarioAutenticacao.password ? (show ? 'mdi-eye' : 'mdi-eye-off') : 'mdi-key'"
+						)
 
-				v-card-actions(class="pa-0")
-					v-btn(id="QA-btn_login", width="100%", @click='handleLogar')
+				v-card-actions.pa-0
+					v-btn#QA-btn-login(
+						width="100%",
+						@click='handleLogar'
+					)
 						v-icon(left) mdi-login
-						span(id="teste") Entrar
+						span Entrar
 
-			v-col(id="col-esqueci-senha", cols="12", align="start")
-				a(id="link-esquecida-senha", href="") Esqueci minha senha
+			v-col#col-esqueci-senha(cols="12", align="start")
+				a#link-esquecida-senha(href="") Esqueci minha senha
 
 </template>
 
@@ -94,8 +99,6 @@ export default {
 			}
 		}
 	}
-
-
 }
 
 </script>
@@ -135,8 +138,8 @@ export default {
 				}
 			}
 
-			#QA-btn_login {
-				background-color: @bg-color-default;
+			#QA-btn-login {
+				background-color: @green-primary;
 				color: @btn-text-color;
 				font-size: 14px;
 				text-transform: none !important;
