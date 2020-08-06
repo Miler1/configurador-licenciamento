@@ -26,22 +26,22 @@ public class AcessoConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http
-				.sessionManagement()
-					.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-					.and().headers().frameOptions().disable()
-					.and().csrf().disable()
-				.authorizeRequests()
-				.antMatchers("/autenticacao/entradaUnica").permitAll()
-				.and()
-				.formLogin()
-					.loginPage(VariaveisAmbientes.baseUrlFrontend() + GlobalReferences.AUTENTICACAO_PATH_CONFIGURADOR)
-				.and()
-				.logout()
-					.clearAuthentication(true)
-					.invalidateHttpSession(true)
-					.deleteCookies("JSESSIONID", "io")
-					.logoutSuccessHandler((new Logout()))
-					.logoutUrl("/logout");
+			.sessionManagement()
+				.sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+				.and().headers().frameOptions().disable()
+				.and().csrf().disable()
+			.authorizeRequests()
+			.antMatchers("/autenticacao/entradaUnica").permitAll()
+			.and()
+			.formLogin()
+				.loginPage(VariaveisAmbientes.baseUrlFrontend() + GlobalReferences.AUTENTICACAO_PATH_CONFIGURADOR)
+			.and()
+			.logout()
+				.clearAuthentication(true)
+				.invalidateHttpSession(true)
+				.deleteCookies("JSESSIONID", "io")
+				.logoutSuccessHandler((new Logout()))
+				.logoutUrl("/logout");
 	}
 
 	@Bean

@@ -5,6 +5,9 @@ import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoun
 import com.configuradorlicenciamento.entradaUnica.dtos.AutenticacaoDTO;
 import com.configuradorlicenciamento.entradaUnica.interfaces.IAutenticacaoService;
 import com.configuradorlicenciamento.seguranca.components.Autenticacao;
+import com.configuradorlicenciamento.usuarioLicenciamento.interfaces.IUsuarioLicenciamentoService;
+import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
@@ -12,8 +15,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class AutenticacaoService implements IAutenticacaoService {
 
-//	@Autowired
-//	IUsuarioService usuarioService;
+	@Autowired
+	IUsuarioLicenciamentoService usuarioLicenciamentoService;
 
 	@Override
 	public Authentication entradaUnica(String sessionKey) {
@@ -24,7 +27,7 @@ public class AutenticacaoService implements IAutenticacaoService {
 			throw new ConfiguradorNotFoundException("A chave de sessão do Entrada Única não é valida.");
 		}
 
-//		usuarioService.cadastraOuAtualiza(usuarioEntradaUnica);
+		usuarioLicenciamentoService.cadastraOuAtualiza(usuarioEntradaUnica);
 
 		usuarioEntradaUnica.sessionKeyEntradaUnica = sessionKey;
 
@@ -47,9 +50,9 @@ public class AutenticacaoService implements IAutenticacaoService {
 			throw new ConfiguradorNotFoundException("Usuário não encontrado.");
 		}
 
-//		Usuario usuario = usuarioService.cadastraOuAtualiza(usuarioEntradaUnica);
+		UsuarioLicenciamento usuario = usuarioLicenciamentoService.cadastraOuAtualiza(usuarioEntradaUnica);
 
-//		usuarioEntradaUnica.id = usuario.getId();
+		usuarioEntradaUnica.id = usuario.getId();
 
 		return new Autenticacao(usuarioEntradaUnica);
 

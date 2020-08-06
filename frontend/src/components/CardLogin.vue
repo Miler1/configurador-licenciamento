@@ -21,11 +21,12 @@
 							v-model='usuarioAutenticacao.login'
 							name="cpf",
 							type="text",
-							append-icon="mdi-account",
 							color="#84A98C",
-							:error='!this.autenticacoValida'
-							:rules='[rules.required]'
-						)
+							class="pa-0 ma-0",
+							id="QA-btn_cpf",
+							append-icon='mdi-account',
+							:error-messages = "this.autenticacoValida || usuarioAutenticacao.login ? [] : this.messageError",
+							@click.native='resetErros',)
 
 						label(class="label-login") Senha
 						v-text-field#QA-btn-senha.pa-0.ma-0(
@@ -33,19 +34,17 @@
 							dense,
 							v-model='usuarioAutenticacao.password'
 							name="senha",
-							:rules='[rules.required]',
 							:type="show? 'text' : 'password'"
 							@click:append='show = !show',
 							color="#84A98C",
-							:error-messages = "this.autenticacoValida ? [] : this.messageError",
+							class="pa-0 ma-0",
+							@click.native='resetErros',
+							:error-messages = "this.autenticacoValida || usuarioAutenticacao.password ? [] : this.messageError",
 							:append-icon="usuarioAutenticacao.password ? (show ? 'mdi-eye' : 'mdi-eye-off') : 'mdi-key'"
 						)
 
-				v-card-actions.pa-0
-					v-btn#QA-btn-login(
-						width="100%",
-						@click='handleLogar'
-					)
+				v-card-actions(class="pa-0")
+					v-btn#QA-btn_login(width="100%", @click='handleLogar')
 						v-icon(left) mdi-login
 						span Entrar
 
@@ -72,9 +71,6 @@ export default {
 				login: null,
 				password: null
 			},
-			rules: {
-				required: value => !!value || 'Obrigatório.',
-			}
 		}
 	},
 
@@ -96,7 +92,14 @@ export default {
 						this.autenticacoValida = false;
 						this.messageError = erro.message;
 					});
+			} else {
+				this.autenticacoValida = false;
+				this.messageError = 'Obrigatório';
 			}
+		},
+
+		resetErros() {
+			this.autenticacoValida = true;
 		}
 	}
 }

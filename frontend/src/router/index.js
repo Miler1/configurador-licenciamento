@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import { verificaPermissaoPelaRota } from '@/utils/helpers/permissoes/verificador'
 import { GET_USUARIO } from '../store/actions.type'
 import Index from '@/store/index.js'
 
@@ -17,14 +16,10 @@ const routes = [
 
 	{
 		path: '/home',
-		name: 'Configurador',
+		name: 'home',
 
 		beforeEnter: (to, from, next) => {
 			BuscaUsuarioLogado(next)
-		},
-
-		meta: {
-			title: 'Configurador'
 		},
 
 		redirect: to => {
@@ -35,7 +30,7 @@ const routes = [
 
 		children: [
 			{
-				path: '/',
+				path: '/', 
 				redirect: to => {
 					return 'cnae'
 				}
@@ -55,10 +50,7 @@ const routes = [
 	{
 		path: '/login',
 		name: 'Login',
-		component: () => import('../views/Login.vue'),
-		meta: {
-			title: 'Login'
-		}
+		component: () => import('../views/Login.vue')
 	}
 ]
 
@@ -67,17 +59,6 @@ const router = new VueRouter({
 	base: process.env.BASE_URL,
 	routes
 })
-
-router.beforeEach((to, from, next) => {
-
-	const maisProximaComTitulo = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
-
-	if (maisProximaComTitulo) {
-		document.title = maisProximaComTitulo.meta.title;
-	}
-
-	next();
-});
 
 function BuscaUsuarioLogado(next) {
 
@@ -92,7 +73,7 @@ function BuscaUsuarioLogado(next) {
 		.catch(() => {
 			next(false)
 		})
-
+	
 }
 
 // function getPermissaoPelaRota (path, next) {
