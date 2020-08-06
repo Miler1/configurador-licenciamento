@@ -1,6 +1,6 @@
 <template lang="pug">
 
-	v-container#container-login(class="fill-height")
+	v-container#container-login.fill-height
 		CardLogin
 
 </template>
