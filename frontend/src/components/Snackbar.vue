@@ -1,5 +1,6 @@
 <template lang="pug">
-	v-snackbar(v-model="show", :multi-line="multiLine", :top="top", :right="right")
+
+	v-snackbar(v-model="show")
 		| {{message}}
 		v-btn(flat icon color="accent" @click.native="show = false")
 			v-icon mdi-close
@@ -9,12 +10,12 @@
 <script>
 
 export default {
-	data: () => ({
-		show: false,
-		multiLine: true,
-		top: true,
-		right: true,
-	})
+	data () {
+		return {
+			show: false,
+			message: ''
+		}
+	}
 }
 
 </script>
