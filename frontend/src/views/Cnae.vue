@@ -48,26 +48,22 @@ export default {
 		},
 		submit() {
 			if (this.checkForm()) {
-
-				this.$store.dispatch(SET_SNACKBAR,
-					{color: 'success', text: SUCCESS_MESSAGES.cadastrarCnae, timeout: '6000'}
-				)
 					
-				// AtividadeCnaeService.cadastrar(this.atividadeCnae)
+				AtividadeCnaeService.cadastrar(this.atividadeCnae)
 					
-				// 	.then((response) => {
-				// 		this.$store.dispatch(SET_SNACKBAR,
-				// 			{color: 'success', text: SUCCESS_MESSAGES.cadastrarCnae, timeout: '6000'}
-				// 		)
-				// 		this.$router.push('/configurador/cnae')
-				// 		this.clear();
-				// 	})
-				// 	.catch(erro => {
-				// 		console.error(error)
-				// 		this.$store.dispatch(SET_SNACKBAR,
-				// 			{color: 'error', text: ERROR_MESSAGES.cadastrarCnae, timeout: '6000'}
-				// 		)
-				// 	});
+					.then((response) => {
+						this.$store.dispatch(SET_SNACKBAR,
+							{color: 'success', text: SUCCESS_MESSAGES.cadastrarCnae, timeout: '6000'}
+						)
+						this.$router.push('/configurador/cnae')
+						this.clear();
+					})
+					.catch(erro => {
+						console.error(error)
+						this.$store.dispatch(SET_SNACKBAR,
+							{color: 'error', text: ERROR_MESSAGES.cadastrarCnae, timeout: '6000'}
+						)
+					});
 
 			} else {
 				this.errorMessageEmpty = false
