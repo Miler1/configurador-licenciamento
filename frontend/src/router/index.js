@@ -68,6 +68,17 @@ const router = new VueRouter({
 	routes
 })
 
+router.beforeEach((to, from, next) => {
+
+	const maisProximaComTitulo = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
+
+	if (maisProximaComTitulo) {
+		document.title = maisProximaComTitulo.meta.title;
+	}
+
+	next();
+});
+
 function BuscaUsuarioLogado(next) {
 
 	Index.dispatch(GET_USUARIO)
