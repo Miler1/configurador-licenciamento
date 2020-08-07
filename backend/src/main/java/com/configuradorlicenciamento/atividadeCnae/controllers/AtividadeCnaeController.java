@@ -5,6 +5,7 @@ import com.configuradorlicenciamento.atividadeCnae.interfaces.IAtividadeCnaeServ
 import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.configuracao.components.VariaveisAmbientes;
 import com.configuradorlicenciamento.configuracao.controllers.DefaultController;
+import com.configuradorlicenciamento.configuracao.enums.Acao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -22,9 +24,11 @@ public class AtividadeCnaeController extends DefaultController {
     IAtividadeCnaeService atividadeCnaeService;
 
     @RequestMapping(method = RequestMethod.POST, value = "/salvar")
-    public ResponseEntity<AtividadeCnae> salvar (@Valid @RequestBody AtividadeCnaeDTO atividadeCnaeDTO) throws Exception {
+    public ResponseEntity<AtividadeCnae> salvar (HttpServletRequest request, @Valid @RequestBody AtividadeCnaeDTO atividadeCnaeDTO) throws Exception {
 
-        AtividadeCnae atividadeCnae = atividadeCnaeService.salvar(atividadeCnaeDTO);
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        AtividadeCnae atividadeCnae = atividadeCnaeService.salvar(request, atividadeCnaeDTO);
 
         return ResponseEntity.ok()
                 .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())

@@ -4,10 +4,12 @@ import com.configuradorlicenciamento.entradaUnica.dtos.AutenticacaoDTO;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface IAutenticacaoService extends AuthenticationProvider {
 
-	Authentication entradaUnica(String sessionKey);
+	Authentication entradaUnica(HttpServletRequest request,  String sessionKey);
 
-	Authentication login(AutenticacaoDTO autenticacao);
+	Authentication login(HttpServletRequest request, AutenticacaoDTO autenticacao);
 
 }

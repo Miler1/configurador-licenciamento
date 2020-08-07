@@ -22,7 +22,7 @@ import PanelCadastro from '@/components/PanelCadastro'
 import FormCadastroCnae from '@/components/FormCadastroCnae'
 import AtividadeCnaeService from '../services/atividadeCnae.service';
 import { SET_SNACKBAR } from '../store/actions.type'
-import { SUCCESS_MESSAGES } from '@/utils/helpers/success-messages'
+import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils'
 
 export default {
 	name:"cnae",
@@ -54,14 +54,14 @@ export default {
 					
 					.then((response) => {
 						this.$store.dispatch(SET_SNACKBAR,
-							{color: 'success', text: SUCCESS_MESSAGES.cadastrarCnae, timeout: '6000'}
+							{color: 'success', text: SUCCESS_MESSAGES.cadastroCnae, timeout: '6000'}
 						)
 						this.clear();
 					})
 					.catch(erro => {
-						console.error(error)
+						console.error(erro)
 						this.$store.dispatch(SET_SNACKBAR,
-							{color: 'error', text: ERROR_MESSAGES.cadastrarCnae, timeout: '6000'}
+							{color: 'error', text: ERROR_MESSAGES.cadastroCnae + ': ' + erro.message, timeout: '6000'}
 						)
 					});
 
