@@ -6,7 +6,6 @@ import com.configuradorlicenciamento.entradaUnica.dtos.AutenticacaoDTO;
 import com.configuradorlicenciamento.entradaUnica.interfaces.IAutenticacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -22,18 +21,18 @@ public class AutenticacaoController {
 	IAutenticacaoService autenticacaoService;
 
 	@RequestMapping(method = RequestMethod.GET, value="/entradaUnica/{sessionKey}")
-	public RedirectView entradaUnica(@PathVariable("sessionKey") String sessionKey) {
+	public RedirectView entradaUnica(HttpServletRequest request, @PathVariable("sessionKey") String sessionKey) {
 
-		autenticacaoService.entradaUnica(sessionKey);
+		autenticacaoService.entradaUnica(request, sessionKey);
 
 		return new RedirectView(VariaveisAmbientes.baseUrlFrontend() + GlobalReferences.PATH_CONFIGURADOR);
 
 	}
 
 	@RequestMapping(method = RequestMethod.POST, value="/login")
-	public ResponseEntity<Void> login(@Valid @RequestBody AutenticacaoDTO autenticacao) {
+	public ResponseEntity<Void> login(HttpServletRequest request, @Valid @RequestBody AutenticacaoDTO autenticacao) {
 
-		autenticacaoService.login(autenticacao);
+		autenticacaoService.login(request, autenticacao);
 
 		return ResponseEntity.ok().build();
 

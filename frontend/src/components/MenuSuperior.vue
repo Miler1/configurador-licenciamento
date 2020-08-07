@@ -24,7 +24,7 @@ v-app-bar(app, outlined, color='white')
 
 import { USUARIO_LOGOUT } from '@/store/actions.type.js'
 import { mapGetters } from 'vuex'
-import { ERROR_MESSAGES } from '@/utils/helpers/error-messages'
+import { ERROR_MESSAGES } from '@/utils/helpers/messages-utils'
 
 export default {
 
