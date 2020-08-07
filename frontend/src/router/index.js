@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import { verificaPermissaoPelaRota } from '@/utils/helpers/permissoes/verificador'
 import { GET_USUARIO } from '../store/actions.type'
 import Index from '@/store/index.js'
 
@@ -17,7 +16,7 @@ const routes = [
 
 	{
 		path: '/home',
-		name: 'Configurador',
+		name: 'home',
 
 		beforeEnter: (to, from, next) => {
 			BuscaUsuarioLogado(next)
@@ -35,7 +34,7 @@ const routes = [
 
 		children: [
 			{
-				path: '/',
+				path: '/', 
 				redirect: to => {
 					return 'cnae'
 				}
@@ -93,7 +92,7 @@ function BuscaUsuarioLogado(next) {
 		.catch(() => {
 			next(false)
 		})
-
+	
 }
 
 // function getPermissaoPelaRota (path, next) {

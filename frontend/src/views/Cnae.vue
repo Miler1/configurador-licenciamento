@@ -36,7 +36,8 @@ export default {
 			errorMessageEmpty: true,
 			atividadeCnae: {
 				codigo: '',
-				nome: ''
+				nome: '',
+				ativo: true
 			},
 		}
 	},
@@ -55,7 +56,6 @@ export default {
 						this.$store.dispatch(SET_SNACKBAR,
 							{color: 'success', text: SUCCESS_MESSAGES.cadastrarCnae, timeout: '6000'}
 						)
-						this.$router.push('/configurador/cnae')
 						this.clear();
 					})
 					.catch(erro => {
