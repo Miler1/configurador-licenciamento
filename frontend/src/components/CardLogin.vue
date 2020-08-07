@@ -14,7 +14,7 @@
 				v-card-text.pa-0
 					v-form#form-login
 
-						label(class="label-login") CPF
+						label.label-login CPF
 						v-text-field#QA-btn-cpf.pa-0.ma-0(
 							solo,
 							dense,
@@ -24,10 +24,11 @@
 							color="#84A98C",
 							class="pa-0 ma-0",
 							append-icon='mdi-account',
-							:error-messages = "this.autenticacoValida || usuarioAutenticacao.login ? [] : this.messageError",
-							@click.native='resetErros',)
+							:error-messages=" errorMessageEmpty || usuarioAutenticacao.login ? [] : messageError",
+							@click.native='resetErros',
+						)
 
-						label(class="label-login") Senha
+						label.label-login Senha
 						v-text-field#QA-btn-senha.pa-0.ma-0(
 							solo,
 							dense,
@@ -38,12 +39,12 @@
 							color="#84A98C",
 							class="pa-0 ma-0",
 							@click.native='resetErros',
-							:error-messages = "this.autenticacoValida || usuarioAutenticacao.password ? [] : this.messageError",
-							:append-icon="usuarioAutenticacao.password ? (show ? 'mdi-eye' : 'mdi-eye-off') : 'mdi-key'"
+							:error-messages="errorMessageEmpty || usuarioAutenticacao.password  ? [] : messageError",
+							:append-icon="usuarioAutenticacao.password ? (show ? 'mdi-eye' : 'mdi-eye-off') : 'mdi-key'",
 						)
 
-				v-card-actions(class="pa-0")
-					v-btn#QA-btn_login(width="100%", @click='handleLogar')
+				v-card-actions.pa-0
+					v-btn#QA-btn-login(width="100%", @click='handleLogar')
 						v-icon(left) mdi-login
 						span Entrar
 
@@ -63,7 +64,7 @@ export default {
 
 	data: () => {
 		return {
-			autenticacoValida: true,
+			errorMessageEmpty: true,
 			show: false,
 			messageError: '',
 			urlEntradaUnica: null,
@@ -92,19 +93,22 @@ export default {
 					.then((response) => {
 						this.$router.push('/');
 					})
-					.catch(erro => {
-						this.autenticacoValida = false;
-						this.messageError = erro.message;
+					.catch(error => {
+						console.error(error);
+						this.errorMessageEmpty = false;
+						this.$store.dispatch(SET_SNACKBAR,
+							{color:'error', width:"150px", text: error.message, timeout: '6000'}
+						);
 					});
 			} else {
-				this.autenticacoValida = false;
+				this.errorMessageEmpty = false;
 				this.messageError = 'Obrigatório';
 			}
 		},
 
 		resetErros() {
-			this.autenticacoValida = true;
-		}
+			this.errorMessageEmpty = true;
+		},
 	}
 }
 
