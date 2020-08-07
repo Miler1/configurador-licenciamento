@@ -48,7 +48,7 @@
 						span Entrar
 
 			v-col#col-esqueci-senha(cols="12", align="start")
-				a#link-esquecida-senha(href="") Esqueci minha senha
+				a#link-esquecida-senha(:href="urlEntradaUnica") Esqueci minha senha
 
 </template>
 
@@ -66,11 +66,16 @@ export default {
 			autenticacoValida: true,
 			show: false,
 			messageError: '',
+			urlEntradaUnica: null,
 			usuarioAutenticacao: {
 				login: null,
 				password: null
 			},
 		}
+	},
+
+	mounted() {
+		this.urlEntradaUnica = process.env.VUE_APP_URL_PORTAL_SEGURANCA;
 	},
 
 	methods: {
