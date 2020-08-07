@@ -40,12 +40,12 @@ public class Autenticacao extends AbstractAuthenticationToken {
 		if(usuarioEntradaUnica.perfilSelecionado == null) {
 			return autorizaAutenticacaoAplicativo(usuarioEntradaUnica);
 		} else {
-			return autorizaAutenticacaoEntradaUnica(usuarioEntradaUnica);
+			return autorizaAutenticacao(usuarioEntradaUnica);
 		}
 
 	}
 
-	private static List<GrantedAuthority> autorizaAutenticacaoEntradaUnica(Usuario usuarioEntradaUnica) {
+	private static List<GrantedAuthority> autorizaAutenticacao(Usuario usuarioEntradaUnica) {
 
 		Optional<Perfil> perfil = usuarioEntradaUnica.perfis.stream()
 				.filter(p -> p.nome.equals(usuarioEntradaUnica.perfilSelecionado.nome))

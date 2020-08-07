@@ -23,7 +23,6 @@
 							type="text",
 							color="#84A98C",
 							class="pa-0 ma-0",
-							id="QA-btn_cpf",
 							append-icon='mdi-account',
 							:error-messages = "this.autenticacoValida || usuarioAutenticacao.login ? [] : this.messageError",
 							@click.native='resetErros',)
