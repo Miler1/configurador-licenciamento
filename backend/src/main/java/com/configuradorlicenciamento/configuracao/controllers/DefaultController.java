@@ -10,11 +10,11 @@ package com.configuradorlicenciamento.configuracao.controllers;
 //import java.io.FileInputStream;
 //import java.io.FileNotFoundException;
 
-import br.ufla.lemaf.beans.pessoa.Usuario;
 import com.configuradorlicenciamento.configuracao.enums.Acao;
-import com.configuradorlicenciamento.entradaUnica.services.EntradaUnicaWS;
-
-import java.security.Principal;
+import com.configuradorlicenciamento.configuracao.exceptions.PemissionException;
+import com.configuradorlicenciamento.configuracao.interfaces.IDefaultService;
+import org.springframework.beans.factory.annotation.Autowired;
+import javax.servlet.http.HttpServletRequest;
 
 public class DefaultController {
 
@@ -30,20 +30,19 @@ public class DefaultController {
 //
 //	}
 
-	protected void verificarPermissao(Acao... acoes) {
+	@Autowired
+	IDefaultService defaultService;
 
-//		Usuario usuarioSessao = EntradaUnicaWS.ws.buscarUsuarioPorLogin(Principal.class.);
-//
-//		boolean permitido = false;
-//
-//		for (Acao acao : acoes)
-//			permitido = permitido || (usuarioSessao != null && usuarioSessao.hasPermissao(acao.codigo));
-//
-//		if (!permitido) {
-//
-//			response.status = Http.StatusCode.FORBIDDEN;
-//			renderMensagem(Mensagem.PERMISSAO_NEGADA);
-//		}
+	protected void verificarPermissao(HttpServletRequest request, Acao... acoes) throws Exception {
+
+		Boolean permitido = defaultService.verificaPermissao(request, acoes);
+
+		if(!permitido) {
+
+			throw new PemissionException("Usuário sem permissão para realizar a ação!");
+
+		}
+
 	}
 
 }

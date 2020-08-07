@@ -12,6 +12,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Service
 public class AutenticacaoService implements IAutenticacaoService {
 
@@ -19,7 +21,7 @@ public class AutenticacaoService implements IAutenticacaoService {
 	IUsuarioLicenciamentoService usuarioLicenciamentoService;
 
 	@Override
-	public Authentication entradaUnica(String sessionKey) {
+	public Authentication entradaUnica(HttpServletRequest request, String sessionKey) {
 
 		var usuarioEntradaUnica = EntradaUnicaWS.ws.searchBySessionKey(sessionKey);
 
@@ -31,12 +33,15 @@ public class AutenticacaoService implements IAutenticacaoService {
 
 		usuarioEntradaUnica.sessionKeyEntradaUnica = sessionKey;
 
+		request.getSession().setAttribute("sessionKeyEntradaUnica", usuarioEntradaUnica.sessionKeyEntradaUnica);
+		request.getSession().setAttribute("login", usuarioEntradaUnica.login);
+
 		return new Autenticacao(usuarioEntradaUnica);
 
 	}
 
 	@Override
-	public Authentication login(AutenticacaoDTO autenticacao) {
+	public Authentication login(HttpServletRequest request, AutenticacaoDTO autenticacao) {
 
 		Usuario usuarioEntradaUnica;
 
@@ -53,6 +58,9 @@ public class AutenticacaoService implements IAutenticacaoService {
 		UsuarioLicenciamento usuario = usuarioLicenciamentoService.cadastraOuAtualiza(usuarioEntradaUnica);
 
 		usuarioEntradaUnica.id = usuario.getId();
+
+		request.getSession().setAttribute("sessionKeyEntradaUnica", usuarioEntradaUnica.sessionKeyEntradaUnica);
+		request.getSession().setAttribute("login", usuarioEntradaUnica.login);
 
 		return new Autenticacao(usuarioEntradaUnica);
 
