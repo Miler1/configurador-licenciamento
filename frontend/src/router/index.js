@@ -26,6 +26,10 @@ const routes = [
 			return '/home/cnae'
 		},
 
+		meta: {
+			title: 'Configurador do Licenciamento Ambiental'
+		},
+
 		component: () => import('../views/MainWrapper.vue'),
 
 		children: [
@@ -50,7 +54,11 @@ const routes = [
 	{
 		path: '/login',
 		name: 'Login',
-		component: () => import('../views/Login.vue')
+		component: () => import('../views/Login.vue'),
+
+		meta: {
+			title: 'Login | Configurador do Licenciamento Ambiental'
+		},
 	}
 ]
 
