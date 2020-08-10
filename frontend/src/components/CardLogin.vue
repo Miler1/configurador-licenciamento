@@ -57,13 +57,16 @@ export default {
 	name: "CardLogin",
 
 	data: () => {
+	
 		return {
 			show: false,
 			urlEntradaUnica: null,
+			
 			usuarioAutenticacao: {
 				login: null,
 				password: null,
 			},
+
 			error:{
 				required:{
 					senha: false,
@@ -76,53 +79,77 @@ export default {
 	},
 
 	methods: {
+	
 		handleLogar() {
+		
 			if (this.validNotEmpty()) {
+			
 				LoginService.logar(this.usuarioAutenticacao)
 					.then((response) => {
 						this.$router.push('/');
 					})
 					.catch(error => {
+					
 						console.error(error);
 						this.error.login = true;
 						this.error.message = error.message;
+						
 					});
 			} else {
+			
 				this.error.required.cpf = true;
 				this.error.required.senha = true;
 				this.error.message = 'Obrigatório';
+				
 			}
 		},
+		
 		validNotEmpty() {
+		
 			return this.usuarioAutenticacao.login
 				&& this.usuarioAutenticacao.login != ''
 				&& this.usuarioAutenticacao.password
 				&& this.usuarioAutenticacao.password != '';
+				
 		},
+		
 		resetCpfError() {
+		
 			this.resetLoginError();
 			this.error.required.cpf = false;
+			
 		},
+		
 		resetSenhaError() {
+		
 			this.resetLoginError();
 			this.error.required.senha = false;
+			
 		},
+		
 		resetLoginError() {
+		
 			if (this.error.login) {
 				this.error.login = false;
+				
 			}
 		},
+		
 		cpfError() {
 			return this.error.required.cpf && !this.usuarioAutenticacao.login ? this.error.message : [];
 		},
+		
 		senhaError() {
+		
 			if ( (this.error.required.senha && !this.usuarioAutenticacao.password) ||
 				(this.error.login && this.usuarioAutenticacao.password && this.usuarioAutenticacao.login)){
 
 				return this.error.message;
 			}
 			return [];
+			
 		},
+		
 		isEmpty(value) {
 			return (value === '' || value === null);
 		},
