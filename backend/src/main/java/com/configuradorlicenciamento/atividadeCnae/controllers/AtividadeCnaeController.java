@@ -37,7 +37,9 @@ public class AtividadeCnaeController extends DefaultController {
     }
 
     @GetMapping("/relatorio-cnae")
-    public void relatorioCSV (HttpServletResponse response) throws Exception {
+    public void relatorioCSV (HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
         String data = DateUtil.formataBrHoraMinuto(new Date());
         String nome = "Relatorio_CNAE_" + data + ".csv";
