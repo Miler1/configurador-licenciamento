@@ -66,12 +66,10 @@ logs, and code as it's very hard to read otherwise.)
   
 
 [//]: <It's a bug? Use these tags.> 
-/label ~"QA:Failed" ~"Workflow:Ready for development"
-/label ~P3 
+/label ~"QA:Failed" ~"Workflow:Ready for development" ~P3 
 
 [//]: <It's a improvement? Use these tags.> 
-/label ~"QA:Failed" ~Improvement ~"Workflow:Ready for development"
-/label ~P4
+/label ~"QA:Failed" ~"Workflow:Ready for development" ~Improvement ~P4
 
 [//]: <Priorities>
 [//]: <P1: Urgente - Arrumar tão logo que seja possível, na release atual e com menos de 2 dias>
