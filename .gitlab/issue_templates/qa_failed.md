@@ -70,7 +70,7 @@ logs, and code as it's very hard to read otherwise.)
 /label ~P3 
 
 [//]: <It's a improvement? Use these tags.> 
-/label ~Improvement ~"Workflow:Ready for development"
+/label ~"QA:Failed" ~Improvement ~"Workflow:Ready for development"
 /label ~P4
 
 [//]: <Priorities>
