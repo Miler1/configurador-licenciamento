@@ -15,7 +15,8 @@
 						v-text-field#QA-btn-cpf.pa-0.ma-0(
 							solo,
 							dense,
-							v-model="usuarioAutenticacao.login"
+							v-model="usuarioAutenticacao.login",
+							v-on:keyup.enter="handleLogar",
 							name="cpf",
 							type="text",
 							color="#84A98C",
@@ -29,6 +30,7 @@
 							solo,
 							dense,
 							v-model='usuarioAutenticacao.password',
+							v-on:keyup.enter="handleLogar",
 							name="senha",
 							:type="show ? 'text' : 'password'",
 							@click:append='show = !show',
@@ -49,7 +51,6 @@
 <script>
 
 import LoginService from '../services/login.service';
-import { SET_SNACKBAR } from '../store/actions.type'
 
 export default {
 
@@ -128,6 +129,7 @@ export default {
 	},
 
 	mounted() {
+		
 		this.urlEntradaUnica = process.env.VUE_APP_URL_PORTAL_SEGURANCA;
 	},
 }
