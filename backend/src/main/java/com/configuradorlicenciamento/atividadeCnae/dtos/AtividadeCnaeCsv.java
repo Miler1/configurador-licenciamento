@@ -35,14 +35,14 @@ public class AtividadeCnaeCsv implements Serializable {
         this.codigo = cnae.getCodigo();
         this.nome = cnae.getNome();
         this.ativo = cnae.getAtivo() ? "Ativo" : "Inativo";
-        Date teste = cnae.getDataCadastro();
-        this.dataCadastro = cnae.getDataCadastro() != null ? DateUtil.formataBrSimples(cnae.getDataCadastro()) : " -> Sem data <-";
-        this.usuarioLicenciamento = cnae.getUsuarioLicenciamento() != null ? getNomeUsuario(cnae.getUsuarioLicenciamento()) : " -> Sem usuário <-";
+        this.dataCadastro = cnae.getDataCadastro() != null ? DateUtil.formataBrSimples(cnae.getDataCadastro()) : "-";
+
+        this.usuarioLicenciamento = cnae.getUsuarioLicenciamento() != null ? getNomeUsuario(cnae.getUsuarioLicenciamento()) : "-";
 
     }
 
     private String getNomeUsuario(UsuarioLicenciamento usuario){
-        return EntradaUnicaWS.ws.buscarUsuarioPorLogin(usuario.getLogin()).nome;
+        return EntradaUnicaWS.ws.buscarPessoaFisicaPeloCpf(usuario.getLogin()).nome;
     }
 
 }

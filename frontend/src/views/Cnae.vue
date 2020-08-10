@@ -13,14 +13,20 @@
 				:resetErrorMessage="resetErrorMessage",
 				:errorMessageEmpty="errorMessageEmpty"
 			)
+			
+		// remover ao mergear história da listagem
+		v-btn#QA-btn_gerar_relatorio(width="100%", @click='baixarRelatorio')
+			v-icon(left) mdi-get_app
+			span Gerar relatório
 
 </template>
 
 <script>
 
+import RelatorioService from '../services/relatorio.service'
 import PanelCadastro from '@/components/PanelCadastro'
 import FormCadastroCnae from '@/components/FormCadastroCnae'
-import AtividadeCnaeService from '../services/atividadeCnae.service';
+import AtividadeCnaeService from '../services/atividadeCnae.service'
 import { SET_SNACKBAR } from '../store/actions.type'
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils'
 
@@ -77,7 +83,13 @@ export default {
 		},
 		resetErrorMessage() {
 			this.errorMessageEmpty = true
+		},
+		
+		/*remover ao mergear história da listagem*/
+		baixarRelatorio() {
+			RelatorioService.baixarRelatorio("/atividadeCnae/relatorio-cnae");
 		}
+
 	}
 }
 
