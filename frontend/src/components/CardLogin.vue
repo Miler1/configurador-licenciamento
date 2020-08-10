@@ -128,12 +128,6 @@ export default {
 	},
 
 	mounted() {
-		let self = this;
-		window.addEventListener('keyup', function (event) {
-			if (event.keyCode === 13) {
-				self.handleLogar();
-			}
-		});
 		this.urlEntradaUnica = process.env.VUE_APP_URL_PORTAL_SEGURANCA;
 	},
 }
