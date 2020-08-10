@@ -1,5 +1,6 @@
 package com.configuradorlicenciamento.atividadeCnae.models;
 
+import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeCsv;
 import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeDTO;
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
@@ -73,5 +74,11 @@ public class AtividadeCnae implements Serializable {
 
         public AtividadeCnae build() { return new AtividadeCnae(this); }
 
+    }
+
+    public AtividadeCnaeCsv preparaParaCsv() {
+
+        AtividadeCnaeCsv dto = new AtividadeCnaeCsv(this);
+        return dto;
     }
 }
