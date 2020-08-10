@@ -5,8 +5,6 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-
 @Component
 @EnableAutoConfiguration
 public final class VariaveisAmbientes {

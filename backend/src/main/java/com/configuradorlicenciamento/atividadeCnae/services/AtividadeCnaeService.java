@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
@@ -24,9 +25,11 @@ public class AtividadeCnaeService implements IAtividadeCnaeService {
     @Autowired
     UsuarioLicenciamentoRepository usuarioLicenciamentoRepository;
 
-    public AtividadeCnae salvar(AtividadeCnaeDTO atividadeCnaeDTO) throws Exception{
+    public AtividadeCnae salvar(HttpServletRequest request, AtividadeCnaeDTO atividadeCnaeDTO) throws Exception{
 
-        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin("12739938616");
+        Object login = request.getSession().getAttribute("login");
+
+        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
         AtividadeCnae atividadeCnae = new AtividadeCnae.AtividadeCnaeBuilder(atividadeCnaeDTO)
                 .setDataCadastro(new Date())
