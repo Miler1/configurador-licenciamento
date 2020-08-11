@@ -1,11 +1,10 @@
 package com.configuradorlicenciamento.licenca.controllers;
 
-
 import com.configuradorlicenciamento.configuracao.components.VariaveisAmbientes;
 import com.configuradorlicenciamento.configuracao.controllers.DefaultController;
 import com.configuradorlicenciamento.configuracao.enums.Acao;
 import com.configuradorlicenciamento.licenca.dtos.LicencaDTO;
-import com.configuradorlicenciamento.licenca.interfaces.IALicencaService;
+import com.configuradorlicenciamento.licenca.interfaces.ILicencaService;
 import com.configuradorlicenciamento.licenca.models.Licenca;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,14 +21,14 @@ import javax.validation.Valid;
 public class LicencaController extends DefaultController {
 
     @Autowired
-    IALicencaService licencaService;
+    ILicencaService iLicencaService;
 
     @RequestMapping(method = RequestMethod.POST, value = "/salvar")
     public ResponseEntity<Licenca> salvar (HttpServletRequest request, @Valid @RequestBody LicencaDTO licencaDTO) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        Licenca licenca = licencaService.salvar(request, licencaDTO);
+        Licenca licenca = iLicencaService.salvar(request, licencaDTO);
 
         return ResponseEntity.ok()
                 .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())

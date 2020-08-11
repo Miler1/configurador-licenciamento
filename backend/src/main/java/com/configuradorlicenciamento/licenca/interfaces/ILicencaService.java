@@ -5,7 +5,7 @@ import com.configuradorlicenciamento.licenca.models.Licenca;
 
 import javax.servlet.http.HttpServletRequest;
 
-public interface IALicencaService {
+public interface ILicencaService {
 
     Licenca salvar(HttpServletRequest request, LicencaDTO licencaDTO) throws Exception;
 

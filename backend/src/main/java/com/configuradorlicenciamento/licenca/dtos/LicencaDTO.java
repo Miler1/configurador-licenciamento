@@ -21,18 +21,14 @@ public class LicencaDTO implements Serializable {
 
     @NotNull(message = "{validacao.notnull}")
     @NotBlank(message = "{validacao.notBlank}")
-    private String nomenclatura;
+    private String nome;
 
     @NotNull(message = "{validacao.notnull}")
     @NotBlank(message = "{validacao.notBlank}")
-    private Boolean podeRenovar;
+    private Integer validade;
 
     @NotNull(message = "{validacao.notnull}")
     @NotBlank(message = "{validacao.notBlank}")
-    private Boolean naoExpira;
-
-    @NotNull(message = "{validacao.notnull}")
-    @NotBlank(message = "{validacao.notBlank}")
-    private String descricao;
+    private String finalidade;
 
 }

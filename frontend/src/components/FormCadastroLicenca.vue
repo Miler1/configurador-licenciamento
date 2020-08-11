@@ -30,7 +30,7 @@
 			v-row
 				v-col#col-validade.pr-0(cols="12", md="2")
 					label Prazo de Validade
-					template#div-validade
+					div#div-validade
 						v-text-field#QA-input-licenca-validade.my-input(
 							outlined,
 							dense,
@@ -41,7 +41,7 @@
 							@click.native="resetErrorMessage",
 							required,
 						)
-						template#div-meses
+						div#div-meses
 							span Anos
 				v-col#col-checkboxes.pl-7(cols="12", md="8")
 					v-checkbox(
@@ -53,19 +53,6 @@
 						v-model="licenca.naoEspira",
 						label="Não expira",
 						color="#84A98C",
-					)
-			v-row
-				v-col(cols="12" sm="12")
-					label Descrição da licenca ambiental
-					v-textarea(
-						auto-grow,
-						outlined,
-						rows="1",
-						row-height="80",
-						color="#E0E0E0",
-						v-model="licenca.descricao"
-						@click.native="resetErrorMessage",
-						required,
 					)
 			v-row
 				v-col#form-actions(cols="12", md="12")
@@ -124,11 +111,11 @@ export default {
 		flex-direction: column;
 		justify-content: flex-start;
 
-		template {
+		#div-validade {
 			display: flex;
 			flex-direction: row;
 
-			template {
+			#div-meses {
 				border: none;
 				border-radius: 0 4px 4px 0;
 				background-color: @bg-header;

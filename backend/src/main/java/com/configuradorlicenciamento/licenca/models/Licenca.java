@@ -1,14 +1,15 @@
 package com.configuradorlicenciamento.licenca.models;
 
-
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.licenca.dtos.LicencaDTO;
+import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 
 @Getter
 @Entity
@@ -31,42 +32,50 @@ public class Licenca implements Serializable {
     private Integer validadeEmAnos;
 
     @NotNull(message = "{validacao.notnull}")
-    private Boolean podeRenovar;
+    private String finalidade;
 
     @NotNull(message = "{validacao.notnull}")
-    private Boolean naoExpira;
+    private Date dataCadastro;
 
     @NotNull(message = "{validacao.notnull}")
-    private String descricao;
+    @ManyToOne
+    @JoinColumn(name = "id_usuario_licenciamento", referencedColumnName = "id")
+    private UsuarioLicenciamento usuarioLicenciamento;
 
     public Licenca(Licenca.LicencaBuilder builder) {
-
         this.sigla = builder.tipo;
         this.nome = builder.nomenclatura;
         this.validadeEmAnos = builder.validade;
-        this.podeRenovar = builder.podeRenovar;
-        this.naoExpira = builder.naoExpira;
-        this.descricao = builder.descricao;
+        this.finalidade = builder.finalidade;
+        this.dataCadastro = builder.dataCadastro;
+        this.usuarioLicenciamento = builder.usuarioLicenciamento;
     }
 
     public static class LicencaBuilder {
-
         private String tipo;
         private String nomenclatura;
         private Integer validade;
-        private Boolean podeRenovar;
-        private Boolean naoExpira;
-        private String descricao;
+        private String finalidade;
+        private Date dataCadastro;
+        private UsuarioLicenciamento usuarioLicenciamento;
 
         public LicencaBuilder(LicencaDTO licencaDTO) {
-
             this.tipo = licencaDTO.getTipo();
-            this.nomenclatura = licencaDTO.getNomenclatura();
+            this.nomenclatura = licencaDTO.getNome();
             this.validade = licencaDTO.getValidade();
-            this.podeRenovar = licencaDTO.getPodeRenovar();
-            this.naoExpira = licencaDTO.getNaoExpira();
-            this.descricao = licencaDTO.getDescricao();
-
+            this.finalidade = licencaDTO.getFinalidade();
         }
+
+        public LicencaBuilder setDataCadastro(Date dataCadastro) {
+            this.dataCadastro = dataCadastro;
+            return this;
+        }
+
+        public LicencaBuilder setUsuarioLicencimento(UsuarioLicenciamento usuarioLicencimento) {
+            this.usuarioLicenciamento = usuarioLicencimento;
+            return this;
+        }
+
+        public Licenca build() { return new Licenca(this); }
     }
 }

@@ -40,11 +40,11 @@ export default {
 			errorMessageEmpty: true,
 			licenca:{
 				tipo: null,
-				nomenclatura: null,
+				nome: null,
 				validade: null,
 				podeRenovar: false,
 				naoExpira: false,
-				descricao: null,
+				finalidade: null,
 			},
 		}
 	},
