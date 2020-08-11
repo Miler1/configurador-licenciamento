@@ -27,6 +27,7 @@
 
 <script>
 
+import RelatorioService from '../services/relatorio.service'
 import PanelCadastro from '@/components/PanelCadastro'
 import FormCadastroCnae from '@/components/FormCadastroCnae'
 import GridListagem from '@/components/GridListagem'
@@ -105,7 +106,7 @@ export default {
 		},
 
 		gerarRelatorio() {
-			console.log("Gerar Relatório")
+			RelatorioService.baixarRelatorio("/atividadeCnae/relatorio-cnae");
 		},
 
 		updatePagination(parametrosFiltro) {

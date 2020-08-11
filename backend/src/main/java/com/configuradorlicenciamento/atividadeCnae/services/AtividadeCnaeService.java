@@ -1,5 +1,6 @@
 package com.configuradorlicenciamento.atividadeCnae.services;
 
+import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeCsv;
 import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeDTO;
 import com.configuradorlicenciamento.atividadeCnae.dtos.FiltroAtividadeCnaeDTO;
 import com.configuradorlicenciamento.atividadeCnae.interfaces.IAtividadeCnaeService;
@@ -12,10 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class AtividadeCnaeService implements IAtividadeCnaeService {
@@ -49,9 +53,9 @@ public class AtividadeCnaeService implements IAtividadeCnaeService {
 
         Specification<AtividadeCnae> specification = preparaFiltro(filtro);
 
-        Page<AtividadeCnae> apreensao = atividadeCnaeRepository.findAll(specification, pageable);
+        Page<AtividadeCnae> atividadeCnaes = atividadeCnaeRepository.findAll(specification, pageable);
 
-        return apreensao;
+        return atividadeCnaes;
     }
 
     private Specification<AtividadeCnae> preparaFiltro(FiltroAtividadeCnaeDTO filtro) {
@@ -66,6 +70,24 @@ public class AtividadeCnaeService implements IAtividadeCnaeService {
 
         return specification;
 
+    }
+
+    @Override
+    public List<AtividadeCnae> listarCnaes() {
+        return atividadeCnaeRepository.findAll(Sort.by("codigo"));
+    }
+
+    @Override
+    public List<AtividadeCnaeCsv> listarCnaesParaCsv(){
+
+        List<AtividadeCnae> cnaes = listarCnaes();
+        List<AtividadeCnaeCsv> dtos = new ArrayList<>();
+
+        for (AtividadeCnae cnae : cnaes) {
+            dtos.add(cnae.preparaParaCsv());
+        }
+
+        return dtos;
     }
 
 }
