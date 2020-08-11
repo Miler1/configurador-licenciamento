@@ -12,7 +12,8 @@
 						v-model="atividadeCnae.codigo",
 						@click.native="resetErrorMessage",
 						:error-messages="errorMessageEmpty || atividadeCnae.codigo ? [] : 'Obrigatório'"
-						required						
+						required,
+						dense
 					)
 				v-col(cols="12", md="9")
 					v-label Nome
@@ -23,7 +24,8 @@
 						v-model="atividadeCnae.nome",
 						@click.native="resetErrorMessage",
 						:error-messages="errorMessageEmpty || atividadeCnae.nome ? [] : 'Obrigatório'"
-						required
+						required,
+						dense
 					)
 			v-row
 				v-col#form-actions(cols="12", md="12")
@@ -31,7 +33,7 @@
 						v-icon mdi-delete
 						span Limpar Dados  
 				
-					v-btn#QA-btn-cadastrar(@click="submit")
+					v-btn#QA-btn-cadastrar(@click="submit", large)
 						v-icon(color="white") mdi-plus
 						span Cadastrar
 
@@ -91,9 +93,7 @@ export default {
 			background-color: @green-primary !important;
 			color: @bg-text-field !important;
 			font-size: 16px;
-			height: auto;
-			padding: 12px 20px !important;
-			text-transform: none !important;				
+			text-transform: none !important;
 		}
 	}
 
@@ -107,4 +107,5 @@ export default {
 			border-radius: 2px;
 		}
 	}
+
 </style>

@@ -13,11 +13,15 @@
 				:resetErrorMessage="resetErrorMessage",
 				:errorMessageEmpty="errorMessageEmpty"
 			)
-			
-		// remover ao mergear história da listagem
-		v-btn#QA-btn_gerar_relatorio(width="100%", @click='baixarRelatorio')
-			v-icon(left) mdi-get_app
-			span Gerar relatório
+		
+		GridListagem.pa-7(
+			:tituloListagem="tituloListagem",
+			:placeholderPesquisa="placeholderPesquisa",
+			:gerarRelatorio="gerarRelatorio",
+			:headers="headerListagem",
+			:dadosListagem="dadosListagem",
+			:updatePagination="updatePagination"
+		)
 
 </template>
 
@@ -26,38 +30,51 @@
 import RelatorioService from '../services/relatorio.service'
 import PanelCadastro from '@/components/PanelCadastro'
 import FormCadastroCnae from '@/components/FormCadastroCnae'
-import AtividadeCnaeService from '../services/atividadeCnae.service'
-import { SET_SNACKBAR } from '../store/actions.type'
+import GridListagem from '@/components/GridListagem'
+import AtividadeCnaeService from '@/services/atividadeCnae.service';
+import { SET_SNACKBAR } from '@/store/actions.type'
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils'
+import { HEADER } from '@/utils/dadosMockados/ListagemCnaeHeader'
 
 export default {
 	name:"cnae",
 	components: {
 		PanelCadastro,
-		FormCadastroCnae
+		FormCadastroCnae,
+		GridListagem
 	},
-	data: ()=> {
+	data: () => {
 		return {
 			panelTitle: "Cadastro de CNAE",
+			tituloListagem: "Listagem de CNAE cadastrados",
+			placeholderPesquisa: "Pesquisar por código ou nome do CNAE",
 			errorMessageEmpty: true,
 			atividadeCnae: {
 				codigo: '',
 				nome: '',
 				ativo: true
 			},
+			dadosListagem: {},
+			headerListagem: HEADER
 		}
 	},
+
 	methods: {
+
 		clear() {
+
 			this.atividadeCnae.codigo= ''
 			this.atividadeCnae.nome= ''
 			this.errorMessageEmpty=true
+
 		},
+
 		submit() {
+
 			if (this.checkForm()) {
-					
+
 				AtividadeCnaeService.cadastrar(this.atividadeCnae)
-					
+
 					.then((response) => {
 						this.$store.dispatch(SET_SNACKBAR,
 							{color: 'success', text: SUCCESS_MESSAGES.cadastroCnae, timeout: '6000'}
@@ -74,26 +91,59 @@ export default {
 			} else {
 				this.errorMessageEmpty = false
 			}
+
 		},
+
 		checkForm() {
 			return this.atividadeCnae.codigo 
 				&& this.atividadeCnae.codigo != ''
 				&& this.atividadeCnae.nome
 				&& this.atividadeCnae.nome != ''
 		},
+
 		resetErrorMessage() {
 			this.errorMessageEmpty = true
 		},
-		
-		/*remover ao mergear história da listagem*/
-		baixarRelatorio() {
+
+		gerarRelatorio() {
 			RelatorioService.baixarRelatorio("/atividadeCnae/relatorio-cnae");
+		},
+
+		updatePagination(parametrosFiltro) {
+
+			AtividadeCnaeService.listar(parametrosFiltro)
+
+				.then((response) => {
+					this.dadosListagem = response.data
+				})
+				.catch(erro => {
+					console.error(erro)
+					this.$store.dispatch(SET_SNACKBAR,
+						{color: 'error', text: ERROR_MESSAGES.listagemCnae + ': ' + erro.message, timeout: '6000'}
+					)
+				});
+
 		}
 
+	},
+
+	created () {
+
+		AtividadeCnaeService.listar()
+
+			.then((response) => {
+				this.dadosListagem = response.data
+				console.log(response)
+			})
+			.catch(erro => {
+				console.error(erro)
+				this.$store.dispatch(SET_SNACKBAR,
+					{color: 'error', text: ERROR_MESSAGES.listagemCnae + ': ' + erro.message, timeout: '6000'}
+				)
+			});
+
 	}
+
 }
 
 </script>
-
-<style lang="less" scope>
-</style>
