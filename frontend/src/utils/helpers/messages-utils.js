@@ -1,10 +1,11 @@
 const ERROR_MESSAGES = {
 	logout: 'Erro ao realizar logout.',
-	cadastroCnae: 'Erro ao cadastrar CNAE'
+	cadastroCnae: 'Erro ao cadastrar CNAE.',
+	cadastroLicenca: "Erro ao cadastrar Licença.",
 }
 
 const SUCCESS_MESSAGES = {
-	cadastroCnae: "Sucesso! As informações foram salvas."
+	cadastro: "Sucesso! As informações foram salvas.",
 }
 
 export {

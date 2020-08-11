@@ -31,12 +31,15 @@ import { SET_SNACKBAR } from '../store/actions.type'
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils'
 
 export default {
-	name:"cnae",
+
+	name:"Cnae",
+
 	components: {
 		PanelCadastro,
 		FormCadastroCnae
 	},
-	data: ()=> {
+
+	data: () => {
 		return {
 			panelTitle: "Cadastro de CNAE",
 			errorMessageEmpty: true,
@@ -47,12 +50,9 @@ export default {
 			},
 		}
 	},
+
 	methods: {
-		clear() {
-			this.atividadeCnae.codigo= ''
-			this.atividadeCnae.nome= ''
-			this.errorMessageEmpty=true
-		},
+
 		submit() {
 			if (this.checkForm()) {
 					
@@ -60,7 +60,7 @@ export default {
 					
 					.then((response) => {
 						this.$store.dispatch(SET_SNACKBAR,
-							{color: 'success', text: SUCCESS_MESSAGES.cadastroCnae, timeout: '6000'}
+							{color: 'success', text: SUCCESS_MESSAGES.cadastro, timeout: '6000'}
 						)
 						this.clear();
 					})
@@ -75,12 +75,20 @@ export default {
 				this.errorMessageEmpty = false
 			}
 		},
-		checkForm() {
-			return this.atividadeCnae.codigo 
-				&& this.atividadeCnae.codigo != ''
-				&& this.atividadeCnae.nome
-				&& this.atividadeCnae.nome != ''
+
+		clear() {
+			this.atividadeCnae.codigo = ''
+			this.atividadeCnae.nome = ''
+			this.errorMessageEmpty = true
 		},
+
+		checkForm() {
+			return this.atividadeCnae.codigo &&
+				this.atividadeCnae.codigo != '' &&
+				this.atividadeCnae.nome &&
+				this.atividadeCnae.nome != ''
+		},
+
 		resetErrorMessage() {
 			this.errorMessageEmpty = true
 		},
