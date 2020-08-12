@@ -15,8 +15,6 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LicencaCsv implements Serializable {
 
-
-    @CsvBindByPosition(position=1)
     @CsvBindByName(column = "Nome")
     private String nome;
 
