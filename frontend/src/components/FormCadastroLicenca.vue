@@ -27,7 +27,7 @@
 						@click.native="resetErrorMessage",
 						required,
 					)
-			v-row.align-center.flex-direction-row.justify-start
+			v-row.flex-row.align-center.justify-start
 				v-col(cols="12", md="3")
 					label Finalidade
 						v-select#QA-select-licenca-finalidade(
@@ -44,11 +44,11 @@
 							@click.native="resetErrorMessage",
 							required,
 						)
-				v-col.flex-column.flex-direction-row.justify-start.pl-0(cols="12", md="9")
+				v-col.d-flex.flex-column.justify-start.pl-0(cols="12", md="9")
 					v-col.pb-0(cols="12", md="8")
 						label Prazo de Validade
-					v-col.flex-column.flex-direction-row.justify-start.pt-0(cols="12", md="4")
-						div.flex-column.flex-direction-row
+					v-col.d-flex.flex-row.justify-start.pt-0(cols="12", md="4")
+						div.d-flex.flex-row
 							v-text-field#QA-input-licenca-validade(
 								outlined,
 								dense,
@@ -68,7 +68,7 @@
 				v-col#form-actions(cols="12", md="12")
 					a#QA-limpar-dados-licenca(@click="clear")
 						v-icon mdi-delete
-						span Limpar Dados
+						span Limpar dados
 
 					v-btn#QA-btn-cadastrar-licenca(@click="submit")
 						v-icon(color="white") mdi-plus

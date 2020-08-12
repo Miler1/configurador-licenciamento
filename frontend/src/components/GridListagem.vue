@@ -4,12 +4,12 @@
 	b.titulo-listagem {{ tituloListagem }}
 	v-row
 		v-col(cols='12' md='8')
-				v-text-field#QA-input-pesquisa(outlined,
-				:placeholder="placeholderPesquisa",
-				prepend-inner-icon="mdi-magnify",
-				color="#E0E0E0",
-				dense,
-				@input='inputPesquisa')
+			v-text-field(outlined,
+			:placeholder="placeholderPesquisa",
+			prepend-inner-icon="mdi-magnify",
+			color="#E0E0E0",
+			dense,
+			@input='inputPesquisa')
 
 		v-col(cols='12' md='4')
 			v-btn#QA-btn-gerar-relatorio.float-right(@click="gerarRelatorio", large, outlined, color="#84A98C")

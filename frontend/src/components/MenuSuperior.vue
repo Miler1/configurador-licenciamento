@@ -2,18 +2,21 @@
 
 v-app-bar(app, outlined, color='white')
 	v-row
-		v-col#col-menu(cols="12", md="12")
-			div#first-div-menu
-				div
+		v-col.d-flex.flex-column.align-center(cols="12", md="12")
+			div.align-self-end
+				div#div-toolbar.d-flex.flex-row.justify-center.align-center
 					v-icon.mr-2 mdi-account-circle
 					v-tooltip(bottom)
 						template(v-slot:activator="{ on, attrs }")
 							v-toolbar-title#toolbar-title.text-sm-body-2.text-center(v-bind="attrs" v-on="on")
 								| {{usuarioLogado.name}}
 						span {{usuarioLogado.name}}
-					
-					v-btn(icon, @click='logout')
-						v-icon mdi-logout
+					v-tooltip(bottom)
+						template(v-slot:activator="{ on, attrs }")
+							div(v-bind="attrs", v-on="on")
+								v-btn(icon, @click='logout')
+									v-icon mdi-logout
+						span Sair			
 				v-toolbar-title.text-caption.text-center
 					| Administrador
 
@@ -49,29 +52,12 @@ export default {
 
 <style lang="less" scoped>
 
-#v-row {
-	cursor: default;
-}
 
-#col-menu {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+#div-toolbar {
+	height: 16px;
 
-	#first-div-menu {
-		align-self: flex-end;
-
-		div {
-			align-items: center;
-			display: flex;
-			flex-direction: row;
-			height: 16px;
-			justify-content: center;
-
-			#toolbar-title {
-				cursor: default;
-			}
-		}
+	#toolbar-title {
+		cursor: default;
 	}
 }
 
