@@ -72,11 +72,15 @@ export default {
 
 				LicencaService.salvar(this.licenca)
 					.then((response) => {
+
 						this.$store.dispatch(SET_SNACKBAR,
 							{color: 'success', text: SUCCESS_MESSAGES.cadastro, timeout: '6000'}
 						)
 						this.clear();
+						this.listarLicencas();
+
 					})
+
 					.catch(erro => {
 						console.error(erro)
 						this.$store.dispatch(SET_SNACKBAR,
@@ -133,6 +137,22 @@ export default {
 			LicencaService.listar(parametrosFiltro)
 
 				.then((response) => {
+					this.dadosListagem = response.data;
+				})
+				.catch(erro => {
+					console.error(erro)
+					this.$store.dispatch(SET_SNACKBAR,
+						{color: 'error', text: ERROR_MESSAGES.listagemCnae + ': ' + erro.message, timeout: '6000'}
+					)
+				});
+
+		},
+
+		listarLicencas() {
+
+			LicencaService.listar()
+
+				.then((response) => {
 					this.dadosListagem = response.data
 				})
 				.catch(erro => {
@@ -147,17 +167,7 @@ export default {
 
 	created () {
 
-		LicencaService.listar()
-
-			.then((response) => {
-				this.dadosListagem = response.data
-			})
-			.catch(erro => {
-				console.error(erro)
-				this.$store.dispatch(SET_SNACKBAR,
-					{color: 'error', text: ERROR_MESSAGES.listagemCnae + ': ' + erro.message, timeout: '6000'}
-				)
-			});
+		this.listarLicencas()
 
 	}
 

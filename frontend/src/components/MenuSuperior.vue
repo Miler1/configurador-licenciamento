@@ -8,14 +8,13 @@ v-app-bar(app, outlined, color='white')
 					v-icon.mr-2 mdi-account-circle
 					v-tooltip(bottom)
 						template(v-slot:activator="{ on, attrs }")
-							v-toolbar-title#toolbar-title.text-sm-body-2.text-center(v-bind="attrs" v-on="on")
+							v-toolbar-title#toolbar-title.text-sm-body-2.text-center(v-bind="attrs", v-on="on")
 								| {{usuarioLogado.name}}
 						span {{usuarioLogado.name}}
 					v-tooltip(bottom)
 						template(v-slot:activator="{ on, attrs }")
-							div(v-bind="attrs", v-on="on")
-								v-btn(icon, @click='logout')
-									v-icon mdi-logout
+							v-btn(icon, @click='logout', v-on="on")
+								v-icon mdi-logout
 						span Sair			
 				v-toolbar-title.text-caption.text-center
 					| Administrador
