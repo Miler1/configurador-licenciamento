@@ -10,7 +10,7 @@
 						dense,
 						color="#E0E0E0",
 						:placeholder="placeholder"
-						v-model="licenca.tipo",
+						v-model="licenca.sigla",
 						:error-messages="checkErrorMessage(licenca.tipo)"
 						@click.native="resetErrorMessage",
 						required,					
@@ -21,44 +21,54 @@
 						outlined,
 						dense,
 						color="#E0E0E0",
-						:placeholder="placeholder"
-						v-model="licenca.nomenclatura",
+						:placeholder="placeholder",
+						v-model="licenca.nome",
 						:error-messages="checkErrorMessage(licenca.nomenclatura)"
 						@click.native="resetErrorMessage",
 						required,
 					)
-			v-row
-				v-col#col-validade.pr-0(cols="12", md="2")
-					label Prazo de Validade
-					div#div-validade
-						v-text-field#QA-input-licenca-validade.my-input(
+			v-row#row-finalidade-validade
+				v-col(cols="12", md="3")
+					label Finalidade
+						v-select#QA-select-licenca-finalidade(
 							outlined,
 							dense,
 							color="#E0E0E0",
-							:placeholder="placeholder"
-							v-model="licenca.validade",
-							:error-messages="checkErrorMessage(licenca.validade)"
+							:placeholder="placeholderSelect",
+							item-color="grey darken-3",
+							v-model="licenca.finalidade",
+							:items="finalidades"
+							item-text="text",
+							item-value="value",
+							:error-messages="checkErrorMessage(licenca.finalidade)"
 							@click.native="resetErrorMessage",
 							required,
 						)
-						div#div-meses
-							span Anos
-				v-col#col-checkboxes.pl-7(cols="12", md="8")
-					v-checkbox(
-						v-model="licenca.podeRenovar",
-						label="Passível de renovação",
-						color="#84A98C",
-					)
-					v-checkbox.pl-7(
-						v-model="licenca.naoEspira",
-						label="Não expira",
-						color="#84A98C",
-					)
+				v-col#col-validade.pl-0(cols="12", md="9")
+					v-col.pb-0(cols="12", md="8")
+						label Prazo de Validade
+					v-col#input-validade.pt-0(cols="12", md="4")
+						div#div-validade
+							v-text-field#QA-input-licenca-validade(
+								outlined,
+								dense,
+								color="#E0E0E0",
+								type="number",
+								min="0",
+								step="1",
+								v-model="licenca.validade",
+								:error-messages="checkErrorMessage(licenca.validade)"
+								@click.native="resetErrorMessage",
+								:disabled="validadeIsDisabled()",
+								required,
+							)
+							div#div-meses
+								span Anos			
 			v-row
 				v-col#form-actions(cols="12", md="12")
-					a#QA-limpar-dados-cnae(@click="clear")
+					a#QA-limpar-dados-licenca(@click="clear")
 						v-icon mdi-delete
-						span Limpar Dados  
+						span Limpar Dados
 				
 					v-btn#QA-btn-cadastrar-licenca(@click="submit")
 						v-icon(color="white") mdi-plus
@@ -68,13 +78,17 @@
 
 <script>
 
+import FinalidadeEnum from '../utils/enums/finalidadeEnum'
+
 export default {
 
 	name: "FormCadastroLicenca",
 
 	data: () => {
 		return {
-			placeholder: "Digite aqui..."
+			placeholder: "Digite aqui...",
+			placeholderSelect: "Selecione",
+			finalidades: FinalidadeEnum,
 		}
 	},
 
@@ -91,10 +105,10 @@ export default {
 		resetErrorMessage: {
 			type: [Function]
 		},
-		errorMessageEmpty: {
-			type: [Boolean]
-		},
 		checkErrorMessage: {
+			type: [Function]
+		},
+		validadeIsDisabled: {
 			type: [Function]
 		}
 	}
@@ -106,36 +120,42 @@ export default {
 
 @import "../assets/css/variaveis.less";
 
+#row-finalidade-validade {
+	align-items: center;
+	display:flex;
+	flex-direction: row;
+	justify-content: flex-start;
+
 	#col-validade {
 		display:flex;
 		flex-direction: column;
 		justify-content: flex-start;
-
-		#div-validade {
-			display: flex;
+	
+		#input-validade {
+			display:flex;
 			flex-direction: row;
+			justify-content: flex-start;
 
-			#div-meses {
-				border: none;
-				border-radius: 0 4px 4px 0;
-				background-color: @bg-header;
-				color: @icon-color;
+			#div-validade {
 				display: flex;
-				height: 40px;
+				flex-direction: row;
 
-				span {
-					align-self: center;
-					padding: 1px 8px 0px 8px;
+				#div-meses {
+					background-color: @bg-header;
+					border: none;
+					border-radius: 0 4px 4px 0;
+					color: @icon-color;
+					display: flex;
+					height: 40px;
+
+					span {
+						align-self: center;
+						padding: 1px 8px;
+					}
 				}
 			}
 		}
 	}
-
-	#col-checkboxes {
-		align-items: center;
-		display: flex;
-		flex-direction: row;
-		justify-content: flex-start;
-	}
+}
 
 </style>

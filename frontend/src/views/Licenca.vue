@@ -8,11 +8,11 @@
 		)
 			FormCadastroLicenca(
 				:licenca="licenca",
-				:submit="submit",
 				:clear="clear",
+				:submit="submit",
 				:resetErrorMessage="resetErrorMessage",
-				:errorMessageEmpty="errorMessageEmpty",
 				:checkErrorMessage="checkErrorMessage",
+				:validadeIsDisabled="validadeIsDisabled",
 			)
 
 </template>
@@ -21,7 +21,7 @@
 
 import PanelCadastro from '@/components/PanelCadastro'
 import FormCadastroLicenca from '@/components/FormCadastroLicenca'
-import LicencaService from '../services/licenca.service';
+import LicencaService from '../services/licenca.service'
 import { SET_SNACKBAR } from '../store/actions.type'
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils'
 
@@ -39,12 +39,10 @@ export default {
 			panelTitle: "Cadastro de licença ambiental",
 			errorMessageEmpty: true,
 			licenca:{
-				tipo: null,
+				sigla: null,
 				nome: null,
-				validade: null,
-				podeRenovar: false,
-				naoExpira: false,
 				finalidade: null,
+				validade: null,
 			},
 		}
 	},
@@ -52,9 +50,10 @@ export default {
 	methods: {
 
 		submit() {
+
 			if (this.checkForm()) {
 					
-				LicencaService.cadastrar(this.licenca)
+				LicencaService.salvar(this.licenca)
 					.then((response) => {
 						this.$store.dispatch(SET_SNACKBAR,
 							{color: 'success', text: SUCCESS_MESSAGES.cadastro, timeout: '6000'}
@@ -74,22 +73,26 @@ export default {
 		},
 
 		clear() {
-			this.tipo = ""
-			this.nomenclatura = ""
-			this.validade = ""
-			this.podeRenovar = false
-			this.naoExpira = false
-			this.descricao = ""
-			this.errorMessageEmpty = true
+
+			this.licenca.sigla = null
+			this.licenca.nome = null
+			this.licenca.validade = null
+			this.licenca.finalidade = null
+			this.licenca.errorMessageEmpty = true
+
 		},
 
 		checkForm() {
-			return this.licenca.tipo &&
-				this.licenca.tipo != ''	&&
-				this.licenca.nomenclatura &&
-				this.licenca.nomenclatura != '' &&
+
+			return this.licenca.sigla &&
+				this.licenca.sigla != ''	&&
+				this.licenca.nome &&
+				this.licenca.nome != '' &&
 				this.licenca.validade &&
-				this.licenca.validade != ''
+				this.licenca.validade != '' &&
+				this.licenca.finalidade &&
+				this.licenca.finalidade != ''
+
 		},
 
 		resetErrorMessage() {
@@ -98,8 +101,13 @@ export default {
 
 		checkErrorMessage(value) {
 			return this.errorMessageEmpty || value ? [] : 'Obrigatório';
+		},
+
+		validadeIsDisabled() {
+			return this.licenca.finalidade == null || this.licenca.finalidade == 'CADASTRO';
 		}
 	}
+
 }
 
 </script>

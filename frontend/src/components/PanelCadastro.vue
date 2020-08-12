@@ -64,7 +64,7 @@ export default {
 		background-color: @bg-header;
 		color: @text-color;
 		cursor: default;
-		font-size: 18px;
+		font-size: 21px;
 		height: 70px;
 
 		.v-btn {
