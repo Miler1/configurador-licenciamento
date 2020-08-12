@@ -120,18 +120,18 @@ export default {
 
 @import "../assets/css/variaveis.less";
 
-	#div-meses {
-		background-color: @bg-header;
-		border: none;
-		border-radius: 0 4px 4px 0;
-		color: @icon-color;
-		display: flex;
-		height: 40px;
+#div-meses {
+	background-color: @bg-header;
+	border: none;
+	border-radius: 0 4px 4px 0;
+	color: @icon-color;
+	display: flex;
+	height: 40px;
 
-		span {
-			align-self: center;
-			padding: 1px 8px;
-		}
+	span {
+		align-self: center;
+		padding: 1px 8px;
 	}
+}
 
 </style>

@@ -61,7 +61,7 @@ public class AtividadeCnaeController extends DefaultController {
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
         String data = DateUtil.formataBrHoraMinuto(new Date());
-        String nome = "Relatorio_CNAE_" + data + ".csv";
+        String nome = "Relatório_CNAE_" + data + ".csv";
 
         downloadCsv(atividadeCnaeService.listarCnaesParaCsv(), nome, response);
     }
