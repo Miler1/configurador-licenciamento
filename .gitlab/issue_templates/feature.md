@@ -24,6 +24,9 @@ Include specific tasks in the order they need to be done in. Include links to sp
 Include links/reference for the feature like prototypes, user history, etc
 
 
+/label ~feature ~"Workflow:Ready for development" ~backend ~frontend 
+
+
 **Remember to use labels, quick actions like "Due", /estimate**
 
 
