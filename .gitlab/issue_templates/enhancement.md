@@ -26,7 +26,7 @@ Include links/reference for the feature like prototypes, user history, etc
 
 
 
-/label ~enhancement
+/label ~enhancement ~"Workflow:Ready for development" ~backend ~frontend 
 
 
 
