@@ -1,22 +1,20 @@
 <template lang="pug">
 
 v-app-bar(app, outlined, color='white')
-	v-spacer
-	v-row
-		v-spacer
-		v-icon.mr-2 mdi-account-circle
-
-		v-col(cols="2")
-			v-tooltip(bottom)
-				template(v-slot:activator="{ on, attrs }")
-					v-toolbar-title.text-sm-body-2.text-center(v-bind="attrs" v-on="on")
-						| {{usuarioLogado.name}}
-				span {{usuarioLogado.name}}
-			v-toolbar-title.text-caption.text-center
-				| Administrador
-
-		v-btn(icon @click='logout').mt-2
-			v-icon mdi-logout
+	v-row#row-menu
+		v-col#col-menu(cols="12", md="12")
+			div#first-div-menu
+				div
+					v-icon.mr-2 mdi-account-circle
+					v-tooltip(bottom)
+						template(v-slot:activator="{ on, attrs }")
+							v-toolbar-title.text-sm-body-2.text-center(v-bind="attrs" v-on="on")
+								| {{usuarioLogado.name}}
+						span {{usuarioLogado.name}}
+					v-btn(icon @click='logout')
+						v-icon mdi-logout
+				v-toolbar-title.text-caption.text-center
+					| Administrador		
 
 </template>
 
@@ -48,7 +46,25 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" scoped>
+
+#col-menu {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	
+	#first-div-menu {
+		align-self: flex-end;
+
+		div {		
+			align-items: center;
+			display: flex;
+			flex-direction: row;
+			height: 16px;
+			justify-content: center;
+		}
+	}
+}
 
 .text-caption {
 	color: #BDBDBD;
