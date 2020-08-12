@@ -17,6 +17,8 @@
 							dense,
 							v-model="usuarioAutenticacao.login",
 							v-on:keyup.enter="handleLogar",
+							v-mask="'###.###.###-##'",
+							placeholder="Digite seu CPF",
 							name="cpf",
 							type="text",
 							color="#84A98C",
@@ -30,6 +32,7 @@
 							solo,
 							dense,
 							v-model='usuarioAutenticacao.password',
+							placeholder="Digite sua senha",
 							v-on:keyup.enter="handleLogar",
 							name="senha",
 							:type="show ? 'text' : 'password'",
@@ -144,7 +147,7 @@ export default {
 			if ( (this.errors.required.senha && !this.usuarioAutenticacao.password) ||
 				(this.errors.login && this.usuarioAutenticacao.password && this.usuarioAutenticacao.login)){
 
-				return this.error.message;
+				return this.errors.message;
 			}
 			return [];
 			
