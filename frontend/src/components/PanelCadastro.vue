@@ -22,7 +22,9 @@
 <script>
 
 export default {
+
 	name: "PanelCadastro",
+
 	data() {
 		return {
 			items: 1,
@@ -30,15 +32,19 @@ export default {
 			readonly: true,
 		};
 	},
+
 	methods: {
+		
 		abrirPanel() {
 			this.panel = [0];
 		},
+
 		fecharPanel() {
 			this.panel = [];
 			this.clear();
 		}
 	},
+
 	props: {
 		clear:  {
 			type: [Function]
@@ -51,13 +57,14 @@ export default {
 </script>
 
 <style lang="less" scope>
+
 @import "../assets/css/variaveis.less";
 
 	.v-expansion-panel-header {
 		background-color: @bg-header;
 		color: @text-color;
 		cursor: default;
-		font-size: 18px;
+		font-size: 21px;
 		height: 70px;
 
 		.v-btn {
@@ -68,4 +75,46 @@ export default {
 			text-transform: none !important;
 		}
 	}
+
+	.v-label {
+		color: @text-color !important;
+	}
+
+	.v-text-field, .v-checkbox {
+
+		fieldset {
+			border: 1px solid @border-components;
+			border-radius: 2px;
+		}
+	}
+
+	#form-actions {
+		align-items: center;
+		display: flex !important;
+		flex-direction: row !important;
+		justify-content: flex-end;
+		padding: 0 12px;
+	
+		a {	
+			align-items: center;
+			display: flex !important;
+			flex-direction: row;
+			justify-content: flex-end;
+			margin-right: 20px;
+			
+			.v-icon, span {
+				color: @red;
+			}			
+		}
+
+		.v-btn {
+			background-color: @green-primary !important;
+			color: @bg-text-field !important;
+			font-size: 16px;
+			height: auto;
+			padding: 12px 20px !important;
+			text-transform: none !important;				
+		}
+	}
+	
 </style>
