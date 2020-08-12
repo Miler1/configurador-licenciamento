@@ -127,7 +127,7 @@ export default {
 			
 		},
 		
-		resetLogoinError() {
+		resetLoginError() {
 		
 			if (this.errors.login) {
 				this.errors.login = false;
