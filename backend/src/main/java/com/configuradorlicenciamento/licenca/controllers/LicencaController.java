@@ -3,10 +3,14 @@ package com.configuradorlicenciamento.licenca.controllers;
 import com.configuradorlicenciamento.configuracao.components.VariaveisAmbientes;
 import com.configuradorlicenciamento.configuracao.controllers.DefaultController;
 import com.configuradorlicenciamento.configuracao.enums.Acao;
+import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.licenca.dtos.LicencaDTO;
 import com.configuradorlicenciamento.licenca.interfaces.ILicencaService;
 import com.configuradorlicenciamento.licenca.models.Licenca;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,4 +40,18 @@ public class LicencaController extends DefaultController {
 
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/lista")
+    public ResponseEntity<Page<Licenca>> lista(HttpServletRequest request,
+                                                     @PageableDefault(size = 20) Pageable pageable,
+                                                     @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        Page<Licenca> licencas = iLicencaService.lista(pageable, filtroPesquisa);
+
+        return ResponseEntity.ok()
+                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .body(licencas);
+
+    }
 }

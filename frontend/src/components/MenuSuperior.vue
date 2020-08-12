@@ -14,7 +14,7 @@ v-app-bar(app, outlined, color='white')
 					v-btn(icon @click='logout')
 						v-icon mdi-logout
 				v-toolbar-title.text-caption.text-center
-					| Administrador		
+					| Administrador
 
 </template>
 
@@ -52,11 +52,11 @@ export default {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	
+
 	#first-div-menu {
 		align-self: flex-end;
 
-		div {		
+		div {
 			align-items: center;
 			display: flex;
 			flex-direction: row;

@@ -15,6 +15,15 @@
 				:validadeIsDisabled="validadeIsDisabled",
 			)
 
+		GridListagem.pa-7(
+			:tituloListagem="tituloListagem",
+			:placeholderPesquisa="placeholderPesquisa",
+			:gerarRelatorio="gerarRelatorio",
+			:headers="headerListagem",
+			:dadosListagem="dadosListagem",
+			:updatePagination="updatePagination"
+		)
+
 </template>
 
 <script>
@@ -22,8 +31,11 @@
 import PanelCadastro from '@/components/PanelCadastro'
 import FormCadastroLicenca from '@/components/FormCadastroLicenca'
 import LicencaService from '../services/licenca.service'
+import RelatorioService from '../services/relatorio.service'
+import GridListagem from '@/components/GridListagem'
 import { SET_SNACKBAR } from '../store/actions.type'
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils'
+import { HEADER } from '@/utils/dadosMockados/ListagemLicencaHeader'
 
 export default {
 
@@ -32,6 +44,7 @@ export default {
 	components: {
 		PanelCadastro,
 		FormCadastroLicenca,
+		GridListagem
 	},
 
 	data: () => {
@@ -44,6 +57,10 @@ export default {
 				finalidade: null,
 				validade: null,
 			},
+			tituloListagem: "Listagem de licenças ambientais cadastradas",
+			placeholderPesquisa: "Pesquisar por sigla ou nome da licença",
+			dadosListagem: {},
+			headerListagem: HEADER,
 		}
 	},
 
@@ -52,7 +69,7 @@ export default {
 		submit() {
 
 			if (this.checkForm()) {
-					
+
 				LicencaService.salvar(this.licenca)
 					.then((response) => {
 						this.$store.dispatch(SET_SNACKBAR,
@@ -68,7 +85,7 @@ export default {
 					});
 
 			} else {
-				this.errorMessageEmpty = false;			
+				this.errorMessageEmpty = false;
 			}
 		},
 
@@ -105,7 +122,43 @@ export default {
 
 		validadeIsDisabled() {
 			return this.licenca.finalidade == null || this.licenca.finalidade == 'CADASTRO';
+		},
+		
+		gerarRelatorio() {
+			RelatorioService.baixarRelatorio("/licenca/relatorio-licenca");
+		},
+
+		updatePagination(parametrosFiltro) {
+
+			LicencaService.listar(parametrosFiltro)
+
+				.then((response) => {
+					this.dadosListagem = response.data
+				})
+				.catch(erro => {
+					console.error(erro)
+					this.$store.dispatch(SET_SNACKBAR,
+						{color: 'error', text: ERROR_MESSAGES.listagemCnae + ': ' + erro.message, timeout: '6000'}
+					)
+				});
+
 		}
+	},
+
+	created () {
+
+		LicencaService.listar()
+
+			.then((response) => {
+				this.dadosListagem = response.data
+			})
+			.catch(erro => {
+				console.error(erro)
+				this.$store.dispatch(SET_SNACKBAR,
+					{color: 'error', text: ERROR_MESSAGES.listagemCnae + ': ' + erro.message, timeout: '6000'}
+				)
+			});
+
 	}
 
 }

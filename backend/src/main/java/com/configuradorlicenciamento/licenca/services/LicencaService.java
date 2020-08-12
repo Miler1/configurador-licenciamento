@@ -1,12 +1,17 @@
 package com.configuradorlicenciamento.licenca.services;
 
+import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.licenca.dtos.LicencaDTO;
 import com.configuradorlicenciamento.licenca.interfaces.ILicencaService;
 import com.configuradorlicenciamento.licenca.models.Licenca;
 import com.configuradorlicenciamento.licenca.repositories.LicencaRepository;
+import com.configuradorlicenciamento.licenca.specifications.LicencaSpecification;
 import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
 import com.configuradorlicenciamento.usuarioLicenciamento.repositories.UsuarioLicenciamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,5 +41,27 @@ public class LicencaService implements ILicencaService {
         licencaRepository.save(licenca);
 
         return licenca;
+    }
+
+    public Page<Licenca> lista(Pageable pageable, FiltroPesquisa filtro) {
+
+        Specification<Licenca> specification = preparaFiltro(filtro);
+
+        Page<Licenca> atividadeCnaes = licencaRepository.findAll(specification, pageable);
+
+        return atividadeCnaes;
+    }
+
+    private Specification<Licenca> preparaFiltro(FiltroPesquisa filtro) {
+
+        Specification specification = Specification.where(LicencaSpecification.padrao());
+
+        if(filtro.getStringPesquisa() != null) {
+            specification = specification.and(LicencaSpecification.nome(filtro.getStringPesquisa())
+                    .or(LicencaSpecification.sigla(filtro.getStringPesquisa())));
+        }
+
+        return specification;
+
     }
 }

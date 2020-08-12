@@ -136,7 +136,6 @@ export default {
 
 			.then((response) => {
 				this.dadosListagem = response.data
-				console.log(response)
 			})
 			.catch(erro => {
 				console.error(erro)

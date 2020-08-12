@@ -14,10 +14,10 @@ export default {
 	name: "Login",
 
 	components: {CardLogin},
-	
+
 	container: {
 		CardLogin
-	},	
+	},
 }
 
 </script>

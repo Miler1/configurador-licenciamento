@@ -95,7 +95,7 @@ export default {
 			pagina: 0,
 			itemsPorPagina: 10,
 			tipoOrdenacao: 'dataCadastro,asc',
-			codigoOrNome: ''
+			stringPesquisa: ''
 		}
 
 	}),
@@ -127,7 +127,7 @@ export default {
 
 		inputPesquisa(text) {
 
-			this.parametrosFiltro.codigoOrNome = text;
+			this.parametrosFiltro.stringPesquisa = text;
 			this.updatePagination(this.parametrosFiltro);
 
 		},
