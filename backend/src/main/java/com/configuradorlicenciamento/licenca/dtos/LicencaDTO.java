@@ -13,7 +13,7 @@ public class LicencaDTO implements Serializable {
 
     @NotNull(message = "{validacao.notnull}")
     @NotBlank(message = "{validacao.notBlank}")
-    private String id;
+    private Integer id;
 
     @NotNull(message = "{validacao.notnull}")
     @NotBlank(message = "{validacao.notBlank}")
