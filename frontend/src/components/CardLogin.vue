@@ -134,8 +134,8 @@ export default {
 		
 			if (this.errors.login) {
 				this.errors.login = false;
-				
 			}
+			
 		},
 		
 		cpfError() {

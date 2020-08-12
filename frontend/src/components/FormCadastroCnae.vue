@@ -31,7 +31,7 @@
 				v-col#form-actions(cols="12", md="12")
 					a#QA-limpar-dados-cnae(@click="clear")
 						v-icon mdi-delete
-						span Limpar Dados  
+						span Limpar dados  
 				
 					v-btn#QA-btn-cadastrar-cnae(@click="submit")
 						v-icon(color="white") mdi-plus

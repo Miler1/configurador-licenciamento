@@ -4,7 +4,7 @@
 	b.titulo-listagem {{ tituloListagem }}
 	v-row
 		v-col(cols='12' md='8')
-				v-text-field(outlined,
+				v-text-field#QA-input-pesquisa(outlined,
 				:placeholder="placeholderPesquisa",
 				prepend-inner-icon="mdi-magnify",
 				color="#E0E0E0",
@@ -12,7 +12,7 @@
 				@input='inputPesquisa')
 
 		v-col(cols='12' md='4')
-			v-btn#QA-btn-download-relatorio.float-right(@click="gerarRelatorio", large, outlined, color="#84A98C")
+			v-btn#QA-btn-gerar-relatorio.float-right(@click="gerarRelatorio", large, outlined, color="#84A98C")
 				v-icon mdi-download
 				span Gerar Relatório
 
