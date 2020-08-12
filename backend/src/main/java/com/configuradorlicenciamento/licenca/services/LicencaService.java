@@ -1,6 +1,7 @@
 package com.configuradorlicenciamento.licenca.services;
 
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
+import com.configuradorlicenciamento.licenca.dtos.LicencaCsv;
 import com.configuradorlicenciamento.licenca.dtos.LicencaDTO;
 import com.configuradorlicenciamento.licenca.interfaces.ILicencaService;
 import com.configuradorlicenciamento.licenca.models.Licenca;
@@ -11,11 +12,14 @@ import com.configuradorlicenciamento.usuarioLicenciamento.repositories.UsuarioLi
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class LicencaService implements ILicencaService {
@@ -63,5 +67,23 @@ public class LicencaService implements ILicencaService {
 
         return specification;
 
+    }
+
+    @Override
+    public List<Licenca> listarLicencas() {
+        return licencaRepository.findAll(Sort.by("sigla"));
+    }
+
+    @Override
+    public List<LicencaCsv> listarLicencasParaCsv(){
+
+        List<Licenca> licencas = listarLicencas();
+        List<LicencaCsv> dtos = new ArrayList<>();
+
+        for (Licenca licenca : licencas) {
+            dtos.add(licenca.preparaParaCsv());
+        }
+
+        return dtos;
     }
 }

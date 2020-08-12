@@ -90,14 +90,14 @@ export default {
 
 	#form-actions {
 		align-items: center;
-		display: flex !important;
-		flex-direction: row !important;
+		display: flex;
+		flex-direction: row;
 		justify-content: flex-end;
 		padding: 0 12px;
 
 		a {
 			align-items: center;
-			display: flex !important;
+			display: flex;
 			flex-direction: row;
 			justify-content: flex-end;
 			margin-right: 20px;

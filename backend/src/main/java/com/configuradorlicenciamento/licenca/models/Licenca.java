@@ -1,6 +1,7 @@
 package com.configuradorlicenciamento.licenca.models;
 
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
+import com.configuradorlicenciamento.licenca.dtos.LicencaCsv;
 import com.configuradorlicenciamento.licenca.dtos.LicencaDTO;
 import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
 import lombok.Getter;
@@ -77,5 +78,10 @@ public class Licenca implements Serializable {
         }
 
         public Licenca build() { return new Licenca(this); }
+    }
+
+    public LicencaCsv preparaParaCsv() {
+
+        return new LicencaCsv(this);
     }
 }
