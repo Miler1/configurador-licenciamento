@@ -21,7 +21,7 @@ public class LicencaSpecification {
 
     }
 
-    public static Specification<AtividadeCnae> sigla(String sigla) {
+    public static Specification<Licenca> sigla(String sigla) {
         return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(criteriaBuilder.lower(root.get("sigla")), "%" + sigla.toLowerCase() + "%");
     }
 

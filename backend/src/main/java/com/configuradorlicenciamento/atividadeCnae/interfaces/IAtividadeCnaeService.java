@@ -2,8 +2,8 @@ package com.configuradorlicenciamento.atividadeCnae.interfaces;
 
 import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeCsv;
 import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeDTO;
-import com.configuradorlicenciamento.atividadeCnae.dtos.FiltroAtividadeCnaeDTO;
 import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
+import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -19,6 +19,6 @@ public interface IAtividadeCnaeService {
 
     List<AtividadeCnaeCsv> listarCnaesParaCsv() throws Exception;
 
-    Page<AtividadeCnae> lista(Pageable pageable, FiltroAtividadeCnaeDTO filtro);
+    Page<AtividadeCnae> lista(Pageable pageable, FiltroPesquisa filtro);
 
 }

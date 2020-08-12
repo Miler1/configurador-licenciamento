@@ -1,11 +1,9 @@
 package com.configuradorlicenciamento.licenca.controllers;
 
-import com.configuradorlicenciamento.atividadeCnae.dtos.FiltroAtividadeCnaeDTO;
-import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.configuracao.components.VariaveisAmbientes;
 import com.configuradorlicenciamento.configuracao.controllers.DefaultController;
 import com.configuradorlicenciamento.configuracao.enums.Acao;
-import com.configuradorlicenciamento.licenca.dtos.FiltroLicencaDTO;
+import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.licenca.dtos.LicencaDTO;
 import com.configuradorlicenciamento.licenca.interfaces.ILicencaService;
 import com.configuradorlicenciamento.licenca.models.Licenca;
@@ -45,11 +43,11 @@ public class LicencaController extends DefaultController {
     @RequestMapping(method = RequestMethod.POST, value = "/lista")
     public ResponseEntity<Page<Licenca>> lista(HttpServletRequest request,
                                                      @PageableDefault(size = 20) Pageable pageable,
-                                                     @RequestBody FiltroLicencaDTO filtroLicencaDTO) throws Exception {
+                                                     @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        Page<Licenca> licencas = iLicencaService.lista(pageable, filtroLicencaDTO);
+        Page<Licenca> licencas = iLicencaService.lista(pageable, filtroPesquisa);
 
         return ResponseEntity.ok()
                 .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())

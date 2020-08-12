@@ -1,9 +1,6 @@
 package com.configuradorlicenciamento.licenca.services;
 
-import com.configuradorlicenciamento.atividadeCnae.dtos.FiltroAtividadeCnaeDTO;
-import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
-import com.configuradorlicenciamento.atividadeCnae.specifications.AtividadeCnaeSpecification;
-import com.configuradorlicenciamento.licenca.dtos.FiltroLicencaDTO;
+import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.licenca.dtos.LicencaDTO;
 import com.configuradorlicenciamento.licenca.interfaces.ILicencaService;
 import com.configuradorlicenciamento.licenca.models.Licenca;
@@ -46,7 +43,7 @@ public class LicencaService implements ILicencaService {
         return licenca;
     }
 
-    public Page<Licenca> lista(Pageable pageable, FiltroLicencaDTO filtro) {
+    public Page<Licenca> lista(Pageable pageable, FiltroPesquisa filtro) {
 
         Specification<Licenca> specification = preparaFiltro(filtro);
 
@@ -55,13 +52,13 @@ public class LicencaService implements ILicencaService {
         return atividadeCnaes;
     }
 
-    private Specification<Licenca> preparaFiltro(FiltroLicencaDTO filtro) {
+    private Specification<Licenca> preparaFiltro(FiltroPesquisa filtro) {
 
         Specification specification = Specification.where(LicencaSpecification.padrao());
 
-        if(filtro.getSiglaOrNome() != null) {
-            specification = specification.and(LicencaSpecification.nome(filtro.getSiglaOrNome())
-                    .or(LicencaSpecification.sigla(filtro.getSiglaOrNome())));
+        if(filtro.getStringPesquisa() != null) {
+            specification = specification.and(LicencaSpecification.nome(filtro.getStringPesquisa())
+                    .or(LicencaSpecification.sigla(filtro.getStringPesquisa())));
         }
 
         return specification;
