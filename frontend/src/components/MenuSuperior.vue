@@ -1,20 +1,21 @@
 <template lang="pug">
 
 v-app-bar(app, outlined, color='white')
-	v-row#row-menu
+	v-row
 		v-col#col-menu(cols="12", md="12")
 			div#first-div-menu
 				div
 					v-icon.mr-2 mdi-account-circle
 					v-tooltip(bottom)
 						template(v-slot:activator="{ on, attrs }")
-							v-toolbar-title.text-sm-body-2.text-center(v-bind="attrs" v-on="on")
+							v-toolbar-title#toolbar-title.text-sm-body-2.text-center(v-bind="attrs" v-on="on")
 								| {{usuarioLogado.name}}
 						span {{usuarioLogado.name}}
-					v-btn(icon @click='logout')
+					
+					v-btn(icon, @click='logout')
 						v-icon mdi-logout
 				v-toolbar-title.text-caption.text-center
-					| Administrador		
+					| Administrador
 
 </template>
 
@@ -48,20 +49,28 @@ export default {
 
 <style lang="less" scoped>
 
+#v-row {
+	cursor: default;
+}
+
 #col-menu {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	
+
 	#first-div-menu {
 		align-self: flex-end;
 
-		div {		
+		div {
 			align-items: center;
 			display: flex;
 			flex-direction: row;
 			height: 16px;
 			justify-content: center;
+
+			#toolbar-title {
+				cursor: default;
+			}
 		}
 	}
 }

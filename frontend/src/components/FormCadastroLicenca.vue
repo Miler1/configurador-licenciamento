@@ -13,7 +13,7 @@
 						v-model="licenca.sigla",
 						:error-messages="checkErrorMessage(licenca.tipo)"
 						@click.native="resetErrorMessage",
-						required,					
+						required,
 					)
 				v-col(cols="12", md="9")
 					v-label Nomenclatura
@@ -63,17 +63,17 @@
 								required,
 							)
 							div#div-meses
-								span Anos			
+								span Anos
 			v-row
 				v-col#form-actions(cols="12", md="12")
 					a#QA-limpar-dados-licenca(@click="clear")
 						v-icon mdi-delete
 						span Limpar Dados
-				
+
 					v-btn#QA-btn-cadastrar-licenca(@click="submit")
 						v-icon(color="white") mdi-plus
 						span Cadastrar
-  
+
 </template>
 
 <script>

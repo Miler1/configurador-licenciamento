@@ -1,13 +1,13 @@
 package com.configuradorlicenciamento.atividadeCnae.controllers;
 
 import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeDTO;
-import com.configuradorlicenciamento.atividadeCnae.dtos.FiltroAtividadeCnaeDTO;
 import com.configuradorlicenciamento.atividadeCnae.interfaces.IAtividadeCnaeService;
 import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.configuracao.components.VariaveisAmbientes;
 import com.configuradorlicenciamento.configuracao.controllers.DefaultController;
 import com.configuradorlicenciamento.configuracao.utils.DateUtil;
 import com.configuradorlicenciamento.configuracao.enums.Acao;
+import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,11 +43,11 @@ public class AtividadeCnaeController extends DefaultController {
     @RequestMapping(method = RequestMethod.POST, value="/lista")
     public ResponseEntity<Page<AtividadeCnae>> lista(HttpServletRequest request,
                                                  @PageableDefault(size = 20) Pageable pageable,
-                                                 @RequestBody FiltroAtividadeCnaeDTO filtroAtividadeCnaeDTO) throws Exception {
+                                                 @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        Page<AtividadeCnae> atividadeCnaes = atividadeCnaeService.lista(pageable, filtroAtividadeCnaeDTO);
+        Page<AtividadeCnae> atividadeCnaes = atividadeCnaeService.lista(pageable, filtroPesquisa);
 
         return ResponseEntity.ok()
                 .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
@@ -61,7 +61,7 @@ public class AtividadeCnaeController extends DefaultController {
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
         String data = DateUtil.formataBrHoraMinuto(new Date());
-        String nome = "Relatório_CNAE_" + data + ".csv";
+        String nome = "Relatorio_CNAE_" + data + ".csv";
 
         downloadCsv(atividadeCnaeService.listarCnaesParaCsv(), nome, response);
     }
