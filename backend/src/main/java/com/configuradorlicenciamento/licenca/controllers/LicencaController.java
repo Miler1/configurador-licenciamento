@@ -30,7 +30,7 @@ public class LicencaController extends DefaultController {
     ILicencaService iLicencaService;
 
     @RequestMapping(method = RequestMethod.POST, value = "/salvar")
-    public ResponseEntity<Licenca> salvar (HttpServletRequest request, @Valid @RequestBody LicencaDTO licencaDTO) throws Exception {
+    public ResponseEntity<Licenca> salvar(HttpServletRequest request, @Valid @RequestBody LicencaDTO licencaDTO) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 

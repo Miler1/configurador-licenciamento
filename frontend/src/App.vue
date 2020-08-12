@@ -17,9 +17,6 @@
 				template(v-slot:action=	'{ attrs }')
 					v-btn(text @click='snackbar.showing = false' v-bind="attrs")
 						| Close
-			
-			
-			
 
 </template>
 

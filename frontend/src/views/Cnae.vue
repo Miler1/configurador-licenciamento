@@ -37,12 +37,15 @@ import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils
 import { HEADER } from '@/utils/dadosMockados/ListagemCnaeHeader'
 
 export default {
-	name:"cnae",
+
+	name:"Cnae",
+
 	components: {
 		PanelCadastro,
 		FormCadastroCnae,
 		GridListagem
 	},
+
 	data: () => {
 		return {
 			panelTitle: "Cadastro de CNAE",
@@ -77,7 +80,7 @@ export default {
 
 					.then((response) => {
 						this.$store.dispatch(SET_SNACKBAR,
-							{color: 'success', text: SUCCESS_MESSAGES.cadastroCnae, timeout: '6000'}
+							{color: 'success', text: SUCCESS_MESSAGES.cadastro, timeout: '6000'}
 						)
 						this.clear();
 					})
@@ -95,10 +98,10 @@ export default {
 		},
 
 		checkForm() {
-			return this.atividadeCnae.codigo 
-				&& this.atividadeCnae.codigo != ''
-				&& this.atividadeCnae.nome
-				&& this.atividadeCnae.nome != ''
+			return this.atividadeCnae.codigo &&
+				this.atividadeCnae.codigo != '' &&
+				this.atividadeCnae.nome &&
+				this.atividadeCnae.nome != ''
 		},
 
 		resetErrorMessage() {
