@@ -12,7 +12,7 @@
 				@input='inputPesquisa')
 
 		v-col(cols='12' md='4')
-			v-btn#QA-btn-download-relatorio.float-right(@click="gerarRelatorio", large, outlined, color="#84A98C")
+			v-btn#QA-btn-gerar-relatorio.float-right(@click="gerarRelatorio", large, outlined, color="#84A98C")
 				v-icon mdi-download
 				span Gerar Relatório
 

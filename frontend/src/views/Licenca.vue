@@ -15,12 +15,20 @@
 				:validadeIsDisabled="validadeIsDisabled",
 			)
 
+			BtnGerarRelatorio(
+				:gerarRelatorio="gerarRelatorio",
+			)
+
+			
+
 </template>
 
 <script>
 
+import RelatorioService from '../services/relatorio.service'
 import PanelCadastro from '@/components/PanelCadastro'
 import FormCadastroLicenca from '@/components/FormCadastroLicenca'
+import BtnGerarRelatorio from '@/components/BtnGerarRelatorio'
 import LicencaService from '../services/licenca.service'
 import { SET_SNACKBAR } from '../store/actions.type'
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils'

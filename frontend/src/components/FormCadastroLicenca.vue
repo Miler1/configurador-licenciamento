@@ -27,7 +27,7 @@
 						@click.native="resetErrorMessage",
 						required,
 					)
-			v-row#row-finalidade-validade
+			v-row.align-center.flex-direction-row.justify-start
 				v-col(cols="12", md="3")
 					label Finalidade
 						v-select#QA-select-licenca-finalidade(
@@ -44,11 +44,11 @@
 							@click.native="resetErrorMessage",
 							required,
 						)
-				v-col#col-validade.pl-0(cols="12", md="9")
+				v-col.flex-column.flex-direction-row.justify-start.pl-0(cols="12", md="9")
 					v-col.pb-0(cols="12", md="8")
 						label Prazo de Validade
-					v-col#input-validade.pt-0(cols="12", md="4")
-						div#div-validade
+					v-col.flex-column.flex-direction-row.justify-start.pt-0(cols="12", md="4")
+						div.flex-column.flex-direction-row
 							v-text-field#QA-input-licenca-validade(
 								outlined,
 								dense,
@@ -120,42 +120,18 @@ export default {
 
 @import "../assets/css/variaveis.less";
 
-#row-finalidade-validade {
-	align-items: center;
-	display:flex;
-	flex-direction: row;
-	justify-content: flex-start;
+	#div-meses {
+		background-color: @bg-header;
+		border: none;
+		border-radius: 0 4px 4px 0;
+		color: @icon-color;
+		display: flex;
+		height: 40px;
 
-	#col-validade {
-		display:flex;
-		flex-direction: column;
-		justify-content: flex-start;
-	
-		#input-validade {
-			display:flex;
-			flex-direction: row;
-			justify-content: flex-start;
-
-			#div-validade {
-				display: flex;
-				flex-direction: row;
-
-				#div-meses {
-					background-color: @bg-header;
-					border: none;
-					border-radius: 0 4px 4px 0;
-					color: @icon-color;
-					display: flex;
-					height: 40px;
-
-					span {
-						align-self: center;
-						padding: 1px 8px;
-					}
-				}
-			}
+		span {
+			align-self: center;
+			padding: 1px 8px;
 		}
 	}
-}
 
 </style>
