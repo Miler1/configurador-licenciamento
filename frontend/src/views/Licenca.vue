@@ -5,6 +5,7 @@
 		PanelCadastro.pa-7(
 			:title="panelTitle",
 			:clear="clear",
+			:dadosPanel="dadosPanel"
 		)
 			FormCadastroLicenca(
 				:licenca="licenca",
@@ -12,7 +13,6 @@
 				:submit="submit",
 				:resetErrorMessage="resetErrorMessage",
 				:checkErrorMessage="checkErrorMessage",
-				:validadeIsDisabled="validadeIsDisabled",
 			)
 
 		GridListagem.pa-7(
@@ -21,7 +21,8 @@
 			:gerarRelatorio="gerarRelatorio",
 			:headers="headerListagem",
 			:dadosListagem="dadosListagem",
-			:updatePagination="updatePagination"
+			:updatePagination="updatePagination",
+			:parametrosFiltro="parametrosFiltro"
 		)
 
 </template>
@@ -61,6 +62,18 @@ export default {
 			placeholderPesquisa: "Pesquisar por sigla ou nome da licença",
 			dadosListagem: {},
 			headerListagem: HEADER,
+			parametrosFiltro: {
+				pagina: 0,
+				itemsPorPagina: 10,
+				tipoOrdenacao: 'dataCadastro,asc',
+				stringPesquisa: ''
+			},
+			isCadastro: true,
+			dadosPanel: {
+				items: 1,
+				panel: [],
+				readonly: true,
+			}
 		};
 	},
 
@@ -122,10 +135,6 @@ export default {
 
 		checkErrorMessage(value) {
 			return this.errorMessageEmpty || value ? [] : 'Obrigatório';
-		},
-
-		validadeIsDisabled() {
-			return this.licenca.finalidade == null || this.licenca.finalidade == 'CADASTRO';
 		},
 		
 		gerarRelatorio() {
