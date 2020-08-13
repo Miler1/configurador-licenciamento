@@ -20,7 +20,7 @@
 		v-data-table.elevation-1(:headers="headers",
 				:items='dadosListagem.content',
 				hide-default-footer,
-				:items-per-page="numberOfPages",
+				:items-per-page="itensPerPage",
 				@update:options="sortBy")
 
 			template(v-slot:item.ativo='{ item }')
@@ -46,11 +46,11 @@
 								color="#84A98C")
 
 					v-col.flex-row.mt-3(cols='12' md='8')
-						v-select.float-right.d-inline-flex.mx-4.w-80(:items="numbersOfPages", 
+						v-select.float-right.d-inline-flex.mx-4.w-80(:items="itensPerPages", 
 								solo, 
 								dense, 
 								@input="changeValue", 
-								v-model="numberOfPages")
+								v-model="itensPerPage")
 						span.float-right.exibicao-paginas.mt-2.ml-1
 							| Resultados por página
 						span.float-right.exibicao-paginas.mt-2
@@ -98,8 +98,8 @@ export default {
 
 		page: 0,
 		totalVisible: 7,
-		numberOfPages: 10,
-		numbersOfPages: [10, 15, 20, 30, 40, 50, 100],
+		itensPerPage: 10,
+		itensPerPages: [10, 15, 20, 30, 40, 50, 100],
 
 	}),
 
@@ -113,11 +113,11 @@ export default {
 
 	methods: {
 
-		changeValue(numberOfPages) {
+		changeValue(itensPerPage) {
 
-			if(parametrosFiltro.itemsPorPagina !== numberOfPages) {
+			if(parametrosFiltro.itemsPorPagina !== itensPerPage) {
 
-				this.parametrosFiltro.itemsPorPagina = numberOfPages;
+				this.parametrosFiltro.itemsPorPagina = itensPerPage;
 				this.parametrosFiltro.pagina = 0;
 				this.updatePagination(this.parametrosFiltro);
 

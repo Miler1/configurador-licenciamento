@@ -1,7 +1,6 @@
 <template lang='pug'>
 
 #app
-	//- vue-confirm-dialog.open-dialog
 	v-app
 		v-main
 			router-view
@@ -27,7 +26,7 @@ import { mapGetters } from 'vuex';
 import Snackbar from '@/components/Snackbar';
 
 export default {
-	
+
 	name: 'App',
 
 	components: { Snackbar },
@@ -37,6 +36,7 @@ export default {
 	},
 
 };
+
 </script>
 
 <style lang="less">
