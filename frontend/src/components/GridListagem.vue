@@ -33,9 +33,9 @@
 					| {{item.ativo ? 'mdi-minus-circle' : 'mdi-check-circle'}}
 
 			template(v-slot:no-data)
-				span Sem dados
+				span Não existem registros a serem exibidos.
 
-			template(v-slot:footer)
+			template(v-slot:footer, v-if="dadosListagem == null" )
 				v-row
 					v-col(cols='12' md='4')
 						v-pagination.float-left(v-model="page"
@@ -142,6 +142,10 @@ export default {
 			this.updatePagination(this.parametrosFiltro);
 
 		},
+
+		dadosListagemIsNull() {
+			return this.dadosListagem == null;
+		}
 
 	},
 
