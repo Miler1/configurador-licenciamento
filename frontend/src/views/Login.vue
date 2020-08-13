@@ -7,7 +7,7 @@
 
 <script>
 
-import CardLogin from "@/components/CardLogin"
+import CardLogin from "@/components/CardLogin";
 
 export default {
 	name: "Login",
@@ -18,7 +18,7 @@ export default {
 	props: {
 		source: String,
 	}	
-}
+};
 
 </script>
 

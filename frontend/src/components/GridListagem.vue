@@ -27,9 +27,9 @@
 				span {{item.ativo ? 'Ativo' : 'Inativo'}}
 
 			template(v-slot:item.actions='{ item }')
-				v-icon.mr-2(small @click='')
+				v-icon.mr-2(small @click='editarItem(item)')
 					| mdi-pencil
-				v-icon(small @click='')
+				v-icon(small @click='ativarDesativarItem(item)')
 					| {{item.ativo ? 'mdi-minus-circle' : 'mdi-check-circle'}}
 
 			template(v-slot:no-data)
@@ -46,7 +46,7 @@
 								color="#84A98C")
 
 					v-col.flex-row.mt-3(cols='12' md='8')
-						v-select.float-right.d-inline-flex.mx-4.w-90(:items="numbersOfPages", 
+						v-select.float-right.d-inline-flex.mx-4.w-80(:items="numbersOfPages", 
 								solo, 
 								dense, 
 								@input="changeValue", 
@@ -81,6 +81,15 @@ export default {
 		},
 		updatePagination: {
 			type: [Function]
+		},
+		editarItem: {
+			type: [Function]
+		},
+		ativarDesativarItem: {
+			type: [Function]
+		},
+		parametrosFiltro: {
+			type: [Object]
 		}
 
 	},
@@ -91,12 +100,6 @@ export default {
 		totalVisible: 7,
 		numberOfPages: 10,
 		numbersOfPages: [10, 15, 20, 30, 40, 50, 100],
-		parametrosFiltro: {
-			pagina: 0,
-			itemsPorPagina: 10,
-			tipoOrdenacao: 'dataCadastro,asc',
-			codigoOrNome: ''
-		}
 
 	}),
 
@@ -112,22 +115,31 @@ export default {
 
 		changeValue(numberOfPages) {
 
-			this.parametrosFiltro.itemsPorPagina = numberOfPages;
-			this.parametrosFiltro.pagina = 0;
-			this.updatePagination(this.parametrosFiltro);
+			if(parametrosFiltro.itemsPorPagina !== numberOfPages) {
+
+				this.parametrosFiltro.itemsPorPagina = numberOfPages;
+				this.parametrosFiltro.pagina = 0;
+				this.updatePagination(this.parametrosFiltro);
+
+			}
 
 		},
 
 		input(page) {
 
-			this.parametrosFiltro.pagina = page-1;
-			this.updatePagination(this.parametrosFiltro);
+			if(this.parametrosFiltro.pagina !== page-1) {
+
+				this.parametrosFiltro.pagina = page-1;
+				this.updatePagination(this.parametrosFiltro);
+
+			}
 
 		},
 
 		inputPesquisa(text) {
 
 			this.parametrosFiltro.codigoOrNome = text;
+			this.parametrosFiltro.pagina = 0;
 			this.updatePagination(this.parametrosFiltro);
 
 		},
@@ -145,7 +157,7 @@ export default {
 
 	},
 
-}
+};
 
 </script>
 
@@ -155,14 +167,26 @@ export default {
 tbody tr:nth-of-type(odd) {
 	background-color: rgba(0, 0, 0, .05);
 }
+
 .titulo-listagem{
 	font-size: 18px;
 }
+
 .exibicao-paginas{
 	color: @text-color;
+	font-size: 14px;
 }
-.w-90{
-	width: 90px;
+
+.v-pagination__item {
+	font-size: 13px;
+}
+
+.w-80{
+	width: 80px;
+
+	.v-input__slot {
+		font-size: 13px;
+	}
 }
 
 </style>

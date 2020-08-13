@@ -22,9 +22,9 @@ v-app-bar(app, outlined, color='white')
 
 <script>
 
-import { USUARIO_LOGOUT } from '@/store/actions.type.js'
-import { mapGetters } from 'vuex'
-import { ERROR_MESSAGES } from '@/utils/helpers/messages-utils'
+import { USUARIO_LOGOUT } from '@/store/actions.type.js';
+import { mapGetters } from 'vuex';
+import { ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 
 export default {
 
@@ -34,18 +34,19 @@ export default {
 		logout () {
 			this.$store.dispatch(USUARIO_LOGOUT)
 				.then (() => {
-					this.$router.push('/login')
+					this.$router.push('/login');
 				}).catch((error) => {
-					console.error(error)
-					this.$store.dispatch(SET_SNACKBAR, {color: 'error', text: ERROR_MESSAGES.logout, timeout: '6000'})
-				})
+					console.error(error);
+					this.$store.dispatch(SET_SNACKBAR, {color: 'error', text: ERROR_MESSAGES.logout, timeout: '6000'});
+				});
 		}
 	},
 
 	computed: {
 		...mapGetters(['usuarioLogado'])
 	},
-}
+};
+
 </script>
 
 <style>

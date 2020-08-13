@@ -40,6 +40,19 @@ public class AtividadeCnaeController extends DefaultController {
 
     }
 
+    @RequestMapping(method = RequestMethod.POST, value="/editar")
+    public ResponseEntity<AtividadeCnae> editar(HttpServletRequest request, @Valid @RequestBody AtividadeCnaeDTO atividadeCnaeDTO) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        AtividadeCnae atividadeCnae = atividadeCnaeService.editar(request, atividadeCnaeDTO);
+
+        return ResponseEntity.ok()
+                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .body(atividadeCnae);
+
+    }
+
     @RequestMapping(method = RequestMethod.POST, value="/lista")
     public ResponseEntity<Page<AtividadeCnae>> lista(HttpServletRequest request,
                                                  @PageableDefault(size = 20) Pageable pageable,

@@ -75,7 +75,7 @@ export default {
 				message: '',
 				login: false,
 			},
-		}
+		};
 	},
 
 	methods: {
@@ -158,7 +158,7 @@ export default {
 	mounted() {
 		this.urlEntradaUnica = process.env.VUE_APP_URL_PORTAL_SEGURANCA;
 	},
-}
+};
 
 </script>
 

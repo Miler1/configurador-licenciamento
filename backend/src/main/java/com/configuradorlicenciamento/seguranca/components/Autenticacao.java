@@ -36,11 +36,7 @@ public class Autenticacao extends AbstractAuthenticationToken {
 
 	private static List<GrantedAuthority> getPermissoes(Usuario usuarioEntradaUnica) {
 
-		if(usuarioEntradaUnica.perfilSelecionado == null) {
-			return autorizaAutenticacaoAplicativo(usuarioEntradaUnica);
-		} else {
-			return autorizaAutenticacao(usuarioEntradaUnica);
-		}
+		return autorizaAutenticacao(usuarioEntradaUnica);
 
 	}
 
@@ -62,25 +58,15 @@ public class Autenticacao extends AbstractAuthenticationToken {
 
 			}
 
+			GrantedAuthority grantedAuthorityPerfil = new SimpleGrantedAuthority(perfil.get().codigo);
+
+			grantedAuthorities.add(grantedAuthorityPerfil);
+
 		}
 
 		autenticaUsuario(usuarioEntradaUnica, grantedAuthorities);
 
 		return grantedAuthorities;
-	}
-
-	private static List<GrantedAuthority> autorizaAutenticacaoAplicativo(Usuario usuarioEntradaUnica) {
-
-		List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-
-		GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(PerfilEnum.ADMINISTRADOR.getCodigo());
-
-		grantedAuthorities.add(grantedAuthority);
-
-		autenticaUsuario(usuarioEntradaUnica, grantedAuthorities);
-
-		return grantedAuthorities;
-
 	}
 
 	private static void autenticaUsuario(Usuario usuarioEntradaUnica, List<GrantedAuthority> grantedAuthorities) {
