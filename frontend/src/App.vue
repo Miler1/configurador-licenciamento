@@ -54,9 +54,6 @@ html{
 			-webkit-font-smoothing: antialiased;
 			-moz-osx-font-smoothing: grayscale;
 
-			.open-dialog {
-				
-			}
 		}
 
 		.swal2-shown {
