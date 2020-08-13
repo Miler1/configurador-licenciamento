@@ -9,8 +9,8 @@ v-app-bar(app, outlined, color='white')
 					v-tooltip(bottom)
 						template(v-slot:activator="{ on, attrs }")
 							v-toolbar-title#toolbar-title.text-sm-body-2.text-center(v-bind="attrs", v-on="on")
-								| {{usuarioLogado.name}}
-						span {{usuarioLogado.name}}
+								| {{usuarioLogado && usuarioLogado.name}}
+						span {{usuarioLogado && usuarioLogado.name}}
 					v-tooltip(bottom)
 						template(v-slot:activator="{ on, attrs }")
 							v-btn(icon, @click='logout', v-on="on")
