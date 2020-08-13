@@ -59,6 +59,9 @@ public class AutenticacaoService implements IAutenticacaoService {
 
 		usuarioEntradaUnica.id = usuario.getId();
 
+		//Como existe só um perfil pro módulo, vamos setar ele aqui.
+		usuarioEntradaUnica.perfilSelecionado = usuarioEntradaUnica.perfis.get(0);
+
 		request.getSession().setAttribute("sessionKeyEntradaUnica", usuarioEntradaUnica.sessionKeyEntradaUnica);
 		request.getSession().setAttribute("login", usuarioEntradaUnica.login);
 

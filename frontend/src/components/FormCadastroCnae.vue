@@ -33,9 +33,9 @@
 						v-icon mdi-delete
 						span Limpar dados  
 				
-					v-btn#QA-btn-cadastrar-cnae(@click="submit")
-						v-icon(color="white") mdi-plus
-						span Cadastrar
+					v-btn#QA-btn-cadastrar-cnae(@click="submit", large)
+						v-icon(color="white") {{iconBotaoCadastrarEditar}}
+						span {{labelBotaoCadastrarEditar}}
 
 </template>
 
@@ -48,7 +48,7 @@ export default {
 	data: () => {
 		return {
 			placeholder: "Digite aqui..."
-		}
+		};
 	},
 
 	props: {
@@ -66,6 +66,12 @@ export default {
 		},
 		errorMessageEmpty: {
 			type: [Boolean]
+		},
+		labelBotaoCadastrarEditar: {
+			type: [String]
+		},
+		iconBotaoCadastrarEditar: {
+			type: [String]
 		}
 	}
 

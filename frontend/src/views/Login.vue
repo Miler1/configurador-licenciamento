@@ -7,7 +7,7 @@
 
 <script>
 
-import CardLogin from "@/components/CardLogin"
+import CardLogin from "@/components/CardLogin";
 
 export default {
 
@@ -18,7 +18,7 @@ export default {
 	container: {
 		CardLogin
 	},
-}
+};
 
 </script>
 

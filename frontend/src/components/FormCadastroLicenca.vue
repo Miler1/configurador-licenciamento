@@ -78,7 +78,7 @@
 
 <script>
 
-import FinalidadeEnum from '../utils/enums/finalidadeEnum'
+import FinalidadeEnum from '../utils/enums/finalidadeEnum';
 
 export default {
 
@@ -89,7 +89,7 @@ export default {
 			placeholder: "Digite aqui...",
 			placeholderSelect: "Selecione",
 			finalidades: FinalidadeEnum,
-		}
+		};
 	},
 
 	props: {
@@ -112,7 +112,7 @@ export default {
 			type: [Function]
 		}
 	}
-}
+};
 
 </script>
 

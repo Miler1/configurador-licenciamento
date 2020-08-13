@@ -6,6 +6,7 @@ import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,6 +14,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @Table(schema = GlobalReferences.ESQUEMA, name = "atividade_cnae")
@@ -50,6 +52,7 @@ public class AtividadeCnae implements Serializable {
 
     public static class AtividadeCnaeBuilder {
 
+        private Integer id;
         private final String nome;
         private final String codigo;
         private Boolean ativo;
@@ -60,6 +63,11 @@ public class AtividadeCnae implements Serializable {
             this.nome = atividadeCnaeDTO.getNome();
             this.codigo = atividadeCnaeDTO.getCodigo();
             this.ativo = atividadeCnaeDTO.getAtivo();
+        }
+
+        public AtividadeCnaeBuilder setId(Integer id) {
+            this.id = id;
+            return this;
         }
 
         public AtividadeCnaeBuilder setDataCadastro(Date dataCadastro) {

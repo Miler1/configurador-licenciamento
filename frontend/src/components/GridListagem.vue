@@ -20,22 +20,22 @@
 		v-data-table.elevation-1(:headers="headers",
 				:items='dadosListagem.content',
 				hide-default-footer,
-				:items-per-page="numberOfPages",
+				:items-per-page="itensPerPage",
 				@update:options="sortBy")
 
 			template(v-slot:item.ativo='{ item }')
 				span {{item.ativo ? 'Ativo' : 'Inativo'}}
 
 			template(v-slot:item.actions='{ item }')
-				v-icon.mr-2(small @click='')
+				v-icon.mr-2(small @click='editarItem(item)')
 					| mdi-pencil
-				v-icon(small @click='')
+				v-icon(small @click='ativarDesativarItem(item)')
 					| {{item.ativo ? 'mdi-minus-circle' : 'mdi-check-circle'}}
 
 			template(v-slot:no-data)
 				span Não existem registros a serem exibidos.
 
-			template(v-slot:footer, v-if="dadosListagem == null" )
+			template(v-slot:footer)
 				v-row
 					v-col(cols='12' md='4')
 						v-pagination.float-left(v-model="page"
@@ -46,11 +46,11 @@
 								color="#84A98C")
 
 					v-col.flex-row.mt-3(cols='12' md='8')
-						v-select.float-right.d-inline-flex.mx-4.w-90(:items="numbersOfPages", 
+						v-select.float-right.d-inline-flex.mx-4.w-80(:items="itensPerPages", 
 								solo, 
 								dense, 
 								@input="changeValue", 
-								v-model="numberOfPages")
+								v-model="itensPerPage")
 						span.float-right.exibicao-paginas.mt-2.ml-1
 							| Resultados por página
 						span.float-right.exibicao-paginas.mt-2
@@ -81,6 +81,15 @@ export default {
 		},
 		updatePagination: {
 			type: [Function]
+		},
+		editarItem: {
+			type: [Function]
+		},
+		ativarDesativarItem: {
+			type: [Function]
+		},
+		parametrosFiltro: {
+			type: [Object]
 		}
 
 	},
@@ -89,14 +98,8 @@ export default {
 
 		page: 0,
 		totalVisible: 7,
-		numberOfPages: 10,
-		numbersOfPages: [10, 15, 20, 30, 40, 50, 100],
-		parametrosFiltro: {
-			pagina: 0,
-			itemsPorPagina: 10,
-			tipoOrdenacao: 'dataCadastro,asc',
-			stringPesquisa: ''
-		}
+		itensPerPage: 10,
+		itensPerPages: [10, 15, 20, 30, 40, 50, 100],
 
 	}),
 
@@ -110,23 +113,32 @@ export default {
 
 	methods: {
 
-		changeValue(numberOfPages) {
+		changeValue(itensPerPage) {
 
-			this.parametrosFiltro.itemsPorPagina = numberOfPages;
-			this.parametrosFiltro.pagina = 0;
-			this.updatePagination(this.parametrosFiltro);
+			if(parametrosFiltro.itemsPorPagina !== itensPerPage) {
+
+				this.parametrosFiltro.itemsPorPagina = itensPerPage;
+				this.parametrosFiltro.pagina = 0;
+				this.updatePagination(this.parametrosFiltro);
+
+			}
 
 		},
 
 		input(page) {
 
-			this.parametrosFiltro.pagina = page-1;
-			this.updatePagination(this.parametrosFiltro);
+			if(this.parametrosFiltro.pagina !== page-1) {
+
+				this.parametrosFiltro.pagina = page-1;
+				this.updatePagination(this.parametrosFiltro);
+
+			}
 
 		},
 
 		inputPesquisa(text) {
 
+			this.parametrosFiltro.pagina = 0;
 			this.parametrosFiltro.stringPesquisa = text;
 			this.updatePagination(this.parametrosFiltro);
 
@@ -149,7 +161,7 @@ export default {
 
 	},
 
-}
+};
 
 </script>
 
@@ -159,14 +171,26 @@ export default {
 tbody tr:nth-of-type(odd) {
 	background-color: rgba(0, 0, 0, .05);
 }
+
 .titulo-listagem{
 	font-size: 18px;
 }
+
 .exibicao-paginas{
 	color: @text-color;
+	font-size: 14px;
 }
-.w-90{
-	width: 90px;
+
+.v-pagination__item {
+	font-size: 13px;
+}
+
+.w-80{
+	width: 80px;
+
+	.v-input__slot {
+		font-size: 13px;
+	}
 }
 
 </style>

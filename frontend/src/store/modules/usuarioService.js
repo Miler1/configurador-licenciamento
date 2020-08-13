@@ -1,8 +1,8 @@
-import Vue from 'vue'
+import Vue from 'vue';
 import {
 	USUARIO_LOGOUT,
 	GET_USUARIO
-} from '../actions.type'
+} from '../actions.type';
 import {
 	START_USUARIO_LOGOUT,
 	END_USUARIO_LOGOUT,
@@ -10,15 +10,15 @@ import {
 	START_USUARIO_LOGIN,
 	END_USUARIO_LOGIN,
 	UPDATE_USUARIO_LOGIN
-} from '../mutations.type'
-import UsuarioService from '../../services/usuario.service'
+} from '../mutations.type';
+import UsuarioService from '../../services/usuario.service';
 
 const INITIAL_STATE = {
 	logado: false,
 	usuarioLogado: null
-}
+};
 
-export const state = Object.assign({}, INITIAL_STATE)
+export const state = Object.assign({}, INITIAL_STATE);
 
 export const getters = {
 
@@ -26,31 +26,31 @@ export const getters = {
 
 	usuarioLogado: state => state.usuarioLogado
 
-}
+};
 
 export const actions = {
 
 	[USUARIO_LOGOUT]: ({ commit }, state) => {
-		commit(START_USUARIO_LOGOUT)
+		commit(START_USUARIO_LOGOUT);
 		return UsuarioService.logout(state)
 			.then(() => {
-				commit(UPDATE_USUARIO_LOGOUT)
+				commit(UPDATE_USUARIO_LOGOUT);
 			})
 			.catch(() => {
-				commit(END_USUARIO_LOGOUT)
-			})
+				commit(END_USUARIO_LOGOUT);
+			});
 	},
 
 	[GET_USUARIO]: ({ commit }, state) => {
-		commit(START_USUARIO_LOGIN)
+		commit(START_USUARIO_LOGIN);
 		return UsuarioService.getUsuario().then(({ data }) => {
-			commit(UPDATE_USUARIO_LOGIN, data)
-			return data
+			commit(UPDATE_USUARIO_LOGIN, data);
+			return data;
 		}).catch(() => {
-			commit(END_USUARIO_LOGIN)
-		})
+			commit(END_USUARIO_LOGIN);
+		});
 	}
-}
+};
 
 export const mutations = {
 	[START_USUARIO_LOGOUT]: state => (state.logado = true),
@@ -64,7 +64,7 @@ export const mutations = {
 	[END_USUARIO_LOGIN]: state => (state.usuarioLogado = null, state.logado = false),
 
 	[UPDATE_USUARIO_LOGIN]: (state, data) => (state.usuarioLogado = data, state.logado = true)
-}
+};
 
 export default {
 	state,
@@ -74,4 +74,4 @@ export default {
 	actions,
 
 	mutations
-}
+};

@@ -9,8 +9,8 @@ v-app-bar(app, outlined, color='white')
 					v-tooltip(bottom)
 						template(v-slot:activator="{ on, attrs }")
 							v-toolbar-title#toolbar-title.text-sm-body-2.text-center(v-bind="attrs", v-on="on")
-								| {{usuarioLogado.name}}
-						span {{usuarioLogado.name}}
+								| {{usuarioLogado && usuarioLogado.name}}
+						span {{usuarioLogado && usuarioLogado.name}}
 					v-tooltip(bottom)
 						template(v-slot:activator="{ on, attrs }")
 							v-btn(icon, @click='logout', v-on="on")
@@ -23,9 +23,9 @@ v-app-bar(app, outlined, color='white')
 
 <script>
 
-import { USUARIO_LOGOUT } from '@/store/actions.type.js'
-import { mapGetters } from 'vuex'
-import { ERROR_MESSAGES } from '@/utils/helpers/messages-utils'
+import { USUARIO_LOGOUT } from '@/store/actions.type.js';
+import { mapGetters } from 'vuex';
+import { ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 
 export default {
 
@@ -35,18 +35,19 @@ export default {
 		logout () {
 			this.$store.dispatch(USUARIO_LOGOUT)
 				.then (() => {
-					this.$router.push('/login')
+					this.$router.push('/login');
 				}).catch((error) => {
-					console.error(error)
-					this.$store.dispatch(SET_SNACKBAR, {color: 'error', text: ERROR_MESSAGES.logout, timeout: '6000'})
-				})
+					console.error(error);
+					this.$store.dispatch(SET_SNACKBAR, {color: 'error', text: ERROR_MESSAGES.logout, timeout: '6000'});
+				});
 		}
 	},
 
 	computed: {
 		...mapGetters(['usuarioLogado'])
 	},
-}
+};
+
 </script>
 
 <style lang="less" scoped>

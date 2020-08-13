@@ -1,21 +1,21 @@
 import {
 	SET_SNACKBAR
-} from '../actions.type'
+} from '../actions.type';
 import {
 	UPDATE_SNACKBAR
-} from '../mutations.type'
+} from '../mutations.type';
 
 const INITIAL_STATE = {
 	snackbars: []
-}
+};
 
-export const state = Object.assign({}, INITIAL_STATE)
+export const state = Object.assign({}, INITIAL_STATE);
 
 export const getters = {
 
 	snackbars: state => state.snackbars,
 
-}
+};
 
 export const actions = {
 
@@ -25,13 +25,13 @@ export const actions = {
 		commit(UPDATE_SNACKBAR, snackbar);
 	}
 
-}
+};
 
 export const mutations = {
 	
 	[UPDATE_SNACKBAR]: (state, snackbar) => (state.snackbars = state.snackbars.concat(snackbar))
 
-}
+};
 
 export default {
 	state,
@@ -41,4 +41,4 @@ export default {
 	actions,
 
 	mutations
-}
+};

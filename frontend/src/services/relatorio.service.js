@@ -6,6 +6,6 @@ const RelatorioService = {
 		window.open(src);
 	}
 
-}
+};
 
 export default RelatorioService;

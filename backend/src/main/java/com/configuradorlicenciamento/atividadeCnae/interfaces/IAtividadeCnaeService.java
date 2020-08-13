@@ -13,7 +13,9 @@ import java.util.List;
 
 public interface IAtividadeCnaeService {
 
-    AtividadeCnae salvar(HttpServletRequest request, AtividadeCnaeDTO atividadeCnaeDTO) throws Exception;
+    AtividadeCnae salvar(HttpServletRequest request, AtividadeCnaeDTO atividadeCnaeDTO);
+
+    AtividadeCnae editar(HttpServletRequest request, AtividadeCnaeDTO atividadeCnaeDTO);
 
     List<AtividadeCnae> listarCnaes() throws Exception;
 

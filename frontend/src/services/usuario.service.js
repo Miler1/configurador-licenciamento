@@ -1,4 +1,4 @@
-import ApiService from './api.service'
+import ApiService from './api.service';
 
 export default {
 
@@ -6,4 +6,4 @@ export default {
 
 	logout: async () => ApiService.post('/logout')
 
-}
+};

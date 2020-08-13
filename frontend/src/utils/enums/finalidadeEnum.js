@@ -8,4 +8,4 @@ const FinalidadeEnum = Object.freeze(
 	 ]
 );
 
-export default FinalidadeEnum
+export default FinalidadeEnum;

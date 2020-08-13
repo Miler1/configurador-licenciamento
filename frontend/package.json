@@ -16,6 +16,7 @@
     "v-mask": "^2.2.3",
     "vue": "^2.6.11",
     "vue-axios": "^2.1.5",
+    "vue-simple-alert": "^1.1.1",
     "vue-router": "^3.4.2",
     "vuetify": "^2.3.8",
     "vuex": "^3.4.0"

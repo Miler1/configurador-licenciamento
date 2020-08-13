@@ -28,14 +28,14 @@
 
 <script>
 
-import PanelCadastro from '@/components/PanelCadastro'
-import FormCadastroLicenca from '@/components/FormCadastroLicenca'
-import LicencaService from '../services/licenca.service'
-import RelatorioService from '../services/relatorio.service'
-import GridListagem from '@/components/GridListagem'
-import { SET_SNACKBAR } from '../store/actions.type'
-import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils'
-import { HEADER } from '@/utils/dadosMockados/ListagemLicencaHeader'
+import PanelCadastro from '@/components/PanelCadastro';
+import FormCadastroLicenca from '@/components/FormCadastroLicenca';
+import LicencaService from '../services/licenca.service';
+import RelatorioService from '../services/relatorio.service';
+import GridListagem from '@/components/GridListagem';
+import { SET_SNACKBAR } from '../store/actions.type';
+import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
+import { HEADER } from '@/utils/dadosMockados/ListagemLicencaHeader';
 
 export default {
 
@@ -61,7 +61,7 @@ export default {
 			placeholderPesquisa: "Pesquisar por sigla ou nome da licença",
 			dadosListagem: {},
 			headerListagem: HEADER,
-		}
+		};
 	},
 
 	methods: {
@@ -75,17 +75,17 @@ export default {
 
 						this.$store.dispatch(SET_SNACKBAR,
 							{color: 'success', text: SUCCESS_MESSAGES.cadastro, timeout: '6000'}
-						)
+						);
 						this.clear();
 						this.listarLicencas();
 
 					})
 
 					.catch(erro => {
-						console.error(erro)
+						console.error(erro);
 						this.$store.dispatch(SET_SNACKBAR,
 							{color: 'error', text: ERROR_MESSAGES.cadastroLicenca + ': ' + erro.message, timeout: '6000'}
-						)
+						);
 					});
 
 			} else {
@@ -95,11 +95,11 @@ export default {
 
 		clear() {
 
-			this.licenca.sigla = null
-			this.licenca.nome = null
-			this.licenca.validade = null
-			this.licenca.finalidade = null
-			this.licenca.errorMessageEmpty = true
+			this.licenca.sigla = null;
+			this.licenca.nome = null;
+			this.licenca.validade = null;
+			this.licenca.finalidade = null;
+			this.licenca.errorMessageEmpty = true;
 
 		},
 
@@ -112,12 +112,12 @@ export default {
 				this.licenca.validade &&
 				this.licenca.validade != '' &&
 				this.licenca.finalidade &&
-				this.licenca.finalidade != ''
+				this.licenca.finalidade != '';
 
 		},
 
 		resetErrorMessage() {
-			this.errorMessageEmpty = true
+			this.errorMessageEmpty = true;
 		},
 
 		checkErrorMessage(value) {
@@ -140,10 +140,10 @@ export default {
 					this.dadosListagem = response.data;
 				})
 				.catch(erro => {
-					console.error(erro)
+					console.error(erro);
 					this.$store.dispatch(SET_SNACKBAR,
 						{color: 'error', text: ERROR_MESSAGES.listagemCnae + ': ' + erro.message, timeout: '6000'}
-					)
+					);
 				});
 
 		},
@@ -153,13 +153,13 @@ export default {
 			LicencaService.listar()
 
 				.then((response) => {
-					this.dadosListagem = response.data
+					this.dadosListagem = response.data;
 				})
 				.catch(erro => {
-					console.error(erro)
+					console.error(erro);
 					this.$store.dispatch(SET_SNACKBAR,
 						{color: 'error', text: ERROR_MESSAGES.listagemCnae + ': ' + erro.message, timeout: '6000'}
-					)
+					);
 				});
 
 		}
@@ -167,11 +167,11 @@ export default {
 
 	created () {
 
-		this.listarLicencas()
+		this.listarLicencas();
 
 	}
 
-}
+};
 
 </script>
 
