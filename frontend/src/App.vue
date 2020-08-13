@@ -91,6 +91,12 @@ html{
 				margin-top: 4px;
 			}
 		}
+
+		//Não foi achado uma maneira de trocar para cursor default no input de sanha do card login
+		.mdi-key {
+			cursor: default !important;
+		}
+	
 	}
 }
 
