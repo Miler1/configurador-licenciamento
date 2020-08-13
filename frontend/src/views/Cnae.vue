@@ -43,12 +43,15 @@ import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils
 import { HEADER } from '@/utils/dadosMockados/ListagemCnaeHeader';
 
 export default {
-	name:"cnae",
+
+	name:"Cnae",
+
 	components: {
 		PanelCadastro,
 		FormCadastroCnae,
 		GridListagem
 	},
+
 	data: () => {
 		return {
 
@@ -68,9 +71,9 @@ export default {
 			parametrosFiltro: {
 				pagina: 0,
 				itemsPorPagina: 10,
-				tipoOrdenacao: 'dataCadastro,desc',
-				codigoOrNome: ''
-			},
+				tipoOrdenacao: 'dataCadastro,asc',
+				stringPesquisa: ''
+			}
 			isCadastro: true,
 			dadosPanel: {
 				items: 1,
@@ -111,7 +114,7 @@ export default {
 						.then(() => {
 
 							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'success', text: SUCCESS_MESSAGES.cadastroCnae, timeout: '6000'}
+								{color: 'success', text: SUCCESS_MESSAGES.cadastro, timeout: '6000'}
 							);
 							this.clear();
 							this.updatePagination();
@@ -182,11 +185,12 @@ export default {
 					this.dadosListagem = response.data;
 				})
 				.catch(erro => {
-					console.error(erro);
+					console.error(erro)
 					this.$store.dispatch(SET_SNACKBAR,
 						{color: 'error', text: ERROR_MESSAGES.listagemCnae + ': ' + erro.message, timeout: '6000'}
-					);
+					)
 				});
+
 		},
 
 		editarItem(item) {
@@ -282,17 +286,8 @@ export default {
 
 	created () {
 
-		AtividadeCnaeService.listar()
+		this.updatePagination();
 
-			.then((response) => {
-				this.dadosListagem = response.data;
-			})
-			.catch(erro => {
-				console.error(erro);
-				this.$store.dispatch(SET_SNACKBAR,
-					{color: 'error', text: ERROR_MESSAGES.listagemCnae + ': ' + erro.message, timeout: '6000'}
-				);
-			});
 	}
 
 };

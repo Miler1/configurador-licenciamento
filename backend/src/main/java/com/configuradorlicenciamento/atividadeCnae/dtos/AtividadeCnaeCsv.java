@@ -21,7 +21,7 @@ public class AtividadeCnaeCsv implements Serializable {
     @CsvBindByName(column = "Código")
     private String codigo;
 
-    @CsvBindByName(column = "Ativo")
+    @CsvBindByName(column = "Status")
     private String ativo;
 
     @CsvBindByName(column = "Data de cadastro")

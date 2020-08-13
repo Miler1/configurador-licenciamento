@@ -17,12 +17,14 @@
 							dense,
 							v-model="usuarioAutenticacao.login",
 							v-on:keyup.enter="handleLogar",
+							v-mask="'###.###.###-##'",
+							placeholder="Digite seu CPF",
 							name="cpf",
 							type="text",
 							color="#84A98C",
 							append-icon="mdi-account",
 							:error-messages="cpfError()",
-							:error="error.login && (!isEmpty(usuarioAutenticacao.login) || !isEmpty(usuarioAutenticacao.password))"
+							:error="errors.login && (!isEmpty(usuarioAutenticacao.login) || !isEmpty(usuarioAutenticacao.password))"
 							@click.native="resetCpfError",
 						)
 						label.label-login Senha
@@ -30,6 +32,7 @@
 							solo,
 							dense,
 							v-model='usuarioAutenticacao.password',
+							placeholder="Digite sua senha",
 							v-on:keyup.enter="handleLogar",
 							name="senha",
 							:type="show ? 'text' : 'password'",
@@ -67,7 +70,7 @@ export default {
 				password: null,
 			},
 
-			error:{
+			errors:{
 				required:{
 					senha: false,
 					cpf: false,
@@ -91,15 +94,15 @@ export default {
 					.catch(error => {
 					
 						console.error(error);
-						this.error.login = true;
-						this.error.message = error.message;
+						this.errors.login = true;
+						this.errors.message = error.message;
 						
 					});
 			} else {
 			
-				this.error.required.cpf = true;
-				this.error.required.senha = true;
-				this.error.message = 'Obrigatório';
+				this.errors.required.cpf = true;
+				this.errors.required.senha = true;
+				this.errors.message = 'Obrigatório';
 				
 			}
 		},
@@ -116,35 +119,35 @@ export default {
 		resetCpfError() {
 		
 			this.resetLoginError();
-			this.error.required.cpf = false;
+			this.errors.required.cpf = false;
 			
 		},
 		
 		resetSenhaError() {
 		
 			this.resetLoginError();
-			this.error.required.senha = false;
+			this.errors.required.senha = false;
 			
 		},
 		
 		resetLoginError() {
 		
-			if (this.error.login) {
-				this.error.login = false;
-				
+			if (this.errors.login) {
+				this.errors.login = false;
 			}
+			
 		},
 		
 		cpfError() {
-			return this.error.required.cpf && !this.usuarioAutenticacao.login ? this.error.message : [];
+			return this.errors.required.cpf && !this.usuarioAutenticacao.login ? this.errors.message : [];
 		},
 		
 		senhaError() {
 		
-			if ( (this.error.required.senha && !this.usuarioAutenticacao.password) ||
-				(this.error.login && this.usuarioAutenticacao.password && this.usuarioAutenticacao.login)){
+			if ( (this.errors.required.senha && !this.usuarioAutenticacao.password) ||
+				(this.errors.login && this.usuarioAutenticacao.password && this.usuarioAutenticacao.login)){
 
-				return this.error.message;
+				return this.errors.message;
 			}
 			return [];
 			

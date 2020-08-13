@@ -4,15 +4,15 @@
 	b.titulo-listagem {{ tituloListagem }}
 	v-row
 		v-col(cols='12' md='8')
-				v-text-field(outlined,
-				:placeholder="placeholderPesquisa",
-				prepend-inner-icon="mdi-magnify",
-				color="#E0E0E0",
-				dense,
-				@input='inputPesquisa')
+			v-text-field(outlined,
+			:placeholder="placeholderPesquisa",
+			prepend-inner-icon="mdi-magnify",
+			color="#E0E0E0",
+			dense,
+			@input='inputPesquisa')
 
 		v-col(cols='12' md='4')
-			v-btn#QA-btn-download-relatorio.float-right(@click="gerarRelatorio", large, outlined, color="#84A98C")
+			v-btn#QA-btn-gerar-relatorio.float-right(@click="gerarRelatorio", large, outlined, color="#84A98C")
 				v-icon mdi-download
 				span Gerar Relatório
 
@@ -33,9 +33,9 @@
 					| {{item.ativo ? 'mdi-minus-circle' : 'mdi-check-circle'}}
 
 			template(v-slot:no-data)
-				span Sem dados
+				span Não existem registros a serem exibidos.
 
-			template(v-slot:footer)
+			template(v-slot:footer, v-if="dadosListagem == null" )
 				v-row
 					v-col(cols='12' md='4')
 						v-pagination.float-left(v-model="page"
@@ -138,8 +138,8 @@ export default {
 
 		inputPesquisa(text) {
 
-			this.parametrosFiltro.codigoOrNome = text;
 			this.parametrosFiltro.pagina = 0;
+			this.parametrosFiltro.stringPesquisa = text;
 			this.updatePagination(this.parametrosFiltro);
 
 		},
@@ -154,6 +154,10 @@ export default {
 			this.updatePagination(this.parametrosFiltro);
 
 		},
+
+		dadosListagemIsNull() {
+			return this.dadosListagem == null;
+		}
 
 	},
 

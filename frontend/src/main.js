@@ -5,10 +5,12 @@ import store from './store';
 import ApiService from './services/api.service';
 import vuetify from './plugins/vuetify';
 import VueSimpleAlert from "vue-simple-alert";
+import { VueMaskDirective } from 'v-mask';
 
 Vue.config.productionTip = false;
 
 Vue.use(VueSimpleAlert);
+Vue.directive('mask', VueMaskDirective);
 
 ApiService.init().then(() => {
 	new Vue({

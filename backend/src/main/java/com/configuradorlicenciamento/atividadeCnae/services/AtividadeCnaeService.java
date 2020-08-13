@@ -2,11 +2,11 @@ package com.configuradorlicenciamento.atividadeCnae.services;
 
 import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeCsv;
 import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeDTO;
-import com.configuradorlicenciamento.atividadeCnae.dtos.FiltroAtividadeCnaeDTO;
 import com.configuradorlicenciamento.atividadeCnae.interfaces.IAtividadeCnaeService;
 import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.atividadeCnae.repositories.AtividadeCnaeRepository;
 import com.configuradorlicenciamento.atividadeCnae.specifications.AtividadeCnaeSpecification;
+import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
 import com.configuradorlicenciamento.usuarioLicenciamento.repositories.UsuarioLicenciamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +73,7 @@ public class AtividadeCnaeService implements IAtividadeCnaeService {
     }
 
     @Override
-    public Page<AtividadeCnae> lista(Pageable pageable, FiltroAtividadeCnaeDTO filtro) {
+    public Page<AtividadeCnae> lista(Pageable pageable, FiltroPesquisa filtro) {
 
         Specification<AtividadeCnae> specification = preparaFiltro(filtro);
 
@@ -82,13 +82,13 @@ public class AtividadeCnaeService implements IAtividadeCnaeService {
         return atividadeCnaes;
     }
 
-    private Specification<AtividadeCnae> preparaFiltro(FiltroAtividadeCnaeDTO filtro) {
+    private Specification<AtividadeCnae> preparaFiltro(FiltroPesquisa filtro) {
 
         Specification specification = Specification.where(AtividadeCnaeSpecification.padrao());
 
-        if(filtro.getCodigoOrNome() != null) {
-            specification = specification.and(AtividadeCnaeSpecification.nome(filtro.getCodigoOrNome())
-                    .or(AtividadeCnaeSpecification.codigo(filtro.getCodigoOrNome())));
+        if(filtro.getStringPesquisa() != null) {
+            specification = specification.and(AtividadeCnaeSpecification.nome(filtro.getStringPesquisa())
+                    .or(AtividadeCnaeSpecification.codigo(filtro.getStringPesquisa())));
 
         }
 

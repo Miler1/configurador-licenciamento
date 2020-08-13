@@ -1,22 +1,23 @@
 <template lang="pug">
 
 v-app-bar(app, outlined, color='white')
-	v-spacer
 	v-row
-		v-spacer
-		v-icon.mr-2 mdi-account-circle
-
-		v-col(cols="2")
-			v-tooltip(bottom)
-				template(v-slot:activator="{ on, attrs }")
-					v-toolbar-title.text-sm-body-2.text-center(v-bind="attrs" v-on="on")
-						| {{usuarioLogado.name}}
-				span {{usuarioLogado.name}}
-			v-toolbar-title.text-caption.text-center
-				| Administrador
-
-		v-btn(icon @click='logout').mt-2
-			v-icon mdi-logout
+		v-col.d-flex.flex-column.align-center(cols="12", md="12")
+			div.align-self-end
+				div#div-toolbar.d-flex.flex-row.justify-center.align-center
+					v-icon.mr-2 mdi-account-circle
+					v-tooltip(bottom)
+						template(v-slot:activator="{ on, attrs }")
+							v-toolbar-title#toolbar-title.text-sm-body-2.text-center(v-bind="attrs", v-on="on")
+								| {{usuarioLogado.name}}
+						span {{usuarioLogado.name}}
+					v-tooltip(bottom)
+						template(v-slot:activator="{ on, attrs }")
+							v-btn(icon, @click='logout', v-on="on")
+								v-icon mdi-logout
+						span Sair			
+				v-toolbar-title.text-caption.text-center
+					| Administrador
 
 </template>
 
@@ -49,7 +50,16 @@ export default {
 
 </script>
 
-<style>
+<style lang="less" scoped>
+
+
+#div-toolbar {
+	height: 16px;
+
+	#toolbar-title {
+		cursor: default;
+	}
+}
 
 .text-caption {
 	color: #BDBDBD;

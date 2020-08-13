@@ -10,14 +10,14 @@
 import CardLogin from "@/components/CardLogin";
 
 export default {
+
 	name: "Login",
+
 	components: {CardLogin},
+
 	container: {
 		CardLogin
 	},
-	props: {
-		source: String,
-	}	
 };
 
 </script>
