@@ -73,7 +73,7 @@ export default {
 				itemsPorPagina: 10,
 				tipoOrdenacao: 'dataCadastro,asc',
 				stringPesquisa: ''
-			}
+			},
 			isCadastro: true,
 			dadosPanel: {
 				items: 1,
@@ -185,10 +185,10 @@ export default {
 					this.dadosListagem = response.data;
 				})
 				.catch(erro => {
-					console.error(erro)
+					console.error(erro);
 					this.$store.dispatch(SET_SNACKBAR,
 						{color: 'error', text: ERROR_MESSAGES.listagemCnae + ': ' + erro.message, timeout: '6000'}
-					)
+					);
 				});
 
 		},
