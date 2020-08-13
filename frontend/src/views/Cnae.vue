@@ -12,7 +12,7 @@
 				:clear="clear",
 				:submit="submit",
 				:resetErrorMessage="resetErrorMessage",
-				:errorMessageEmpty="errorMessageEmpty",
+				:errorMessage="errorMessage",
 				:labelBotaoCadastrarEditar="labelBotaoCadastrarEditar",
 				:iconBotaoCadastrarEditar="iconBotaoCadastrarEditar"
 			)
@@ -171,6 +171,10 @@ export default {
 
 		resetErrorMessage() {
 			this.errorMessageEmpty = true;
+		},
+
+		errorMessage(value) {
+			return this.errorMessageEmpty || value ? [] : 'Obrigatório';
 		},
 
 		gerarRelatorio() {

@@ -11,7 +11,7 @@
 						:placeholder="placeholder"
 						v-model="atividadeCnae.codigo",
 						@click.native="resetErrorMessage",
-						:error-messages="errorMessageEmpty || atividadeCnae.codigo ? [] : 'Obrigatório'"
+						:error-messages="errorMessage(atividadeCnae.codigo)"
 						required,
 						dense
 					)
@@ -23,7 +23,7 @@
 						:placeholder="placeholder"
 						v-model="atividadeCnae.nome",
 						@click.native="resetErrorMessage",
-						:error-messages="errorMessageEmpty || atividadeCnae.nome ? [] : 'Obrigatório'"
+						:error-messages="errorMessage(atividadeCnae.nome)"
 						required,
 						dense
 					)
@@ -64,8 +64,8 @@ export default {
 		resetErrorMessage:{
 			type: [Function]
 		},
-		errorMessageEmpty: {
-			type: [Boolean]
+		errorMessage: {
+			type: [Function]
 		},
 		labelBotaoCadastrarEditar: {
 			type: [String]

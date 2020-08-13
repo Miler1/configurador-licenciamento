@@ -11,7 +11,7 @@
 						color="#E0E0E0",
 						:placeholder="placeholder"
 						v-model="licenca.sigla",
-						:error-messages="checkErrorMessage(licenca.tipo)"
+						:error-messages="errorMessage(licenca.sigla)"
 						@click.native="resetErrorMessage",
 						required,
 					)
@@ -23,7 +23,7 @@
 						color="#E0E0E0",
 						:placeholder="placeholder",
 						v-model="licenca.nome",
-						:error-messages="checkErrorMessage(licenca.nomenclatura)"
+						:error-messages="errorMessage(licenca.nome)"
 						@click.native="resetErrorMessage",
 						required,
 					)
@@ -40,7 +40,7 @@
 							:items="finalidades"
 							item-text="text",
 							item-value="value",
-							:error-messages="checkErrorMessage(licenca.finalidade)"
+							:error-messages="errorMessage(licenca.finalidade)"
 							@click.native="resetErrorMessage",
 							required,
 						)
@@ -57,9 +57,9 @@
 								min="0",
 								step="1",
 								v-model="licenca.validade",
-								:error-messages="checkErrorMessage(licenca.validade)"
+								:error-messages="errorMessage(licenca.validade)",
 								@click.native="resetErrorMessage",
-								:disabled="validadeIsDisabled()",
+								:disabled="validadeDisabled()",
 								required,
 							)
 							div#div-meses
@@ -89,6 +89,7 @@ export default {
 			placeholder: "Digite aqui...",
 			placeholderSelect: "Selecione",
 			finalidades: FinalidadeEnum,
+			validadeFieldDisabled: true,
 		};
 	},
 
@@ -105,13 +106,20 @@ export default {
 		resetErrorMessage: {
 			type: [Function]
 		},
-		checkErrorMessage: {
-			type: [Function]
-		},
-		validadeIsDisabled: {
+		errorMessage: {
 			type: [Function]
 		}
+	},
+
+	methods: {
+
+		validadeDisabled() {
+
+			return !this.licenca.finalidade || this.licenca.finalidade == 'CADASTRO';
+
+		}
 	}
+
 };
 
 </script>

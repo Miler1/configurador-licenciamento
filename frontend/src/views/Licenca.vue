@@ -5,14 +5,14 @@
 		PanelCadastro.pa-7(
 			:title="panelTitle",
 			:clear="clear",
+			:dadosPanel="dadosPanel"
 		)
 			FormCadastroLicenca(
 				:licenca="licenca",
 				:clear="clear",
 				:submit="submit",
 				:resetErrorMessage="resetErrorMessage",
-				:checkErrorMessage="checkErrorMessage",
-				:validadeIsDisabled="validadeIsDisabled",
+				:errorMessage="errorMessage",
 			)
 
 		GridListagem.pa-7(
@@ -21,7 +21,8 @@
 			:gerarRelatorio="gerarRelatorio",
 			:headers="headerListagem",
 			:dadosListagem="dadosListagem",
-			:updatePagination="updatePagination"
+			:updatePagination="updatePagination",
+			:parametrosFiltro="parametrosFiltro",
 		)
 
 </template>
@@ -61,6 +62,17 @@ export default {
 			placeholderPesquisa: "Pesquisar por sigla ou nome da licença",
 			dadosListagem: {},
 			headerListagem: HEADER,
+			parametrosFiltro: {
+				pagina: 0,
+				itemsPorPagina: 10,
+				tipoOrdenacao: 'dataCadastro,asc',
+				stringPesquisa: ''
+			},
+			dadosPanel: {
+				items: 1,
+				panel: [],
+				readonly: true,
+			},
 		};
 	},
 
@@ -78,6 +90,7 @@ export default {
 						);
 						this.clear();
 						this.listarLicencas();
+						this.parametrosFiltro.pagina = 0;
 
 					})
 
@@ -99,7 +112,7 @@ export default {
 			this.licenca.nome = null;
 			this.licenca.validade = null;
 			this.licenca.finalidade = null;
-			this.licenca.errorMessageEmpty = true;
+			this.errorMessageEmpty = true;
 
 		},
 
@@ -114,18 +127,14 @@ export default {
 				this.licenca.finalidade &&
 				this.licenca.finalidade != '';
 
-		},
+		},	
 
 		resetErrorMessage() {
 			this.errorMessageEmpty = true;
 		},
 
-		checkErrorMessage(value) {
+		errorMessage(value) {
 			return this.errorMessageEmpty || value ? [] : 'Obrigatório';
-		},
-
-		validadeIsDisabled() {
-			return this.licenca.finalidade == null || this.licenca.finalidade == 'CADASTRO';
 		},
 		
 		gerarRelatorio() {
