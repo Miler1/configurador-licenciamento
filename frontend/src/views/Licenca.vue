@@ -69,6 +69,7 @@ export default {
 				tipoOrdenacao: 'dataCadastro,asc',
 				stringPesquisa: ''
 			},
+			isCadastro: true,
 			dadosPanel: {
 				items: 1,
 				panel: [],
