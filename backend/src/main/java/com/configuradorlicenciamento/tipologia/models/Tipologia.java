@@ -1,7 +1,5 @@
 package com.configuradorlicenciamento.tipologia.models;
 
-import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeCsv;
-import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeDTO;
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.tipologia.dtos.TipologiaDTO;
 import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
@@ -33,8 +31,8 @@ public class Tipologia implements Serializable {
     @NotNull(message = "{validacao.notnull}")
     private Boolean ativo;
 
-//    @NotNull(message = "{validacao.notnull}")
-//    private Date dataCadastro;
+    @NotNull(message = "{validacao.notnull}")
+    private Date dataCadastro;
 
     @NotNull(message = "{validacao.notnull}")
     @ManyToOne
@@ -45,7 +43,7 @@ public class Tipologia implements Serializable {
         this.nome = builder.nome;
         this.codigo = builder.codigo;
         this.ativo = builder.ativo;
-//        this.dataCadastro = builder.dataCadastro;
+        this.dataCadastro = builder.dataCadastro;
         this.usuarioLicenciamento = builder.usuarioLicenciamento;
     }
 
@@ -54,7 +52,7 @@ public class Tipologia implements Serializable {
         private final String nome;
         private final String codigo;
         private Boolean ativo;
-//        private Date dataCadastro;
+        private Date dataCadastro;
         private UsuarioLicenciamento usuarioLicenciamento;
 
         public TipologiaBuilder(TipologiaDTO tipologiaDTO) {
@@ -64,7 +62,7 @@ public class Tipologia implements Serializable {
         }
 
         public TipologiaBuilder setDataCadastro(Date dataCadastro) {
-//            this.dataCadastro = dataCadastro;
+            this.dataCadastro = dataCadastro;
             return this;
         }
 
