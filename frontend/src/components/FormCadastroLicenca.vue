@@ -57,7 +57,7 @@
 								type="number",
 								min="0",
 								step="1",
-								v-model="licenca.validade",
+								v-model="licenca.validadeEmAnos",
 								:error-messages="validadeErrorMessage()"
 								:disabled="validadeDisabled()",
 								@click.native="resetErrorMessage;",
@@ -89,7 +89,6 @@ export default {
 			placeholder: "Digite aqui...",
 			placeholderSelect: "Selecione",
 			finalidades: FinalidadeEnum,
-			validadeFieldDisabled: true,
 		};
 	},
 
@@ -122,7 +121,7 @@ export default {
 
 		upValidade() {
 			if (this.licenca.finalidade === 'CADASTRO') {
-				this.licenca.validade = null;
+				this.licenca.validadeEmAnos = null;
 			}
 		}
 	}

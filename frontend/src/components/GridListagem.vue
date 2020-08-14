@@ -23,6 +23,9 @@
 				:items-per-page="itensPerPage",
 				@update:options="sortBy")
 
+			template#teste(v-slot:item.validadeEmAnos='{ item }')
+				span {{item.validadeEmAnos ? item.validadeEmAnos : '̶'}}
+
 			template(v-slot:item.ativo='{ item }')
 				span {{item.ativo ? 'Ativo' : 'Inativo'}}
 
@@ -173,6 +176,10 @@ export default {
 
 tbody tr:nth-of-type(odd) {
 	background-color: rgba(0, 0, 0, .05);
+}
+
+#teste {
+	text-align: center;
 }
 
 .titulo-listagem{

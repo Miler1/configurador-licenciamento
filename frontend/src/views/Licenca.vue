@@ -57,7 +57,7 @@ export default {
 				sigla: null,
 				nome: null,
 				finalidade: null,
-				validade: null,
+				validadeEmAnos: null,
 			},
 			tituloListagem: "Listagem de licenças ambientais cadastradas",
 			placeholderPesquisa: "Pesquisar por tipo ou nomenclatura da licença",
@@ -112,7 +112,7 @@ export default {
 
 			this.licenca.sigla = null;
 			this.licenca.nome = null;
-			this.licenca.validade = null;
+			this.licenca.validadeEmAnos = null;
 			this.licenca.finalidade = null;
 			this.errorMessageEmpty = true;
 
@@ -137,8 +137,8 @@ export default {
 					this.licenca.nome != '' &&
 					this.licenca.finalidade &&
 					this.licenca.finalidade != '' &&
-					this.licenca.validade &&
-					this.licenca.validade != '';
+					this.licenca.validadeEmAnos &&
+					this.licenca.validadeEmAnos != '';
 			}
 
 		},	
@@ -149,7 +149,7 @@ export default {
 
 		validadeErrorMessage() {
 			
-			if (!this.errorMessageEmpty && !this.licenca.validade && this.licenca.finalidade && this.licenca.finalidade != 'CADASTRO') {
+			if (!this.errorMessageEmpty && !this.licenca.validadeEmAnos && this.licenca.finalidade && this.licenca.finalidade != 'CADASTRO') {
 				
 				return 'Obrigatório';
 			}
