@@ -11,15 +11,15 @@
 
 <script>
 
-import MenuLateral from '@/components/MenuLateral.vue'
-import MenuSuperior from '@/components/MenuSuperior.vue'
+import MenuLateral from '@/components/MenuLateral.vue';
+import MenuSuperior from '@/components/MenuSuperior.vue';
 
 export default {
 
 	name: 'MainWrapper',
 
 	components: {MenuLateral, MenuSuperior}
-}
+};
 
 </script>
 

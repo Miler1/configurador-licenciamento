@@ -3,6 +3,7 @@ package com.configuradorlicenciamento.configuracao.services;
 import br.ufla.lemaf.beans.pessoa.Perfil;
 import br.ufla.lemaf.beans.pessoa.Usuario;
 import com.configuradorlicenciamento.configuracao.enums.Acao;
+import com.configuradorlicenciamento.configuracao.exceptions.UnauthenticatedException;
 import com.configuradorlicenciamento.configuracao.interfaces.IDefaultService;
 import com.configuradorlicenciamento.entradaUnica.services.EntradaUnicaWS;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,7 +26,17 @@ public class DefaultService implements IDefaultService {
 
         Object sessionKey = request.getSession().getAttribute("sessionKeyEntradaUnica");
 
-        Usuario usuarioSessao = EntradaUnicaWS.ws.searchBySessionKey(sessionKey.toString());
+        Usuario usuarioSessao = null;
+
+        try {
+            usuarioSessao = EntradaUnicaWS.ws.searchBySessionKey(sessionKey.toString());
+        } catch (Exception e) {
+            throw new UnauthenticatedException("Opa! Sua seção expirou. Faça login novamente!");
+        }
+
+        if(usuarioSessao == null) {
+            throw new UnauthenticatedException("Opa! Sua seção expirou. Faça login novamente!");
+        }
 
         Principal principal = request.getUserPrincipal();
 

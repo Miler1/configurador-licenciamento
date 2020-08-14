@@ -6,6 +6,7 @@ import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,6 +14,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @Table(schema = GlobalReferences.ESQUEMA, name = "atividade_cnae")

@@ -1,12 +1,15 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
-import ApiService from './services/api.service'
+import Vue from 'vue';
+import App from './App.vue';
+import router from './router';
+import store from './store';
+import ApiService from './services/api.service';
 import vuetify from './plugins/vuetify';
-import { VueMaskDirective } from 'v-mask'
+import VueSimpleAlert from "vue-simple-alert";
+import { VueMaskDirective } from 'v-mask';
 
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+
+Vue.use(VueSimpleAlert);
 Vue.directive('mask', VueMaskDirective);
 
 ApiService.init().then(() => {
@@ -15,5 +18,5 @@ ApiService.init().then(() => {
 		store,
 		vuetify,
 		render: h => h(App)
-	}).$mount('#app')
-})
+	}).$mount('#app');
+});

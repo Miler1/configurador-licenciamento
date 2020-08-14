@@ -1,16 +1,16 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 
-import { GET_USUARIO } from '../store/actions.type'
-import Index from '@/store/index.js'
+import { GET_USUARIO } from '../store/actions.type';
+import Index from '@/store/index.js';
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
 	{
 		path: '/',
 		redirect: to => {
-			return '/home'
+			return '/home';
 		}
 	},
 
@@ -19,11 +19,11 @@ const routes = [
 		name: 'home',
 
 		beforeEnter: (to, from, next) => {
-			BuscaUsuarioLogado(next)
+			BuscaUsuarioLogado(next);
 		},
 
 		redirect: to => {
-			return '/home/cnae'
+			return '/home/cnae';
 		},
 
 		meta: {
@@ -36,7 +36,7 @@ const routes = [
 			{
 				path: '/', 
 				redirect: to => {
-					return 'cnae'
+					return 'cnae';
 				}
 			},
 			{
@@ -70,13 +70,13 @@ const routes = [
 			title: 'Login | Configurador do Licenciamento Ambiental'
 		},
 	}
-]
+];
 
 const router = new VueRouter({
 	mode: 'hash',
 	base: process.env.BASE_URL,
 	routes
-})
+});
 
 router.beforeEach((to, from, next) => {
 
@@ -94,14 +94,14 @@ function BuscaUsuarioLogado(next) {
 	Index.dispatch(GET_USUARIO)
 		.then((usuario) => {
 			if (usuario.authenticated) {
-				next()
+				next();
 			} else {
-				next('/login')
+				next('/login');
 			}
 		})
 		.catch(() => {
-			next(false)
-		})
+			next(false);
+		});
 	
 }
 
@@ -113,4 +113,4 @@ function BuscaUsuarioLogado(next) {
 // 	}
 // }
 
-export default router
+export default router;

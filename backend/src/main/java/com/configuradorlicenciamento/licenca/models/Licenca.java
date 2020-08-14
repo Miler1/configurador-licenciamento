@@ -1,11 +1,13 @@
 package com.configuradorlicenciamento.licenca.models;
 
+import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.licenca.dtos.LicencaCsv;
 import com.configuradorlicenciamento.licenca.dtos.LicencaDTO;
 import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,6 +15,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @Table(schema = GlobalReferences.ESQUEMA, name = "tipo_licenca")
@@ -24,16 +27,19 @@ public class Licenca implements Serializable {
     private Integer id;
 
     @NotNull(message = "{validacao.notnull}")
-    private String sigla;
-
-    @NotNull(message = "{validacao.notnull}")
     private String nome;
 
-    @NotNull(message = "{validacao.notnull}")
+    @Column(nullable = true)
     private Integer validadeEmAnos;
 
     @NotNull(message = "{validacao.notnull}")
+    private String sigla;
+
+    @NotNull(message = "{validacao.notnull}")
     private String finalidade;
+
+    @NotNull(message = "{validacao.notnull}")
+    private Boolean ativo;
 
     @NotNull(message = "{validacao.notnull}")
     private Date dataCadastro;
@@ -44,27 +50,31 @@ public class Licenca implements Serializable {
     private UsuarioLicenciamento usuarioLicenciamento;
 
     public Licenca(Licenca.LicencaBuilder builder) {
-        this.nome = builder.nomenclatura;
-        this.validadeEmAnos = builder.validade;
+        this.nome = builder.nome;
+        this.validadeEmAnos = builder.validadeEmAnos;
         this.sigla = builder.sigla;
         this.finalidade = builder.finalidade;
+        this.ativo = builder.ativo;
         this.usuarioLicenciamento = builder.usuarioLicenciamento;
         this.dataCadastro = builder.dataCadastro;
     }
 
     public static class LicencaBuilder {
+
+        private String nome;
+        private Integer validadeEmAnos;
         private String sigla;
-        private String nomenclatura;
-        private Integer validade;
         private String finalidade;
+        private Boolean ativo;
         private Date dataCadastro;
         private UsuarioLicenciamento usuarioLicenciamento;
 
         public LicencaBuilder(LicencaDTO licencaDTO) {
+            this.nome = licencaDTO.getNome();
+            this.validadeEmAnos = licencaDTO.getValidadeEmAnos();
             this.sigla = licencaDTO.getSigla();
-            this.nomenclatura = licencaDTO.getNome();
-            this.validade = licencaDTO.getValidade();
             this.finalidade = licencaDTO.getFinalidade();
+            this.ativo = licencaDTO.getAtivo();
         }
 
         public LicencaBuilder setDataCadastro(Date dataCadastro) {

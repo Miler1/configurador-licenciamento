@@ -11,7 +11,7 @@
 						:placeholder="placeholder"
 						v-model="atividadeCnae.codigo",
 						@click.native="resetErrorMessage",
-						:error-messages="errorMessageEmpty || atividadeCnae.codigo ? [] : 'Obrigatório'"
+						:error-messages="errorMessage(atividadeCnae.codigo)"
 						required,
 						dense
 					)
@@ -23,19 +23,19 @@
 						:placeholder="placeholder"
 						v-model="atividadeCnae.nome",
 						@click.native="resetErrorMessage",
-						:error-messages="errorMessageEmpty || atividadeCnae.nome ? [] : 'Obrigatório'"
+						:error-messages="errorMessage(atividadeCnae.nome)"
 						required,
 						dense
 					)
 			v-row
-				v-col#form-actions(cols="12", md="12")
-					a#QA-limpar-dados-cnae(@click="clear")
+				v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
+					a#QA-limpar-dados-cnae.d-flex.flex-row.align-center.justify-end(@click="clear")
 						v-icon mdi-delete
 						span Limpar dados  
 				
-					v-btn#QA-btn-cadastrar-cnae(@click="submit")
-						v-icon(color="white") mdi-plus
-						span Cadastrar
+					v-btn#QA-btn-cadastrar-cnae(@click="submit", large)
+						v-icon(color="white") {{iconBotaoCadastrarEditar}}
+						span {{labelBotaoCadastrarEditar}}
 
 </template>
 
@@ -48,7 +48,7 @@ export default {
 	data: () => {
 		return {
 			placeholder: "Digite aqui..."
-		}
+		};
 	},
 
 	props: {
@@ -64,8 +64,14 @@ export default {
 		resetErrorMessage:{
 			type: [Function]
 		},
-		errorMessageEmpty: {
-			type: [Boolean]
+		errorMessage: {
+			type: [Function]
+		},
+		labelBotaoCadastrarEditar: {
+			type: [String]
+		},
+		iconBotaoCadastrarEditar: {
+			type: [String]
 		}
 	}
 

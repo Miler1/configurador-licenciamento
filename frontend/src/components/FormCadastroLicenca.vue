@@ -11,7 +11,7 @@
 						color="#E0E0E0",
 						:placeholder="placeholder"
 						v-model="licenca.sigla",
-						:error-messages="checkErrorMessage(licenca.tipo)"
+						:error-messages="errorMessage(licenca.sigla)"
 						@click.native="resetErrorMessage",
 						required,
 					)
@@ -23,11 +23,11 @@
 						color="#E0E0E0",
 						:placeholder="placeholder",
 						v-model="licenca.nome",
-						:error-messages="checkErrorMessage(licenca.nomenclatura)"
+						:error-messages="errorMessage(licenca.nome)"
 						@click.native="resetErrorMessage",
 						required,
 					)
-			v-row.align-center.flex-direction-row.justify-start
+			v-row.flex-row.align-center.justify-start
 				v-col(cols="12", md="3")
 					label Finalidade
 						v-select#QA-select-licenca-finalidade(
@@ -40,15 +40,16 @@
 							:items="finalidades"
 							item-text="text",
 							item-value="value",
-							:error-messages="checkErrorMessage(licenca.finalidade)"
+							:error-messages="errorMessage(licenca.finalidade)"
 							@click.native="resetErrorMessage",
+							@change="upValidade",
 							required,
 						)
-				v-col.flex-column.flex-direction-row.justify-start.pl-0(cols="12", md="9")
+				v-col.d-flex.flex-column.justify-start.pl-0(cols="12", md="9")
 					v-col.pb-0(cols="12", md="8")
 						label Prazo de Validade
-					v-col.flex-column.flex-direction-row.justify-start.pt-0(cols="12", md="4")
-						div.flex-column.flex-direction-row
+					v-col.d-flex.flex-row.justify-start.pt-0(cols="12", md="4")
+						div.d-flex.flex-row
 							v-text-field#QA-input-licenca-validade(
 								outlined,
 								dense,
@@ -56,29 +57,28 @@
 								type="number",
 								min="0",
 								step="1",
-								v-model="licenca.validade",
-								:error-messages="checkErrorMessage(licenca.validade)"
-								@click.native="resetErrorMessage",
-								:disabled="validadeIsDisabled()",
-								required,
+								v-model="licenca.validadeEmAnos",
+								:error-messages="validadeErrorMessage()"
+								:disabled="validadeDisabled()",
+								@click.native="resetErrorMessage;",
 							)
 							div#div-meses
 								span Anos
 			v-row
-				v-col#form-actions(cols="12", md="12")
-					a#QA-limpar-dados-licenca(@click="clear")
+				v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
+					a#QA-limpar-dados-licenca.d-flex.flex-row.align-center.justify-end(@click="clear")
 						v-icon mdi-delete
-						span Limpar Dados
+						span Limpar dados
 
 					v-btn#QA-btn-cadastrar-licenca(@click="submit")
-						v-icon(color="white") mdi-plus
-						span Cadastrar
+						v-icon(color="white") {{iconBotaoCadastrarEditar}}
+						span {{labelBotaoCadastrarEditar}}
 
 </template>
 
 <script>
 
-import FinalidadeEnum from '../utils/enums/finalidadeEnum'
+import FinalidadeEnum from '../utils/enums/finalidadeEnum';
 
 export default {
 
@@ -89,7 +89,7 @@ export default {
 			placeholder: "Digite aqui...",
 			placeholderSelect: "Selecione",
 			finalidades: FinalidadeEnum,
-		}
+		};
 	},
 
 	props: {
@@ -105,14 +105,34 @@ export default {
 		resetErrorMessage: {
 			type: [Function]
 		},
-		checkErrorMessage: {
+		errorMessage: {
 			type: [Function]
 		},
-		validadeIsDisabled: {
+		validadeErrorMessage: {
 			type: [Function]
+		},
+		labelBotaoCadastrarEditar: {
+			type: [String]
+		},
+		iconBotaoCadastrarEditar: {
+			type: [String]
+		}
+	},
+
+	methods: {
+
+		validadeDisabled() {
+			return !this.licenca.finalidade || this.licenca.finalidade === 'CADASTRO';
+		},
+
+		upValidade() {
+			if (this.licenca.finalidade === 'CADASTRO') {
+				this.licenca.validadeEmAnos = null;
+			}
 		}
 	}
-}
+
+};
 
 </script>
 

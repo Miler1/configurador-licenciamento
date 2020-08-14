@@ -1,8 +1,10 @@
-import ApiService from './api.service'
+import ApiService from './api.service';
 
 export default {
 
 	salvar: async (licenca) => ApiService.post('/licenca/salvar', licenca),
+
+	editar: async (licenca) => ApiService.post('/licenca/editar', licenca),
 
 	listar: async (parametrosFiltro) => {
 		if(parametrosFiltro){
@@ -18,4 +20,4 @@ export default {
 		}
 	}
 
-}
+};

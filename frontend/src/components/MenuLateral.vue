@@ -13,7 +13,8 @@ v-navigation-drawer.teste(app v-model='drawer', :mini-variant.sync='mini', dark,
 				v-list-group(v-if='item.children' :key='item.title' v-model='!item.model' :append-icon="item.model ? 'mdi-chevron-down' : 'mdi-chevron-up'" color="#fff")
 					template(v-slot:activator)
 						v-list-item-icon
-							v-icon {{ item.icon }}
+							v-icon(v-if='item.icon.vuetify') {{ item.icon.value }}
+							i(v-else :class='item.icon.value').fs-21.pl-1
 						v-list-item-content
 							v-list-item-title
 								| {{ item.title }}
@@ -25,7 +26,8 @@ v-navigation-drawer.teste(app v-model='drawer', :mini-variant.sync='mini', dark,
 								| {{ child.title }}
 				v-list-item(v-else :key='item.title' :to='item.path')
 					v-list-item-icon
-						v-icon {{ item.icon }}
+						v-icon(v-if='item.icon.vuetify') {{ item.icon.value }}
+						i(v-else :class='item.icon.value').fs-21.pl-1
 					v-list-item-content
 						v-list-item-title
 							| {{ item.title }}
@@ -40,20 +42,20 @@ export default {
 	data: () => ({
 		drawer: true,
 		items: [
-			{ title: 'CNAE', icon: 'mdi-home-city', path: 'cnae'},
-			{ title: 'Licença', icon: 'mdi-card-account-details', path: 'licenca'},
-			{ title: 'Municípios capacitados', icon: 'mdi-city', path: 'municipios-capacitados'},
-			{ title: 'Tipologia', icon: 'mdi-format-list-bulleted-square', path: 'tipologia'},
-			{ title: 'Parâmetros', icon: 'mdi-home-city', path: 'parametros'},
-			{ title: 'Taxa', icon: 'mdi-cash-usd-outline', path: 'taxa'},
-			{ title: 'Requisitos', icon: 'mdi-clipboard-list', model: true,
+			{ title: 'CNAE', icon: {vuetify: true, value: 'mdi-home-city'}, path: 'cnae'},
+			{ title: 'Licença', icon: {vuetify: true, value: 'mdi-card-account-details'}, path: 'licenca'},
+			{ title: 'Municípios capacitados', icon: {vuetify: true, value: 'mdi-city'}, path: 'municipios-capacitados'},
+			{ title: 'Tipologia', icon: {vuetify: true, value: 'mdi-format-list-bulleted-square'}, path: 'tipologia'},
+			{ title: 'Parâmetros', icon: {vuetify: false, value: 'fa fa-sliders'}, path: 'parametros'},
+			{ title: 'Taxa', icon: {vuetify: true, value: 'mdi-cash-usd-outline'}, path: 'taxa'},
+			{ title: 'Requisitos', icon: {vuetify: true, value: 'mdi-clipboard-list'}, model: true,
 				children: [
 					{ title: 'Requisitos administrativos', path: 'requisitos-administrativos'},
 					{ title: 'Requisitos técnicos', path: 'requisitos-tecnicos' }
 				],
 			},
-			{ title: 'Atividades licenciáveis', icon: 'mdi-account-multiple-plus', path: 'atividades-licenciaveis'},
-			{ title: 'Atividades dispensáveis', icon: 'mdi-account-multiple-remove', model: true,
+			{ title: 'Atividades licenciáveis', icon: {vuetify: true, value: 'mdi-account-multiple-plus'}, path: 'atividades-licenciaveis'},
+			{ title: 'Atividades dispensáveis', icon: {vuetify: true, value: 'mdi-account-multiple-remove'}, model: true,
 				children: [
 					{ title: 'Perguntas', path: 'perguntas' },
 					{ title: 'CNAEs dispensáveis', path: 'cnaes-dispensaveis' }
@@ -63,7 +65,7 @@ export default {
 		mini: false,
 		active: 1
 	}),
-}
+};
 
 </script>
 
@@ -76,6 +78,10 @@ export default {
     	min-width: 25px !important;
 
 	}
+}
+
+.fs-21 {
+	font-size: 21px;
 }
 
 </style>

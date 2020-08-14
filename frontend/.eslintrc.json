@@ -26,12 +26,16 @@
         "indent": [
             "error",
             "tab"
+        ],
+        "semi": [
+            "error"
         ]
     },
     "overrides": [
         {
             "files": [
-                "*.vue"
+                "*.vue",
+                "*.js"
             ],
             "rules": {
                 "indent": "off"

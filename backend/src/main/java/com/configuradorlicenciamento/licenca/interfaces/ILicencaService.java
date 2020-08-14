@@ -1,5 +1,7 @@
 package com.configuradorlicenciamento.licenca.interfaces;
 
+import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeDTO;
+import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.licenca.dtos.LicencaCsv;
 import com.configuradorlicenciamento.licenca.dtos.LicencaDTO;
@@ -13,6 +15,8 @@ import java.util.List;
 public interface ILicencaService {
 
     Licenca salvar(HttpServletRequest request, LicencaDTO licencaDTO) throws Exception;
+
+    Licenca editar(HttpServletRequest request, LicencaDTO licencaDTO);
 
     Page<Licenca> lista(Pageable pageable, FiltroPesquisa filtro);
 

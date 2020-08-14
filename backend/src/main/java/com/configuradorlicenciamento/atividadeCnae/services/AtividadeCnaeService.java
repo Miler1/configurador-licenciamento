@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AtividadeCnaeService implements IAtividadeCnaeService {
@@ -31,7 +32,7 @@ public class AtividadeCnaeService implements IAtividadeCnaeService {
     UsuarioLicenciamentoRepository usuarioLicenciamentoRepository;
 
     @Override
-    public AtividadeCnae salvar(HttpServletRequest request, AtividadeCnaeDTO atividadeCnaeDTO) throws Exception{
+    public AtividadeCnae salvar(HttpServletRequest request, AtividadeCnaeDTO atividadeCnaeDTO) {
 
         Object login = request.getSession().getAttribute("login");
 
@@ -45,6 +46,29 @@ public class AtividadeCnaeService implements IAtividadeCnaeService {
         atividadeCnaeRepository.save(atividadeCnae);
 
         return atividadeCnae;
+
+    }
+
+    @Override
+    public AtividadeCnae editar(HttpServletRequest request, AtividadeCnaeDTO atividadeCnaeDTO) {
+
+        Object login = request.getSession().getAttribute("login");
+
+        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
+
+        Optional<AtividadeCnae> atividadeCnaeSalva = atividadeCnaeRepository.findById(atividadeCnaeDTO.getId())
+                .map(atividadeCnae -> {
+                    atividadeCnae.setNome(atividadeCnaeDTO.getNome());
+                    atividadeCnae.setCodigo(atividadeCnaeDTO.getCodigo());
+                    atividadeCnae.setUsuarioLicenciamento(usuarioLicenciamento);
+                    atividadeCnae.setDataCadastro(new Date());
+                    atividadeCnae.setAtivo(atividadeCnaeDTO.getAtivo());
+                    return atividadeCnae;
+                });
+
+        atividadeCnaeRepository.save(atividadeCnaeSalva.get());
+
+        return atividadeCnaeSalva.get();
 
     }
 

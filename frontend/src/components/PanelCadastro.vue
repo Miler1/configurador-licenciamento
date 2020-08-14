@@ -1,17 +1,17 @@
 <template lang="pug">
 
-	v-expansion-panels(multiple, v-model="panel", :readonly="readonly")
-		v-expansion-panel(v-for="(item, i) in items", :key="i")
+	v-expansion-panels(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
+		v-expansion-panel(v-for="(item, i) in dadosPanel.items", :key="i")
 			v-expansion-panel-header
 				| {{title}}
 				template(v-slot:actions)
-					v-btn#QA-btn-expand_cadastrar(@click="abrirPanel", v-if="panel.length === 0")
+					v-btn#QA-btn-expand_cadastrar(@click="abrirPanel", v-if="dadosPanel.panel.length === 0")
 						v-icon(color="white") mdi-plus
 						span Cadastrar
 					v-btn#QA-btn-fechar_cadastro(
 						icon,
 						@click="fecharPanel",
-						v-if="panel.length > 0"
+						v-if="dadosPanel.panel.length > 0"
 					)
 						v-icon.pa-3(color="white") mdi-close
 			v-expansion-panel-content
@@ -27,30 +27,31 @@ export default {
 
 	data() {
 		return {
-			items: 1,
-			panel: [],
-			readonly: true,
+			
 		};
 	},
 
 	methods: {
 
 		abrirPanel() {
-			this.panel = [0];
+			this.dadosPanel.panel = [0];
 		},
 
 		fecharPanel() {
-			this.panel = [];
+			this.dadosPanel.panel = [];
 			this.clear();
 		}
 	},
 
 	props: {
+		title: {
+			type: [String]
+		},
 		clear:  {
 			type: [Function]
 		},
-		title: {
-			type: [String]
+		dadosPanel: {
+			type: [Object]
 		}
 	}
 };
@@ -74,6 +75,10 @@ export default {
 			padding: 20px !important;
 			text-transform: none !important;
 		}
+
+		.v-icon {
+			font-size: 20px !important;
+		}
 	}
 
 	.v-label {
@@ -89,17 +94,9 @@ export default {
 	}
 
 	#form-actions {
-		align-items: center;
-		display: flex;
-		flex-direction: row;
-		justify-content: flex-end;
 		padding: 0 12px;
 
 		a {
-			align-items: center;
-			display: flex;
-			flex-direction: row;
-			justify-content: flex-end;
 			margin-right: 20px;
 
 			.v-icon, span {
@@ -114,6 +111,10 @@ export default {
 			height: auto;
 			padding: 12px 20px !important;
 			text-transform: none !important;
+		}
+
+		.v-icon {
+			font-size: 20px !important;
 		}
 	}
 
