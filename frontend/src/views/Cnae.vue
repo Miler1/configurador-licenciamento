@@ -71,7 +71,7 @@ export default {
 			parametrosFiltro: {
 				pagina: 0,
 				itemsPorPagina: 10,
-				tipoOrdenacao: 'dataCadastro,asc',
+				tipoOrdenacao: 'dataCadastro,desc',
 				stringPesquisa: ''
 			},
 			isCadastro: true,
@@ -103,6 +103,13 @@ export default {
 
 		},
 
+		resetaDadosFiltragem() {
+			this.parametrosFiltro.pagina = 0;
+			this.parametrosFiltro.itemsPorPagina = 10;
+			this.parametrosFiltro.tipoOrdenacao = 'dataCadastro,desc';
+			this.parametrosFiltro.stringPesquisa = '';
+		},
+
 		submit() {
 
 			if (this.checkForm()) {
@@ -118,7 +125,7 @@ export default {
 							);
 							this.clear();
 							this.updatePagination();
-							this.parametrosFiltro.pagina = 0;
+							this.resetaDadosFiltragem();
 
 						})
 						.catch(erro => {
@@ -138,7 +145,7 @@ export default {
 
 							this.clear();
 							this.updatePagination();
-							this.parametrosFiltro.pagina = 0;
+							this.resetaDadosFiltragem();
 							this.dadosPanel.panel = [];
 
 						})
@@ -259,7 +266,7 @@ export default {
 							}
 
 							this.updatePagination();
-							this.parametrosFiltro.pagina = 0;
+							this.resetaDadosFiltragem();
 
 						})
 						.catch(erro => {
