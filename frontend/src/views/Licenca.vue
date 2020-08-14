@@ -14,6 +14,8 @@
 				:resetErrorMessage="resetErrorMessage",
 				:errorMessage="errorMessage",
 				:validadeErrorMessage="validadeErrorMessage"
+				:labelBotaoCadastrarEditar="labelBotaoCadastrarEditar",
+				:iconBotaoCadastrarEditar="iconBotaoCadastrarEditar"
 			)
 
 		GridListagem.pa-7(
@@ -23,6 +25,8 @@
 			:headers="headerListagem",
 			:dadosListagem="dadosListagem",
 			:updatePagination="updatePagination",
+			:editarItem="editarItem",
+			:ativarDesativarItem="ativarDesativarItem",
 			:parametrosFiltro="parametrosFiltro",
 		)
 
@@ -57,16 +61,19 @@ export default {
 				sigla: null,
 				nome: null,
 				finalidade: null,
-				validade: null,
+				validadeEmAnos: null,
+				ativo: true
 			},
 			tituloListagem: "Listagem de licenças ambientais cadastradas",
 			placeholderPesquisa: "Pesquisar por tipo ou nomenclatura da licença",
+			labelBotaoCadastrarEditar: "Cadastrar",
+			iconBotaoCadastrarEditar: "mdi-plus",
 			dadosListagem: {},
 			headerListagem: HEADER,
 			parametrosFiltro: {
 				pagina: 0,
 				itemsPorPagina: 10,
-				tipoOrdenacao: 'dataCadastro,asc',
+				tipoOrdenacao: 'dataCadastro,desc',
 				stringPesquisa: ''
 			},
 			isCadastro: true,
@@ -80,42 +87,91 @@ export default {
 
 	methods: {
 
-		submit() {
-
-			if (this.checkForm()) {
-
-				LicencaService.salvar(this.licenca)
-					.then((response) => {
-
-						this.$store.dispatch(SET_SNACKBAR,
-							{color: 'success', text: SUCCESS_MESSAGES.cadastro, timeout: '6000'}
-						);
-						this.clear();
-						this.updatePagination();
-						this.parametrosFiltro.pagina = 0;
-
-					})
-
-					.catch(erro => {
-						console.error(erro);
-						this.$store.dispatch(SET_SNACKBAR,
-							{color: 'error', text: ERROR_MESSAGES.cadastroLicenca + ': ' + erro.message, timeout: '6000'}
-						);
-					});
-
-			} else {
-				this.errorMessageEmpty = false;
-			}
-		},
-
 		clear() {
 
 			this.licenca.sigla = null;
 			this.licenca.nome = null;
-			this.licenca.validade = null;
+			this.licenca.validadeEmAnos = null;
 			this.licenca.finalidade = null;
 			this.errorMessageEmpty = true;
+			this.resetaDadosCadastro();
 
+		},
+
+		resetaDadosCadastro() {
+
+			this.panelTitle = "Cadastro de licença ambiental";
+			this.labelBotaoCadastrarEditar = "Cadastrar";
+			this.iconBotaoCadastrarEditar = "mdi-plus";
+			this.isCadastro = true;
+
+		},
+
+		resetaDadosFiltragem() {
+			this.parametrosFiltro.pagina = 0;
+			this.parametrosFiltro.itemsPorPagina = 10;
+			this.parametrosFiltro.tipoOrdenacao = 'dataCadastro,desc';
+			this.parametrosFiltro.stringPesquisa = '';
+		},
+
+		submit() {
+
+			if (this.checkForm()) {
+
+				if(this.isCadastro) {
+
+						
+					LicencaService.salvar(this.licenca)
+						.then((response) => {
+
+							this.$store.dispatch(SET_SNACKBAR,
+								{color: 'success', text: SUCCESS_MESSAGES.cadastro, timeout: '6000'}
+							);
+							this.clear();
+							this.updatePagination();
+							this.resetaDadosFiltragem();
+
+						})
+
+						.catch(erro => {
+							console.error(erro);
+							this.$store.dispatch(SET_SNACKBAR,
+								{color: 'error', text: ERROR_MESSAGES.cadastroLicenca + ': ' + erro.message, timeout: '6000'}
+							);
+						});
+
+				} else {
+
+					LicencaService.editar(this.licenca)
+						.then(() => {
+
+							this.$store.dispatch(SET_SNACKBAR,
+								{color: 'success', text: SUCCESS_MESSAGES.editar, timeout: '6000'}
+							);
+
+							this.clear();
+							this.updatePagination();
+							this.resetaDadosFiltragem();
+							this.dadosPanel.panel = [];
+
+						})
+						.catch(erro => {
+
+							console.error(erro);
+
+							this.$store.dispatch(SET_SNACKBAR,
+								{color: 'error', text: ERROR_MESSAGES.editarLicenca, timeout: '6000'}
+							);
+
+							item.ativo = !item.ativo;
+							this.resetaDadosCadastro();
+
+						});
+				}
+
+			} else {
+				this.errorMessageEmpty = false;
+			}
 		},
 
 		checkForm() {
@@ -137,8 +193,8 @@ export default {
 					this.licenca.nome != '' &&
 					this.licenca.finalidade &&
 					this.licenca.finalidade != '' &&
-					this.licenca.validade &&
-					this.licenca.validade != '';
+					this.licenca.validadeEmAnos &&
+					this.licenca.validadeEmAnos != '';
 			}
 
 		},	
@@ -149,7 +205,7 @@ export default {
 
 		validadeErrorMessage() {
 			
-			if (!this.errorMessageEmpty && !this.licenca.validade && this.licenca.finalidade && this.licenca.finalidade != 'CADASTRO') {
+			if (!this.errorMessageEmpty && !this.licenca.validadeEmAnos && this.licenca.finalidade && this.licenca.finalidade != 'CADASTRO') {
 				
 				return 'Obrigatório';
 			}
@@ -181,6 +237,95 @@ export default {
 
 		},
 
+		editarItem(item) {
+			
+			this.dadosPanel.panel = [0];
+			this.panelTitle = "Editar licença ambiental";
+			this.labelBotaoCadastrarEditar = "Editar";
+			this.iconBotaoCadastrarEditar = "mdi-pencil";
+			this.licenca = { ... item};
+			this.isCadastro = false;
+			window.scrollTo(0,0);
+
+		},
+
+		ativarDesativarItem(item) {
+			
+			this.$fire({
+
+				title: item.ativo ? 
+					'<p class="title-modal-confirm">Desativar Licença - ' + item.sigla+ '</p>' :
+					'<p class="title-modal-confirm">Ativar Licença - ' + item.sigla+ '</p>',
+
+				html: item.ativo ?
+					`<p class="message-modal-confirm">Ao desativar a Licença, ela não estará mais disponível no sistema.</p>
+					<p class="message-modal-confirm">
+						<b>Tem certeza que deseja desativar a Licença? Esta opção pode ser desfeita a qualquer momento ao ativá-la novamente.</b>
+					</p>` :
+					`<p class="message-modal-confirm">Ao ativar a Licença, ela ficará disponível no sistema.</p>
+					<p class="message-modal-confirm">
+						<b>Tem certeza que deseja ativar a Licença? Esta opção pode ser desfeita a qualquer momento ao desativá-la novamente.</b>
+					</p>`,
+				showCancelButton: true,
+				confirmButtonColor: item.ativo ? '#E6A23C' : '#67C23A',
+				cancelButtonColor: '#FFF',
+				showCloseButton: true,
+				focusConfirm: false,
+				confirmButtonText: item.ativo ? '<i class="fa fa-minus-circle"></i> Desativar' : '<i class="fa fa-check-circle"></i> Ativar',
+				cancelButtonText: '<i class="fa fa-close"></i> Cancelar',
+				reverseButtons: true
+
+			}).then((result) => {
+
+				if(result.value) {
+
+					item.ativo = !item.ativo;
+					LicencaService.editar(item)
+						.then(() => {
+							
+							if(!item.ativo) {
+								
+								this.$store.dispatch(SET_SNACKBAR,
+									{color: 'success', text: SUCCESS_MESSAGES.desativarLicenca, timeout: '6000'}
+								);
+							
+							} else {
+
+								this.$store.dispatch(SET_SNACKBAR,
+									{color: 'success', text: SUCCESS_MESSAGES.ativarLicenca, timeout: '6000'}
+								);
+
+							}
+
+							this.updatePagination();
+							this.resetaDadosFiltragem();
+
+						})
+						.catch(erro => {
+
+							console.error(erro);
+							if(!item.ativo) {
+								
+								this.$store.dispatch(SET_SNACKBAR,
+									{color: 'error', text: ERROR_MESSAGES.desativarCnae, timeout: '6000'}
+								);
+							
+							} else {
+
+								this.$store.dispatch(SET_SNACKBAR,
+									{color: 'error', text: ERROR_MESSAGES.ativarCnae, timeout: '6000'}
+								);
+
+							}
+
+							item.ativo = !item.ativo;
+
+						});
+				}
+			}).catch((error) => {
+				console.error(error);
+			});
+		}
 	},
 
 	created () {

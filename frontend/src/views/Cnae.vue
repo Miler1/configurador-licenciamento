@@ -71,7 +71,7 @@ export default {
 			parametrosFiltro: {
 				pagina: 0,
 				itemsPorPagina: 10,
-				tipoOrdenacao: 'dataCadastro,asc',
+				tipoOrdenacao: 'dataCadastro,desc',
 				stringPesquisa: ''
 			},
 			isCadastro: true,
@@ -103,6 +103,13 @@ export default {
 
 		},
 
+		resetaDadosFiltragem() {
+			this.parametrosFiltro.pagina = 0;
+			this.parametrosFiltro.itemsPorPagina = 10;
+			this.parametrosFiltro.tipoOrdenacao = 'dataCadastro,desc';
+			this.parametrosFiltro.stringPesquisa = '';
+		},
+
 		submit() {
 
 			if (this.checkForm()) {
@@ -118,7 +125,7 @@ export default {
 							);
 							this.clear();
 							this.updatePagination();
-							this.parametrosFiltro.pagina = 0;
+							this.resetaDadosFiltragem();
 
 						})
 						.catch(erro => {
@@ -133,12 +140,13 @@ export default {
 						.then(() => {
 
 							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'success', text: SUCCESS_MESSAGES.editarCnae, timeout: '6000'}
+								{color: 'success', text: SUCCESS_MESSAGES.editar, timeout: '6000'}
 							);
 
 							this.clear();
 							this.updatePagination();
-							this.parametrosFiltro.pagina = 0;
+							this.resetaDadosFiltragem();
+							this.dadosPanel.panel = [];
 
 						})
 						.catch(erro => {
@@ -220,11 +228,11 @@ export default {
 				html: item.ativo ?
 					`<p class="message-modal-confirm">Ao desativar o CNAE, ele não estará mais disponível no sistema.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja desativar o CNAE? Esta opção pode ser desfeita a qualquer momento ao ativá-lo novamente o CNAE.</b>
+						<b>Tem certeza que deseja desativar o CNAE? Esta opção pode ser desfeita a qualquer momento ao ativá-lo novamente.</b>
 					</p>` :
 					`<p class="message-modal-confirm">Ao ativar o CNAE, ele ficará disponível no sistema.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja ativar o CNAE? Esta opção pode ser desfeita a qualquer momento ao desativá-lo novamente o CNAE.</b>
+						<b>Tem certeza que deseja ativar o CNAE? Esta opção pode ser desfeita a qualquer momento ao desativá-lo novamente.</b>
 					</p>`,
 				showCancelButton: true,
 				confirmButtonColor: item.ativo ? '#E6A23C' : '#67C23A',
@@ -258,7 +266,7 @@ export default {
 							}
 
 							this.updatePagination();
-							this.parametrosFiltro.pagina = 0;
+							this.resetaDadosFiltragem();
 
 						})
 						.catch(erro => {

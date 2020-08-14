@@ -115,7 +115,7 @@ export default {
 
 		changeValue(itensPerPage) {
 
-			if(parametrosFiltro.itemsPorPagina !== itensPerPage) {
+			if(this.parametrosFiltro.itemsPorPagina !== itensPerPage) {
 
 				this.parametrosFiltro.itemsPorPagina = itensPerPage;
 				this.parametrosFiltro.pagina = 0;

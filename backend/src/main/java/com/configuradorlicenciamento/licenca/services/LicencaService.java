@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LicencaService implements ILicencaService {
@@ -47,13 +48,38 @@ public class LicencaService implements ILicencaService {
         return licenca;
     }
 
+    @Override
+    public Licenca editar(HttpServletRequest request, LicencaDTO licencaDTO) {
+
+        Object login = request.getSession().getAttribute("login");
+
+        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
+
+        Optional<Licenca> licencaSalva = licencaRepository.findById(licencaDTO.getId())
+                .map(licenca -> {
+                    licenca.setSigla(licencaDTO.getSigla());
+                    licenca.setNome(licencaDTO.getNome());
+                    licenca.setFinalidade(licencaDTO.getFinalidade());
+                    licenca.setValidadeEmAnos(licencaDTO.getValidadeEmAnos());
+                    licenca.setUsuarioLicenciamento(usuarioLicenciamento);
+                    licenca.setDataCadastro(new Date());
+                    licenca.setAtivo(licencaDTO.getAtivo());
+                    return licenca;
+                });
+
+        licencaRepository.save(licencaSalva.get());
+
+        return licencaSalva.get();
+
+    }
+
     public Page<Licenca> lista(Pageable pageable, FiltroPesquisa filtro) {
 
         Specification<Licenca> specification = preparaFiltro(filtro);
 
-        Page<Licenca> atividadeCnaes = licencaRepository.findAll(specification, pageable);
+        Page<Licenca> licenca = licencaRepository.findAll(specification, pageable);
 
-        return atividadeCnaes;
+        return licenca;
     }
 
     private Specification<Licenca> preparaFiltro(FiltroPesquisa filtro) {
