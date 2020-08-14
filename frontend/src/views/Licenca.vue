@@ -13,6 +13,7 @@
 				:submit="submit",
 				:resetErrorMessage="resetErrorMessage",
 				:errorMessage="errorMessage",
+				:validadeErrorMessage="validadeErrorMessage"
 			)
 
 		GridListagem.pa-7(
@@ -80,10 +81,16 @@ export default {
 
 		submit() {
 
+			console.log("submit");
+
 			if (this.checkForm()) {
+
+				console.log("CHECKFORM");
 
 				LicencaService.salvar(this.licenca)
 					.then((response) => {
+
+						console.log("Tentou enviar");
 
 						this.$store.dispatch(SET_SNACKBAR,
 							{color: 'success', text: SUCCESS_MESSAGES.cadastro, timeout: '6000'}
@@ -118,20 +125,47 @@ export default {
 
 		checkForm() {
 
-			return this.licenca.sigla &&
-				this.licenca.sigla != ''	&&
-				this.licenca.nome &&
-				this.licenca.nome != '' &&
-				this.licenca.validade &&
-				this.licenca.validade != '' &&
-				this.licenca.finalidade &&
-				this.licenca.finalidade != '';
+
+			if (this.licenca.finalidade === 'CADASTRO') {
+
+				console.log("possui CADASTRO");
+
+				return this.licenca.sigla &&
+					this.licenca.sigla != ''	&&
+					this.licenca.nome &&
+					this.licenca.nome != '' &&
+					this.licenca.finalidade &&
+					this.licenca.finalidade != '';
+
+			}else {
+
+				console.log("SEM CADASTRO");
+
+				return this.licenca.sigla &&
+					this.licenca.sigla != ''	&&
+					this.licenca.nome &&
+					this.licenca.nome != '' &&
+					this.licenca.finalidade &&
+					this.licenca.finalidade != '' &&
+					this.licenca.validade &&
+					this.licenca.validade != '';
+			}
 
 		},	
 
 		resetErrorMessage() {
 			this.errorMessageEmpty = true;
 		},
+
+		validadeErrorMessage() {
+			
+			if (!this.errorMessageEmpty && !this.licenca.validade && this.licenca.finalidade && this.licenca.finalidade != 'CADASTRO') {
+				
+				return 'Obrigatório';
+			}
+			return [];
+			
+		},	
 
 		errorMessage(value) {
 			return this.errorMessageEmpty || value ? [] : 'Obrigatório';

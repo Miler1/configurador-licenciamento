@@ -57,10 +57,9 @@
 								min="0",
 								step="1",
 								v-model="licenca.validade",
-								:error-messages="errorMessage(licenca.validade)",
+								:error-messages="validadeErrorMessage()"
 								@click.native="resetErrorMessage",
 								:disabled="validadeDisabled()",
-								required,
 							)
 							div#div-meses
 								span Anos
@@ -107,6 +106,9 @@ export default {
 			type: [Function]
 		},
 		errorMessage: {
+			type: [Function]
+		},
+		validadeErrorMessage: {
 			type: [Function]
 		}
 	},
