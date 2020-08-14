@@ -60,7 +60,7 @@ export default {
 				validade: null,
 			},
 			tituloListagem: "Listagem de licenças ambientais cadastradas",
-			placeholderPesquisa: "Pesquisar por sigla ou nome da licença",
+			placeholderPesquisa: "Pesquisar por tipo ou nomenclatura da licença",
 			dadosListagem: {},
 			headerListagem: HEADER,
 			parametrosFiltro: {
@@ -82,16 +82,10 @@ export default {
 
 		submit() {
 
-			console.log("submit");
-
 			if (this.checkForm()) {
-
-				console.log("CHECKFORM");
 
 				LicencaService.salvar(this.licenca)
 					.then((response) => {
-
-						console.log("Tentou enviar");
 
 						this.$store.dispatch(SET_SNACKBAR,
 							{color: 'success', text: SUCCESS_MESSAGES.cadastro, timeout: '6000'}
@@ -126,10 +120,7 @@ export default {
 
 		checkForm() {
 
-
 			if (this.licenca.finalidade === 'CADASTRO') {
-
-				console.log("possui CADASTRO");
 
 				return this.licenca.sigla &&
 					this.licenca.sigla != ''	&&
@@ -138,9 +129,7 @@ export default {
 					this.licenca.finalidade &&
 					this.licenca.finalidade != '';
 
-			}else {
-
-				console.log("SEM CADASTRO");
+			} else {
 
 				return this.licenca.sigla &&
 					this.licenca.sigla != ''	&&
@@ -164,8 +153,8 @@ export default {
 				
 				return 'Obrigatório';
 			}
+
 			return [];
-			
 		},	
 
 		errorMessage(value) {

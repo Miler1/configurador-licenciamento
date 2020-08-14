@@ -6,7 +6,6 @@ import com.configuradorlicenciamento.licenca.models.Licenca;
 import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.opencsv.bean.CsvBindByName;
-import com.opencsv.bean.CsvBindByPosition;
 import lombok.Getter;
 
 import java.io.Serializable;
@@ -15,13 +14,13 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LicencaCsv implements Serializable {
 
-    @CsvBindByName(column = "Nome")
+    @CsvBindByName(column = "Nomenclatura")
     private String nome;
 
     @CsvBindByName(column = "Validade em anos")
     private String validadeEmAnos;
 
-    @CsvBindByName(column = "Sigla")
+    @CsvBindByName(column = "Tipo")
     private String sigla;
 
     @CsvBindByName(column = "Finalidade")
