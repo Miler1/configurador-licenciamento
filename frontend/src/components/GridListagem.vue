@@ -24,7 +24,7 @@
 				@update:options="sortBy")
 
 			template#teste(v-slot:item.validadeEmAnos='{ item }')
-				span {{item.validadeEmAnos ? item.validadeEmAnos : '̶'}}
+				span {{item.validadeEmAnos ? item.validadeEmAnos : ' ‒'}}
 
 			template(v-slot:item.ativo='{ item }')
 				span {{item.ativo ? 'Ativo' : 'Inativo'}}
@@ -38,7 +38,7 @@
 			template(v-slot:no-data)
 				span Não existem registros a serem exibidos.
 
-			template(v-slot:footer)
+			template(v-slot:footer, v-if="dadosListagem.numberOfElements > 0")
 				v-row
 					v-col(cols='12' md='4')
 						v-pagination.float-left(v-model="page"

@@ -3,7 +3,9 @@
 	v-expansion-panels(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
 		v-expansion-panel(v-for="(item, i) in dadosPanel.items", :key="i")
 			v-expansion-panel-header
-				| {{title}}
+				div.d-flex.flex-row.align-center.justify-start
+					v-icon.pr-3(color="#84A98C") {{dadosPanel.iconName}}
+					span.align-baseline {{dadosPanel.title}}
 				template(v-slot:actions)
 					v-btn#QA-btn-expand_cadastrar(@click="abrirPanel", v-if="dadosPanel.panel.length === 0")
 						v-icon(color="white") mdi-plus
@@ -25,12 +27,6 @@ export default {
 
 	name: "PanelCadastro",
 
-	data() {
-		return {
-			
-		};
-	},
-
 	methods: {
 
 		abrirPanel() {
@@ -44,15 +40,12 @@ export default {
 	},
 
 	props: {
-		title: {
-			type: [String]
-		},
 		clear:  {
 			type: [Function]
 		},
 		dadosPanel: {
 			type: [Object]
-		}
+		},
 	}
 };
 </script>
@@ -67,6 +60,7 @@ export default {
 		cursor: default;
 		font-size: 21px;
 		height: 70px;
+		padding: 0 20px;
 
 		.v-btn {
 			background-color: @green-primary !important;
