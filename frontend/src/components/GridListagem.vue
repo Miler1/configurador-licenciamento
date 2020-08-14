@@ -40,15 +40,17 @@
 
 			template(v-slot:footer, v-if="dadosListagem.numberOfElements > 0")
 				v-row
-					v-col(cols='12' md='4')
+					v-col(cols='12' md='8')
 						v-pagination.float-left(v-model="page"
 								:length="dadosListagem.totalPages"
 								:page="page"
 								:total-visible="totalVisible",
 								@input="input",
 								color="#84A98C")
+						span.float-left.exibicao-paginas.mt-4
+							| Exibindo {{dadosListagem.numberOfElements}} de {{dadosListagem.totalElements}} registros
 
-					v-col.flex-row.mt-3(cols='12' md='8')
+					v-col.flex-row.mt-3(cols='12' md='4')
 						v-select.float-right.d-inline-flex.mx-4.w-80(:items="itensPerPages", 
 								solo, 
 								dense, 
@@ -56,8 +58,6 @@
 								v-model="itensPerPage")
 						span.float-right.exibicao-paginas.mt-2.ml-1
 							| Resultados por página
-						span.float-right.exibicao-paginas.mt-2
-							| Exibindo {{dadosListagem.numberOfElements}} de {{dadosListagem.totalElements}} registros /
 
 </template>
 
