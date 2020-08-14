@@ -166,6 +166,7 @@ export default {
 			} else {
 				this.errorMessageEmpty = false;
 			}
+
 		},
 
 		checkForm() {

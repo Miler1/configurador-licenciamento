@@ -49,6 +49,11 @@ const routes = [
 				name: 'Licenca',
 				component: () => import('../views/Licenca.vue')
 			},
+			{
+				path: 'tipologia',
+				name: 'Tipologia',
+				component: () => import('../views/Tipologia.vue')
+			},
 			{ 
 				path: '*', 
 				component: () => import('../views/UnderConstruction.vue') 
