@@ -3,9 +3,8 @@
 	v-container
 
 		PanelCadastro.pa-7(
-			:title="panelTitle",
 			:clear="clear",
-			:dadosPanel="dadosPanel"
+			:dadosPanel="dadosPanel",
 		)
 			FormCadastroLicenca(
 				:licenca="licenca",
@@ -55,7 +54,6 @@ export default {
 
 	data: () => {
 		return {
-			panelTitle: "Cadastro de licença ambiental",
 			errorMessageEmpty: true,
 			licenca:{
 				sigla: null,
@@ -81,6 +79,8 @@ export default {
 				items: 1,
 				panel: [],
 				readonly: true,
+				title: "Cadastro de licença ambiental",
+				iconName: "fa fa-list-alt",
 			},
 		};
 	},
@@ -100,7 +100,8 @@ export default {
 
 		resetaDadosCadastro() {
 
-			this.panelTitle = "Cadastro de licença ambiental";
+			this.dadosPanel.title = "Cadastro de licença ambiental";
+			this.dadosPanel.iconName = "fa fa-list-alt";
 			this.labelBotaoCadastrarEditar = "Cadastrar";
 			this.iconBotaoCadastrarEditar = "mdi-plus";
 			this.isCadastro = true;
@@ -241,7 +242,7 @@ export default {
 		editarItem(item) {
 			
 			this.dadosPanel.panel = [0];
-			this.panelTitle = "Editar licença ambiental";
+			this.dadosPanel.title = "Editar licença ambiental";
 			this.labelBotaoCadastrarEditar = "Editar";
 			this.iconBotaoCadastrarEditar = "mdi-pencil";
 			this.licenca = { ... item};
