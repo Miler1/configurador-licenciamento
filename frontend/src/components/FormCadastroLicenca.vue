@@ -93,14 +93,6 @@ export default {
 		};
 	},
 
-	methods: {
-
-		validadeIsDisabled() {
-			return this.licenca.finalidade == null || this.licenca.finalidade == 'CADASTRO';
-		},
-
-	},
-
 	props: {
 		licenca: {
 			type: [Object]
