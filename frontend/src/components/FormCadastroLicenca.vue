@@ -57,7 +57,7 @@
 								type="number",
 								min="0",
 								step="1",
-								v-model="licenca.validade",
+								v-model="licenca.validadeEmAnos",
 								:error-messages="validadeErrorMessage()"
 								:disabled="validadeDisabled()",
 								@click.native="resetErrorMessage;",
@@ -71,8 +71,8 @@
 						span Limpar dados
 
 					v-btn#QA-btn-cadastrar-licenca(@click="submit")
-						v-icon(color="white") mdi-plus
-						span Cadastrar
+						v-icon(color="white") {{iconBotaoCadastrarEditar}}
+						span {{labelBotaoCadastrarEditar}}
 
 </template>
 
@@ -111,6 +111,12 @@ export default {
 		},
 		validadeErrorMessage: {
 			type: [Function]
+		},
+		labelBotaoCadastrarEditar: {
+			type: [String]
+		},
+		iconBotaoCadastrarEditar: {
+			type: [String]
 		}
 	},
 
@@ -122,7 +128,7 @@ export default {
 
 		upValidade() {
 			if (this.licenca.finalidade === 'CADASTRO') {
-				this.licenca.validade = null;
+				this.licenca.validadeEmAnos = null;
 			}
 		}
 	}

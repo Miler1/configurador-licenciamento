@@ -22,7 +22,7 @@ public class LicencaDTO implements Serializable {
 
     @NotBlank(message = "{validacao.notBlank}")
     @Column(nullable = true)
-    private Integer validade;
+    private Integer validadeEmAnos;
 
     @NotNull(message = "{validacao.notnull}")
     @NotBlank(message = "{validacao.notBlank}")

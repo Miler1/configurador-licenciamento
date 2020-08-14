@@ -51,7 +51,7 @@ public class Licenca implements Serializable {
 
     public Licenca(Licenca.LicencaBuilder builder) {
         this.nome = builder.nome;
-        this.validadeEmAnos = builder.validade;
+        this.validadeEmAnos = builder.validadeEmAnos;
         this.sigla = builder.sigla;
         this.finalidade = builder.finalidade;
         this.ativo = builder.ativo;
@@ -61,8 +61,8 @@ public class Licenca implements Serializable {
 
     public static class LicencaBuilder {
 
-        private String nomenclatura;
-        private Integer validade;
+        private String nome;
+        private Integer validadeEmAnos;
         private String sigla;
         private String finalidade;
         private Boolean ativo;
@@ -71,7 +71,7 @@ public class Licenca implements Serializable {
 
         public LicencaBuilder(LicencaDTO licencaDTO) {
             this.nome = licencaDTO.getNome();
-            this.validade = licencaDTO.getValidade();
+            this.validadeEmAnos = licencaDTO.getValidadeEmAnos();
             this.sigla = licencaDTO.getSigla();
             this.finalidade = licencaDTO.getFinalidade();
             this.ativo = licencaDTO.getAtivo();

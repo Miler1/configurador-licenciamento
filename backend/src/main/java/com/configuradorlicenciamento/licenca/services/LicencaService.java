@@ -60,7 +60,7 @@ public class LicencaService implements ILicencaService {
                     licenca.setSigla(licencaDTO.getSigla());
                     licenca.setNome(licencaDTO.getNome());
                     licenca.setFinalidade(licencaDTO.getFinalidade());
-                    licenca.setValidadeEmAnos(licencaDTO.getValidade());
+                    licenca.setValidadeEmAnos(licencaDTO.getValidadeEmAnos());
                     licenca.setUsuarioLicenciamento(usuarioLicenciamento);
                     licenca.setDataCadastro(new Date());
                     licenca.setAtivo(licencaDTO.getAtivo());
@@ -77,9 +77,9 @@ public class LicencaService implements ILicencaService {
 
         Specification<Licenca> specification = preparaFiltro(filtro);
 
-        Page<Licenca> atividadeCnaes = licencaRepository.findAll(specification, pageable);
+        Page<Licenca> licenca = licencaRepository.findAll(specification, pageable);
 
-        return atividadeCnaes;
+        return licenca;
     }
 
     private Specification<Licenca> preparaFiltro(FiltroPesquisa filtro) {
