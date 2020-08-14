@@ -89,7 +89,6 @@ export default {
 			placeholder: "Digite aqui...",
 			placeholderSelect: "Selecione",
 			finalidades: FinalidadeEnum,
-			validadeFieldDisabled: true,
 		};
 	},
 

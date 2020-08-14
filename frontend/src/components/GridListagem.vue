@@ -4,7 +4,7 @@
 	b.titulo-listagem {{ tituloListagem }}
 	v-row
 		v-col(cols='12' md='8')
-			v-text-field(outlined,
+			v-text-field#QA-input-pesquisar(outlined,
 			:placeholder="placeholderPesquisa",
 			prepend-inner-icon="mdi-magnify",
 			color="#E0E0E0",
@@ -22,6 +22,9 @@
 				hide-default-footer,
 				:items-per-page="itensPerPage",
 				@update:options="sortBy")
+
+			template#teste(v-slot:item.validadeEmAnos='{ item }')
+				span {{item.validadeEmAnos ? item.validadeEmAnos : '̶'}}
 
 			template(v-slot:item.ativo='{ item }')
 				span {{item.ativo ? 'Ativo' : 'Inativo'}}
@@ -61,7 +64,9 @@
 <script>
 
 export default {
+
 	name:'GridListagem',
+
 	props: {
 
 		tituloListagem: {
@@ -166,10 +171,15 @@ export default {
 </script>
 
 <style lang="less">
+
 @import "../assets/css/variaveis.less";
 
 tbody tr:nth-of-type(odd) {
 	background-color: rgba(0, 0, 0, .05);
+}
+
+#teste {
+	text-align: center;
 }
 
 .titulo-listagem{
