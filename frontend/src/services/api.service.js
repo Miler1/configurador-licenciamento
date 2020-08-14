@@ -119,11 +119,11 @@ const ApiService = {
 				message = error.response.data.message;
 				break;
 			case 500:
-				message = error.response.data.message
-				break
+				message = error.response.data.message;
+				break;
 			default:
-				message = error.response.data.message
-				break
+				message = error.response.data.message;
+				break;
 			}
 		}
 

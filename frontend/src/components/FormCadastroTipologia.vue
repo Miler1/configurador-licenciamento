@@ -47,7 +47,7 @@ export default {
 		return {
 			placeholder: "Digite aqui...",
 			msgmObrigatorio: "Obrigatório"
-		}
+		};
 	},
 
 	props: {

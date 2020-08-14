@@ -18,12 +18,12 @@
 
 <script>
 
-import PanelCadastro from '@/components/PanelCadastro'
-import FormCadastroTipologia from '@/components/FormCadastroTipologia'
-import TipologiaService from '../services/tipologia.service'
-import RelatorioService from '../services/relatorio.service'
-import { SET_SNACKBAR } from '../store/actions.type'
-import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils'
+import PanelCadastro from '@/components/PanelCadastro';
+import FormCadastroTipologia from '@/components/FormCadastroTipologia';
+import TipologiaService from '../services/tipologia.service';
+import RelatorioService from '../services/relatorio.service';
+import { SET_SNACKBAR } from '../store/actions.type';
+import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 
 export default {
 
@@ -42,7 +42,7 @@ export default {
 				codigo: '',
 				nome: ''
 			}
-		}
+		};
 	},
 
 	methods: {
@@ -90,7 +90,7 @@ export default {
 
 			this.$store.dispatch(SET_SNACKBAR,
 				{color: 'error', text: ERROR_MESSAGES.cadastroTipologia + ': ' + message, timeout: '6000'}
-			)
+			);
 		},
 
 		handleSuccess(response) {
@@ -103,13 +103,13 @@ export default {
 
 			this.$store.dispatch(SET_SNACKBAR,
 				{color: 'success', text: SUCCESS_MESSAGES.cadastro + message, timeout: '6000'}
-			)
+			);
 
 			this.clear();
 		}
 	}
 
-}
+};
 
 </script>
 
