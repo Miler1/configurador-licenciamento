@@ -38,7 +38,7 @@
 			template(v-slot:no-data)
 				span Não existem registros a serem exibidos.
 
-			template(v-slot:footer, v-if="dadosListagem == null")
+			template(v-slot:footer, v-if="item")
 				v-row
 					v-col(cols='12' md='4')
 						v-pagination.float-left(v-model="page"
