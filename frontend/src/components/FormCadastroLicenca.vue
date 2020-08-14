@@ -42,6 +42,7 @@
 							item-value="value",
 							:error-messages="errorMessage(licenca.finalidade)"
 							@click.native="resetErrorMessage",
+							@change="upValidade",
 							required,
 						)
 				v-col.d-flex.flex-column.justify-start.pl-0(cols="12", md="9")
@@ -58,14 +59,14 @@
 								step="1",
 								v-model="licenca.validade",
 								:error-messages="validadeErrorMessage()"
-								@click.native="resetErrorMessage",
 								:disabled="validadeDisabled()",
+								@click.native="resetErrorMessage;",
 							)
 							div#div-meses
 								span Anos
 			v-row
-				v-col#form-actions(cols="12", md="12")
-					a#QA-limpar-dados-licenca(@click="clear")
+				v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
+					a#QA-limpar-dados-licenca.d-flex.flex-row.align-center.justify-end(@click="clear")
 						v-icon mdi-delete
 						span Limpar dados
 
@@ -116,9 +117,13 @@ export default {
 	methods: {
 
 		validadeDisabled() {
+			return !this.licenca.finalidade || this.licenca.finalidade === 'CADASTRO';
+		},
 
-			return !this.licenca.finalidade || this.licenca.finalidade == 'CADASTRO';
-
+		upValidade() {
+			if (this.licenca.finalidade === 'CADASTRO') {
+				this.licenca.validade = null;
+			}
 		}
 	}
 
