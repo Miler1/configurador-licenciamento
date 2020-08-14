@@ -97,7 +97,7 @@ export default {
 							{color: 'success', text: SUCCESS_MESSAGES.cadastro, timeout: '6000'}
 						);
 						this.clear();
-						this.listarLicencas();
+						this.updatePagination();
 						this.parametrosFiltro.pagina = 0;
 
 					})
@@ -192,26 +192,11 @@ export default {
 
 		},
 
-		listarLicencas() {
-
-			LicencaService.listar()
-
-				.then((response) => {
-					this.dadosListagem = response.data;
-				})
-				.catch(erro => {
-					console.error(erro);
-					this.$store.dispatch(SET_SNACKBAR,
-						{color: 'error', text: ERROR_MESSAGES.listagemCnae + ': ' + erro.message, timeout: '6000'}
-					);
-				});
-
-		}
 	},
 
 	created () {
 
-		this.listarLicencas();
+		this.updatePagination();
 
 	}
 
