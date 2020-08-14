@@ -1,9 +1,11 @@
 package com.configuradorlicenciamento.tipologia.services;
 
+import br.ufla.lemaf.beans.pessoa.Tipo;
 import com.configuradorlicenciamento.tipologia.dtos.TipologiaDTO;
 import com.configuradorlicenciamento.tipologia.interfaces.ITipologiaService;
 import com.configuradorlicenciamento.tipologia.models.Tipologia;
 import com.configuradorlicenciamento.tipologia.repositories.TipologiaRepository;
+import com.configuradorlicenciamento.tipologia.specifications.TipologiaSpecification;
 import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
 import com.configuradorlicenciamento.usuarioLicenciamento.repositories.UsuarioLicenciamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +34,17 @@ public class TipologiaService implements ITipologiaService {
                 .setUsuarioLicencimento(usuarioLicenciamento)
                 .build();
 
-        tipologiaRepository.save(tipologia);
+        if(!tipologiaExiste(tipologia)) {
+            tipologiaRepository.save(tipologia);
+        } else {
+            throw new RuntimeException("Uma tipologia ativa já existe com o código informado/gerado");
+        }
 
         return tipologia;
 
     }
 
+    public Boolean tipologiaExiste(Tipologia tipologia){
+        return !tipologiaRepository.findAll(TipologiaSpecification.codigo(tipologia.getCodigo())).isEmpty();
+    }
 }

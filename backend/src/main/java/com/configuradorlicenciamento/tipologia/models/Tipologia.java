@@ -1,6 +1,7 @@
 package com.configuradorlicenciamento.tipologia.models;
 
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
+import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.tipologia.dtos.TipologiaDTO;
 import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
 import lombok.Getter;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
 @Getter
@@ -57,8 +59,13 @@ public class Tipologia implements Serializable {
 
         public TipologiaBuilder(TipologiaDTO tipologiaDTO) {
             this.nome = tipologiaDTO.getNome();
-            this.codigo = tipologiaDTO.getCodigo();
             this.ativo = tipologiaDTO.getAtivo();
+
+            if(tipologiaDTO.getCodigo().isBlank()){
+                this.codigo = gerarCodigo(this.nome);
+            } else {
+                this.codigo = gerarCodigo(tipologiaDTO.getCodigo());
+            }
         }
 
         public TipologiaBuilder setDataCadastro(Date dataCadastro) {
@@ -73,5 +80,21 @@ public class Tipologia implements Serializable {
 
         public Tipologia build() { return new Tipologia(this); }
 
+        private String gerarCodigo(String string) {
+
+            String codigo = "";
+
+            codigo = StringUtil.removeAccents(string);
+            codigo = codigo.replace("_", " ").toUpperCase();
+            codigo = StringUtil.removeCaracteresEspeciais(codigo);
+
+            for(String preposicao : StringUtil.preposicoes()) {
+                codigo = codigo.replace(preposicao, " ");
+            }
+
+            codigo = codigo.replace(" ", "_").toUpperCase();
+
+            return codigo;
+        }
     }
 }

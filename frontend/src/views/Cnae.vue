@@ -85,7 +85,6 @@ export default {
 						this.clear();
 					})
 					.catch(erro => {
-						console.error(erro)
 						this.$store.dispatch(SET_SNACKBAR,
 							{color: 'error', text: ERROR_MESSAGES.cadastroCnae + ': ' + erro.message, timeout: '6000'}
 						)

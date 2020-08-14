@@ -119,10 +119,10 @@ const ApiService = {
 				message = error.response.data.message
 				break
 			case 500:
-				message = this.handling500()
+				message = error.response.data.message
 				break
 			default:
-				message = this.handlingWarning(error)
+				message = error.response.data.message
 				break
 			}
 		}
@@ -137,11 +137,10 @@ const ApiService = {
 	},
 
 	handling500 () {
-		const message = 'Erro ao tentar realizar a operação solicitada. Entre em contato com o administrador do sistema.'
-		Vue.noty.error(message)
-
-		return message
+		// const message = 'Erro ao tentar realizar a operação solicitada. Entre em contato com o administrador do sistema.'
+		// return message
 	},
+
 	handlingWarning (error) {
 		let message = ''
 

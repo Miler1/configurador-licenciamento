@@ -11,8 +11,7 @@
 				:clear="clear",
 				:submit="submit",
 				:resetErrorMessage="resetErrorMessage",
-				:errorMessageEmpty="errorMessageEmpty",
-				:validadeIsDisabled="validadeIsDisabled",
+				:errorMessageEmpty="errorMessageEmpty"
 			)
 
 </template>
@@ -52,7 +51,14 @@ export default {
 
 			if (this.checkForm()) {
 
-				TipologiaService.cadastrar(this.tipologia);
+				this.tipologia.ativo = true;
+				TipologiaService.cadastrar(this.tipologia)
+					.then(response => {
+						this.handleSuccess(response);
+					})
+					.catch(error => {
+						this.handleError(error);
+					});
 
 			} else {
 				this.errorMessageEmpty = false;
@@ -68,58 +74,39 @@ export default {
 		},
 
 		checkForm() {
-
 			return this.tipologia.nome && this.tipologia.nome !== '';
-
 		},
 
 		resetErrorMessage() {
-			this.errorMessageEmpty = true
+			this.errorMessageEmpty = true;
 		},
 
 		checkErrorMessage(value) {
 			return this.errorMessageEmpty || value ? [] : 'Obrigatório';
 		},
 
-		validadeIsDisabled() {
-			return this.licenca.finalidade == null || this.licenca.finalidade == 'CADASTRO';
+		handleError(error) {
+			let message = error.message;
+
+			this.$store.dispatch(SET_SNACKBAR,
+				{color: 'error', text: ERROR_MESSAGES.cadastroTipologia + ': ' + message, timeout: '6000'}
+			)
 		},
-		
-		gerarRelatorio() {
-			RelatorioService.baixarRelatorio("/licenca/relatorio-licenca");
-		},
 
-		updatePagination(parametrosFiltro) {
+		handleSuccess(response) {
+			
+			let message = '';
 
-			LicencaService.listar(parametrosFiltro)
+			if(response.data.codigo !== this.tipologia.codigo) {
+				message = ` A tipologia salva com o código: ${response.data.codigo}`;
+			}
 
-				.then((response) => {
-					this.dadosListagem = response.data
-				})
-				.catch(erro => {
-					console.error(erro)
-					this.$store.dispatch(SET_SNACKBAR,
-						{color: 'error', text: ERROR_MESSAGES.listagemCnae + ': ' + erro.message, timeout: '6000'}
-					)
-				});
+			this.$store.dispatch(SET_SNACKBAR,
+				{color: 'success', text: SUCCESS_MESSAGES.cadastro + message, timeout: '6000'}
+			)
 
+			this.clear();
 		}
-	},
-
-	created () {
-
-		LicencaService.listar()
-
-			.then((response) => {
-				this.dadosListagem = response.data
-			})
-			.catch(erro => {
-				console.error(erro)
-				this.$store.dispatch(SET_SNACKBAR,
-					{color: 'error', text: ERROR_MESSAGES.listagemCnae + ': ' + erro.message, timeout: '6000'}
-				)
-			});
-
 	}
 
 }

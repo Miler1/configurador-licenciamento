@@ -1,6 +1,7 @@
 package com.configuradorlicenciamento.configuracao.utils;
 
 import java.text.Normalizer;
+import java.util.ArrayList;
 
 public class StringUtil {
 
@@ -57,5 +58,17 @@ public class StringUtil {
 		return str;
 
 	}
+
+	public static ArrayList<String> preposicoes() {
+
+        String[] array = {" da ", " de ", " do ", " a ", " e ", " o "};
+        ArrayList<String> preposicoes = new ArrayList<>();
+
+        for (String item : array){
+            preposicoes.add(item);
+        }
+
+	    return preposicoes;
+    }
 
 }
