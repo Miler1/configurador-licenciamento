@@ -52,7 +52,6 @@ export default {
 
 <style lang="less" scoped>
 
-
 #div-toolbar {
 	height: 16px;
 

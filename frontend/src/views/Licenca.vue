@@ -12,7 +12,8 @@
 				:clear="clear",
 				:submit="submit",
 				:resetErrorMessage="resetErrorMessage",
-				:checkErrorMessage="checkErrorMessage",
+				:errorMessage="errorMessage",
+				:validadeErrorMessage="validadeErrorMessage"
 			)
 
 		GridListagem.pa-7(
@@ -22,7 +23,7 @@
 			:headers="headerListagem",
 			:dadosListagem="dadosListagem",
 			:updatePagination="updatePagination",
-			:parametrosFiltro="parametrosFiltro"
+			:parametrosFiltro="parametrosFiltro",
 		)
 
 </template>
@@ -73,7 +74,7 @@ export default {
 				items: 1,
 				panel: [],
 				readonly: true,
-			}
+			},
 		};
 	},
 
@@ -81,16 +82,23 @@ export default {
 
 		submit() {
 
+			console.log("submit");
+
 			if (this.checkForm()) {
+
+				console.log("CHECKFORM");
 
 				LicencaService.salvar(this.licenca)
 					.then((response) => {
+
+						console.log("Tentou enviar");
 
 						this.$store.dispatch(SET_SNACKBAR,
 							{color: 'success', text: SUCCESS_MESSAGES.cadastro, timeout: '6000'}
 						);
 						this.clear();
 						this.listarLicencas();
+						this.parametrosFiltro.pagina = 0;
 
 					})
 
@@ -112,28 +120,55 @@ export default {
 			this.licenca.nome = null;
 			this.licenca.validade = null;
 			this.licenca.finalidade = null;
-			this.licenca.errorMessageEmpty = true;
+			this.errorMessageEmpty = true;
 
 		},
 
 		checkForm() {
 
-			return this.licenca.sigla &&
-				this.licenca.sigla != ''	&&
-				this.licenca.nome &&
-				this.licenca.nome != '' &&
-				this.licenca.validade &&
-				this.licenca.validade != '' &&
-				this.licenca.finalidade &&
-				this.licenca.finalidade != '';
 
-		},
+			if (this.licenca.finalidade === 'CADASTRO') {
+
+				console.log("possui CADASTRO");
+
+				return this.licenca.sigla &&
+					this.licenca.sigla != ''	&&
+					this.licenca.nome &&
+					this.licenca.nome != '' &&
+					this.licenca.finalidade &&
+					this.licenca.finalidade != '';
+
+			}else {
+
+				console.log("SEM CADASTRO");
+
+				return this.licenca.sigla &&
+					this.licenca.sigla != ''	&&
+					this.licenca.nome &&
+					this.licenca.nome != '' &&
+					this.licenca.finalidade &&
+					this.licenca.finalidade != '' &&
+					this.licenca.validade &&
+					this.licenca.validade != '';
+			}
+
+		},	
 
 		resetErrorMessage() {
 			this.errorMessageEmpty = true;
 		},
 
-		checkErrorMessage(value) {
+		validadeErrorMessage() {
+			
+			if (!this.errorMessageEmpty && !this.licenca.validade && this.licenca.finalidade && this.licenca.finalidade != 'CADASTRO') {
+				
+				return 'Obrigatório';
+			}
+			return [];
+			
+		},	
+
+		errorMessage(value) {
 			return this.errorMessageEmpty || value ? [] : 'Obrigatório';
 		},
 		

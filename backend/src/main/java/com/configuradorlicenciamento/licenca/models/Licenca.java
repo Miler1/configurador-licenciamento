@@ -24,13 +24,13 @@ public class Licenca implements Serializable {
     private Integer id;
 
     @NotNull(message = "{validacao.notnull}")
-    private String sigla;
-
-    @NotNull(message = "{validacao.notnull}")
     private String nome;
 
-    @NotNull(message = "{validacao.notnull}")
+    @Column(nullable = true)
     private Integer validadeEmAnos;
+
+    @NotNull(message = "{validacao.notnull}")
+    private String sigla;
 
     @NotNull(message = "{validacao.notnull}")
     private String finalidade;
@@ -44,7 +44,7 @@ public class Licenca implements Serializable {
     private UsuarioLicenciamento usuarioLicenciamento;
 
     public Licenca(Licenca.LicencaBuilder builder) {
-        this.nome = builder.nomenclatura;
+        this.nome = builder.nome;
         this.validadeEmAnos = builder.validade;
         this.sigla = builder.sigla;
         this.finalidade = builder.finalidade;
@@ -53,17 +53,17 @@ public class Licenca implements Serializable {
     }
 
     public static class LicencaBuilder {
-        private String sigla;
-        private String nomenclatura;
+        private String nome;
         private Integer validade;
+        private String sigla;
         private String finalidade;
         private Date dataCadastro;
         private UsuarioLicenciamento usuarioLicenciamento;
 
         public LicencaBuilder(LicencaDTO licencaDTO) {
-            this.sigla = licencaDTO.getSigla();
-            this.nomenclatura = licencaDTO.getNome();
+            this.nome = licencaDTO.getNome();
             this.validade = licencaDTO.getValidade();
+            this.sigla = licencaDTO.getSigla();
             this.finalidade = licencaDTO.getFinalidade();
         }
 

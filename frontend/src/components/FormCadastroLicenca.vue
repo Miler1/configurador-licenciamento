@@ -11,7 +11,7 @@
 						color="#E0E0E0",
 						:placeholder="placeholder"
 						v-model="licenca.sigla",
-						:error-messages="checkErrorMessage(licenca.tipo)"
+						:error-messages="errorMessage(licenca.sigla)"
 						@click.native="resetErrorMessage",
 						required,
 					)
@@ -23,7 +23,7 @@
 						color="#E0E0E0",
 						:placeholder="placeholder",
 						v-model="licenca.nome",
-						:error-messages="checkErrorMessage(licenca.nomenclatura)"
+						:error-messages="errorMessage(licenca.nome)"
 						@click.native="resetErrorMessage",
 						required,
 					)
@@ -40,8 +40,9 @@
 							:items="finalidades"
 							item-text="text",
 							item-value="value",
-							:error-messages="checkErrorMessage(licenca.finalidade)"
+							:error-messages="errorMessage(licenca.finalidade)"
 							@click.native="resetErrorMessage",
+							@change="upValidade",
 							required,
 						)
 				v-col.d-flex.flex-column.justify-start.pl-0(cols="12", md="9")
@@ -57,16 +58,15 @@
 								min="0",
 								step="1",
 								v-model="licenca.validade",
-								:error-messages="checkErrorMessage(licenca.validade)"
-								@click.native="resetErrorMessage",
-								:disabled="validadeIsDisabled()",
-								required,
+								:error-messages="validadeErrorMessage()"
+								:disabled="validadeDisabled()",
+								@click.native="resetErrorMessage;",
 							)
 							div#div-meses
 								span Anos
 			v-row
-				v-col#form-actions(cols="12", md="12")
-					a#QA-limpar-dados-licenca(@click="clear")
+				v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
+					a#QA-limpar-dados-licenca.d-flex.flex-row.align-center.justify-end(@click="clear")
 						v-icon mdi-delete
 						span Limpar dados
 
@@ -89,6 +89,7 @@ export default {
 			placeholder: "Digite aqui...",
 			placeholderSelect: "Selecione",
 			finalidades: FinalidadeEnum,
+			validadeFieldDisabled: true,
 		};
 	},
 
@@ -113,10 +114,27 @@ export default {
 		resetErrorMessage: {
 			type: [Function]
 		},
-		checkErrorMessage: {
+		errorMessage: {
+			type: [Function]
+		},
+		validadeErrorMessage: {
 			type: [Function]
 		}
+	},
+
+	methods: {
+
+		validadeDisabled() {
+			return !this.licenca.finalidade || this.licenca.finalidade === 'CADASTRO';
+		},
+
+		upValidade() {
+			if (this.licenca.finalidade === 'CADASTRO') {
+				this.licenca.validade = null;
+			}
+		}
 	}
+
 };
 
 </script>
