@@ -47,7 +47,7 @@
 						)
 				v-col.d-flex.flex-column.justify-start.pl-0(cols="12", md="9")
 					v-col.pb-0(cols="12", md="8")
-						label Prazo de Validade
+						label Prazo de validade
 					v-col.d-flex.flex-row.justify-start.pt-0(cols="12", md="4")
 						div.d-flex.flex-row
 							v-text-field#QA-input-licenca-validade(
@@ -78,7 +78,7 @@
 
 <script>
 
-import FinalidadeEnum from '../utils/enums/finalidadeEnum';
+import Finalidades from '../utils/enums/finalidadeEnum';
 
 export default {
 
@@ -88,7 +88,7 @@ export default {
 		return {
 			placeholder: "Digite aqui...",
 			placeholderSelect: "Selecione",
-			finalidades: FinalidadeEnum,
+			finalidades: Finalidades.finalidadeEnum,
 		};
 	},
 

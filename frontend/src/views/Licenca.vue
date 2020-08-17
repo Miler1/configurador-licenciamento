@@ -38,6 +38,7 @@ import FormCadastroLicenca from '@/components/FormCadastroLicenca';
 import LicencaService from '../services/licenca.service';
 import RelatorioService from '../services/relatorio.service';
 import GridListagem from '@/components/GridListagem';
+import Finalidades from '../utils/enums/finalidadeEnum';
 import { SET_SNACKBAR } from '../store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 import { HEADER } from '@/utils/dadosMockados/ListagemLicencaHeader';
@@ -80,7 +81,7 @@ export default {
 				panel: [],
 				readonly: true,
 				title: "Cadastro de licença ambiental",
-				iconName: "fa fa-list-alt",
+				iconName: "mdi-card-account-details",
 			},
 		};
 	},
@@ -101,7 +102,7 @@ export default {
 		resetaDadosCadastro() {
 
 			this.dadosPanel.title = "Cadastro de licença ambiental";
-			this.dadosPanel.iconName = "fa fa-list-alt";
+			this.dadosPanel.iconName = "mdi-card-account-details";
 			this.labelBotaoCadastrarEditar = "Cadastrar";
 			this.iconBotaoCadastrarEditar = "mdi-plus";
 			this.isCadastro = true;
@@ -229,6 +230,7 @@ export default {
 
 				.then((response) => {
 					this.dadosListagem = response.data;
+					this.prepararDados();
 				})
 				.catch(erro => {
 					console.error(erro);
@@ -237,6 +239,15 @@ export default {
 					);
 				});
 
+		},
+
+		prepararDados() {
+
+			let finalidadeMap = Finalidades.getMap();
+
+			this.dadosListagem.content.forEach(licenca => {
+				licenca.finalidade = finalidadeMap.get(licenca.finalidade);
+			});
 		},
 
 		editarItem(item) {

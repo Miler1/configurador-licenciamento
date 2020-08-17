@@ -26,6 +26,9 @@
 			template#teste(v-slot:item.validadeEmAnos='{ item }')
 				span {{item.validadeEmAnos ? item.validadeEmAnos : ' ‒'}}
 
+			template#teste(v-slot:item.finalidade='{ item }')
+				span {{item.finalidade.text}}
+
 			template(v-slot:item.ativo='{ item }')
 				span {{item.ativo ? 'Ativo' : 'Inativo'}}
 
@@ -162,7 +165,7 @@ export default {
 
 		dadosListagemIsNull() {
 			return this.dadosListagem == null;
-		}
+		},
 
 	},
 
