@@ -10,8 +10,9 @@
 						:key='snackbar.text + Math.random()'
 						v-model='snackbar.showing'
 						:timeout='snackbar.timeout'
-						:color='snackbar.color'
-						:style='`padding-bottom: ${(index * 60) + 8}px`')
+						:color='snackbar.color',
+						top,
+						:style='`padding-top: ${(index * 60) + 8}px`')
 				
 				| {{snackbar.text}}
 				template(v-slot:action=	'{ attrs }')
