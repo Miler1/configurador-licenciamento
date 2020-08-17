@@ -53,7 +53,7 @@ public class DefaultController {
 
 		StatefulBeanToCsv<AtividadeCnae> writer = new StatefulBeanToCsvBuilder<AtividadeCnae>(response.getWriter())
 				.withQuotechar(CSVWriter.DEFAULT_ESCAPE_CHARACTER)
-				.withSeparator(CSVWriter.DEFAULT_SEPARATOR)
+				.withSeparator(';')
 				.build();
 
 		writer.write(lista);
