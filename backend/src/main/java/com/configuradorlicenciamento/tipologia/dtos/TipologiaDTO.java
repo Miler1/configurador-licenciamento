@@ -11,12 +11,8 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TipologiaDTO implements Serializable {
 
-    @NotNull(message = "{validacao.notnull}")
-    @NotBlank(message = "{validacao.notBlank}")
-    private String id;
+    private Integer id;
 
-    @NotNull(message = "{validacao.notnull}")
-    @NotBlank(message = "{validacao.notBlank}")
     private String codigo;
 
     @NotNull(message = "{validacao.notnull}")
