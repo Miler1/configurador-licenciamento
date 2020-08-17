@@ -3,7 +3,6 @@
 	v-container  
 
 		PanelCadastro.pa-7(
-			:title="panelTitle",
 			:clear="clear",
 			:dadosPanel="dadosPanel"
 		)
@@ -54,8 +53,6 @@ export default {
 
 	data: () => {
 		return {
-
-			panelTitle: "Cadastro de CNAE",
 			tituloListagem: "Listagem de CNAE cadastrados",
 			placeholderPesquisa: "Pesquisar por código ou nome do CNAE",
 			labelBotaoCadastrarEditar: "Cadastrar",
@@ -79,6 +76,8 @@ export default {
 				items: 1,
 				panel: [],
 				readonly: true,
+				title: "Cadastro de CNAE",
+				iconName:'fa fa-industry',
 			}
 		};
 	},
@@ -96,7 +95,8 @@ export default {
 
 		resetaDadosCadastro() {
 
-			this.panelTitle = "Cadastro de CNAE";
+			this.dadosPanel.title = "Cadastro de CNAE";
+			this.dadosPanel.iconName = 'fa fa-industry';
 			this.labelBotaoCadastrarEditar = "Cadastrar";
 			this.iconBotaoCadastrarEditar = "mdi-plus";
 			this.isCadastro = true;
@@ -209,7 +209,7 @@ export default {
 		editarItem(item) {
 			
 			this.dadosPanel.panel = [0];
-			this.panelTitle = "Editar CNAE";
+			this.dadosPanel.title = "Editar CNAE";
 			this.labelBotaoCadastrarEditar = "Editar";
 			this.iconBotaoCadastrarEditar = "mdi-pencil";
 			this.atividadeCnae = { ... item};
