@@ -3,15 +3,17 @@
 	v-container
 
 		PanelCadastro.pa-7(
-			:title="panelTitle",
 			:clear="clear",
+			:dadosPanel="dadosPanel"
 		)
 			FormCadastroTipologia(
 				:tipologia="tipologia",
 				:clear="clear",
 				:submit="submit",
 				:resetErrorMessage="resetErrorMessage",
-				:errorMessageEmpty="errorMessageEmpty"
+				:errorMessageEmpty="errorMessageEmpty",
+				:labelBotaoCadastrarEditar="labelBotaoCadastrarEditar",
+				:iconBotaoCadastrarEditar="iconBotaoCadastrarEditar"
 			)
 
 </template>
@@ -36,12 +38,20 @@ export default {
 
 	data: () => {
 		return {
-			panelTitle: "Cadastro de tipologia",
 			errorMessageEmpty: true,
 			tipologia:{
 				codigo: '',
 				nome: ''
-			}
+			},
+			dadosPanel: {
+				items: 1,
+				panel: [],
+				readonly: true,
+				title: "Cadastro de tipologia",
+				iconName:'mdi-format-list-bulleted-square',
+			},
+			labelBotaoCadastrarEditar: "Cadastrar",
+			iconBotaoCadastrarEditar: "mdi-plus"
 		};
 	},
 

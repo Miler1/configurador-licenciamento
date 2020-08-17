@@ -26,15 +26,14 @@
 						dense
 					)
 			v-row
-				v-col#form-actions(cols="12", md="12")
-					a#QA-limpar-dados-cnae(@click="clear")
-						v-icon mdi-delete
-						span Limpar dados  
-				
-					v-btn#QA-btn-cadastrar-cnae(@click="submit")
-						v-icon(color="white") mdi-plus
-						span Cadastrar
+				v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
+						a#QA-limpar-dados-cnae.d-flex.flex-row.align-center.justify-end(@click="clear")
+							v-icon mdi-delete
+							span Limpar dados
 
+						v-btn#QA-btn-cadastrar-cnae(@click="submit", large)
+							v-icon(color="white") {{iconBotaoCadastrarEditar}}
+							span {{labelBotaoCadastrarEditar}}
 </template>
 
 <script>
@@ -65,6 +64,12 @@ export default {
 		},
 		errorMessageEmpty: {
 			type: [Boolean]
+		},
+		labelBotaoCadastrarEditar: {
+			type: [String]
+		},
+		iconBotaoCadastrarEditar: {
+			type: [String]
 		}
 	}
 
