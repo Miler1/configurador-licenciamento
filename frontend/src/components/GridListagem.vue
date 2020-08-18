@@ -5,6 +5,7 @@
 	v-row
 		v-col(cols='12' md='8')
 			v-text-field#QA-input-pesquisar(outlined,
+			v-model="parametrosFiltro.stringPesquisa"
 			:placeholder="placeholderPesquisa",
 			prepend-inner-icon="mdi-magnify",
 			color="#E0E0E0",
@@ -25,6 +26,9 @@
 
 			template#teste(v-slot:item.validadeEmAnos='{ item }')
 				span {{item.validadeEmAnos ? item.validadeEmAnos : ' ‒'}}
+
+			template#teste(v-slot:item.finalidade='{ item }')
+				span {{item.finalidade.text}}
 
 			template(v-slot:item.ativo='{ item }')
 				span {{item.ativo ? 'Ativo' : 'Inativo'}}
@@ -162,7 +166,7 @@ export default {
 
 		dadosListagemIsNull() {
 			return this.dadosListagem == null;
-		}
+		},
 
 	},
 
