@@ -1,9 +1,9 @@
-package com.configuradorlicenciamento.licenca.models;
+package com.configuradorlicenciamento.licenca.enums;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public enum FinalidadeEnum {
+public enum Finalidade {
 
     ATUALIZACAO("ATUALIZACAO", "Atualização"),
     CADASTRO("CADASTRO", "Cadastro"),
@@ -16,13 +16,13 @@ public enum FinalidadeEnum {
     public final String key;
     public final String label;
 
-    FinalidadeEnum(String key, String label) {
+    Finalidade(String key, String label) {
         this.key = key;
         this.label = label;
     }
 
     static {
-        for (FinalidadeEnum finalidade: values()) {
+        for (Finalidade finalidade: values()) {
             LABEL.put(finalidade.key, finalidade.label);
         }
     }
