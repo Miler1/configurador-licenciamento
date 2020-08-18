@@ -207,8 +207,6 @@ export default {
 		},
 
 		validadeErrorMessage() {
-
-			console.log("VALIDADE EM ANOS: ", this.licenca.validadeEmAnos);
 			
 			if (!this.errorMessageEmpty && !this.licenca.validadeEmAnos && this.licenca.finalidade && this.licenca.finalidade != 'CADASTRO') {
 				
