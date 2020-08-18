@@ -1,4 +1,4 @@
-const FinalidadesEnum =  Object.freeze(
+const FinalidadeEnum =  Object.freeze(
 		[
 			{value: 'ATUALIZACAO', text:'Atualização'},
 			{value: 'CADASTRO', text: 'Cadastro'},
@@ -8,15 +8,4 @@ const FinalidadesEnum =  Object.freeze(
 		]
 );
 
-const getMap = function() {
-
-	let finalidades = new Map();
-
-	FinalidadesEnum.forEach(finalidade => {
-		finalidades.set(finalidade.value, finalidade);
-	});
-
-	return finalidades;
-};
-
-export default {FinalidadesEnum, getMap};
+export default FinalidadeEnum;

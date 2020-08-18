@@ -38,7 +38,7 @@ import FormCadastroLicenca from '@/components/FormCadastroLicenca';
 import LicencaService from '../services/licenca.service';
 import RelatorioService from '../services/relatorio.service';
 import GridListagem from '@/components/GridListagem';
-import Finalidades from '../utils/enums/finalidadeEnum';
+import mapFinalidadeEnum from '../utils/helpers/finalidade-helper';
 import { SET_SNACKBAR } from '../store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 import { HEADER } from '@/utils/dadosMockados/ListagemLicencaHeader';
@@ -207,10 +207,25 @@ export default {
 		},
 
 		validadeErrorMessage() {
+
+			console.log("VALIDADE EM ANOS: ", this.licenca.validadeEmAnos);
 			
 			if (!this.errorMessageEmpty && !this.licenca.validadeEmAnos && this.licenca.finalidade && this.licenca.finalidade != 'CADASTRO') {
 				
 				return 'Obrigatório';
+
+			}else if (this.errorMessageEmpty && !this.licenca.validadeEmAnos && this.licenca.finalidade && this.licenca.finalidade === 'CADASTRO') {
+
+				return 'A finalidade escolhida não permite prazo de validade';
+
+			}else if (this.errorMessageEmpty && !this.licenca.validadeEmAnos  && !this.licenca.finalidade){
+
+				return 'Primeiro selecione a finalidade';
+
+			}else if (this.errorMessageEmpty && this.licenca.validadeEmAnos === '') {
+
+				return 'Este campo permite apenas números inteiros';
+
 			}
 
 			return [];
@@ -243,7 +258,7 @@ export default {
 
 		prepararDados() {
 
-			let finalidadeMap = Finalidades.getMap();
+			let finalidadeMap = mapFinalidadeEnum();
 
 			this.dadosListagem.content.forEach(licenca => {
 				licenca.finalidade = finalidadeMap.get(licenca.finalidade);

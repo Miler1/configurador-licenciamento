@@ -60,7 +60,7 @@
 								v-model="licenca.validadeEmAnos",
 								:error-messages="validadeErrorMessage()"
 								:disabled="validadeDisabled()",
-								@click.native="resetErrorMessage;",
+								@click.native="resetErrorMessage",
 							)
 							div#div-meses
 								span Anos
@@ -78,7 +78,7 @@
 
 <script>
 
-import Finalidades from '../utils/enums/finalidadeEnum';
+import FinalidadeEnum from '../utils/enums/finalidadeEnum';
 
 export default {
 
@@ -88,7 +88,7 @@ export default {
 		return {
 			placeholder: "Digite aqui...",
 			placeholderSelect: "Selecione",
-			finalidades: Finalidades.finalidadeEnum,
+			finalidades: FinalidadeEnum,
 		};
 	},
 
@@ -145,6 +145,7 @@ export default {
 	border: none;
 	border-radius: 0 4px 4px 0;
 	color: @icon-color;
+	cursor: default;
 	display: flex;
 	height: 40px;
 
@@ -152,6 +153,11 @@ export default {
 		align-self: center;
 		padding: 1px 8px;
 	}
+}
+
+#QA-input-licenca-validade:disabled {
+
+		background-color: @bg-header;
 }
 
 </style>
