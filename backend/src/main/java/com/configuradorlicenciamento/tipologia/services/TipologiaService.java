@@ -1,6 +1,9 @@
 package com.configuradorlicenciamento.tipologia.services;
 
 import br.ufla.lemaf.beans.pessoa.Tipo;
+import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeCsv;
+import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
+import com.configuradorlicenciamento.tipologia.dtos.TipologiaCsv;
 import com.configuradorlicenciamento.tipologia.dtos.TipologiaDTO;
 import com.configuradorlicenciamento.tipologia.interfaces.ITipologiaService;
 import com.configuradorlicenciamento.tipologia.models.Tipologia;
@@ -9,10 +12,13 @@ import com.configuradorlicenciamento.tipologia.specifications.TipologiaSpecifica
 import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
 import com.configuradorlicenciamento.usuarioLicenciamento.repositories.UsuarioLicenciamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class TipologiaService implements ITipologiaService {
@@ -46,5 +52,23 @@ public class TipologiaService implements ITipologiaService {
 
     public Boolean tipologiaExiste(Tipologia tipologia){
         return !tipologiaRepository.findAll(TipologiaSpecification.codigo(tipologia.getCodigo())).isEmpty();
+    }
+
+    @Override
+    public List<Tipologia> listarTipologia() {
+        return tipologiaRepository.findAll(Sort.by("codigo"));
+    }
+
+    @Override
+    public List<TipologiaCsv> listarTipologiaParaCsv(){
+
+        List<Tipologia> tipologias = listarTipologia();
+        List<TipologiaCsv> dtos = new ArrayList<>();
+
+        for (Tipologia tipologia : tipologias) {
+            dtos.add(tipologia.preparaParaCsv());
+        }
+
+        return dtos;
     }
 }

@@ -1,6 +1,7 @@
 package com.configuradorlicenciamento.configuracao.controllers;
 
 import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
+import com.configuradorlicenciamento.configuracao.utils.csv.CustomMappingStrategy;
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
@@ -45,13 +46,14 @@ public class DefaultController {
 
 	}
 
-	protected void downloadCsv(List lista, String nome, HttpServletResponse response) throws IOException, CsvDataTypeMismatchException, CsvRequiredFieldEmptyException {
+	protected void downloadCsv(List lista, String nome, CustomMappingStrategy mappingStrategy, HttpServletResponse response) throws IOException, CsvDataTypeMismatchException, CsvRequiredFieldEmptyException {
 
 		response.setContentType("application/octet-stream");
 		response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
 				"attachment; filename=\"" + nome + "\"");
 
-		StatefulBeanToCsv<AtividadeCnae> writer = new StatefulBeanToCsvBuilder<AtividadeCnae>(response.getWriter())
+		StatefulBeanToCsv writer = new StatefulBeanToCsvBuilder<>(response.getWriter())
+				.withMappingStrategy(mappingStrategy)
 				.withQuotechar(CSVWriter.DEFAULT_ESCAPE_CHARACTER)
 				.withSeparator(';')
 				.build();

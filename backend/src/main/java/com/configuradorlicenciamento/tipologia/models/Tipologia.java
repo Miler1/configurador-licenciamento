@@ -1,7 +1,9 @@
 package com.configuradorlicenciamento.tipologia.models;
 
+import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeCsv;
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.configuracao.utils.StringUtil;
+import com.configuradorlicenciamento.tipologia.dtos.TipologiaCsv;
 import com.configuradorlicenciamento.tipologia.dtos.TipologiaDTO;
 import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
 import lombok.Getter;
@@ -96,5 +98,11 @@ public class Tipologia implements Serializable {
 
             return codigo;
         }
+    }
+
+    public TipologiaCsv preparaParaCsv() {
+
+        TipologiaCsv dto = new TipologiaCsv(this);
+        return dto;
     }
 }

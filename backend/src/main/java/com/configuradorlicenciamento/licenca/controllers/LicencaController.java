@@ -7,6 +7,8 @@ import com.configuradorlicenciamento.configuracao.controllers.DefaultController;
 import com.configuradorlicenciamento.configuracao.enums.Acao;
 import com.configuradorlicenciamento.configuracao.utils.DateUtil;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
+import com.configuradorlicenciamento.configuracao.utils.csv.CustomMappingStrategy;
+import com.configuradorlicenciamento.licenca.dtos.LicencaCsv;
 import com.configuradorlicenciamento.licenca.dtos.LicencaDTO;
 import com.configuradorlicenciamento.licenca.interfaces.ILicencaService;
 import com.configuradorlicenciamento.licenca.models.Licenca;
@@ -70,7 +72,7 @@ public class LicencaController extends DefaultController {
 
     }
 
-    @GetMapping("/relatorio-licenca")
+    @GetMapping("/relatorio")
     public void relatorioCSV (HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
@@ -78,7 +80,10 @@ public class LicencaController extends DefaultController {
         String data = DateUtil.formataBrHoraMinuto(new Date());
         String nome = "Relatorio_Licenca_" + data + ".csv";
 
-        downloadCsv(licencaService.listarLicencasParaCsv(), nome, response);
+        CustomMappingStrategy<LicencaCsv> mappingStrategy = new CustomMappingStrategy<>();
+        mappingStrategy.setType(LicencaCsv.class);
+
+        downloadCsv(licencaService.listarLicencasParaCsv(), nome, mappingStrategy, response);
     }
 
 }
