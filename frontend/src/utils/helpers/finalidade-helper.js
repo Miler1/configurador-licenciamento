@@ -1,14 +1,23 @@
 import FinalidadeEnum from '../enums/finalidadeEnum.js';
 
-const mapFinalidadeEnum = function() {
+let finalidades = new Map();
 
-	let finalidades = new Map();
+const text = function() {
 
 	FinalidadeEnum.forEach(finalidade => {
-		finalidades.set(finalidade.value, finalidade);
+		finalidades.set(finalidade.value, finalidade.text);
 	});
 
 	return finalidades;
 };
 
-export default mapFinalidadeEnum;
+const value = function() {
+
+	FinalidadeEnum.forEach(finalidade => {
+		finalidades.set(finalidade.text, finalidade.value);
+	});
+
+	return finalidades;
+};
+
+export default {text, value};

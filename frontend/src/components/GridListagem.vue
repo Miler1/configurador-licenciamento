@@ -28,7 +28,7 @@
 				span {{item.validadeEmAnos ? item.validadeEmAnos : ' ‒'}}
 
 			template#teste(v-slot:item.finalidade='{ item }')
-				span {{item.finalidade.text}}
+				span {{item.finalidade}}
 
 			template(v-slot:item.ativo='{ item }')
 				span {{item.ativo ? 'Ativo' : 'Inativo'}}

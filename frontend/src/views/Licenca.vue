@@ -38,7 +38,7 @@ import FormCadastroLicenca from '@/components/FormCadastroLicenca';
 import LicencaService from '../services/licenca.service';
 import RelatorioService from '../services/relatorio.service';
 import GridListagem from '@/components/GridListagem';
-import mapFinalidadeEnum from '../utils/helpers/finalidade-helper';
+import MapFinalidadeEnum from '../utils/helpers/finalidade-helper';
 import { SET_SNACKBAR } from '../store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 import { HEADER } from '@/utils/dadosMockados/ListagemLicencaHeader';
@@ -121,7 +121,6 @@ export default {
 			if (this.checkForm()) {
 
 				if(this.isCadastro) {
-
 						
 					LicencaService.salvar(this.licenca)
 						.then((response) => {
@@ -243,7 +242,7 @@ export default {
 
 				.then((response) => {
 					this.dadosListagem = response.data;
-					this.prepararDados();
+					this.prepararDadosListar();
 				})
 				.catch(erro => {
 					console.error(erro);
@@ -254,9 +253,9 @@ export default {
 
 		},
 
-		prepararDados() {
+		prepararDadosListar() {
 
-			let finalidadeMap = mapFinalidadeEnum();
+			let finalidadeMap = MapFinalidadeEnum.text();
 
 			this.dadosListagem.content.forEach(licenca => {
 				licenca.finalidade = finalidadeMap.get(licenca.finalidade);
@@ -264,13 +263,22 @@ export default {
 			
 		},
 
+		prepararDadosEditar(finalidade) {
+
+			let finalidadeMap = MapFinalidadeEnum.value();
+
+			return finalidadeMap.get(finalidade);
+
+		},
+
 		editarItem(item) {
-			
+
 			this.dadosPanel.panel = [0];
 			this.dadosPanel.title = "Editar licença ambiental";
 			this.labelBotaoCadastrarEditar = "Editar";
 			this.iconBotaoCadastrarEditar = "mdi-pencil";
 			this.licenca = { ... item};
+			this.licenca.finalidade = this.prepararDadosEditar(item.finalidade);
 			this.isCadastro = false;
 			window.scrollTo(0,0);
 
@@ -307,6 +315,7 @@ export default {
 				if(result.value) {
 
 					item.ativo = !item.ativo;
+					item.finalidade = this.prepararDadosEditar(item.finalidade);
 					LicencaService.editar(item)
 						.then(() => {
 							
@@ -352,7 +361,8 @@ export default {
 			}).catch((error) => {
 				console.error(error);
 			});
-		}
+		}, 
+		
 	},
 
 	created () {
