@@ -1,6 +1,5 @@
 package com.configuradorlicenciamento.configuracao.controllers;
 
-import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.configuracao.utils.csv.CustomMappingStrategy;
 import com.opencsv.CSVWriter;
 import com.opencsv.bean.StatefulBeanToCsv;
@@ -18,11 +17,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 import com.configuradorlicenciamento.configuracao.enums.Acao;
-import com.configuradorlicenciamento.entradaUnica.services.EntradaUnicaWS;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.security.Principal;
 import java.util.List;
 import com.configuradorlicenciamento.configuracao.exceptions.PemissionException;
 import com.configuradorlicenciamento.configuracao.interfaces.IDefaultService;
