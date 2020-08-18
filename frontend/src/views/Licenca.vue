@@ -207,12 +207,12 @@ export default {
 		},
 
 		validadeErrorMessage() {
-			
+
 			if (!this.errorMessageEmpty && !this.licenca.validadeEmAnos && this.licenca.finalidade && this.licenca.finalidade != 'CADASTRO') {
 				
 				return 'Obrigatório';
 
-			}else if (this.errorMessageEmpty && !this.licenca.validadeEmAnos && this.licenca.finalidade && this.licenca.finalidade === 'CADASTRO') {
+			}else if (!this.licenca.validadeEmAnos && this.licenca.finalidade && this.licenca.finalidade === 'CADASTRO') {
 
 				return 'A finalidade escolhida não permite prazo de validade';
 
@@ -220,7 +220,7 @@ export default {
 
 				return 'Primeiro selecione a finalidade';
 
-			}else if (this.errorMessageEmpty && this.licenca.validadeEmAnos === '') {
+			}else if (this.errorMessageEmpty && (this.licenca.validadeEmAnos === '' || this.licenca.validadeEmAnos % 1 != 0)) {
 
 				return 'Este campo permite apenas números inteiros';
 
