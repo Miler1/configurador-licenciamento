@@ -16,23 +16,23 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AtividadeCnaeCsv implements Serializable {
 
-    @CsvBindByName(column = "Nome", required = true)
+    @CsvBindByName(column = "Nome")
     @CsvBindByPosition(position = 1)
     private String nome;
 
-    @CsvBindByName(column = "Código", required = true)
+    @CsvBindByName(column = "Código")
     @CsvBindByPosition(position = 0)
     private String codigo;
 
-    @CsvBindByName(column = "Status", required = true)
+    @CsvBindByName(column = "Status")
     @CsvBindByPosition(position = 2)
     private String ativo;
 
-    @CsvBindByName(column = "Data de cadastro", required = true)
+    @CsvBindByName(column = "Data de cadastro")
     @CsvBindByPosition(position = 3)
     private String dataCadastro;
 
-    @CsvBindByName(column = "Usuário", required = true)
+    @CsvBindByName(column = "Usuário")
     @CsvBindByPosition(position = 4)
     private String usuarioLicenciamento;
 
