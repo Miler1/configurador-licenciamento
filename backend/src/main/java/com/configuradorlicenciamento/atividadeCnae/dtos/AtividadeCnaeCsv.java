@@ -6,6 +6,7 @@ import com.configuradorlicenciamento.entradaUnica.services.EntradaUnicaWS;
 import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvBindByPosition;
 import lombok.Getter;
 
 import java.io.Serializable;
@@ -15,19 +16,24 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AtividadeCnaeCsv implements Serializable {
 
-    @CsvBindByName(column = "Nome")
+    @CsvBindByName(column = "Nome", required = true)
+    @CsvBindByPosition(position = 1)
     private String nome;
 
-    @CsvBindByName(column = "Código")
+    @CsvBindByName(column = "Código", required = true)
+    @CsvBindByPosition(position = 0)
     private String codigo;
 
-    @CsvBindByName(column = "Status")
+    @CsvBindByName(column = "Status", required = true)
+    @CsvBindByPosition(position = 2)
     private String ativo;
 
-    @CsvBindByName(column = "Data de cadastro")
+    @CsvBindByName(column = "Data de cadastro", required = true)
+    @CsvBindByPosition(position = 3)
     private String dataCadastro;
 
-    @CsvBindByName(column = "Usuário")
+    @CsvBindByName(column = "Usuário", required = true)
+    @CsvBindByPosition(position = 4)
     private String usuarioLicenciamento;
 
     public AtividadeCnaeCsv(AtividadeCnae cnae) {
