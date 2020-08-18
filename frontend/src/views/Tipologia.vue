@@ -16,6 +16,14 @@
 				:iconBotaoCadastrarEditar="iconBotaoCadastrarEditar"
 			)
 
+		//- Remover ao criar listagem
+		v-btn.text-xs-center(
+			@click="gerarRelatorio",
+			width="100%",
+			color="#000"
+		)
+			span(style="color: #ffffff") 007, gerar relatório da missão
+
 </template>
 
 <script>
@@ -116,6 +124,10 @@ export default {
 			);
 
 			this.clear();
+		},
+
+		gerarRelatorio() {
+			RelatorioService.baixarRelatorio("/tipologia/relatorio");
 		}
 	}
 
