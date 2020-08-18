@@ -263,6 +263,7 @@ export default {
 			this.dadosListagem.content.forEach(licenca => {
 				licenca.finalidade = finalidadeMap.get(licenca.finalidade);
 			});
+			
 		},
 
 		editarItem(item) {
