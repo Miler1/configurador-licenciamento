@@ -47,7 +47,7 @@
 						)
 				v-col.d-flex.flex-column.justify-start.pl-0(cols="12", md="9")
 					v-col.pb-0(cols="12", md="8")
-						label Prazo de Validade
+						label Prazo de validade
 					v-col.d-flex.flex-row.justify-start.pt-0(cols="12", md="4")
 						div.d-flex.flex-row
 							v-text-field#QA-input-licenca-validade(
@@ -60,7 +60,7 @@
 								v-model="licenca.validadeEmAnos",
 								:error-messages="validadeErrorMessage()"
 								:disabled="validadeDisabled()",
-								@click.native="resetErrorMessage;",
+								@click.native="resetErrorMessage",
 							)
 							div#div-meses
 								span Anos
@@ -145,6 +145,7 @@ export default {
 	border: none;
 	border-radius: 0 4px 4px 0;
 	color: @icon-color;
+	cursor: default;
 	display: flex;
 	height: 40px;
 
@@ -152,6 +153,11 @@ export default {
 		align-self: center;
 		padding: 1px 8px;
 	}
+}
+
+#QA-input-licenca-validade:disabled {
+
+		background-color: @bg-header;
 }
 
 </style>

@@ -2,6 +2,7 @@ package com.configuradorlicenciamento.licenca.dtos;
 
 import com.configuradorlicenciamento.configuracao.utils.DateUtil;
 import com.configuradorlicenciamento.entradaUnica.services.EntradaUnicaWS;
+import com.configuradorlicenciamento.licenca.models.FinalidadeEnum;
 import com.configuradorlicenciamento.licenca.models.Licenca;
 import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -37,7 +38,7 @@ public class LicencaCsv implements Serializable {
         this.nome = licenca.getNome();
         this.validadeEmAnos = licenca.getValidadeEmAnos() != null ? licenca.getValidadeEmAnos().toString() : "-";
         this.sigla = licenca.getSigla();
-        this.finalidade = licenca.getFinalidade() != null ? licenca.getFinalidade() : "-";
+        this.finalidade = licenca.getFinalidade() != null ? FinalidadeEnum.valueOfLabel(licenca.getFinalidade()) : "-";
         this.dataCadastro = licenca.getDataCadastro() != null ? DateUtil.formataBrSimples(licenca.getDataCadastro()) : "-";
         this.usuarioLicenciamento = licenca.getUsuarioLicenciamento() != null ? getNomeUsuario(licenca.getUsuarioLicenciamento()) : "-";
 

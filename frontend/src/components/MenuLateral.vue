@@ -43,7 +43,7 @@ export default {
 		drawer: true,
 		items: [
 			{ title: 'CNAE', icon: {vuetify: true, value: 'fa fa-industry'}, path: 'cnae'},
-			{ title: 'Licença', icon: {vuetify: true, value: 'fa fa-list-alt'}, path: 'licenca'},
+			{ title: 'Licença', icon: {vuetify: true, value: 'mdi-card-account-details'}, path: 'licenca'},
 			{ title: 'Municípios capacitados', icon: {vuetify: true, value: 'mdi-city'}, path: 'municipios-capacitados'},
 			{ title: 'Tipologia', icon: {vuetify: true, value: 'mdi-format-list-bulleted-square'}, path: 'tipologia'},
 			{ title: 'Parâmetros', icon: {vuetify: false, value: 'fa fa-sliders'}, path: 'parametros'},

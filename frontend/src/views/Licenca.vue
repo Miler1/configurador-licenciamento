@@ -38,6 +38,7 @@ import FormCadastroLicenca from '@/components/FormCadastroLicenca';
 import LicencaService from '../services/licenca.service';
 import RelatorioService from '../services/relatorio.service';
 import GridListagem from '@/components/GridListagem';
+import mapFinalidadeEnum from '../utils/helpers/finalidade-helper';
 import { SET_SNACKBAR } from '../store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 import { HEADER } from '@/utils/dadosMockados/ListagemLicencaHeader';
@@ -80,7 +81,7 @@ export default {
 				panel: [],
 				readonly: true,
 				title: "Cadastro de licença ambiental",
-				iconName: "fa fa-list-alt",
+				iconName: "mdi-card-account-details",
 			},
 		};
 	},
@@ -101,7 +102,7 @@ export default {
 		resetaDadosCadastro() {
 
 			this.dadosPanel.title = "Cadastro de licença ambiental";
-			this.dadosPanel.iconName = "fa fa-list-alt";
+			this.dadosPanel.iconName = "mdi-card-account-details";
 			this.labelBotaoCadastrarEditar = "Cadastrar";
 			this.iconBotaoCadastrarEditar = "mdi-plus";
 			this.isCadastro = true;
@@ -210,6 +211,19 @@ export default {
 			if (!this.errorMessageEmpty && !this.licenca.validadeEmAnos && this.licenca.finalidade && this.licenca.finalidade != 'CADASTRO') {
 				
 				return 'Obrigatório';
+
+			}else if (this.errorMessageEmpty && !this.licenca.validadeEmAnos && this.licenca.finalidade && this.licenca.finalidade === 'CADASTRO') {
+
+				return 'A finalidade escolhida não permite prazo de validade';
+
+			}else if (this.errorMessageEmpty && !this.licenca.validadeEmAnos  && !this.licenca.finalidade){
+
+				return 'Primeiro selecione a finalidade';
+
+			}else if (this.errorMessageEmpty && this.licenca.validadeEmAnos === '') {
+
+				return 'Este campo permite apenas números inteiros';
+
 			}
 
 			return [];
@@ -229,6 +243,7 @@ export default {
 
 				.then((response) => {
 					this.dadosListagem = response.data;
+					this.prepararDados();
 				})
 				.catch(erro => {
 					console.error(erro);
@@ -237,6 +252,16 @@ export default {
 					);
 				});
 
+		},
+
+		prepararDados() {
+
+			let finalidadeMap = mapFinalidadeEnum();
+
+			this.dadosListagem.content.forEach(licenca => {
+				licenca.finalidade = finalidadeMap.get(licenca.finalidade);
+			});
+			
 		},
 
 		editarItem(item) {
