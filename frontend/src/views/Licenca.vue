@@ -234,7 +234,7 @@ export default {
 		},
 		
 		gerarRelatorio() {
-			RelatorioService.baixarRelatorio("/licenca/relatorio-licenca");
+			RelatorioService.baixarRelatorio("/licenca/relatorio");
 		},
 
 		updatePagination(parametrosFiltro) {

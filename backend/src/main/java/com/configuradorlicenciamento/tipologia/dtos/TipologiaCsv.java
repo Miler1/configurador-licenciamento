@@ -1,8 +1,9 @@
-package com.configuradorlicenciamento.atividadeCnae.dtos;
+package com.configuradorlicenciamento.tipologia.dtos;
 
 import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.configuracao.utils.DateUtil;
 import com.configuradorlicenciamento.entradaUnica.services.EntradaUnicaWS;
+import com.configuradorlicenciamento.tipologia.models.Tipologia;
 import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.opencsv.bean.CsvBindByName;
@@ -10,11 +11,10 @@ import com.opencsv.bean.CsvBindByPosition;
 import lombok.Getter;
 
 import java.io.Serializable;
-import java.util.Date;
 
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AtividadeCnaeCsv implements Serializable {
+public class TipologiaCsv implements Serializable {
 
     @CsvBindByName(column = "Nome")
     @CsvBindByPosition(position = 1)
@@ -36,14 +36,14 @@ public class AtividadeCnaeCsv implements Serializable {
     @CsvBindByPosition(position = 4)
     private String usuarioLicenciamento;
 
-    public AtividadeCnaeCsv(AtividadeCnae cnae) {
+    public TipologiaCsv(Tipologia tipologia) {
 
-        this.codigo = cnae.getCodigo();
-        this.nome = cnae.getNome();
-        this.ativo = cnae.getAtivo() ? "Ativo" : "Inativo";
-        this.dataCadastro = cnae.getDataCadastro() != null ? DateUtil.formataBrSimples(cnae.getDataCadastro()) : "-";
+        this.codigo = tipologia.getCodigo();
+        this.nome = tipologia.getNome();
+        this.ativo = tipologia.getAtivo() ? "Ativo" : "Inativo";
+        this.dataCadastro = tipologia.getDataCadastro() != null ? DateUtil.formataBrSimples(tipologia.getDataCadastro()) : "-";
 
-        this.usuarioLicenciamento = cnae.getUsuarioLicenciamento() != null ? getNomeUsuario(cnae.getUsuarioLicenciamento()) : "-";
+        this.usuarioLicenciamento = tipologia.getUsuarioLicenciamento() != null ? getNomeUsuario(tipologia.getUsuarioLicenciamento()) : "-";
 
     }
 

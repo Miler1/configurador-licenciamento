@@ -1,5 +1,6 @@
 package com.configuradorlicenciamento.atividadeCnae.controllers;
 
+import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeCsv;
 import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeDTO;
 import com.configuradorlicenciamento.atividadeCnae.interfaces.IAtividadeCnaeService;
 import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
@@ -8,6 +9,8 @@ import com.configuradorlicenciamento.configuracao.controllers.DefaultController;
 import com.configuradorlicenciamento.configuracao.utils.DateUtil;
 import com.configuradorlicenciamento.configuracao.enums.Acao;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
+import com.configuradorlicenciamento.configuracao.utils.csv.CustomMappingStrategy;
+import org.springframework.beans.CachedIntrospectionResults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -68,7 +71,7 @@ public class AtividadeCnaeController extends DefaultController {
 
     }
 
-    @GetMapping("/relatorio-cnae")
+    @GetMapping("/relatorio")
     public void relatorioCSV (HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
@@ -76,7 +79,10 @@ public class AtividadeCnaeController extends DefaultController {
         String data = DateUtil.formataBrHoraMinuto(new Date());
         String nome = "Relatorio_CNAE_" + data + ".csv";
 
-        downloadCsv(atividadeCnaeService.listarCnaesParaCsv(), nome, response);
+        CustomMappingStrategy<AtividadeCnaeCsv> mappingStrategy = new CustomMappingStrategy<>();
+        mappingStrategy.setType(AtividadeCnaeCsv.class);
+
+        downloadCsv(atividadeCnaeService.listarCnaesParaCsv(), nome, mappingStrategy, response);
     }
 
 }

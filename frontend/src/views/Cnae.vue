@@ -53,7 +53,7 @@ export default {
 
 	data: () => {
 		return {
-			tituloListagem: "Listagem de CNAE cadastrados",
+			tituloListagem: "Listagem de CNAEs cadastrados",
 			placeholderPesquisa: "Pesquisar por código ou nome do CNAE",
 			labelBotaoCadastrarEditar: "Cadastrar",
 			iconBotaoCadastrarEditar: "mdi-plus",
@@ -187,7 +187,7 @@ export default {
 		},
 
 		gerarRelatorio() {
-			RelatorioService.baixarRelatorio("/atividadeCnae/relatorio-cnae");
+			RelatorioService.baixarRelatorio("/atividadeCnae/relatorio");
 		},
 
 		updatePagination(parametrosFiltro) {
