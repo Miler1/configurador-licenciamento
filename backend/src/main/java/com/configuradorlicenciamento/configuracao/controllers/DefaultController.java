@@ -52,13 +52,13 @@ public class DefaultController {
 		response.setHeader(HttpHeaders.CONTENT_DISPOSITION,
 				"attachment; filename=\"" + nome + "\"");
 
-        StatefulBeanToCsv writer = new StatefulBeanToCsvBuilder<>(response.getWriter())
-                .withMappingStrategy(mappingStrategy)
-                .withQuotechar(CSVWriter.DEFAULT_ESCAPE_CHARACTER)
-                .withSeparator(';')
-                .build();
+		StatefulBeanToCsv writer = new StatefulBeanToCsvBuilder<>(response.getWriter())
+				.withMappingStrategy(mappingStrategy)
+				.withQuotechar(CSVWriter.DEFAULT_ESCAPE_CHARACTER)
+				.withSeparator(';')
+				.build();
 
-        writer.write(lista);
+		writer.write(lista);
 	}
 
 	protected void verificarPermissao(HttpServletRequest request, Acao... acoes) throws Exception {
