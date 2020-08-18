@@ -187,7 +187,7 @@ export default {
 		},
 
 		gerarRelatorio() {
-			RelatorioService.baixarRelatorio("/atividadeCnae/relatorio-cnae");
+			RelatorioService.baixarRelatorio("/atividadeCnae/relatorio");
 		},
 
 		updatePagination(parametrosFiltro) {
