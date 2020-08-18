@@ -216,7 +216,7 @@ export default {
 
 				return 'A finalidade escolhida não permite prazo de validade';
 
-			}else if (this.errorMessageEmpty && !this.licenca.validadeEmAnos  && !this.licenca.finalidade){
+			}else if (!this.licenca.validadeEmAnos  && !this.licenca.finalidade){
 
 				return 'Primeiro selecione a finalidade';
 
