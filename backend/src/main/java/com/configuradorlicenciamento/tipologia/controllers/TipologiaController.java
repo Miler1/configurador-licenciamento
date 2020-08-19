@@ -1,16 +1,21 @@
 package com.configuradorlicenciamento.tipologia.controllers;
 
 import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeCsv;
+import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.configuracao.components.VariaveisAmbientes;
 import com.configuradorlicenciamento.configuracao.controllers.DefaultController;
 import com.configuradorlicenciamento.configuracao.enums.Acao;
 import com.configuradorlicenciamento.configuracao.utils.DateUtil;
+import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.configuracao.utils.csv.CustomMappingStrategy;
 import com.configuradorlicenciamento.tipologia.dtos.TipologiaCsv;
 import com.configuradorlicenciamento.tipologia.dtos.TipologiaDTO;
 import com.configuradorlicenciamento.tipologia.interfaces.ITipologiaService;
 import com.configuradorlicenciamento.tipologia.models.Tipologia;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,6 +57,21 @@ public class TipologiaController extends DefaultController {
         mappingStrategy.setType(TipologiaCsv.class);
 
         downloadCsv(tipologiaService.listarTipologiaParaCsv(), nome, mappingStrategy, response);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value="/lista")
+    public ResponseEntity<Page<Tipologia>> lista(HttpServletRequest request,
+                                                     @PageableDefault(size = 20) Pageable pageable,
+                                                     @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        Page<Tipologia> tipologias = tipologiaService.lista(pageable, filtroPesquisa);
+
+        return ResponseEntity.ok()
+                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .body(tipologias);
+
     }
 
 }

@@ -3,6 +3,8 @@ package com.configuradorlicenciamento.tipologia.services;
 import br.ufla.lemaf.beans.pessoa.Tipo;
 import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeCsv;
 import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
+import com.configuradorlicenciamento.atividadeCnae.specifications.AtividadeCnaeSpecification;
+import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.tipologia.dtos.TipologiaCsv;
 import com.configuradorlicenciamento.tipologia.dtos.TipologiaDTO;
 import com.configuradorlicenciamento.tipologia.interfaces.ITipologiaService;
@@ -12,7 +14,10 @@ import com.configuradorlicenciamento.tipologia.specifications.TipologiaSpecifica
 import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
 import com.configuradorlicenciamento.usuarioLicenciamento.repositories.UsuarioLicenciamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -52,6 +57,28 @@ public class TipologiaService implements ITipologiaService {
 
     public Boolean tipologiaExiste(Tipologia tipologia){
         return !tipologiaRepository.findAll(TipologiaSpecification.codigo(tipologia.getCodigo())).isEmpty();
+    }
+
+    @Override
+    public Page<Tipologia> lista(Pageable pageable, FiltroPesquisa filtro) {
+
+        Specification<Tipologia> specification = preparaFiltro(filtro);
+
+        Page<Tipologia> tipologias = tipologiaRepository.findAll(specification, pageable);
+
+        return tipologias;
+    }
+
+    private Specification<Tipologia> preparaFiltro(FiltroPesquisa filtro) {
+
+        Specification specification = Specification.where(TipologiaSpecification.padrao());
+
+        if(filtro.getStringPesquisa() != null) {
+            specification = specification.and(TipologiaSpecification.nome(filtro.getStringPesquisa()));
+        }
+
+        return specification;
+
     }
 
     @Override

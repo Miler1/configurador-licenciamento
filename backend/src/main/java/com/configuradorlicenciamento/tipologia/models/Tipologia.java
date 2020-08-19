@@ -87,7 +87,7 @@ public class Tipologia implements Serializable {
             String codigo = "";
 
             codigo = StringUtil.removeAccents(string);
-            codigo = codigo.replace("_", " ").toUpperCase();
+            codigo = codigo.replace("_", " ");
             codigo = StringUtil.removeCaracteresEspeciais(codigo);
 
             for(String preposicao : StringUtil.preposicoes()) {
