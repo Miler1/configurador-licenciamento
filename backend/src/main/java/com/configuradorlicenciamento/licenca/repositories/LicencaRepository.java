@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LicencaRepository extends JpaRepository<Licenca, Integer>, JpaSpecificationExecutor<Licenca> {
 
+    Boolean existsBySigla(String sigla);
+
 }
