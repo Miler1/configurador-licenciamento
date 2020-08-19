@@ -48,7 +48,6 @@ export default {
 		return {
 			errorMessageEmpty: true,
 			tipologia:{
-				codigo: '',
 				nome: ''
 			},
 			dadosPanel: {
@@ -85,7 +84,7 @@ export default {
 
 		clear() {
 
-			this.tipologia.codigo = '';
+			//this.tipologia.codigo = '';
 			this.tipologia.nome = '';
 			this.errorMessageEmpty=true;
 
@@ -112,15 +111,15 @@ export default {
 		},
 
 		handleSuccess(response) {
-			
-			let message = '';
 
-			if(response.data.codigo !== this.tipologia.codigo) {
-				message = ` A tipologia salva com o código: ${response.data.codigo}`;
-			}
+			// let message = '';
+
+			// if(response.data.codigo !== this.tipologia.codigo) {
+			// 	message = ` A tipologia salva com o código: ${response.data.codigo}`;
+			// }
 
 			this.$store.dispatch(SET_SNACKBAR,
-				{color: 'success', text: SUCCESS_MESSAGES.cadastro + message, timeout: '6000'}
+				{color: 'success', text: SUCCESS_MESSAGES.cadastro /*+ message*/, timeout: '6000'}
 			);
 
 			this.clear();
