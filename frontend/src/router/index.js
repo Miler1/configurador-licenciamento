@@ -54,6 +54,11 @@ const routes = [
 				name: 'Tipologia',
 				component: () => import('../views/Tipologia.vue')
 			},
+			{
+				path: 'parametro',
+				name: 'Parametro',
+				component: () => import('../views/Parametro.vue')
+			},
 			{ 
 				path: '*', 
 				component: () => import('../views/UnderConstruction.vue') 

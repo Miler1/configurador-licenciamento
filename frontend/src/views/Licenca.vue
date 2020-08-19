@@ -184,23 +184,24 @@ export default {
 
 			if (this.licenca.finalidade === 'CADASTRO') {
 
-				return this.licenca.sigla &&
-					this.licenca.sigla != ''	&&
-					this.licenca.nome &&
-					this.licenca.nome != '' &&
-					this.licenca.finalidade &&
-					this.licenca.finalidade != '';
+				return this.licenca.sigla 
+					&& this.licenca.sigla != ''	
+					&& this.licenca.nome 
+					&& this.licenca.nome != '' 
+					&& this.licenca.finalidade 
+					&& this.licenca.finalidade != '';
 
 			} else {
 
-				return this.licenca.sigla &&
-					this.licenca.sigla != ''	&&
-					this.licenca.nome &&
-					this.licenca.nome != '' &&
-					this.licenca.finalidade &&
-					this.licenca.finalidade != '' &&
-					this.licenca.validadeEmAnos &&
-					this.licenca.validadeEmAnos != '';
+				return this.licenca.sigla 
+					&& this.licenca.sigla != ''	
+					&& this.licenca.nome 
+					&& this.licenca.nome != '' 
+					&& this.licenca.finalidade 
+					&& this.licenca.finalidade != '' 
+					&& this.licenca.validadeEmAnos 
+					&& this.licenca.validadeEmAnos != '';
+					
 			}
 
 		},	
@@ -376,7 +377,3 @@ export default {
 };
 
 </script>
-
-<style lang="less">
-
-</style>

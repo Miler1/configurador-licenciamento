@@ -46,7 +46,7 @@ export default {
 			{ title: 'Licença', icon: {vuetify: true, value: 'mdi-card-account-details'}, path: 'licenca'},
 			{ title: 'Municípios capacitados', icon: {vuetify: true, value: 'mdi-city'}, path: 'municipios-capacitados'},
 			{ title: 'Tipologia', icon: {vuetify: true, value: 'mdi-format-list-bulleted-square'}, path: 'tipologia'},
-			{ title: 'Parâmetros', icon: {vuetify: false, value: 'fa fa-sliders'}, path: 'parametros'},
+			{ title: 'Parâmetros', icon: {vuetify: false, value: 'fa fa-sliders'}, path: 'parametro'},
 			{ title: 'Taxa', icon: {vuetify: true, value: 'mdi-cash-usd-outline'}, path: 'taxa'},
 			{ title: 'Requisitos', icon: {vuetify: true, value: 'mdi-clipboard-list'}, model: true,
 				children: [

@@ -9,7 +9,8 @@ const ERROR_MESSAGES = {
 	editarLicenca: 'Erro ao editar a licença',
 	ativarLicenca: "Erro ao ativar a licença.",
 	desativarLicenca: "Erro ao desativar a licença.",
-	cadastroTipologia: "Erro ao cadastrar Tipologia"
+	cadastroTipologia: "Erro ao cadastrar Tipologia",
+	cadastroParametro: "Erro ao cadastrar Parametro",
 };
 
 const SUCCESS_MESSAGES = {
