@@ -13,7 +13,7 @@
 						v-model="licenca.sigla",
 						:error-messages="errorMessage(licenca.sigla)",
 						@click.native="resetErrorMessage",
-						@change="siglaUpperCase",
+						@input="v => {licenca.sigla = v.toUpperCase()}",
 						required,
 					)
 				v-col(cols="12", md="9")
@@ -59,7 +59,7 @@
 								min="0",
 								step="1",
 								v-model="licenca.validadeEmAnos",
-								:error-messages="validadeErrorMessage()",
+								:error-messages="validadeErrorMessage(licenca.validadeEmAnos)",
 								:disabled="validadeDisabled()",
 								@click.native="resetErrorMessage",
 							)
@@ -131,10 +131,6 @@ export default {
 				this.licenca.validadeEmAnos = null;
 			}
 		},
-
-		siglaUpperCase() {
-			this.licenca.sigla = this.licenca.sigla ? this.licenca.sigla.toUpperCase() : null;
-		}
 
 	},
 

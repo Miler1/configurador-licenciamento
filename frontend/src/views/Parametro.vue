@@ -12,6 +12,7 @@
 				:submit="submit",
 				:resetErrorMessage="resetErrorMessage",
 				:errorMessage="errorMessage",
+				:codigoErrorMessage ="codigoErrorMessage",
 				:labelBotaoCadastrarEditar="labelBotaoCadastrarEditar",
 				:iconBotaoCadastrarEditar="iconBotaoCadastrarEditar",
 			)
@@ -42,9 +43,9 @@ export default {
 			labelBotaoCadastrarEditar: "Cadastrar",
 			iconBotaoCadastrarEditar: "mdi-plus",
 			parametro: {
-				codigo: '',
-				descricao: '',
-				unidade: '',
+				codigo: null,
+				nome: null,
+				casasDecimais: null,
 			},
 			dadosListagem: {},
 			dadosPanel: {
@@ -62,8 +63,8 @@ export default {
 		clear() {
 
 			this.parametro.codigo = null;
-			this.parametro.descricao = null;
-			this.parametro.unidade = null;
+			this.parametro.nome = null;
+			this.parametro.casasDecimais = null;
 			this.errorMessageEmpty = true;
 			this.resetaDadosCadastro();
 
@@ -79,7 +80,7 @@ export default {
 
 				if(this.isCadastro) {
 
-					ParametroService.salvar(this.atividadeCnae)
+					ParametroService.salvar(this.parametro)
 
 						.then(() => {
 
@@ -130,12 +131,12 @@ export default {
 
 		checkForm() {
 
-			return this.parametro.codigo 
-				&& this.parametro.codigo != '' 
-				&& this.parametro.descricao 
-				&& this.parametro.descricao != '' 
-				&& this.parametro.unidade 
-				&& this.parametro.unidade != '';
+			return this.parametro.codigo
+				&& this.parametro.codigo != ''
+				&& this.parametro.nome
+				&& this.parametro.nome != ''
+				&& this.parametro.casasDecimais
+				&& this.parametro.casasDecimais != '';
 				
 		},
 
@@ -146,6 +147,19 @@ export default {
 		errorMessage(value) {
 			return this.errorMessageEmpty || value ? [] : 'Obrigatório';
 		},
+
+		codigoErrorMessage(casasDecimais) {
+
+			if (!this.errorMessageEmpty && !casasDecimais ) {
+
+				return 'Obrigatório';
+
+			} else if (this.errorMessageEmpty && (casasDecimais === '' || casasDecimais % 1 != 0)) {
+
+				return 'Este campo permite apenas números inteiros';
+
+			}
+		}
 
 	},
 

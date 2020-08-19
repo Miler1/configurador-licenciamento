@@ -10,7 +10,7 @@ const ERROR_MESSAGES = {
 	ativarLicenca: "Erro ao ativar a licença.",
 	desativarLicenca: "Erro ao desativar a licença.",
 	cadastroTipologia: "Erro ao cadastrar Tipologia",
-	cadastroParametro: "Erro ao cadastrar Parametro",
+	cadastroParametro: "Erro ao cadastrar Parâmetro",
 };
 
 const SUCCESS_MESSAGES = {

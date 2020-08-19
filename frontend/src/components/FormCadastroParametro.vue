@@ -5,38 +5,40 @@
 			v-row
 				v-col(cols="12", md="2")
 					v-label Código
-					v-text-field#QA-input-parametro-codigo(
+					v-text-field#QA-input-parametro-codigo.codigo(
 						outlined,
 						dense,
 						color="#E0E0E0",
 						:placeholder="placeholder",
 						v-model="parametro.codigo",
-						:error-messages="errorMessage(parametro.codigo)"
+						:error-messages="errorMessage(parametro.codigo)",
+						@input="v => {parametro.codigo = v.toUpperCase()}",
 						@click.native="resetErrorMessage",
 						required						
 					)
-				v-col(cols="12", md="7")
+				v-col(cols="12", md="8")
 					v-label Descrição
 					v-text-field#QA-input-parametro-descricao(
 						outlined,
 						dense,
 						color="#E0E0E0",
 						:placeholder="placeholder",
-						v-model="parametro.descricao",
-						:error-messages="errorMessage(parametro.descricao)"
+						v-model="parametro.nome",
+						:error-messages="errorMessage(parametro.nome)",
 						@click.native="resetErrorMessage",
 						required
 
 					)
-				v-col(cols="12", md="3")
-					v-label Unidade
-					v-select#QA-select-parametro-unidade(
+				v-col(cols="12", md="2")
+					v-label Casas Decimais
+					v-text-field#QA-input-parametro-casas_decimais(
 						outlined,
 						dense,
+						type="number",
 						color="#E0E0E0",
 						:placeholder="placeholder",
-						v-model="parametro.unidade",
-						:error-messages="errorMessage(parametro.unidade)"
+						v-model="parametro.casasDecimais",
+						:error-messages="codigoErrorMessage(parametro.casasDecimais)",
 						@click.native="resetErrorMessage",
 						required
 					)
@@ -64,6 +66,11 @@ export default {
 		};
 	},
 
+	directives: {
+
+
+	},
+
 	props: {
 		parametro: {
 			type: [Object]
@@ -78,6 +85,9 @@ export default {
 			type: [Function]
 		},
 		errorMessage: {
+			type: [Function]
+		},
+		codigoErrorMessage: {
 			type: [Function]
 		},
 		labelBotaoCadastrarEditar: {
