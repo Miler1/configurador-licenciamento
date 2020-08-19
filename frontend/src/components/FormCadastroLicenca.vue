@@ -9,10 +9,11 @@
 						outlined,
 						dense,
 						color="#E0E0E0",
-						:placeholder="placeholder"
+						:placeholder="placeholder",
 						v-model="licenca.sigla",
-						:error-messages="errorMessage(licenca.sigla)"
+						:error-messages="errorMessage(licenca.sigla)",
 						@click.native="resetErrorMessage",
+						@change="siglaUpperCase",
 						required,
 					)
 				v-col(cols="12", md="9")
@@ -23,7 +24,7 @@
 						color="#E0E0E0",
 						:placeholder="placeholder",
 						v-model="licenca.nome",
-						:error-messages="errorMessage(licenca.nome)"
+						:error-messages="errorMessage(licenca.nome)",
 						@click.native="resetErrorMessage",
 						required,
 					)
@@ -37,10 +38,10 @@
 							:placeholder="placeholderSelect",
 							item-color="grey darken-3",
 							v-model="licenca.finalidade",
-							:items="finalidades"
+							:items="finalidades",
 							item-text="text",
 							item-value="value",
-							:error-messages="errorMessage(licenca.finalidade)"
+							:error-messages="errorMessage(licenca.finalidade)",
 							@click.native="resetErrorMessage",
 							@change="upValidade",
 							required,
@@ -58,7 +59,7 @@
 								min="0",
 								step="1",
 								v-model="licenca.validadeEmAnos",
-								:error-messages="validadeErrorMessage()"
+								:error-messages="validadeErrorMessage()",
 								:disabled="validadeDisabled()",
 								@click.native="resetErrorMessage",
 							)
@@ -129,8 +130,13 @@ export default {
 			if (this.licenca.finalidade === 'CADASTRO') {
 				this.licenca.validadeEmAnos = null;
 			}
+		},
+
+		siglaUpperCase() {
+			this.licenca.sigla = this.licenca.sigla ? this.licenca.sigla.toUpperCase() : null;
 		}
-	}
+
+	},
 
 };
 
@@ -157,7 +163,8 @@ export default {
 
 #QA-input-licenca-validade:disabled {
 
-		background-color: @bg-header;
+	background-color: @bg-header;
+
 }
 
 </style>

@@ -1,7 +1,5 @@
 package com.configuradorlicenciamento.licenca.interfaces;
 
-import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeDTO;
-import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.licenca.dtos.LicencaCsv;
 import com.configuradorlicenciamento.licenca.dtos.LicencaDTO;
