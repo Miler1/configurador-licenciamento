@@ -94,6 +94,7 @@ export default {
 			this.licenca.nome = null;
 			this.licenca.validadeEmAnos = null;
 			this.licenca.finalidade = null;
+			this.licenca.ativo = true;
 			this.errorMessageEmpty = true;
 			this.resetaDadosCadastro();
 

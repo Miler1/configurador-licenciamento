@@ -49,7 +49,8 @@ export default {
 			errorMessageEmpty: true,
 			tipologia:{
 				codigo: '',
-				nome: ''
+				nome: '',
+				ativo: true
 			},
 			dadosPanel: {
 				items: 1,
@@ -69,7 +70,6 @@ export default {
 
 			if (this.checkForm()) {
 
-				this.tipologia.ativo = true;
 				TipologiaService.cadastrar(this.tipologia)
 					.then(response => {
 						this.handleSuccess(response);
@@ -87,6 +87,7 @@ export default {
 
 			this.tipologia.codigo = '';
 			this.tipologia.nome = '';
+			this.tipologia.ativo = true;
 			this.errorMessageEmpty=true;
 
 		},

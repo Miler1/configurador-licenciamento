@@ -88,6 +88,7 @@ export default {
 
 			this.atividadeCnae.codigo= '';
 			this.atividadeCnae.nome= '';
+			this.atividadeCnae.ativo= true;
 			this.errorMessageEmpty=true;
 			this.resetaDadosCadastro();
 
