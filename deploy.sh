@@ -11,6 +11,16 @@ test_server_dist_folder="/var/spring/configurador-licenciamento"
 
 test_dist_file_name="configuradorlicenciamento-0.0.1.jar"
 
+homolog_server_host="ufla@192.168.252.150"
+
+homolog_server_passwd="@Ufl4#2020"
+
+homolog_server_dist_folder="/dados/var/spring/configurador-licenciamento"
+
+homolog_dist_file_name="configuradorlicenciamento-0.0.1.jar"
+
+homolog_server_port="15012"
+
 ### Verificação de status das operações
 ### $1 - status, $2 - successMessage, $3 - errorMessage
 checkStatus() {
@@ -90,6 +100,16 @@ deploy() {
 
 }
 
+deployHomolog() {
+
+	echo -e "\n--> Enviando nova versão da aplicação para o servidor: ${server_dist_folder}/${dist_file_name}"
+
+	sshpass -p "$server_pass" scp -P $server_port backend/target/*.jar $server_ssh:$server_dist_folder/$dist_file_name
+
+	checkStatus $? "Nova versão da aplicação enviada para o servidor com sucesso!" "Erro ao enviar nova versão da aplicação para o servidor! Exit: $?"
+
+}
+
 publish() {
 
 	sshpass -p "$server_pass" ssh -T $server_ssh <<-SERVER
@@ -148,6 +168,30 @@ test)
 	compile
 	package
 	deploy
+	publish
+
+	echo -e "\n--> DEPLOY DA APLICAÇÃO NO AMBIENTE DE TESTES CONCLUÍDO"
+	;;
+
+homolog)
+
+	echo -e "--> FAZENDO DEPLOY DA APLICAÇÃO NO AMBIENTE DE HOMOLOG\n\n\n"
+
+	echo -e "|--------------------------------|\n"
+	echo -e "|----- ESTEJA NA VPN PRODAP -----|\n"
+	echo -e "|--------------------------------|\n\n\n"
+
+	server_ssh=$homolog_server_host
+	server_pass=$homolog_server_passwd
+	server_dist_folder=$homolog_server_dist_folder
+	dist_file_name=$homolog_dist_file_name
+	server_port=$homolog_server_port
+
+	build-frontend
+	clean
+	compile
+	package
+	deployHomolog
 	publish
 
 	echo -e "\n--> DEPLOY DA APLICAÇÃO NO AMBIENTE DE TESTES CONCLUÍDO"
