@@ -9,7 +9,6 @@ import com.configuradorlicenciamento.licenca.repositories.LicencaRepository;
 import com.configuradorlicenciamento.licenca.specifications.LicencaSpecification;
 import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
 import com.configuradorlicenciamento.usuarioLicenciamento.repositories.UsuarioLicenciamentoRepository;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -32,8 +31,9 @@ public class LicencaService implements ILicencaService {
     @Autowired
     UsuarioLicenciamentoRepository usuarioLicenciamentoRepository;
 
+
     @Override
-    public Licenca salvar(HttpServletRequest request, LicencaDTO licencaDTO) throws Exception, ConstraintViolationException {
+    public Licenca salvar(HttpServletRequest request, LicencaDTO licencaDTO) {
 
         Object login = request.getSession().getAttribute("login");
 
@@ -44,7 +44,13 @@ public class LicencaService implements ILicencaService {
                 .setUsuarioLicencimento(usuarioLicenciamento)
                 .build();
 
-        licencaRepository.save(licenca);
+        String sigla = licencaDTO.getSigla();
+
+        if(licencaRepository.existsBySigla(sigla)) {
+            throw new RuntimeException("uma licença do tipo" + sigla + "já está cadastrada");
+        }else {
+            licencaRepository.save(licenca);
+        }
 
         return licenca;
     }
@@ -68,7 +74,13 @@ public class LicencaService implements ILicencaService {
                     return licenca;
                 });
 
-        licencaRepository.save(licencaSalva.get());
+        String sigla = licencaDTO.getSigla();
+
+        if(licencaRepository.existsBySigla(sigla)) {
+            throw new RuntimeException("uma licença do tipo" + sigla + "já está cadastrada");
+        }else {
+            licencaRepository.save(licencaSalva.get());
+        }
 
         return licencaSalva.get();
 

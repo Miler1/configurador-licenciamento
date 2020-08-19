@@ -32,6 +32,7 @@ public class Licenca implements Serializable {
     private Integer validadeEmAnos;
 
     @NotNull(message = "{validacao.notnull}")
+    @Column(unique = true, name="sigla")
     private String sigla;
 
     @NotNull(message = "{validacao.notnull}")

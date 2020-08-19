@@ -38,7 +38,7 @@ import FormCadastroLicenca from '@/components/FormCadastroLicenca';
 import LicencaService from '../services/licenca.service';
 import RelatorioService from '../services/relatorio.service';
 import GridListagem from '@/components/GridListagem';
-import MapFinalidadeEnum from '../utils/helpers/finalidade-helper';
+import mapFinalidadeEnum from '../utils/helpers/finalidade-helper';
 import { SET_SNACKBAR } from '../store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 import { HEADER } from '@/utils/dadosMockados/ListagemLicencaHeader';
@@ -135,10 +135,13 @@ export default {
 						})
 
 						.catch(erro => {
+
 							console.error(erro);
+
 							this.$store.dispatch(SET_SNACKBAR,
 								{color: 'error', text: ERROR_MESSAGES.cadastroLicenca + ': ' + erro.message, timeout: '6000'}
 							);
+
 						});
 
 				} else {
@@ -255,7 +258,7 @@ export default {
 
 		prepararDadosListar() {
 
-			let finalidadeMap = MapFinalidadeEnum.text();
+			let finalidadeMap = mapFinalidadeEnum();
 
 			this.dadosListagem.content.forEach(licenca => {
 				licenca.finalidade = finalidadeMap.get(licenca.finalidade);
@@ -265,9 +268,7 @@ export default {
 
 		prepararDadosEditar(finalidade) {
 
-			let finalidadeMap = MapFinalidadeEnum.value();
-
-			return finalidadeMap.get(finalidade);
+			return mapFinalidadeEnum().get(finalidade);
 
 		},
 
