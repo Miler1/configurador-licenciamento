@@ -134,7 +134,6 @@ export default {
 							this.resetaDadosFiltragem();
 
 						})
-
 						.catch(erro => {
 
 							console.error(erro);
@@ -172,7 +171,7 @@ export default {
 							this.resetaDadosCadastro();
 
 						});
-
+						
 				}
 
 			} else {

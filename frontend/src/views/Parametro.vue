@@ -81,7 +81,6 @@ export default {
 				if(this.isCadastro) {
 
 					ParametroService.salvar(this.parametro)
-
 						.then(() => {
 
 							this.$store.dispatch(SET_SNACKBAR,
@@ -104,7 +103,6 @@ export default {
 				} else {
 
 					ParametroService.editar(this.parametro)
-					
 						.then(() => {
 
 							this.$store.dispatch(SET_SNACKBAR,
@@ -121,8 +119,9 @@ export default {
 							);
 					
 						});
-				}
 
+				}
+				
 			} else {
 				this.errorMessageEmpty = false;
 			}
