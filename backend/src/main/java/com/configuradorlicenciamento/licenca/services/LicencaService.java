@@ -47,7 +47,7 @@ public class LicencaService implements ILicencaService {
         String sigla = licencaDTO.getSigla();
 
         if(licencaRepository.existsBySigla(sigla)) {
-            throw new RuntimeException("uma licença do tipo" + sigla + "já está cadastrada");
+            throw new RuntimeException("uma licença do tipo " + sigla + " já está cadastrada");
         }else {
             licencaRepository.save(licenca);
         }
@@ -77,7 +77,7 @@ public class LicencaService implements ILicencaService {
         String sigla = licencaDTO.getSigla();
 
         if(licencaRepository.existsBySigla(sigla)) {
-            throw new RuntimeException("uma licença do tipo" + sigla + "já está cadastrada");
+            throw new RuntimeException("uma licença do tipo " + sigla + " já está cadastrada");
         }else {
             licencaRepository.save(licencaSalva.get());
         }

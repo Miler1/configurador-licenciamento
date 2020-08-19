@@ -164,7 +164,7 @@ export default {
 							console.error(erro);
 
 							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'error', text: ERROR_MESSAGES.editarLicenca, timeout: '6000'}
+								{color: 'error', text: ERROR_MESSAGES.editarLicenca + ': ' + erro.message, timeout: '6000'}
 							);
 
 							item.ativo = !item.ativo;
