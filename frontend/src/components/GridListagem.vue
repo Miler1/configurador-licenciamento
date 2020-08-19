@@ -24,11 +24,16 @@
 				:items-per-page="itensPerPage",
 				@update:options="sortBy")
 
-			template#teste(v-slot:item.validadeEmAnos='{ item }')
+			template#text-align-center(v-slot:item.validadeEmAnos='{ item }')
 				span {{item.validadeEmAnos ? item.validadeEmAnos : ' ‒'}}
 
+<<<<<<< HEAD
 			template#teste(v-slot:item.finalidade='{ item }')
 				span {{item.finalidade}}
+=======
+			template#text-align-center(v-slot:item.finalidade='{ item }')
+				span {{item.finalidade.text}}
+>>>>>>> ef293a27e3e85249e4e91ac05507409b69e79354
 
 			template(v-slot:item.ativo='{ item }')
 				span {{item.ativo ? 'Ativo' : 'Inativo'}}
@@ -182,7 +187,7 @@ tbody tr:nth-of-type(odd) {
 	background-color: rgba(0, 0, 0, .05);
 }
 
-#teste {
+#text-align-center {
 	text-align: center;
 }
 
