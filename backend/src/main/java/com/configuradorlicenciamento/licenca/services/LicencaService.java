@@ -48,7 +48,7 @@ public class LicencaService implements ILicencaService {
 
         if(licencaRepository.existsBySigla(sigla)) {
 
-            throw new RuntimeException("uma licença do tipo '" + sigla + "' já está cadastrada.");
+            throw new RuntimeException("Uma licença do tipo '" + sigla + "' já está cadastrada.");
         }
 
         licencaRepository.save(licenca);
@@ -83,7 +83,7 @@ public class LicencaService implements ILicencaService {
 
             if (licencaExistente != null && !licencaDTO.getId().equals(licencaExistente.getId())) {
 
-                throw new RuntimeException(" uma licença do tipo '" + sigla + "' já está cadastrada.");
+                throw new RuntimeException("Uma licença do tipo '" + sigla + "' já está cadastrada.");
             }
 
         }

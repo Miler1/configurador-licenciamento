@@ -37,7 +37,7 @@ public class ParametroService implements IParametroService {
 
         if (parametroRepository.existsByCodigo(codigo)) {
 
-            throw new RuntimeException(" um parâmetro com código '" + codigo + "' já está cadastrado.");
+            throw new RuntimeException("Um parâmetro com código '" + codigo + "' já está cadastrado.");
         }
 
         parametroRepository.save(parametro);

@@ -13,11 +13,11 @@ const ERROR_MESSAGES = {
 	},
 
 	licenca: {
-		cadastro: ER_BASE + 'cadastrar licença',
-		editar: ER_BASE + 'editar a licença',
-		ativar: ER_BASE + 'ativar a licença',
+		cadastro: ER_BASE + 'cadastrar licença. ',
+		editar: ER_BASE + 'editar a licença. ',
+		ativar: ER_BASE + 'ativar a licença. ',
 		listagem: ER_BASE + 'listar as licenças.',
-		desativar: ER_BASE + 'desativar a licença'
+		desativar: ER_BASE + 'desativar a licença. '
 	},
 
 	tipologia: {
