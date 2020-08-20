@@ -4,7 +4,7 @@
 		v-container.pa-0
 			v-row
 				v-col(cols="12", md="8")
-					v-label nome
+					v-label Nome
 					v-text-field#QA-input-documento-nome(
 						outlined,
 						color="#E0E0E0",
@@ -16,7 +16,11 @@
 						dense
 					)
 				v-col(cols="12", md="4")
-					v-label Nome
+					v-label Nome para exibição
+					v-tooltip(top, max-width=400)
+						template(v-slot:activator="{ on, attrs }")
+							v-icon.information.mb-1.mr-1.float-right(v-bind="attrs", v-on="on") mdi-information
+						p.text-center Este é o nome que será exibido para o usuário e técnico quando for realizado o upload deste documento.
 					v-text-field#QA-input-documento-nome-exibicao(
 						outlined,
 						color="#E0E0E0",
@@ -80,5 +84,9 @@ export default {
 </script>
 
 <style lang="less" scope>
+
+	.information {
+		font-size: 16px !important;
+	}
 
 </style>

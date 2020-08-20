@@ -28,7 +28,7 @@ import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils
 
 export default {
 
-    name: "Documento",
+	name: "Documento",
 
 	components: {
 		PanelCadastro,
@@ -41,8 +41,8 @@ export default {
 			iconBotaoCadastrarEditar: "mdi-plus",
 			errorMessageEmpty: true,
 			documento: {
-                nome: '',
-                prefixoNomeArquivo: '',
+				nome: '',
+				prefixoNomeArquivo: '',
 				ativo: true
 			},
 			isCadastro: true,
@@ -51,7 +51,7 @@ export default {
 				panel: [],
 				readonly: true,
 				title: "Cadastro de Documentos",
-				iconName:'fa fa-file-alt',
+				iconName:'fa fa-file-text-o',
 				
 			}
 		};
@@ -129,9 +129,9 @@ export default {
 
 		errorMessage(value) {
 			return this.errorMessageEmpty || value ? [] : 'Obrigatório';
-        }
-    }
+		}
+	}
 
-}
+};
 
 </script>
