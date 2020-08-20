@@ -10,4 +10,6 @@ public interface LicencaRepository extends JpaRepository<Licenca, Integer>, JpaS
 
     Boolean existsBySigla(String sigla);
 
+    Licenca findBySigla(String sigla);
+
 }
