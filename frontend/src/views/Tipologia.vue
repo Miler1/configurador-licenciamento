@@ -105,7 +105,7 @@ export default {
 			//this.tipologia.codigo = '';
 			this.tipologia.nome = '';
 			this.tipologia.ativo = true;
-			this.errorMessageEmpty=true;
+			this.errorMessageEmpty = true;
 
 		},
 
