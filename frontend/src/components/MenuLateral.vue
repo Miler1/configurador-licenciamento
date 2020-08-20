@@ -18,7 +18,7 @@ v-navigation-drawer(app v-model='drawer', :mini-variant.sync='mini', dark, color
 						v-list-item-content
 							v-list-item-title
 								| {{ item.title }}
-					v-list-item.pl-12(v-if='item.model' v-for='(child, i) in item.children' :key='child.title' :to='child.path')
+					v-list-item.pl-12(v-for='(child, i) in item.children' :key='child.title' :to='child.path')
 						v-list-item-icon(v-if='child.icon')
 							v-icon {{ child.icon }}
 						v-list-item-content
