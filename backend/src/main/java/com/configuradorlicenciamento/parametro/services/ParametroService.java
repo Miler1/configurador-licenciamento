@@ -1,9 +1,6 @@
 package com.configuradorlicenciamento.parametro.services;
 
-import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
-import com.configuradorlicenciamento.licenca.models.Licenca;
-import com.configuradorlicenciamento.licenca.specifications.LicencaSpecification;
 import com.configuradorlicenciamento.parametro.dtos.ParametroDTO;
 import com.configuradorlicenciamento.parametro.interfaces.IParametroService;
 import com.configuradorlicenciamento.parametro.models.Parametro;
