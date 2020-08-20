@@ -140,7 +140,7 @@ export default {
 							console.error(erro);
 
 							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'error', text: ERROR_MESSAGES.cadastroLicenca + ': ' + erro.message, timeout: '6000'}
+								{color: 'error', text: ERROR_MESSAGES.licenca.cadastro + ': ' + erro.message, timeout: '6000'}
 							);
 
 						});
@@ -165,7 +165,7 @@ export default {
 							console.error(erro);
 
 							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'error', text: ERROR_MESSAGES.editarLicenca + ': ' + erro.message, timeout: '6000'}
+								{color: 'error', text: ERROR_MESSAGES.licenca.editar + ': ' + erro.message, timeout: '6000'}
 							);
 
 							item.ativo = !item.ativo;
@@ -251,7 +251,7 @@ export default {
 				.catch(erro => {
 					console.error(erro);
 					this.$store.dispatch(SET_SNACKBAR,
-						{color: 'error', text: ERROR_MESSAGES.listagemCnae + ': ' + erro.message, timeout: '6000'}
+						{color: 'error', text: ERROR_MESSAGES.cnae.listagem + ': ' + erro.message, timeout: '6000'}
 					);
 				});
 
@@ -324,13 +324,13 @@ export default {
 							if(!item.ativo) {
 								
 								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'success', text: SUCCESS_MESSAGES.desativarLicenca, timeout: '6000'}
+									{color: 'success', text: SUCCESS_MESSAGES.licenca.desativar, timeout: '6000'}
 								);
 							
 							} else {
 
 								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'success', text: SUCCESS_MESSAGES.ativarLicenca, timeout: '6000'}
+									{color: 'success', text: SUCCESS_MESSAGES.licenca.ativar, timeout: '6000'}
 								);
 
 							}
@@ -345,13 +345,13 @@ export default {
 							if(!item.ativo) {
 								
 								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.desativarCnae, timeout: '6000'}
+									{color: 'error', text: ERROR_MESSAGES.cnae.desativar, timeout: '6000'}
 								);
 							
 							} else {
 
 								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.ativarCnae, timeout: '6000'}
+									{color: 'error', text: ERROR_MESSAGES.cnae.ativar, timeout: '6000'}
 								);
 
 							}

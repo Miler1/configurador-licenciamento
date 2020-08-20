@@ -132,7 +132,7 @@ export default {
 						.catch(erro => {
 							console.error(erro);
 							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'error', text: ERROR_MESSAGES.cadastroCnae + ': ' + erro.message, timeout: '6000'}
+								{color: 'error', text: ERROR_MESSAGES.cnae.cadastro + ': ' + erro.message, timeout: '6000'}
 							);
 						});
 				} else {
@@ -155,7 +155,7 @@ export default {
 							console.error(erro);
 
 							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'error', text: ERROR_MESSAGES.editarCnae, timeout: '6000'}
+								{color: 'error', text: ERROR_MESSAGES.cnae.editar, timeout: '6000'}
 							);
 
 							item.ativo = !item.ativo;
@@ -201,7 +201,7 @@ export default {
 				.catch(erro => {
 					console.error(erro);
 					this.$store.dispatch(SET_SNACKBAR,
-						{color: 'error', text: ERROR_MESSAGES.listagemCnae + ': ' + erro.message, timeout: '6000'}
+						{color: 'error', text: ERROR_MESSAGES.cnae.listagem + ': ' + erro.message, timeout: '6000'}
 					);
 				});
 
@@ -256,13 +256,13 @@ export default {
 							if(!item.ativo) {
 								
 								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'success', text: SUCCESS_MESSAGES.desativarCnae, timeout: '6000'}
+									{color: 'success', text: SUCCESS_MESSAGES.cnae.desativar, timeout: '6000'}
 								);
 							
 							} else {
 
 								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'success', text: SUCCESS_MESSAGES.ativarCnae, timeout: '6000'}
+									{color: 'success', text: SUCCESS_MESSAGES.cnae.ativar, timeout: '6000'}
 								);
 
 							}
@@ -277,13 +277,13 @@ export default {
 							if(!item.ativo) {
 								
 								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.desativarCnae, timeout: '6000'}
+									{color: 'error', text: ERROR_MESSAGES.cnae.desativar, timeout: '6000'}
 								);
 							
 							} else {
 
 								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.ativarCnae, timeout: '6000'}
+									{color: 'error', text: ERROR_MESSAGES.cnae.ativar, timeout: '6000'}
 								);
 
 							}
