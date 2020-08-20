@@ -150,7 +150,7 @@ export default {
 						.then(() => {
 
 							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'success', text: SUCCESS_MESSAGES.editar + erro.message, timeout: '6000'}
+								{color: 'success', text: SUCCESS_MESSAGES.editar, timeout: '6000'}
 							);
 
 							this.clear();
