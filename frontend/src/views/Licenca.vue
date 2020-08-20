@@ -139,7 +139,7 @@ export default {
 							console.error(erro);
 
 							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'error', text: ERROR_MESSAGES.licenca.cadastro + ': ' + erro.message, timeout: '6000'}
+								{color: 'error', text: ERROR_MESSAGES.licenca.cadastro + erro.message, timeout: '6000'}
 							);
 
 						});
@@ -150,7 +150,7 @@ export default {
 						.then(() => {
 
 							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'success', text: SUCCESS_MESSAGES.editar, timeout: '6000'}
+								{color: 'success', text: SUCCESS_MESSAGES.editar + erro.message, timeout: '6000'}
 							);
 
 							this.clear();
@@ -164,7 +164,7 @@ export default {
 							console.error(erro);
 
 							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'error', text: ERROR_MESSAGES.licenca.editar + ': ' + erro.message, timeout: '6000'}
+								{color: 'error', text: ERROR_MESSAGES.licenca.editar + erro.message, timeout: '6000'}
 							);
 
 							item.ativo = !item.ativo;
@@ -251,7 +251,7 @@ export default {
 				.catch(erro => {
 					console.error(erro);
 					this.$store.dispatch(SET_SNACKBAR,
-						{color: 'error', text: ERROR_MESSAGES.cnae.listagem + ': ' + erro.message, timeout: '6000'}
+						{color: 'error', text: ERROR_MESSAGES.licenca.listagem + erro.message, timeout: '6000'}
 					);
 				});
 
@@ -345,13 +345,13 @@ export default {
 							if(!item.ativo) {
 								
 								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.cnae.desativar, timeout: '6000'}
+									{color: 'error', text: ERROR_MESSAGES.licenca.desativar + erro.message, timeout: '6000'}
 								);
 							
 							} else {
 
 								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.cnae.ativar, timeout: '6000'}
+									{color: 'error', text: ERROR_MESSAGES.licenca.ativar + erro.message, timeout: '6000'}
 								);
 
 							}
