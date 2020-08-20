@@ -33,7 +33,7 @@ const ERROR_MESSAGES = {
 	},
 
 	documento: {
-		cadastro: ER_BASE + 'cadastrar Parâmetro'
+		cadastro: ER_BASE + 'cadastrar o Documento'
 	}
 };
 

@@ -28,6 +28,13 @@ public class DocumentoService implements IDocumentoService {
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
+        String nome = documentoDTO.getNome();
+
+        if (documentoRepository.existsByNome(nome)) {
+
+            throw new RuntimeException("Um Ducumento com o nome '" + nome + "' já está cadastrado.");
+        }
+
         Documento documento = new Documento.DocumentoBuilder(documentoDTO)
                 .setDataCadastro(new Date())
                 .setUsuarioLicencimento(usuarioLicenciamento)
