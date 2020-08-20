@@ -65,8 +65,9 @@ export default {
 			},
 			errorMessageEmpty: true,
 			tipologia:{
-				codigo: '',
-				nome: ''
+				// codigo: '',
+				nome: '',
+				ativo: true
 			},
 			dadosPanel: {
 				items: 1,
@@ -86,7 +87,6 @@ export default {
 
 			if (this.checkForm()) {
 
-				this.tipologia.ativo = true;
 				TipologiaService.cadastrar(this.tipologia)
 					.then(response => {
 						this.handleSuccess(response);
@@ -102,8 +102,9 @@ export default {
 
 		clear() {
 
-			this.tipologia.codigo = '';
+			//this.tipologia.codigo = '';
 			this.tipologia.nome = '';
+			this.tipologia.ativo = true;
 			this.errorMessageEmpty=true;
 
 		},
@@ -129,15 +130,15 @@ export default {
 		},
 
 		handleSuccess(response) {
-			
-			let message = '';
 
-			if(response.data.codigo !== this.tipologia.codigo) {
-				message = ` A tipologia salva com o código: ${response.data.codigo}`;
-			}
+			// let message = '';
+
+			// if(response.data.codigo !== this.tipologia.codigo) {
+			// 	message = ` A tipologia salva com o código: ${response.data.codigo}`;
+			// }
 
 			this.$store.dispatch(SET_SNACKBAR,
-				{color: 'success', text: SUCCESS_MESSAGES.cadastro + message, timeout: '6000'}
+				{color: 'success', text: SUCCESS_MESSAGES.cadastro /*+ message*/, timeout: '6000'}
 			);
 
 			this.clear();

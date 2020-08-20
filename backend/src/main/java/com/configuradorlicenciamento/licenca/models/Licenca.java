@@ -1,6 +1,5 @@
 package com.configuradorlicenciamento.licenca.models;
 
-import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.licenca.dtos.LicencaCsv;
 import com.configuradorlicenciamento.licenca.dtos.LicencaDTO;
@@ -33,6 +32,7 @@ public class Licenca implements Serializable {
     private Integer validadeEmAnos;
 
     @NotNull(message = "{validacao.notnull}")
+    @Column(unique = true, name="sigla")
     private String sigla;
 
     @NotNull(message = "{validacao.notnull}")

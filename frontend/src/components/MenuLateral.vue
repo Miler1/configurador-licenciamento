@@ -1,6 +1,6 @@
 <template lang="pug">
 
-v-navigation-drawer.teste(app v-model='drawer', :mini-variant.sync='mini', dark, color='#84A98C')
+v-navigation-drawer(app v-model='drawer', :mini-variant.sync='mini', dark, color='#84A98C')
 	v-list-item.px-2.mb-8.mt-3
 		v-btn(icon, @click.stop='mini = !mini')
 			v-icon mdi-menu

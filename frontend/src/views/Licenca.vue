@@ -94,6 +94,7 @@ export default {
 			this.licenca.nome = null;
 			this.licenca.validadeEmAnos = null;
 			this.licenca.finalidade = null;
+			this.licenca.ativo = true;
 			this.errorMessageEmpty = true;
 			this.resetaDadosCadastro();
 
@@ -121,7 +122,6 @@ export default {
 			if (this.checkForm()) {
 
 				if(this.isCadastro) {
-
 						
 					LicencaService.salvar(this.licenca)
 						.then((response) => {
@@ -136,10 +136,13 @@ export default {
 						})
 
 						.catch(erro => {
+
 							console.error(erro);
+
 							this.$store.dispatch(SET_SNACKBAR,
 								{color: 'error', text: ERROR_MESSAGES.cadastroLicenca + ': ' + erro.message, timeout: '6000'}
 							);
+
 						});
 
 				} else {
@@ -162,7 +165,7 @@ export default {
 							console.error(erro);
 
 							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'error', text: ERROR_MESSAGES.editarLicenca, timeout: '6000'}
+								{color: 'error', text: ERROR_MESSAGES.editarLicenca + ': ' + erro.message, timeout: '6000'}
 							);
 
 							item.ativo = !item.ativo;
@@ -243,7 +246,7 @@ export default {
 
 				.then((response) => {
 					this.dadosListagem = response.data;
-					this.prepararDados();
+					this.prepararDadosListar();
 				})
 				.catch(erro => {
 					console.error(erro);
@@ -254,7 +257,7 @@ export default {
 
 		},
 
-		prepararDados() {
+		prepararDadosListar() {
 
 			let finalidadeMap = mapFinalidadeEnum();
 
@@ -264,13 +267,20 @@ export default {
 			
 		},
 
+		prepararDadosEditar(finalidade) {
+
+			return mapFinalidadeEnum().get(finalidade);
+
+		},
+
 		editarItem(item) {
-			
+
 			this.dadosPanel.panel = [0];
 			this.dadosPanel.title = "Editar licença ambiental";
 			this.labelBotaoCadastrarEditar = "Editar";
 			this.iconBotaoCadastrarEditar = "mdi-pencil";
 			this.licenca = { ... item};
+			this.licenca.finalidade = this.prepararDadosEditar(item.finalidade);
 			this.isCadastro = false;
 			window.scrollTo(0,0);
 
@@ -307,6 +317,7 @@ export default {
 				if(result.value) {
 
 					item.ativo = !item.ativo;
+					item.finalidade = this.prepararDadosEditar(item.finalidade);
 					LicencaService.editar(item)
 						.then(() => {
 							
@@ -352,7 +363,8 @@ export default {
 			}).catch((error) => {
 				console.error(error);
 			});
-		}
+		}, 
+		
 	},
 
 	created () {

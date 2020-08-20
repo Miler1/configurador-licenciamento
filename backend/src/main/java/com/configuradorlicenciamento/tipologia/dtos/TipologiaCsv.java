@@ -17,28 +17,28 @@ import java.io.Serializable;
 public class TipologiaCsv implements Serializable {
 
     @CsvBindByName(column = "Nome")
-    @CsvBindByPosition(position = 1)
+    @CsvBindByPosition(position = 0)
     private String nome;
 
-    @CsvBindByName(column = "Código")
-    @CsvBindByPosition(position = 0)
-    private String codigo;
+//    @CsvBindByName(column = "Código")
+//    @CsvBindByPosition(position = 0)
+//    private String codigo;
 
     @CsvBindByName(column = "Status")
-    @CsvBindByPosition(position = 2)
+    @CsvBindByPosition(position = 1)
     private String ativo;
 
     @CsvBindByName(column = "Data de cadastro")
-    @CsvBindByPosition(position = 3)
+    @CsvBindByPosition(position = 2)
     private String dataCadastro;
 
     @CsvBindByName(column = "Usuário")
-    @CsvBindByPosition(position = 4)
+    @CsvBindByPosition(position = 3)
     private String usuarioLicenciamento;
 
     public TipologiaCsv(Tipologia tipologia) {
 
-        this.codigo = tipologia.getCodigo();
+        //this.codigo = tipologia.getCodigo();
         this.nome = tipologia.getNome();
         this.ativo = tipologia.getAtivo() ? "Ativo" : "Inativo";
         this.dataCadastro = tipologia.getDataCadastro() != null ? DateUtil.formataBrSimples(tipologia.getDataCadastro()) : "-";
