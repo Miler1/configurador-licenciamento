@@ -125,7 +125,7 @@ export default {
 			let message = error.message;
 
 			this.$store.dispatch(SET_SNACKBAR,
-				{color: 'error', text: ERROR_MESSAGES.tipologia.cadastro + ': ' + message, timeout: '6000'}
+				{color: 'error', text: ERROR_MESSAGES.tipologia.cadastro + message, timeout: '6000'}
 			);
 		},
 
