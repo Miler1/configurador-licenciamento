@@ -3,17 +3,21 @@
 	v-form(ref="tipologia")
 		v-container.pa-0
 			v-row
-				v-col(cols="12", md="3")
-					v-label Código
-					v-text-field#QA-input-tipologia-codigo(
-						outlined,
-						color="#E0E0E0",
-						:placeholder="placeholder"
-						v-model="tipologia.codigo",
-						@click.native="resetErrorMessage",
-						dense
-					)
-				v-col(cols="12", md="9")
+				//- Campo ocultado e comentários relacionados no backend de acordo com a issue
+				//- https://gitlab.ti.lemaf.ufla.br/amapa/configurador-licenciamento/issues/73
+				//-
+				//- v-col(cols="12", md="3")
+				//- 		v-label Código
+				//- 		v-text-field#QA-input-tipologia-codigo(
+				//- 			outlined,
+				//- 			color="#E0E0E0",
+				//- 			:placeholder="placeholder"
+				//- 			v-model="tipologia.codigo",
+				//- 			@click.native="resetErrorMessage",
+				//- 			dense
+				//- 		)
+
+				v-col(cols="9", md="12")
 					v-label Nome
 					v-text-field#QA-input-tipologia-nome(
 						outlined,
