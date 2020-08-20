@@ -46,6 +46,7 @@ export default {
 				codigo: null,
 				nome: null,
 				casasDecimais: null,
+				ativo: true
 			},
 			dadosListagem: {},
 			dadosPanel: {
@@ -65,6 +66,7 @@ export default {
 			this.parametro.codigo = null;
 			this.parametro.nome = null;
 			this.parametro.casasDecimais = null;
+			this.parametro.ativo = true;
 			this.errorMessageEmpty = true;
 			this.resetaDadosCadastro();
 
@@ -121,7 +123,7 @@ export default {
 						});
 
 				}
-				
+
 			} else {
 				this.errorMessageEmpty = false;
 			}
