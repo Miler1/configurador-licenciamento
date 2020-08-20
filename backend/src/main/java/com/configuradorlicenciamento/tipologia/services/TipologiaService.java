@@ -1,9 +1,7 @@
 package com.configuradorlicenciamento.tipologia.services;
 
 import br.ufla.lemaf.beans.pessoa.Tipo;
-import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeCsv;
-import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
-import com.configuradorlicenciamento.atividadeCnae.specifications.AtividadeCnaeSpecification;
+import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.tipologia.dtos.TipologiaCsv;
 import com.configuradorlicenciamento.tipologia.dtos.TipologiaDTO;
@@ -24,9 +22,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TipologiaService implements ITipologiaService {
+
+    private final String TIPOLOGIA_EXISTENTE = "Já existe uma tipologia com o nome semelhante.";
 
     @Autowired
     TipologiaRepository tipologiaRepository;
@@ -45,18 +46,48 @@ public class TipologiaService implements ITipologiaService {
                 .setUsuarioLicencimento(usuarioLicenciamento)
                 .build();
 
-        if(!tipologiaExiste(tipologia)) {
-            tipologiaRepository.save(tipologia);
-        } else {
-            throw new RuntimeException("Já existe uma tipologia com o nome semelhante.");
+        if(tipologiaRepository.existsByCodigo(tipologia.getCodigo())) {
+            throw new RuntimeException(TIPOLOGIA_EXISTENTE);
         }
+
+        tipologiaRepository.save(tipologia);
 
         return tipologia;
 
     }
 
-    public Boolean tipologiaExiste(Tipologia tipologia){
-        return !tipologiaRepository.findAll(TipologiaSpecification.codigo(tipologia.getCodigo())).isEmpty();
+    @Override
+    public Tipologia editar(HttpServletRequest request, TipologiaDTO tipologiaDTO) {
+
+        Object login = request.getSession().getAttribute("login");
+
+        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
+
+        Optional<Tipologia> tipologiaSalva = tipologiaRepository.findById(tipologiaDTO.getId());
+
+        if(tipologiaSalva.isEmpty()){
+            throw new ConfiguradorNotFoundException("Por algum motivo a tipologia não foi encontrada.");
+        }
+
+        Tipologia tipologia = tipologiaSalva.get();
+
+        if(tipologiaDTO.getAtivo() != tipologia.getAtivo()){
+            tipologia.setAtivo(tipologiaDTO.getAtivo());
+        } else {
+
+            tipologia.setNome(tipologiaDTO.getNome());
+            tipologia.setCodigo(Tipologia.TipologiaBuilder.gerarCodigo(tipologia.getNome()));
+            tipologia.setUsuarioLicenciamento(usuarioLicenciamento);
+            tipologia.setDataCadastro(new Date());
+
+            if(tipologiaRepository.existsByCodigo(tipologia.getCodigo())){
+                throw new RuntimeException(TIPOLOGIA_EXISTENTE);
+            }
+        }
+
+        tipologiaRepository.save(tipologia);
+
+        return tipologia;
     }
 
     @Override

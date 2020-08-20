@@ -87,17 +87,36 @@ export default {
 
 			if (this.checkForm()) {
 
-				TipologiaService.cadastrar(this.tipologia)
-					.then(response => {
-						this.handleSuccess(response);
-					})
-					.catch(error => {
-						this.handleError(error);
-					});
+				if(this.isCadastro) {
+					this.cadastrar();
+				} else {
+					this.editar();
+				}
 
 			} else {
 				this.errorMessageEmpty = false;
 			}
+		},
+
+		cadastrar() {
+
+			TipologiaService.cadastrar(this.tipologia)
+				.then(response => {
+					this.handleSuccess(response);
+				})
+				.catch(error => {
+					this.handleError(error);
+				});
+		},
+
+		editar() {
+			TipologiaService.editar(this.tipologia)
+				.then(response => {
+					this.handleSuccess(response, true);
+				})
+				.catch(error => {
+					this.handleError(error, true);
+				});
 		},
 
 		clear() {
@@ -117,31 +136,48 @@ export default {
 			this.errorMessageEmpty = true;
 		},
 
+		resetaDadosFiltragem() {
+
+			this.parametrosFiltro.pagina = 0;
+			this.parametrosFiltro.itemsPorPagina = 10;
+			this.parametrosFiltro.tipoOrdenacao = 'dataCadastro,desc';
+			this.parametrosFiltro.stringPesquisa = '';
+
+		},
+
 		checkErrorMessage(value) {
 			return this.errorMessageEmpty || value ? [] : 'Obrigatório';
 		},
 
-		handleError(error) {
-			let message = error.message;
+		handleError(error, edicao = false) {
+
+			let message = edicao ? ERROR_MESSAGES.tipologia.editar : ERROR_MESSAGES.tipologia.cadastro;
+			message += error.message;
 
 			this.$store.dispatch(SET_SNACKBAR,
-				{color: 'error', text: ERROR_MESSAGES.tipologia.cadastro + message, timeout: '6000'}
+				{color: 'error', text: message, timeout: '6000'}
 			);
+
+			item.ativo = !item.ativo;
+			this.resetaDadosCadastro();
 		},
 
-		handleSuccess(response) {
+		handleSuccess(response, edicao = false) {
 
-			// let message = '';
+			let message = edicao ? SUCCESS_MESSAGES.edicao : SUCCESS_MESSAGES.cadastro;
 
 			// if(response.data.codigo !== this.tipologia.codigo) {
 			// 	message = ` A tipologia salva com o código: ${response.data.codigo}`;
 			// }
 
 			this.$store.dispatch(SET_SNACKBAR,
-				{color: 'success', text: SUCCESS_MESSAGES.cadastro /*+ message*/, timeout: '6000'}
+				{color: 'success', text: message, timeout: '6000'}
 			);
 
 			this.clear();
+			this.updatePagination();
+			this.resetaDadosFiltragem();
+			this.dadosPanel.panel = [];
 		},
 
 		gerarRelatorio() {
@@ -167,10 +203,10 @@ export default {
 		editarItem(item) {
 			
 			this.dadosPanel.panel = [0];
-			this.dadosPanel.title = "Editar CNAE";
+			this.dadosPanel.title = "Editar tipologia";
 			this.labelBotaoCadastrarEditar = "Editar";
 			this.iconBotaoCadastrarEditar = "mdi-pencil";
-			this.atividadeCnae = { ... item};
+			this.tipologia = { ... item};
 			this.isCadastro = false;
 			window.scrollTo(0,0);
 
@@ -180,23 +216,23 @@ export default {
 			
 			this.$fire({
 
-				title: item.ativo ? 
-					'<p class="title-modal-confirm">Desativar CNAE - ' + item.codigo+ '</p>' : 
-					'<p class="title-modal-confirm">Ativar CNAE - ' + item.codigo+ '</p>',
+				title: item.ativo ?
+					'<p class="title-modal-confirm">Desativar tipologia - ' + item.nome+ '</p>' :
+					'<p class="title-modal-confirm">Ativar tipologia - ' + item.nome+ '</p>',
 
 				html: item.ativo ?
-					`<p class="message-modal-confirm">Ao desativar o CNAE, ele não estará mais disponível no sistema.</p>
+					`<p class="message-modal-confirm">Ao desativar a tipologia, ela não estará mais disponível no sistema.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja desativar o CNAE? Esta opção pode ser desfeita a qualquer momento ao ativá-lo novamente.</b>
+						<b>Tem certeza que deseja desativar a tipologia? Esta opção pode ser desfeita a qualquer momento ao ativá-la novamente.</b>
 					</p>` :
-					`<p class="message-modal-confirm">Ao ativar o CNAE, ele ficará disponível no sistema.</p>
+					`<p class="message-modal-confirm">Ao ativar a tipologia, ela ficará disponível no sistema.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja ativar o CNAE? Esta opção pode ser desfeita a qualquer momento ao desativá-lo novamente.</b>
+						<b>Tem certeza que deseja ativar a tipologia? Esta opção pode ser desfeita a qualquer momento ao desativá-la novamente.</b>
 					</p>`,
 				showCancelButton: true,
 				confirmButtonColor: item.ativo ? '#E6A23C' : '#67C23A',
 				cancelButtonColor: '#FFF',
-				showCloseButton: true,
+				showCloseButton: false,
 				focusConfirm: false,
 				confirmButtonText: item.ativo ? '<i class="fa fa-minus-circle"></i> Desativar' : '<i class="fa fa-check-circle"></i> Ativar',
 				cancelButtonText: '<i class="fa fa-close"></i> Cancelar',
