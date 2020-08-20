@@ -28,6 +28,10 @@ const ERROR_MESSAGES = {
 
 	parametro: {
 		cadastro: "Erro ao cadastrar Parâmetro"
+	},
+
+	documento: {
+		cadastro: "Erro ao cadastrar Documento"
 	}
 };
 
