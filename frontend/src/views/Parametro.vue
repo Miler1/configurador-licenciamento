@@ -108,7 +108,7 @@ export default {
 						.then(() => {
 
 							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'success', text: SUCCESS_MESSAGES.editar, timeout: '6000'}
+								{color: 'success', text: SUCCESS_MESSAGES.parametro.editar, timeout: '6000'}
 							);
 
 						})
@@ -117,7 +117,7 @@ export default {
 							console.error(erro);
 
 							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'error', text: "", timeout: '6000'}
+								{color: 'error', text: ERROR_MESSAGES.parametro.editar + erro.message, timeout: '6000'}
 							);
 					
 						});

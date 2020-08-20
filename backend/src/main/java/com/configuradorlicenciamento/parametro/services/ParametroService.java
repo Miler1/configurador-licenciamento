@@ -36,10 +36,11 @@ public class ParametroService implements IParametroService {
         String codigo = parametroDTO.getCodigo();
 
         if (parametroRepository.existsByCodigo(codigo)) {
-            throw new RuntimeException(" um parâmetro com código '" + codigo + "' já está cadastrado.");
-        }else {
-            parametroRepository.save(parametro);
+
+            throw new RuntimeException("Um parâmetro com código '" + codigo + "' já está cadastrado.");
         }
+
+        parametroRepository.save(parametro);
 
         return parametro;
     }
