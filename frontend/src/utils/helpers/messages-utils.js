@@ -24,6 +24,10 @@ const ERROR_MESSAGES = {
 		editar: 'Erro ao editar a tipoloigia.',
 		ativar: "Erro ao ativar a tipologia.",
 		desativar: "Erro ao desativar a tipologia.",
+	},
+
+	parametro: {
+		cadastro: "Erro ao cadastrar Parâmetro"
 	}
 };
 

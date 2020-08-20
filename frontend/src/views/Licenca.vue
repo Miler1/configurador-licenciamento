@@ -134,7 +134,6 @@ export default {
 							this.resetaDadosFiltragem();
 
 						})
-
 						.catch(erro => {
 
 							console.error(erro);
@@ -184,23 +183,24 @@ export default {
 
 			if (this.licenca.finalidade === 'CADASTRO') {
 
-				return this.licenca.sigla &&
-					this.licenca.sigla != ''	&&
-					this.licenca.nome &&
-					this.licenca.nome != '' &&
-					this.licenca.finalidade &&
-					this.licenca.finalidade != '';
+				return this.licenca.sigla 
+					&& this.licenca.sigla != ''	
+					&& this.licenca.nome 
+					&& this.licenca.nome != '' 
+					&& this.licenca.finalidade 
+					&& this.licenca.finalidade != '';
 
 			} else {
 
-				return this.licenca.sigla &&
-					this.licenca.sigla != ''	&&
-					this.licenca.nome &&
-					this.licenca.nome != '' &&
-					this.licenca.finalidade &&
-					this.licenca.finalidade != '' &&
-					this.licenca.validadeEmAnos &&
-					this.licenca.validadeEmAnos != '';
+				return this.licenca.sigla 
+					&& this.licenca.sigla != ''	
+					&& this.licenca.nome 
+					&& this.licenca.nome != '' 
+					&& this.licenca.finalidade 
+					&& this.licenca.finalidade != '' 
+					&& this.licenca.validadeEmAnos 
+					&& this.licenca.validadeEmAnos != '';
+					
 			}
 
 		},	
@@ -209,21 +209,21 @@ export default {
 			this.errorMessageEmpty = true;
 		},
 
-		validadeErrorMessage() {
+		validadeErrorMessage(validade) {
 
-			if (!this.errorMessageEmpty && !this.licenca.validadeEmAnos && this.licenca.finalidade && this.licenca.finalidade != 'CADASTRO') {
+			if (!this.errorMessageEmpty && !validade && this.licenca.finalidade && this.licenca.finalidade != 'CADASTRO') {
 				
 				return 'Obrigatório';
 
-			}else if (!this.licenca.validadeEmAnos && this.licenca.finalidade && this.licenca.finalidade === 'CADASTRO') {
+			}else if (!validade && this.licenca.finalidade && this.licenca.finalidade === 'CADASTRO') {
 
 				return 'A finalidade escolhida não permite prazo de validade';
 
-			}else if (!this.licenca.validadeEmAnos  && !this.licenca.finalidade){
+			}else if (!validade  && !this.licenca.finalidade){
 
 				return 'Primeiro selecione a finalidade';
 
-			}else if (this.errorMessageEmpty && (this.licenca.validadeEmAnos === '' || this.licenca.validadeEmAnos % 1 != 0)) {
+			}else if (this.errorMessageEmpty && (validade === '' || validade % 1 != 0)) {
 
 				return 'Este campo permite apenas números inteiros';
 
@@ -376,7 +376,3 @@ export default {
 };
 
 </script>
-
-<style lang="less">
-
-</style>
