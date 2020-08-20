@@ -7,6 +7,7 @@ import com.configuradorlicenciamento.entradaUnica.interfaces.IAutenticacaoServic
 import com.configuradorlicenciamento.seguranca.components.Autenticacao;
 import com.configuradorlicenciamento.usuarioLicenciamento.interfaces.IUsuarioLicenciamentoService;
 import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Slf4j
 @Service
 public class AutenticacaoService implements IAutenticacaoService {
 
@@ -48,6 +50,7 @@ public class AutenticacaoService implements IAutenticacaoService {
 		try {
 			usuarioEntradaUnica = EntradaUnicaWS.ws.login(autenticacao.getLogin(), autenticacao.getPassword());
 		} catch (Exception e){
+			log.info(e.getMessage());
 			throw new ConfiguradorNotFoundException(e.getMessage());
 		}
 
