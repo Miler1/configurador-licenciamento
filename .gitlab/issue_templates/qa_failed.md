@@ -71,8 +71,3 @@ logs, and code as it's very hard to read otherwise.)
 [//]: <It's a improvement? Use these tags.> 
 /label ~"QA:Failed" ~"Workflow:Ready for development" ~Improvement ~P4
 
-[//]: <Priorities>
-[//]: <P1: Urgente - Arrumar tão logo que seja possível, na release atual e com menos de 2 dias>
-[//]: <P2: Alta - Arrumar em até 5 dias>
-[//]: <P3: Média - Arrumar em até 10 dias>
-[//]: <P4: Baixa - Arrumar em até 30 dias>
