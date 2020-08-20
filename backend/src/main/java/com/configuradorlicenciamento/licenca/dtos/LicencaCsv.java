@@ -51,6 +51,7 @@ public class LicencaCsv implements Serializable {
         this.sigla = licenca.getSigla();
         this.finalidade = licenca.getFinalidade() != null ? Finalidade.valueOfLabel(licenca.getFinalidade()) : "-";
         this.dataCadastro = licenca.getDataCadastro() != null ? DateUtil.formataBrSimples(licenca.getDataCadastro()) : "-";
+        this.status = licenca.getAtivo() ? "Ativo" : "Inativo";
         this.usuarioLicenciamento = licenca.getUsuarioLicenciamento() != null ? getNomeUsuario(licenca.getUsuarioLicenciamento()) : "-";
 
     }
