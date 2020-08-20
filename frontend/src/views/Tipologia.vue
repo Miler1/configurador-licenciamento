@@ -110,6 +110,7 @@ export default {
 		},
 
 		editar() {
+
 			TipologiaService.editar(this.tipologia)
 				.then(response => {
 					this.handleSuccess(response, true);
