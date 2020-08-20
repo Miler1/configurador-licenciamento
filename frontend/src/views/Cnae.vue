@@ -43,7 +43,7 @@ import { HEADER } from '@/utils/dadosMockados/ListagemCnaeHeader';
 
 export default {
 
-	name:"Cnae",
+	name: "Cnae",
 
 	components: {
 		PanelCadastro,
@@ -78,6 +78,7 @@ export default {
 				readonly: true,
 				title: "Cadastro de CNAE",
 				iconName:'fa fa-industry',
+				
 			}
 		};
 	},
@@ -105,10 +106,12 @@ export default {
 		},
 
 		resetaDadosFiltragem() {
+
 			this.parametrosFiltro.pagina = 0;
 			this.parametrosFiltro.itemsPorPagina = 10;
 			this.parametrosFiltro.tipoOrdenacao = 'dataCadastro,desc';
 			this.parametrosFiltro.stringPesquisa = '';
+
 		},
 
 		submit() {
@@ -130,11 +133,14 @@ export default {
 
 						})
 						.catch(erro => {
+
 							console.error(erro);
 							this.$store.dispatch(SET_SNACKBAR,
 								{color: 'error', text: ERROR_MESSAGES.cadastroCnae + ': ' + erro.message, timeout: '6000'}
 							);
+
 						});
+
 				} else {
 
 					AtividadeCnaeService.editar(this.atividadeCnae)
@@ -163,7 +169,7 @@ export default {
 
 						});
 				}
-
+				
 			} else {
 				this.errorMessageEmpty = false;
 			}
