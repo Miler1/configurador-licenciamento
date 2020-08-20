@@ -1,6 +1,7 @@
 package com.configuradorlicenciamento.tipologia.controllers;
 
 import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeCsv;
+import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeDTO;
 import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.configuracao.components.VariaveisAmbientes;
 import com.configuradorlicenciamento.configuracao.controllers.DefaultController;
@@ -38,6 +39,19 @@ public class TipologiaController extends DefaultController {
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
         Tipologia tipologia = tipologiaService.salvar(request, tipologiaDTO);
+
+        return ResponseEntity.ok()
+                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .body(tipologia);
+
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value="/editar")
+    public ResponseEntity<Tipologia> editar(HttpServletRequest request, @Valid @RequestBody TipologiaDTO tipologiaDTO) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        Tipologia tipologia = tipologiaService.editar(request, tipologiaDTO);
 
         return ResponseEntity.ok()
                 .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
