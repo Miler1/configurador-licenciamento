@@ -30,7 +30,11 @@ const ERROR_MESSAGES = {
 
 	parametro: {
 		cadastro: ER_BASE + 'cadastrar Parâmetro',
-		listagem: ER_BASE + 'listar os parâmetros. ',
+		listagem: ER_BASE + 'listar os parâmetros.'
+	},
+
+	documento: {
+		cadastro: ER_BASE + 'cadastrar o Documento'
 	}
 };
 

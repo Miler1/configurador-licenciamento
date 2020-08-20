@@ -50,6 +50,7 @@ export default {
 			{ title: 'Taxa', icon: {vuetify: true, value: 'mdi-cash-usd-outline'}, path: 'taxa'},
 			{ title: 'Requisitos', icon: {vuetify: true, value: 'mdi-clipboard-list'}, model: true,
 				children: [
+					{ title: 'Documentos', path: 'documentos'},
 					{ title: 'Requisitos administrativos', path: 'requisitos-administrativos'},
 					{ title: 'Requisitos técnicos', path: 'requisitos-tecnicos' }
 				],
