@@ -28,7 +28,7 @@ public class DocumentoService implements IDocumentoService {
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
-        Documento documento = new Documento().DocumentoBuilder(documentoDTO)
+        Documento documento = new Documento.DocumentoBuilder(documentoDTO)
                 .setDataCadastro(new Date())
                 .setUsuarioLicencimento(usuarioLicenciamento)
                 .build();

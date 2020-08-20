@@ -1,8 +1,5 @@
 package com.configuradorlicenciamento.documento.models;
 
-import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeCsv;
-import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeDTO;
-import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.documento.dtos.DocumentoDTO;
 import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
