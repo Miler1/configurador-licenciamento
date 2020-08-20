@@ -251,7 +251,7 @@ export default {
 				.catch(erro => {
 					console.error(erro);
 					this.$store.dispatch(SET_SNACKBAR,
-						{color: 'error', text: ERROR_MESSAGES.cnae.listagem + ': ' + erro.message, timeout: '6000'}
+						{color: 'error', text: ERROR_MESSAGES.licenca.listagem + ': ' + erro.message, timeout: '6000'}
 					);
 				});
 
