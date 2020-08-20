@@ -61,7 +61,7 @@ public class StringUtil {
 
     public static ArrayList<String> preposicoes() {
 
-        String[] array = {" da ", " de ", " do ", " a ", " e ", " o "};
+        String[] array = {" da ", " de ", " do ", " a ", " e ", " o ", " para "};
         ArrayList<String> preposicoes = new ArrayList<>();
 
         for (String item : array){
@@ -69,6 +69,27 @@ public class StringUtil {
         }
 
         return preposicoes;
+    }
+
+    public static String removerEspacosRepetidos(String string){
+
+        String referencia = string;
+        String tratada = string;
+
+        boolean complete = false;
+
+        while(!complete){
+
+            tratada = tratada.replace("  ", " ");
+
+            if(tratada.equals(referencia)){
+                complete = true;
+            } else {
+                referencia = tratada;
+            }
+        }
+
+        return tratada;
     }
 
 }

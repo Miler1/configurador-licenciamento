@@ -134,13 +134,12 @@ export default {
 							this.resetaDadosFiltragem();
 
 						})
-
 						.catch(erro => {
 
 							console.error(erro);
 
 							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'error', text: ERROR_MESSAGES.cadastroLicenca + ': ' + erro.message, timeout: '6000'}
+								{color: 'error', text: ERROR_MESSAGES.licenca.cadastro + ': ' + erro.message, timeout: '6000'}
 							);
 
 						});
@@ -165,7 +164,7 @@ export default {
 							console.error(erro);
 
 							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'error', text: ERROR_MESSAGES.editarLicenca + ': ' + erro.message, timeout: '6000'}
+								{color: 'error', text: ERROR_MESSAGES.licenca.editar + ': ' + erro.message, timeout: '6000'}
 							);
 
 							item.ativo = !item.ativo;
@@ -184,23 +183,24 @@ export default {
 
 			if (this.licenca.finalidade === 'CADASTRO') {
 
-				return this.licenca.sigla &&
-					this.licenca.sigla != ''	&&
-					this.licenca.nome &&
-					this.licenca.nome != '' &&
-					this.licenca.finalidade &&
-					this.licenca.finalidade != '';
+				return this.licenca.sigla 
+					&& this.licenca.sigla != ''	
+					&& this.licenca.nome 
+					&& this.licenca.nome != '' 
+					&& this.licenca.finalidade 
+					&& this.licenca.finalidade != '';
 
 			} else {
 
-				return this.licenca.sigla &&
-					this.licenca.sigla != ''	&&
-					this.licenca.nome &&
-					this.licenca.nome != '' &&
-					this.licenca.finalidade &&
-					this.licenca.finalidade != '' &&
-					this.licenca.validadeEmAnos &&
-					this.licenca.validadeEmAnos != '';
+				return this.licenca.sigla 
+					&& this.licenca.sigla != ''	
+					&& this.licenca.nome 
+					&& this.licenca.nome != '' 
+					&& this.licenca.finalidade 
+					&& this.licenca.finalidade != '' 
+					&& this.licenca.validadeEmAnos 
+					&& this.licenca.validadeEmAnos != '';
+					
 			}
 
 		},	
@@ -209,21 +209,21 @@ export default {
 			this.errorMessageEmpty = true;
 		},
 
-		validadeErrorMessage() {
+		validadeErrorMessage(validade) {
 
-			if (!this.errorMessageEmpty && !this.licenca.validadeEmAnos && this.licenca.finalidade && this.licenca.finalidade != 'CADASTRO') {
+			if (!this.errorMessageEmpty && !validade && this.licenca.finalidade && this.licenca.finalidade != 'CADASTRO') {
 				
 				return 'Obrigatório';
 
-			}else if (!this.licenca.validadeEmAnos && this.licenca.finalidade && this.licenca.finalidade === 'CADASTRO') {
+			}else if (!validade && this.licenca.finalidade && this.licenca.finalidade === 'CADASTRO') {
 
 				return 'A finalidade escolhida não permite prazo de validade';
 
-			}else if (!this.licenca.validadeEmAnos  && !this.licenca.finalidade){
+			}else if (!validade  && !this.licenca.finalidade){
 
 				return 'Primeiro selecione a finalidade';
 
-			}else if (this.errorMessageEmpty && (this.licenca.validadeEmAnos === '' || this.licenca.validadeEmAnos % 1 != 0)) {
+			}else if (this.errorMessageEmpty && (validade === '' || validade % 1 != 0)) {
 
 				return 'Este campo permite apenas números inteiros';
 
@@ -251,7 +251,7 @@ export default {
 				.catch(erro => {
 					console.error(erro);
 					this.$store.dispatch(SET_SNACKBAR,
-						{color: 'error', text: ERROR_MESSAGES.listagemCnae + ': ' + erro.message, timeout: '6000'}
+						{color: 'error', text: ERROR_MESSAGES.cnae.listagem + ': ' + erro.message, timeout: '6000'}
 					);
 				});
 
@@ -324,13 +324,13 @@ export default {
 							if(!item.ativo) {
 								
 								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'success', text: SUCCESS_MESSAGES.desativarLicenca, timeout: '6000'}
+									{color: 'success', text: SUCCESS_MESSAGES.licenca.desativar, timeout: '6000'}
 								);
 							
 							} else {
 
 								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'success', text: SUCCESS_MESSAGES.ativarLicenca, timeout: '6000'}
+									{color: 'success', text: SUCCESS_MESSAGES.licenca.ativar, timeout: '6000'}
 								);
 
 							}
@@ -345,13 +345,13 @@ export default {
 							if(!item.ativo) {
 								
 								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.desativarCnae, timeout: '6000'}
+									{color: 'error', text: ERROR_MESSAGES.cnae.desativar, timeout: '6000'}
 								);
 							
 							} else {
 
 								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.ativarCnae, timeout: '6000'}
+									{color: 'error', text: ERROR_MESSAGES.cnae.ativar, timeout: '6000'}
 								);
 
 							}
@@ -376,7 +376,3 @@ export default {
 };
 
 </script>
-
-<style lang="less">
-
-</style>

@@ -94,7 +94,7 @@ publish() {
 
 	sshpass -p "$server_pass" ssh -T $server_ssh <<-SERVER
 
-		echo -e "\n--> Reiniciando a aplicação"
+		echo -e "\n--> Reiniciando a aplicação\nIgnore a mensagem de senha abaixo, ela é executada no script"
 
 		echo "$server_pass" | sudo -S systemctl restart configurador-licenciamento.service
 

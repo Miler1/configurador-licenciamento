@@ -1,24 +1,55 @@
 const ERROR_MESSAGES = {
+
 	logout: 'Erro ao realizar logout.',
-	cadastroCnae: 'Erro ao cadastrar CNAE',
-	listagemCnae: 'Erro ao listar os CNAEs',
-	editarCnae: 'Erro ao editar o CNAE',
-	ativarCnae: "Erro ao ativar o CNAE.",
-	desativarCnae: "Erro ao desativar o CNAE.",
-	cadastroLicenca: "Erro ao cadastrar Licença.",
-	editarLicenca: 'Erro ao editar a licença',
-	ativarLicenca: "Erro ao ativar a licença.",
-	desativarLicenca: "Erro ao desativar a licença.",
-	cadastroTipologia: "Erro ao cadastrar Tipologia"
+
+	cnae: {
+		cadastro: 'Erro ao cadastrar CNAE.',
+		listagem: 'Erro ao listar os CNAEs.',
+		editar: 'Erro ao editar o CNAE.',
+		ativar: "Erro ao ativar o CNAE.",
+		desativar: "Erro ao desativar o CNAE."
+	},
+
+	licenca: {
+		cadastro: "Erro ao cadastrar licença.",
+		editar: 'Erro ao editar a licença.',
+		ativar: "Erro ao ativar a licença.",
+		listagem: 'Erro ao listar as licenças.',
+		desativar: "Erro ao desativar a licença."
+	},
+
+	tipologia: {
+		cadastro: "Erro ao cadastrar tipologia.",
+		listagem: 'Erro ao listar as tipologias.',
+		editar: 'Erro ao editar a tipoloigia.',
+		ativar: "Erro ao ativar a tipologia.",
+		desativar: "Erro ao desativar a tipologia.",
+	},
+
+	parametro: {
+		cadastro: "Erro ao cadastrar Parâmetro"
+	}
 };
 
 const SUCCESS_MESSAGES = {
+
 	cadastro: "Sucesso! As informações foram salvas.",
 	editar: "Sucesso! As informações foram editadas.",
-	ativarCnae: "Sucesso! O CNAE foi ativado.",
-	desativarCnae: "Sucesso! O CNAE foi desativado.",
-	ativarLicenca: "Sucesso! A licença foi ativada.",
-	desativarLicenca: "Sucesso! A licença foi desativada."
+
+	cnae: {
+		ativar: "Sucesso! O CNAE foi ativado.",
+		desativar: "Sucesso! O CNAE foi desativado.",
+	},
+
+	licenca: {
+		ativar: "Sucesso! A licença foi ativada.",
+		desativar: "Sucesso! A licença foi desativada."
+	},
+
+	tipologia: {
+		ativar: "Sucesso! A tipologia foi ativada.",
+		desativar: "Sucesso! A tipologia foi desativada."
+	}
 };
 
 export {

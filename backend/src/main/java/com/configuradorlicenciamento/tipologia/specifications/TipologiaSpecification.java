@@ -17,4 +17,10 @@ public class TipologiaSpecification {
         return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("codigo"), codigo);
     }
 
+    public static Specification<Tipologia> nome(String nome) {
+        return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(
+                criteriaBuilder.function("unaccent", String.class, criteriaBuilder.lower(root.get("nome"))),
+                "%" + StringUtil.removeAccents(nome.toLowerCase()) + "%");
+    }
+
 }
