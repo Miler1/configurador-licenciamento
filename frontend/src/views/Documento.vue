@@ -52,7 +52,7 @@ export default {
 				readonly: true,
 				title: "Cadastro de Documentos",
 				iconName:'fa fa-file-text-o',
-				
+
 			}
 		};
 	},
@@ -83,35 +83,58 @@ export default {
 			if (this.checkForm()) {
 
 				if(this.isCadastro) {
-
-					DocumentoService.cadastrar(this.documento)
-
-						.then(() => {
-
-							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'success', text: SUCCESS_MESSAGES.cadastro, timeout: '6000'}
-							);
-							this.clear();
-
-						})
-						.catch(erro => {
-
-							console.error(erro);
-							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'error', text: ERROR_MESSAGES.documento.cadastro + ': ' + erro.message, timeout: '9000'}
-							);
-
-						});
-
+					this.cadastrar();
 				} else {
-
 					// Edição
 				}
-				
+
 			} else {
 				this.errorMessageEmpty = false;
 			}
 
+		},
+
+		cadastrar() {
+
+			DocumentoService.cadastrar(this.documento)
+
+				.then(() => {
+					this.handleSuccess();
+				})
+				.catch(erro => {
+					this.handleError(erro);
+				});
+
+		},
+
+		handleError(error, edicao = false) {
+
+			let message = edicao ? ERROR_MESSAGES.documento.editar : ERROR_MESSAGES.documento.cadastro;
+			message += error.message;
+
+			this.$store.dispatch(SET_SNACKBAR,
+				{color: 'error', text: message, timeout: '9000'}
+			);
+
+			item.ativo = !item.ativo;
+			this.resetaDadosCadastro();
+		},
+
+		handleSuccess(edicao = false) {
+
+			let message = edicao ? SUCCESS_MESSAGES.edicao : SUCCESS_MESSAGES.cadastro;
+
+			this.$store.dispatch(SET_SNACKBAR,
+				{color: 'success', text: message, timeout: '6000'}
+			);
+
+			this.clear();
+
+			// Descomentar quando fizer a edição
+			// this.updatePagination();
+			// this.resetaDadosFiltragem();
+
+			if(edicao) this.dadosPanel.panel = [];
 		},
 
 		checkForm() {

@@ -45,12 +45,14 @@ public class Documento implements Serializable {
     private UsuarioLicenciamento usuarioLicenciamento;
 
     public Documento(Documento.DocumentoBuilder builder) {
+
         this.nome = builder.nome;
         this.caminhoPasta = builder.caminhoPasta;
         this.prefixoNomeArquivo = builder.prefixoNomeArquivo;
         this.ativo = builder.ativo;
         this.dataCadastro = builder.dataCadastro;
         this.usuarioLicenciamento = builder.usuarioLicenciamento;
+
     }
 
     public static class DocumentoBuilder {
@@ -63,22 +65,28 @@ public class Documento implements Serializable {
         private UsuarioLicenciamento usuarioLicenciamento;
 
         public DocumentoBuilder(DocumentoDTO documentoDTO) {
+
             this.nome = documentoDTO.getNome();
 
             //Ele pega o prefixo nome arquivo, pois no banco os dois sempre são iguais
             this.caminhoPasta = documentoDTO.getPrefixoNomeArquivo();
             this.prefixoNomeArquivo = documentoDTO.getPrefixoNomeArquivo();
             this.ativo = documentoDTO.getAtivo();
+
         }
 
         public Documento.DocumentoBuilder setDataCadastro(Date dataCadastro) {
+
             this.dataCadastro = dataCadastro;
             return this;
+
         }
 
         public Documento.DocumentoBuilder setUsuarioLicencimento(UsuarioLicenciamento usuarioLicencimento) {
+
             this.usuarioLicenciamento = usuarioLicencimento;
             return this;
+
         }
 
         public Documento build() { return new Documento(this); }
