@@ -48,7 +48,7 @@ public class TipologiaService implements ITipologiaService {
         if(!tipologiaExiste(tipologia)) {
             tipologiaRepository.save(tipologia);
         } else {
-            throw new RuntimeException("Uma tipologia ativa já existe com o código gerado");
+            throw new RuntimeException("Já existe uma tipologia com o nome semelhante.");
         }
 
         return tipologia;

@@ -1,58 +1,60 @@
+const ER_BASE = 'Erro! Não foi possível ';
+
 const ERROR_MESSAGES = {
 
 	logout: 'Erro ao realizar logout.',
 
 	cnae: {
-		cadastro: 'Erro ao cadastrar CNAE.',
-		listagem: 'Erro ao listar os CNAEs.',
-		editar: 'Erro ao editar o CNAE.',
-		ativar: "Erro ao ativar o CNAE.",
-		desativar: "Erro ao desativar o CNAE."
+		cadastro: ER_BASE + 'cadastrar CNAE.',
+		listagem: ER_BASE + 'listar os CNAEs.',
+		editar: ER_BASE + 'editar o CNAE.',
+		ativar: ER_BASE + 'ativar o CNAE. ',
+		desativar: ER_BASE + 'desativar o CNAE. '
 	},
 
 	licenca: {
-		cadastro: "Erro ao cadastrar licença.",
-		editar: 'Erro ao editar a licença.',
-		ativar: "Erro ao ativar a licença.",
-		listagem: 'Erro ao listar as licenças.',
-		desativar: "Erro ao desativar a licença."
+		cadastro: ER_BASE + 'cadastrar licença. ',
+		editar: ER_BASE + 'editar a licença. ',
+		ativar: ER_BASE + 'ativar a licença. ',
+		listagem: ER_BASE + 'listar as licenças.',
+		desativar: ER_BASE + 'desativar a licença. '
 	},
 
 	tipologia: {
-		cadastro: "Erro ao cadastrar tipologia.",
-		listagem: 'Erro ao listar as tipologias.',
-		editar: 'Erro ao editar a tipoloigia.',
-		ativar: "Erro ao ativar a tipologia.",
-		desativar: "Erro ao desativar a tipologia.",
+		cadastro: ER_BASE + 'cadastrar tipologia. ',
+		listagem: ER_BASE + 'listar as tipologias. ',
+		editar: ER_BASE + 'editar a tipoloigia. ',
+		ativar: ER_BASE + 'ativar a tipologia. ',
+		desativar: ER_BASE + 'desativar a tipologia. ',
 	},
 
 	parametro: {
-		cadastro: "Erro ao cadastrar Parâmetro"
+		cadastro: ER_BASE + 'cadastrar Parâmetro'
 	},
 
 	documento: {
-		cadastro: "Erro ao cadastrar Documento"
+		cadastro: ER_BASE + 'cadastrar Parâmetro'
 	}
 };
 
 const SUCCESS_MESSAGES = {
 
-	cadastro: "Sucesso! As informações foram salvas.",
-	editar: "Sucesso! As informações foram editadas.",
+	cadastro: 'Sucesso! As informações foram salvas.',
+	editar: 'Sucesso! As informações foram editadas.',
 
 	cnae: {
-		ativar: "Sucesso! O CNAE foi ativado.",
-		desativar: "Sucesso! O CNAE foi desativado.",
+		ativar: 'Sucesso! O CNAE foi ativado.',
+		desativar: 'Sucesso! O CNAE foi desativado.',
 	},
 
 	licenca: {
-		ativar: "Sucesso! A licença foi ativada.",
-		desativar: "Sucesso! A licença foi desativada."
+		ativar: 'Sucesso! A licença foi ativada.',
+		desativar: 'Sucesso! A licença foi desativada.'
 	},
 
 	tipologia: {
-		ativar: "Sucesso! A tipologia foi ativada.",
-		desativar: "Sucesso! A tipologia foi desativada."
+		ativar: 'Sucesso! A tipologia foi ativada.',
+		desativar: 'Sucesso! A tipologia foi desativada.'
 	}
 };
 
