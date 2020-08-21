@@ -8,8 +8,8 @@ import com.configuradorlicenciamento.parametro.interfaces.IParametroService;
 import com.configuradorlicenciamento.parametro.models.Parametro;
 import com.configuradorlicenciamento.parametro.repositories.ParametroRepository;
 import com.configuradorlicenciamento.parametro.specifications.ParametroSpecification;
-import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
-import com.configuradorlicenciamento.usuarioLicenciamento.repositories.UsuarioLicenciamentoRepository;
+import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
+import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLicenciamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -36,7 +36,7 @@ public class ParametroService implements IParametroService {
     UsuarioLicenciamentoRepository usuarioLicenciamentoRepository;
 
     @Override
-    public Parametro salvar(HttpServletRequest request, ParametroDTO parametroDTO) throws Exception {
+    public Parametro salvar(HttpServletRequest request, ParametroDTO parametroDTO) {
 
         Object login = request.getSession().getAttribute("login");
 

@@ -61,8 +61,13 @@ const routes = [
 			},
 			{
 				path: 'documentos',
-				name: 'documentos',
+				name: 'Documentos',
 				component: () => import('../views/Documento.vue')
+			},
+			{
+				path: 'requisitos-tecnicos',
+				name: 'RequisitosTecnicos',
+				component: () => import('../views/RequisitoTecnico.vue')
 			},
 			{ 
 				path: '*', 

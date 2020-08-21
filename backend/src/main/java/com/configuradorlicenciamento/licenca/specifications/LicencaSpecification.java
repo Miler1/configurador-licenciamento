@@ -1,6 +1,5 @@
 package com.configuradorlicenciamento.licenca.specifications;
 
-import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.licenca.models.Licenca;
 import lombok.AllArgsConstructor;
