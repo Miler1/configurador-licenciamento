@@ -36,6 +36,7 @@
 import PanelCadastro from '@/components/PanelCadastro';
 import FormCadastroParametro from '@/components/FormCadastroParametro';
 import ParametroService from '@/services/parametro.service';
+import RelatorioService from '../services/relatorio.service';
 import GridListagem from '@/components/GridListagem';
 import { SET_SNACKBAR } from '@/store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
@@ -99,7 +100,7 @@ export default {
 		resetaDadosCadastro() {
 
 			this.dadosPanel.title = "Cadastro de parâmetros";
-			this.dadosPanel.iconName = "mdi-card-account-details";
+			this.dadosPanel.iconName = "fa fa-sliders";
 			this.labelBotaoCadastrarEditar = "Cadastrar";
 			this.iconBotaoCadastrarEditar = "mdi-plus";
 			this.isCadastro = true;
@@ -107,10 +108,12 @@ export default {
 		},
 
 		resetaDadosFiltragem() {
+
 			this.parametrosFiltro.pagina = 0;
 			this.parametrosFiltro.itemsPorPagina = 10;
 			this.parametrosFiltro.tipoOrdenacao = 'dataCadastro,desc';
 			this.parametrosFiltro.stringPesquisa = '';
+
 		},
 		
 		submit() {
@@ -122,22 +125,17 @@ export default {
 					ParametroService.salvar(this.parametro)
 						.then(() => {
 
-							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'success', text: SUCCESS_MESSAGES.cadastro, timeout: '6000'}
-							);
-
 							this.clear();
 							this.updatePagination();
 							this.resetaDadosFiltragem();
+							this.handlerSuccess(false);
 
 						})
 						.catch(erro => {
 
 							console.error(erro);
 
-							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'error', text: ERROR_MESSAGES.parametro.cadastro + ': ' + erro.message, timeout: '6000'}
-							);
+							this.handlerError(false);
 
 						});
 						
@@ -146,9 +144,7 @@ export default {
 					ParametroService.editar(this.parametro)
 						.then(() => {
 
-							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'success', text: SUCCESS_MESSAGES.editar, timeout: '6000'}
-							);
+							this.handlerSuccess(true);
 
 							this.clear();
 							this.updatePagination();
@@ -160,12 +156,8 @@ export default {
 
 							console.error(erro);
 
-							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'error', text: ERROR_MESSAGES.parametro.editar + erro.message, timeout: '6000'}
-							);
-
-							item.ativo = !item.ativo;
 							this.resetaDadosCadastro();
+							this.handlerError(true);
 					
 						});
 
@@ -207,10 +199,32 @@ export default {
 				return 'Este campo permite apenas números inteiros';
 
 			}
+
+		},
+
+		handlerSuccess(edicao = false) {
+
+			let message = edicao ? SUCCESS_MESSAGES.editar : SUCCESS_MESSAGES.cadastro;
+
+			this.$store.dispatch(SET_SNACKBAR,
+				{color: 'success', text: message, timeout: '6000'}
+			);
+
+		},
+
+		handlerError(error, edicao = false) {
+
+			let message = edicao ? ERROR_MESSAGES.parametro.editar : ERROR_MESSAGES.parametro.cadastro;
+			message += error.message;
+
+			this.$store.dispatch(SET_SNACKBAR,
+				{color: 'error', text: message, timeout: '6000'}
+			);
+
 		},
 
 		gerarRelatorio() {
-			
+			RelatorioService.baixarRelatorio("/parametro/relatorio");
 		},
 
 		editarItem(item) {
@@ -312,10 +326,13 @@ export default {
 					this.dadosListagem = response.data;
 				})
 				.catch(erro => {
+
 					console.error(erro);
+
 					this.$store.dispatch(SET_SNACKBAR,
 						{color: 'error', text: ERROR_MESSAGES.parametro.listagem + ': ' + erro.message, timeout: '6000'}
 					);
+
 				});
 
 		},

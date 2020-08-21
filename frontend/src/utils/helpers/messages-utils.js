@@ -29,8 +29,8 @@ const ERROR_MESSAGES = {
 	},
 
 	parametro: {
-		cadastro: ER_BASE + 'cadastrar Parâmetro',
-		listagem: ER_BASE + 'listar os parâmetros.',
+		cadastro: ER_BASE + 'cadastrar parâmetro',
+		listagem: ER_BASE + 'listar os parâmetros. ',
 		editar: ER_BASE + 'editar o parâmetro. ',
 		ativar: ER_BASE + 'ativar o parâmetro. ',
 		desativar: ER_BASE + 'desativar o parâmetro. ',
@@ -65,6 +65,7 @@ const SUCCESS_MESSAGES = {
 		ativar: 'Sucesso! O parâmetro foi ativado.',
 		desativar: 'Sucesso! O parâmetro foi desativado.'
 	}
+	
 };
 
 export {

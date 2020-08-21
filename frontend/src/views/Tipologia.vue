@@ -160,8 +160,7 @@ export default {
 			this.$store.dispatch(SET_SNACKBAR,
 				{color: 'error', text: message, timeout: '6000'}
 			);
-
-			item.ativo = !item.ativo;
+			
 			this.resetaDadosCadastro();
 		},
 
@@ -195,10 +194,13 @@ export default {
 					this.dadosListagem = response.data;
 				})
 				.catch(erro => {
+
 					console.error(erro);
+
 					this.$store.dispatch(SET_SNACKBAR,
 						{color: 'error', text: ERROR_MESSAGES.tipologia.listagem + ': ' + erro.message, timeout: '6000'}
 					);
+
 				});
 
 		},

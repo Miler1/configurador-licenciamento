@@ -56,7 +56,7 @@
 								dense,
 								color="#E0E0E0",
 								type="number",
-								min="0",
+								min="1",
 								step="1",
 								v-model="licenca.validadeEmAnos",
 								:error-messages="validadeErrorMessage(licenca.validadeEmAnos)",
