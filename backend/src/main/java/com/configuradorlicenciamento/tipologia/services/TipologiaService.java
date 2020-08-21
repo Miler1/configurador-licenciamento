@@ -67,7 +67,7 @@ public class TipologiaService implements ITipologiaService {
         Optional<Tipologia> tipologiaSalva = tipologiaRepository.findById(tipologiaDTO.getId());
 
         if(tipologiaSalva.isEmpty()){
-            throw new ConfiguradorNotFoundException(TIPOLOGIA_EXISTENTE);
+            throw new ConfiguradorNotFoundException("Por algum motivo a tipologia não foi encontrada.");
         }
 
         Tipologia tipologia = tipologiaSalva.get();
