@@ -27,7 +27,7 @@ import java.util.Optional;
 public class ParametroService implements IParametroService {
 
 
-    private static final String UNIQUE_ERROR_MESSAGE = "Já existe um parâmetro com o mesmo código.";
+    private static final String PARAMETRO_EXISTENTE = "Já existe um parâmetro com o mesmo código.";
 
     @Autowired
     ParametroRepository parametroRepository;
@@ -45,7 +45,7 @@ public class ParametroService implements IParametroService {
         boolean existsCodigo = parametroRepository.existsByCodigo(parametroDTO.getCodigo());
 
         if (existsCodigo) {
-            throw new ConstraintUniqueViolationException(UNIQUE_ERROR_MESSAGE);
+            throw new ConstraintUniqueViolationException(PARAMETRO_EXISTENTE);
         }
 
         Parametro parametro = new Parametro.ParametroBuilder(parametroDTO)
@@ -75,7 +75,7 @@ public class ParametroService implements IParametroService {
             Parametro parametroExistente = parametroRepository.findByCodigo(codigo);
 
             if (parametroExistente != null && !parametroDTO.getId().equals(parametroExistente.getId())) {
-                throw new ConstraintUniqueViolationException(UNIQUE_ERROR_MESSAGE);
+                throw new ConstraintUniqueViolationException(PARAMETRO_EXISTENTE);
             }
 
         }
