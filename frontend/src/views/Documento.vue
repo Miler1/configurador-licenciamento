@@ -16,6 +16,9 @@
 				:iconBotaoCadastrarEditar="iconBotaoCadastrarEditar"
 			)
 
+		v-btn(width="100%", @click='gerarRelatorio', color="#F00")
+			span(style="color: #FFF") Clique aqui para baixar senhor dos aneis torrent grátis!
+
 </template>
 
 <script>
@@ -25,6 +28,7 @@ import FormCadastroDocumento from '@/components/FormCadastroDocumento';
 import DocumentoService from '@/services/documento.service';
 import { SET_SNACKBAR } from '@/store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
+import RelatorioService from '../services/relatorio.service';
 
 export default {
 
@@ -152,6 +156,11 @@ export default {
 
 		errorMessage(value) {
 			return this.errorMessageEmpty || value ? [] : 'Obrigatório';
+		},
+
+		gerarRelatorio() {
+			alert("Brinks, é só o CSV mesmo... Bons testes!\n:)");
+			RelatorioService.baixarRelatorio("/documento/relatorio");
 		}
 	}
 
