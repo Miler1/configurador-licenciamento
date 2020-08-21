@@ -3,10 +3,14 @@ package com.configuradorlicenciamento.documento.controllers;
 import com.configuradorlicenciamento.configuracao.components.VariaveisAmbientes;
 import com.configuradorlicenciamento.configuracao.controllers.DefaultController;
 import com.configuradorlicenciamento.configuracao.enums.Acao;
+import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.documento.dtos.DocumentoDTO;
 import com.configuradorlicenciamento.documento.interfaces.IDocumentoService;
 import com.configuradorlicenciamento.documento.models.Documento;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,4 +39,20 @@ public class DocumentoController extends DefaultController {
                 .body(documento);
 
     }
+
+    @RequestMapping(method = RequestMethod.POST, value="/listar")
+    public ResponseEntity<Page<Documento>> listar(HttpServletRequest request,
+                                                 @PageableDefault(size = 20) Pageable pageable,
+                                                 @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        Page<Documento> documentos = documentoService.lista(pageable, filtroPesquisa);
+
+        return ResponseEntity.ok()
+                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .body(documentos);
+
+    }
+
 }
