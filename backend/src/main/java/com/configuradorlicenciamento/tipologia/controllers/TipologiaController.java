@@ -27,7 +27,7 @@ import java.util.Date;
 @RequestMapping("/tipologia")
 public class TipologiaController extends DefaultController {
 
-    private static final String HEADER_STATUS = "Access-Control-Allow-Origin";
+    private static final String HEADER_CORS = "Access-Control-Allow-Origin";
 
     @Autowired
     ITipologiaService tipologiaService;
@@ -40,22 +40,35 @@ public class TipologiaController extends DefaultController {
         Tipologia tipologia = tipologiaService.salvar(request, tipologiaDTO);
 
         return ResponseEntity.ok()
-                .header(HEADER_STATUS, VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(tipologia);
+
+    }
+
+    @PostMapping(value="/editar")
+    public ResponseEntity<Tipologia> editar(HttpServletRequest request, @Valid @RequestBody TipologiaDTO tipologiaDTO) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        Tipologia tipologia = tipologiaService.editar(request, tipologiaDTO);
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
                 .body(tipologia);
 
     }
 
     @PostMapping(value="/listar")
     public ResponseEntity<Page<Tipologia>> listar(HttpServletRequest request,
-                                                     @PageableDefault(size = 20) Pageable pageable,
-                                                     @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
+                                                  @PageableDefault(size = 20) Pageable pageable,
+                                                  @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
         Page<Tipologia> tipologias = tipologiaService.listar(pageable, filtroPesquisa);
 
         return ResponseEntity.ok()
-                .header(HEADER_STATUS, VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
                 .body(tipologias);
 
     }

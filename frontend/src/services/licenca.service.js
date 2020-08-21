@@ -7,6 +7,7 @@ export default {
 	editar: async (licenca) => ApiService.post('/licenca/editar', licenca),
 
 	listar: async (parametrosFiltro) => {
+		
 		if (parametrosFiltro) {
 
 			return ApiService.post(`licenca/listar/?
@@ -20,6 +21,7 @@ export default {
 		} else {
 			return ApiService.post('licenca/listar/?page=0&size=10&sort=dataCadastro,asc', {});
 		}
+
 	}
 
 };

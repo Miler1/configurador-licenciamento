@@ -1,6 +1,5 @@
 package com.configuradorlicenciamento.tipologia.models;
 
-import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeCsv;
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.tipologia.dtos.TipologiaCsv;
@@ -8,14 +7,15 @@ import com.configuradorlicenciamento.tipologia.dtos.TipologiaDTO;
 import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 
 @Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @Table(schema = GlobalReferences.ESQUEMA, name = "tipologia")
@@ -84,7 +84,7 @@ public class Tipologia implements Serializable {
 
         public Tipologia build() { return new Tipologia(this); }
 
-        private String gerarCodigo(String string) {
+        public static String gerarCodigo(String string) {
 
             String codigo = "";
 
@@ -105,7 +105,6 @@ public class Tipologia implements Serializable {
 
     public TipologiaCsv preparaParaCsv() {
 
-        TipologiaCsv dto = new TipologiaCsv(this);
-        return dto;
+        return new TipologiaCsv(this);
     }
 }

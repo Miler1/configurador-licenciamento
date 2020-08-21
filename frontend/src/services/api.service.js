@@ -109,7 +109,6 @@ const ApiService = {
 	genericErrorHandling (error) {
 		let { message } = error;
 
-		console.log('message', message);
 		if (error && error.response && error.response.status) {
 			switch (error.response.status) {
 			case 401:

@@ -146,11 +146,17 @@ export default {
 
 							this.handlerSuccess(true);
 
+							this.clear();
+							this.updatePagination();
+							this.resetaDadosFiltragem();
+							this.dadosPanel.panel = [];
+
 						})
 						.catch(erro => {
 
 							console.error(erro);
 
+							this.resetaDadosCadastro();
 							this.handlerError(true);
 					
 						});
@@ -223,10 +229,93 @@ export default {
 
 		editarItem(item) {
 
+			this.dadosPanel.panel = [0];
+			this.dadosPanel.title = "Editar parâmetro";
+			this.labelBotaoCadastrarEditar = "Editar";
+			this.iconBotaoCadastrarEditar = "mdi-pencil";
+			this.parametro = { ... item};
+			this.isCadastro = false;
+			window.scrollTo(0,0);
+
 		},
 
 		ativarDesativarItem(item) {
-		
+
+			this.$fire({
+
+				title: item.ativo ? 
+					'<p class="title-modal-confirm">Desativar Parâmetro - ' + item.codigo+ '</p>' :
+					'<p class="title-modal-confirm">Ativar Parâmetro - ' + item.codigo+ '</p>',
+
+				html: item.ativo ?
+					`<p class="message-modal-confirm">Ao desativar o Parâmetro, ele não estará mais disponível no sistema.</p>
+					<p class="message-modal-confirm">
+						<b>Tem certeza que deseja desativar o Parâmetro? Esta opção pode ser desfeita a qualquer momento ao ativá-lo novamente.</b>
+					</p>` :
+					`<p class="message-modal-confirm">Ao ativar o Parâmetro, ele ficará disponível no sistema.</p>
+					<p class="message-modal-confirm">
+						<b>Tem certeza que deseja ativar o Parâmetro? Esta opção pode ser desfeita a qualquer momento ao desativá-lo novamente.</b>
+					</p>`,
+				showCancelButton: true,
+				confirmButtonColor: item.ativo ? '#E6A23C' : '#67C23A',
+				cancelButtonColor: '#FFF',
+				showCloseButton: true,
+				focusConfirm: false,
+				confirmButtonText: item.ativo ? '<i class="fa fa-minus-circle"></i> Desativar' : '<i class="fa fa-check-circle"></i> Ativar',
+				cancelButtonText: '<i class="fa fa-close"></i> Cancelar',
+				reverseButtons: true
+
+			}).then((result) => {
+
+				if(result.value) {
+
+					item.ativo = !item.ativo;
+					ParametroService.editar(item)
+						.then(() => {
+							
+							if(!item.ativo) {
+								
+								this.$store.dispatch(SET_SNACKBAR,
+									{color: 'success', text: SUCCESS_MESSAGES.parametro.desativar, timeout: '6000'}
+								);
+							
+							} else {
+
+								this.$store.dispatch(SET_SNACKBAR,
+									{color: 'success', text: SUCCESS_MESSAGES.parametro.ativar, timeout: '6000'}
+								);
+
+							}
+
+							this.updatePagination();
+							this.resetaDadosFiltragem();
+
+						})
+						.catch(erro => {
+
+							console.error(erro);
+							if(!item.ativo) {
+								
+								this.$store.dispatch(SET_SNACKBAR,
+									{color: 'error', text: ERROR_MESSAGES.parametro.desativar + erro.message, timeout: '6000'}
+								);
+							
+							} else {
+
+								this.$store.dispatch(SET_SNACKBAR,
+									{color: 'error', text: ERROR_MESSAGES.parametro.ativar + erro.message, timeout: '6000'}
+								);
+
+							}
+
+							item.ativo = !item.ativo;
+
+						});
+				}
+			}).catch((error) => {
+				console.error(error);
+			});
+
 		},
 
 		updatePagination(parametrosFiltro) {

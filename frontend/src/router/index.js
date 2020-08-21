@@ -59,6 +59,11 @@ const routes = [
 				name: 'Parametro',
 				component: () => import('../views/Parametro.vue')
 			},
+			{
+				path: 'documentos',
+				name: 'documentos',
+				component: () => import('../views/Documento.vue')
+			},
 			{ 
 				path: '*', 
 				component: () => import('../views/UnderConstruction.vue') 

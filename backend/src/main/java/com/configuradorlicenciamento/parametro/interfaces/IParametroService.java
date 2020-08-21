@@ -20,4 +20,6 @@ public interface IParametroService {
 
    List<Parametro> listarParametros() throws Exception;
 
+   Parametro editar(HttpServletRequest request, ParametroDTO parametroDTO);
+
 }

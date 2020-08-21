@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ParametroService implements IParametroService {
@@ -41,23 +42,59 @@ public class ParametroService implements IParametroService {
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
+        boolean existsCodigo = parametroRepository.existsByCodigo(parametroDTO.getCodigo());
+
+        if (existsCodigo) {
+            throw new ConstraintUniqueViolationException(UNIQUE_ERROR_MESSAGE);
+        }
+
         Parametro parametro = new Parametro.ParametroBuilder(parametroDTO)
                 .setDataCadastro(new Date())
                 .setUsuarioLicencimento(usuarioLicenciamento)
                 .build();
 
+        parametroRepository.save(parametro);
+
+        return parametro;
+
+    }
+
+    @Override
+    public Parametro editar(HttpServletRequest request, ParametroDTO parametroDTO) {
+
+        Object login = request.getSession().getAttribute("login");
+
+        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
+
         String codigo = parametroDTO.getCodigo();
 
         boolean existsCodigo = parametroRepository.existsByCodigo(codigo);
 
-        if (existsCodigo) {
+        if(existsCodigo) {
 
-            throw new ConstraintUniqueViolationException(UNIQUE_ERROR_MESSAGE);
+            Parametro parametroExistente = parametroRepository.findByCodigo(codigo);
+
+            if (parametroExistente != null && !parametroDTO.getId().equals(parametroExistente.getId())) {
+                throw new ConstraintUniqueViolationException(UNIQUE_ERROR_MESSAGE);
+            }
+
         }
 
-        parametroRepository.save(parametro);
+        Optional<Parametro> parametroSalvo = parametroRepository.findById(parametroDTO.getId())
+                .map(parametro -> {
+                    parametro.setCodigo(parametroDTO.getCodigo());
+                    parametro.setNome(parametroDTO.getNome());
+                    parametro.setCasasDecimais(parametroDTO.getCasasDecimais());
+                    parametro.setUsuarioLicenciamento(usuarioLicenciamento);
+                    parametro.setDataCadastro(new Date());
+                    parametro.setAtivo(parametroDTO.getAtivo());
+                    return parametro;
+                });
 
-        return parametro;
+        parametroRepository.save(parametroSalvo.get());
+
+        return parametroSalvo.get();
+
     }
 
     private Specification<Parametro> preparaFiltro(FiltroPesquisa filtro) {
@@ -73,11 +110,13 @@ public class ParametroService implements IParametroService {
 
     }
 
+    @Override
     public Page<Parametro> listar(Pageable pageable, FiltroPesquisa filtro) {
 
         Specification<Parametro> specification = preparaFiltro(filtro);
 
         return parametroRepository.findAll(specification, pageable);
+
     }
 
     @Override
@@ -91,6 +130,7 @@ public class ParametroService implements IParametroService {
         }
 
         return dtos;
+
     }
 
     @Override

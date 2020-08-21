@@ -1,8 +1,7 @@
-package com.configuradorlicenciamento.parametro.models;
+package com.configuradorlicenciamento.documento.models;
 
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
-import com.configuradorlicenciamento.parametro.dtos.ParametroCsv;
-import com.configuradorlicenciamento.parametro.dtos.ParametroDTO;
+import com.configuradorlicenciamento.documento.dtos.DocumentoDTO;
 import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,8 +16,8 @@ import java.util.Date;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(schema = GlobalReferences.ESQUEMA, name = "parametro_atividade")
-public class Parametro implements Serializable {
+@Table(schema = GlobalReferences.ESQUEMA, name = "tipo_documento")
+public class Documento implements Serializable {
 
     @Id
     @SuppressWarnings("unused")
@@ -29,11 +28,10 @@ public class Parametro implements Serializable {
     private String nome;
 
     @NotNull(message = "{validacao.notnull}")
-    @Column(unique = true, name="codigo")
-    private String codigo;
+    private String caminhoPasta;
 
-    @Column(nullable = true)
-    private Integer casasDecimais;
+    @NotNull(message = "{validacao.notnull}")
+    private String prefixoNomeArquivo;
 
     @NotNull(message = "{validacao.notnull}")
     private Boolean ativo;
@@ -46,48 +44,53 @@ public class Parametro implements Serializable {
     @JoinColumn(name = "id_usuario_licenciamento", referencedColumnName = "id")
     private UsuarioLicenciamento usuarioLicenciamento;
 
+    public Documento(Documento.DocumentoBuilder builder) {
 
-    public Parametro(Parametro.ParametroBuilder builder) {
-        this.codigo = builder.codigo;
         this.nome = builder.nome;
-        this.casasDecimais = builder.casasDecimais;
+        this.caminhoPasta = builder.caminhoPasta;
+        this.prefixoNomeArquivo = builder.prefixoNomeArquivo;
         this.ativo = builder.ativo;
-        this.usuarioLicenciamento = builder.usuarioLicenciamento;
         this.dataCadastro = builder.dataCadastro;
+        this.usuarioLicenciamento = builder.usuarioLicenciamento;
+
     }
 
-    public static class ParametroBuilder {
-        private String codigo;
-        private String nome;
-        private Integer casasDecimais;
+    public static class DocumentoBuilder {
+
+        private final String nome;
+        private final String caminhoPasta;
+        private final String prefixoNomeArquivo;
         private Boolean ativo;
         private Date dataCadastro;
         private UsuarioLicenciamento usuarioLicenciamento;
 
-        public ParametroBuilder(ParametroDTO parametroDTO) {
-            this.codigo = parametroDTO.getCodigo();
-            this.nome = parametroDTO.getNome();
-            this.casasDecimais = parametroDTO.getCasasDecimais();
-            this.ativo = parametroDTO.getAtivo();
+        public DocumentoBuilder(DocumentoDTO documentoDTO) {
+
+            this.nome = documentoDTO.getNome();
+
+            //Ele pega o prefixo nome arquivo, pois no banco os dois sempre são iguais
+            this.caminhoPasta = documentoDTO.getPrefixoNomeArquivo();
+            this.prefixoNomeArquivo = documentoDTO.getPrefixoNomeArquivo();
+            this.ativo = documentoDTO.getAtivo();
+
         }
 
-        public Parametro.ParametroBuilder setDataCadastro(Date dataCadastro) {
+        public Documento.DocumentoBuilder setDataCadastro(Date dataCadastro) {
+
             this.dataCadastro = dataCadastro;
             return this;
+
         }
 
-        public Parametro.ParametroBuilder setUsuarioLicencimento(UsuarioLicenciamento usuarioLicencimento) {
+        public Documento.DocumentoBuilder setUsuarioLicencimento(UsuarioLicenciamento usuarioLicencimento) {
+
             this.usuarioLicenciamento = usuarioLicencimento;
             return this;
+
         }
 
-        public Parametro build(){return new Parametro(this);}
+        public Documento build() { return new Documento(this); }
 
-    }
-
-    public ParametroCsv preparaParaCsv() {
-
-        return new ParametroCsv(this);
     }
 
 }

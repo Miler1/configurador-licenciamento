@@ -126,9 +126,6 @@ export default {
 					LicencaService.salvar(this.licenca)
 						.then((response) => {
 
-							this.clear();
-							this.updatePagination();
-							this.resetaDadosFiltragem();
 							this.handlerSuccess(false);
 
 						})
@@ -145,9 +142,6 @@ export default {
 					LicencaService.editar(this.licenca)
 						.then(() => {
 							
-							this.clear();
-							this.updatePagination();
-							this.resetaDadosFiltragem();
 							this.handlerSuccess(true);
 							this.dadosPanel.panel = [];
 
@@ -156,7 +150,6 @@ export default {
 
 							console.error(erro);
 
-							this.resetaDadosCadastro();
 							this.handlerError(erro, true);
 
 						});
@@ -203,6 +196,10 @@ export default {
 				{color: 'success', text: message, timeout: '6000'}
 			);
 
+			this.clear();
+			this.updatePagination();
+			this.resetaDadosFiltragem();
+
 		},
 
 		handlerError(error, edicao = false) {
@@ -213,6 +210,8 @@ export default {
 			this.$store.dispatch(SET_SNACKBAR,
 				{color: 'error', text: message, timeout: '6000'}
 			);
+
+			this.resetaDadosCadastro();
 
 		},
 

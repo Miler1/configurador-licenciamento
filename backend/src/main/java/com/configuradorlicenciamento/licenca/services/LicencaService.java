@@ -26,7 +26,7 @@ import java.util.Optional;
 @Service
 public class LicencaService implements ILicencaService {
 
-    private static final String UNIQUE_ERROR_MESSAGE = "Já existe uma licença com o mesmo tipo.";
+    private static final String LICENCA_EXISTENTE = "Já existe uma licença com o mesmo tipo.";
 
     @Autowired
     LicencaRepository licencaRepository;
@@ -35,25 +35,22 @@ public class LicencaService implements ILicencaService {
     UsuarioLicenciamentoRepository usuarioLicenciamentoRepository;
 
     @Override
-    public Licenca salvar(HttpServletRequest request, LicencaDTO licencaDTO) throws Exception{
+    public Licenca salvar(HttpServletRequest request, LicencaDTO licencaDTO) throws Exception {
 
         Object login = request.getSession().getAttribute("login");
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
+        boolean existsSigla = licencaRepository.existsBySigla(licencaDTO.getSigla());
+
+        if (existsSigla) {
+            throw new ConstraintUniqueViolationException(LICENCA_EXISTENTE);
+        }
+
         Licenca licenca = new Licenca.LicencaBuilder(licencaDTO)
                 .setDataCadastro(new Date())
                 .setUsuarioLicencimento(usuarioLicenciamento)
                 .build();
-
-        String sigla = licencaDTO.getSigla();
-
-        boolean existsSigla = licencaRepository.existsBySigla(sigla);
-
-        if(existsSigla) {
-
-            throw new ConstraintUniqueViolationException(UNIQUE_ERROR_MESSAGE);
-        }
 
         licencaRepository.save(licenca);
 
@@ -67,6 +64,20 @@ public class LicencaService implements ILicencaService {
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
+        String sigla = licencaDTO.getSigla();
+
+        boolean existsSigla = licencaRepository.existsBySigla(sigla);
+
+        if (existsSigla) {
+
+            Licenca licencaExistente = licencaRepository.findBySigla(sigla);
+
+            if (licencaExistente != null && !licencaDTO.getId().equals(licencaExistente.getId())) {
+                throw new ConstraintUniqueViolationException(LICENCA_EXISTENTE);
+            }
+
+        }
+
         Optional<Licenca> licencaSalva = licencaRepository.findById(licencaDTO.getId())
                 .map(licenca -> {
                     licenca.setSigla(licencaDTO.getSigla());
@@ -78,21 +89,6 @@ public class LicencaService implements ILicencaService {
                     licenca.setAtivo(licencaDTO.getAtivo());
                     return licenca;
                 });
-
-        String sigla = licencaDTO.getSigla();
-
-        boolean existsSigla = licencaRepository.existsBySigla(sigla);
-
-        if(existsSigla) {
-
-            Licenca licencaExistente = licencaRepository.findBySigla(sigla);
-
-            if (licencaExistente != null && !licencaDTO.getId().equals(licencaExistente.getId())) {
-
-                throw new ConstraintUniqueViolationException(UNIQUE_ERROR_MESSAGE);
-            }
-
-        }
 
         licencaRepository.save(licencaSalva.get());
 
@@ -112,7 +108,7 @@ public class LicencaService implements ILicencaService {
 
         Specification<Licenca> specification = Specification.where(LicencaSpecification.padrao());
 
-        if(filtro.getStringPesquisa() != null) {
+        if (filtro.getStringPesquisa() != null) {
             specification = specification.and(LicencaSpecification.nome(filtro.getStringPesquisa())
                     .or(LicencaSpecification.sigla(filtro.getStringPesquisa())));
         }
@@ -127,7 +123,7 @@ public class LicencaService implements ILicencaService {
     }
 
     @Override
-    public List<LicencaCsv> listarLicencasParaCsv(){
+    public List<LicencaCsv> listarLicencasParaCsv() {
 
         List<Licenca> licencas = listarLicencas();
         List<LicencaCsv> dtos = new ArrayList<>();

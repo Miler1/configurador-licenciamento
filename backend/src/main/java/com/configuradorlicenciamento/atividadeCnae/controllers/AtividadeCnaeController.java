@@ -26,25 +26,25 @@ import java.util.Date;
 @RequestMapping("/atividadeCnae")
 public class AtividadeCnaeController extends DefaultController {
 
-    private static final String HEADER_STATUS = "Access-Control-Allow-Origin";
+    private static final String HEADER_CORS = "Access-Control-Allow-Origin";
 
     @Autowired
     IAtividadeCnaeService atividadeCnaeService;
 
     @PostMapping(value = "/salvar")
-    public ResponseEntity<AtividadeCnae> salvar (HttpServletRequest request, @Valid @RequestBody AtividadeCnaeDTO atividadeCnaeDTO) throws Exception {
+    public ResponseEntity<AtividadeCnae> salvar(HttpServletRequest request, @Valid @RequestBody AtividadeCnaeDTO atividadeCnaeDTO) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
         AtividadeCnae atividadeCnae = atividadeCnaeService.salvar(request, atividadeCnaeDTO);
 
         return ResponseEntity.ok()
-                .header(HEADER_STATUS, VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
                 .body(atividadeCnae);
 
     }
 
-    @PostMapping(value="/editar")
+    @PostMapping(value = "/editar")
     public ResponseEntity<AtividadeCnae> editar(HttpServletRequest request, @Valid @RequestBody AtividadeCnaeDTO atividadeCnaeDTO) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
@@ -52,28 +52,28 @@ public class AtividadeCnaeController extends DefaultController {
         AtividadeCnae atividadeCnae = atividadeCnaeService.editar(request, atividadeCnaeDTO);
 
         return ResponseEntity.ok()
-                .header(HEADER_STATUS, VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
                 .body(atividadeCnae);
 
     }
 
-    @PostMapping(value="/listar")
+    @PostMapping(value = "/listar")
     public ResponseEntity<Page<AtividadeCnae>> listar(HttpServletRequest request,
-                                                 @PageableDefault(size = 20) Pageable pageable,
-                                                 @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
+                                                      @PageableDefault(size = 20) Pageable pageable,
+                                                      @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
         Page<AtividadeCnae> atividadeCnaes = atividadeCnaeService.listar(pageable, filtroPesquisa);
 
         return ResponseEntity.ok()
-                .header(HEADER_STATUS, VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
                 .body(atividadeCnaes);
 
     }
 
     @GetMapping("/relatorio")
-    public void relatorioCSV (HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void relatorioCSV(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
@@ -84,6 +84,7 @@ public class AtividadeCnaeController extends DefaultController {
         mappingStrategy.setType(AtividadeCnaeCsv.class);
 
         downloadCsv(atividadeCnaeService.listarCnaesParaCsv(), nome, mappingStrategy, response);
+
     }
 
 }

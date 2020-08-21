@@ -26,7 +26,7 @@ import java.util.Date;
 @RequestMapping("/parametro")
 public class ParametroController extends DefaultController {
 
-    private static final String HEADER_STATUS = "Access-Control-Allow-Origin";
+    private static final String HEADER_CORS = "Access-Control-Allow-Origin";
 
     @Autowired
     IParametroService parametroService;
@@ -39,28 +39,41 @@ public class ParametroController extends DefaultController {
         Parametro parametro = parametroService.salvar(request, parametroDTO);
 
         return ResponseEntity.ok()
-                .header(HEADER_STATUS, VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
                 .body(parametro);
 
     }
 
-    @PostMapping(value="/listar")
+    @PostMapping(value = "/editar")
+    public ResponseEntity<Parametro> editar(HttpServletRequest request, @Valid @RequestBody ParametroDTO parametroDTO) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        Parametro parametro = parametroService.editar(request, parametroDTO);
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(parametro);
+
+    }
+
+    @PostMapping(value = "/listar")
     public ResponseEntity<Page<Parametro>> listar(HttpServletRequest request,
-                                                     @PageableDefault(size = 20) Pageable pageable,
-                                                     @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
+                                                  @PageableDefault(size = 20) Pageable pageable,
+                                                  @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
         Page<Parametro> parametros = parametroService.listar(pageable, filtroPesquisa);
 
         return ResponseEntity.ok()
-                .header(HEADER_STATUS, VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
                 .body(parametros);
 
     }
 
     @GetMapping("/relatorio")
-    public void relatorioCSV (HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void relatorioCSV(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 

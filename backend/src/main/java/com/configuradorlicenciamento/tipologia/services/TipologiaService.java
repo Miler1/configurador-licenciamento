@@ -1,6 +1,7 @@
 package com.configuradorlicenciamento.tipologia.services;
 
 import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
+import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.tipologia.dtos.TipologiaCsv;
 import com.configuradorlicenciamento.tipologia.dtos.TipologiaDTO;
@@ -21,9 +22,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TipologiaService implements ITipologiaService {
+
+    private static final String TIPOLOGIA_EXISTENTE = "Já existe uma tipologia com o nome semelhante.";
 
     @Autowired
     TipologiaRepository tipologiaRepository;
@@ -45,8 +49,43 @@ public class TipologiaService implements ITipologiaService {
         boolean existsCodigo = tipologiaRepository.existsByCodigo(tipologia.getCodigo());
 
         if (existsCodigo) {
+            throw new ConstraintUniqueViolationException(TIPOLOGIA_EXISTENTE);
+        }
 
-            throw new ConstraintUniqueViolationException("Já existe uma tipologia com o nome semelhante.");
+        tipologiaRepository.save(tipologia);
+
+        return tipologia;
+    }
+
+    @Override
+    public Tipologia editar(HttpServletRequest request, TipologiaDTO tipologiaDTO) {
+
+        Object login = request.getSession().getAttribute("login");
+
+        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
+
+        Optional<Tipologia> tipologiaSalva = tipologiaRepository.findById(tipologiaDTO.getId());
+
+        if(tipologiaSalva.isEmpty()){
+            throw new ConfiguradorNotFoundException(TIPOLOGIA_EXISTENTE);
+        }
+
+        Tipologia tipologia = tipologiaSalva.get();
+
+        if(!tipologiaDTO.getAtivo().equals(tipologia.getAtivo())){
+            tipologia.setAtivo(tipologiaDTO.getAtivo());
+        } else {
+
+            tipologia.setNome(tipologiaDTO.getNome());
+            tipologia.setCodigo(Tipologia.TipologiaBuilder.gerarCodigo(tipologia.getNome()));
+            tipologia.setUsuarioLicenciamento(usuarioLicenciamento);
+            tipologia.setDataCadastro(new Date());
+
+            boolean existsCodigo = tipologiaRepository.existsByCodigo(tipologia.getCodigo());
+
+            if(existsCodigo){
+                throw new ConstraintUniqueViolationException(TIPOLOGIA_EXISTENTE);
+            }
         }
 
         tipologiaRepository.save(tipologia);

@@ -7,6 +7,7 @@ export default {
 	editar: async (parametro) => ApiService.post('/parametro/editar', parametro),
 
 	listar: async (parametrosFiltro) => {
+		
 		if (parametrosFiltro) {
 
 			return ApiService.post(`parametro/listar/?
@@ -17,10 +18,10 @@ export default {
 			parametrosFiltro
 			);
 
-		}
-		else {
+		} else {
 			return ApiService.post('parametro/listar/?page=0&size=10&sort=dataCadastro,asc', {});
 		}
+
 	}
 
 };
