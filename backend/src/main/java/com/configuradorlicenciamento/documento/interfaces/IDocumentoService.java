@@ -12,6 +12,8 @@ public interface IDocumentoService {
 
     Documento salvar(HttpServletRequest request, DocumentoDTO documentoDTO);
 
-    Page<Documento> lista(Pageable pageable, FiltroPesquisa filtro);
+    Page<Documento> listar(Pageable pageable, FiltroPesquisa filtro);
+
+    Documento editar(HttpServletRequest request, DocumentoDTO documentoDTO);
 
 }

@@ -37,8 +37,11 @@ const ERROR_MESSAGES = {
 	},
 
 	documento: {
-		cadastro: ER_BASE + 'cadastrar o Documento',
+		cadastro: ER_BASE + 'cadastrar o documento',
 		listagem: ER_BASE + 'listar os documentos. ',
+		editar: ER_BASE + 'editar o documento. ',
+		ativar: ER_BASE + 'ativar o documento. ',
+		desativar: ER_BASE + 'desativar o documento. ',
 	}
 };
 
@@ -65,6 +68,11 @@ const SUCCESS_MESSAGES = {
 	parametro: {
 		ativar: 'Sucesso! O parâmetro foi ativado.',
 		desativar: 'Sucesso! O parâmetro foi desativado.'
+	},
+
+	documento: {
+		ativar: 'Sucesso! O documento foi ativado.',
+		desativar: 'Sucesso! O documento foi desativado.',
 	}
 	
 };
