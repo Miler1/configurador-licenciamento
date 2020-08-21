@@ -16,6 +16,7 @@
 				:iconBotaoCadastrarEditar="iconBotaoCadastrarEditar"
 			)
 
+		//- DEVE SER REMOVIDO AO DESENVOLVER ATIVIDADE DE LISTAGEM
 		v-btn(width="100%", @click='gerarRelatorio', color="#F00")
 			span(style="color: #FFF") Clique aqui para baixar senhor dos aneis torrent grátis!
 
@@ -158,6 +159,7 @@ export default {
 			return this.errorMessageEmpty || value ? [] : 'Obrigatório';
 		},
 
+		//- DEVE SER ALTERADO AO DESENVOLVER ATIVIDADE DE LISTAGEM
 		gerarRelatorio() {
 			alert("Brinks, é só o CSV mesmo... Bons testes!\n:)");
 			RelatorioService.baixarRelatorio("/documento/relatorio");
