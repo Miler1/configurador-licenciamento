@@ -16,6 +16,18 @@
 				:labelBotaoCadastrarEditar="labelBotaoCadastrarEditar",
 				:iconBotaoCadastrarEditar="iconBotaoCadastrarEditar",
 			)
+		
+		GridListagem.pa-7(
+			:tituloListagem="tituloListagem",
+			:placeholderPesquisa="placeholderPesquisa",
+			:gerarRelatorio="gerarRelatorio",
+			:headers="headerListagem",
+			:dadosListagem="dadosListagem",
+			:updatePagination="updatePagination",
+			:editarItem="editarItem",
+			:ativarDesativarItem="ativarDesativarItem",
+			:parametrosFiltro="parametrosFiltro",
+		)
 
 </template>
 
@@ -24,8 +36,10 @@
 import PanelCadastro from '@/components/PanelCadastro';
 import FormCadastroParametro from '@/components/FormCadastroParametro';
 import ParametroService from '@/services/parametro.service';
+import GridListagem from '@/components/GridListagem';
 import { SET_SNACKBAR } from '@/store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
+import { HEADER } from '@/utils/dadosMockados/ListagemParametroHeader';
 
 export default {
 
@@ -34,12 +48,15 @@ export default {
 	components: {
 		PanelCadastro,
 		FormCadastroParametro,
+		GridListagem
 	},
 
 	data: () => {
 		return {
 			errorMessageEmpty: true,
 			isCadastro: true,
+			tituloListagem: "Listagem de parâmetros cadastrados",
+			placeholderPesquisa: "Pesquisar por código ou nome do parâmetro",
 			labelBotaoCadastrarEditar: "Cadastrar",
 			iconBotaoCadastrarEditar: "mdi-plus",
 			parametro: {
@@ -49,6 +66,13 @@ export default {
 				ativo: true
 			},
 			dadosListagem: {},
+			headerListagem: HEADER,
+			parametrosFiltro: {
+				pagina: 0,
+				itemsPorPagina: 10,
+				tipoOrdenacao: 'dataCadastro,desc',
+				stringPesquisa: ''
+			},
 			dadosPanel: {
 				items: 1,
 				panel: [],
@@ -75,6 +99,13 @@ export default {
 		resetaDadosCadastro() {
 
 		},
+
+		resetaDadosFiltragem() {
+			this.parametrosFiltro.pagina = 0;
+			this.parametrosFiltro.itemsPorPagina = 10;
+			this.parametrosFiltro.tipoOrdenacao = 'dataCadastro,desc';
+			this.parametrosFiltro.stringPesquisa = '';
+		},
 		
 		submit() {
 
@@ -90,6 +121,8 @@ export default {
 							);
 
 							this.clear();
+							this.updatePagination();
+							this.resetaDadosFiltragem();
 
 						})
 						.catch(erro => {
@@ -108,7 +141,7 @@ export default {
 						.then(() => {
 
 							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'success', text: SUCCESS_MESSAGES.editar, timeout: '6000'}
+								{color: 'success', text: SUCCESS_MESSAGES.parametro.editar, timeout: '6000'}
 							);
 
 						})
@@ -117,7 +150,7 @@ export default {
 							console.error(erro);
 
 							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'error', text: "", timeout: '6000'}
+								{color: 'error', text: ERROR_MESSAGES.parametro.editar + erro.message, timeout: '6000'}
 							);
 					
 						});
@@ -160,9 +193,43 @@ export default {
 				return 'Este campo permite apenas números inteiros';
 
 			}
-		}
+		},
+
+		gerarRelatorio() {
+			
+		},
+
+		editarItem(item) {
+
+		},
+
+		ativarDesativarItem(item) {
+		
+		},
+
+		updatePagination(parametrosFiltro) {
+
+			ParametroService.listar(parametrosFiltro)
+
+				.then((response) => {
+					this.dadosListagem = response.data;
+				})
+				.catch(erro => {
+					console.error(erro);
+					this.$store.dispatch(SET_SNACKBAR,
+						{color: 'error', text: ERROR_MESSAGES.parametro.listagem + ': ' + erro.message, timeout: '6000'}
+					);
+				});
+
+		},
 
 	},
+
+	created () {
+
+		this.updatePagination();
+
+	}
 
 };
 

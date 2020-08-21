@@ -10,4 +10,6 @@ public interface ParametroRepository extends JpaRepository<Parametro, Integer>, 
 
     Boolean existsByCodigo(String codigo);
 
+    Parametro findByCodigo(String codigo);
+
 }
