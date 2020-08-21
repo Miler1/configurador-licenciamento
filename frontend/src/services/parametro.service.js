@@ -16,7 +16,7 @@ export default {
 			parametrosFiltro
 			);
 		}else {
-			return ApiService.post('licenca/lista/?page=0&size=10&sort=dataCadastro,asc', {});
+			return ApiService.post('parametro/lista/?page=0&size=10&sort=dataCadastro,asc', {});
 		}
 	}
 

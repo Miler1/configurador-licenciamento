@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class ParametroService implements IParametroService {
@@ -48,6 +49,43 @@ public class ParametroService implements IParametroService {
         parametroRepository.save(parametro);
 
         return parametro;
+    }
+
+    @Override
+    public Parametro editar(HttpServletRequest request, ParametroDTO parametroDTO) {
+
+        Object login = request.getSession().getAttribute("login");
+
+        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
+
+        Optional<Parametro> parametroSalvo = parametroRepository.findById(parametroDTO.getId())
+                .map(parametro -> {
+                    parametro.setCodigo(parametroDTO.getCodigo());
+                    parametro.setNome(parametroDTO.getNome());
+                    parametro.setCasasDecimais(parametroDTO.getCasasDecimais());
+                    parametro.setUsuarioLicenciamento(usuarioLicenciamento);
+                    parametro.setDataCadastro(new Date());
+                    parametro.setAtivo(parametroDTO.getAtivo());
+                    return parametro;
+                });
+
+        String codigo = parametroDTO.getCodigo();
+
+        if(parametroRepository.existsByCodigo(codigo)) {
+
+            Parametro parametroExistente = parametroRepository.findByCodigo(codigo);
+
+            if (parametroExistente != null && !parametroDTO.getId().equals(parametroExistente.getId())) {
+
+                throw new RuntimeException("Um parâmetro com código '" + codigo + "' já está cadastrado.");
+            }
+
+        }
+
+        parametroRepository.save(parametroSalvo.get());
+
+        return parametroSalvo.get();
+
     }
 
     private Specification<Parametro> preparaFiltro(FiltroPesquisa filtro) {
