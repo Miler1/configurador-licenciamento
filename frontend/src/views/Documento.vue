@@ -35,7 +35,6 @@ import PanelCadastro from '@/components/PanelCadastro';
 import FormCadastroDocumento from '@/components/FormCadastroDocumento';
 import GridListagem from '@/components/GridListagem';
 import DocumentoService from '@/services/documento.service';
-import RelatorioService from '../services/relatorio.service';
 import { SET_SNACKBAR } from '@/store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 import RelatorioService from '../services/relatorio.service';
