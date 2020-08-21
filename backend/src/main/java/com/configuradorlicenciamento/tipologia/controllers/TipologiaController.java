@@ -1,8 +1,5 @@
 package com.configuradorlicenciamento.tipologia.controllers;
 
-import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeCsv;
-import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeDTO;
-import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.configuracao.components.VariaveisAmbientes;
 import com.configuradorlicenciamento.configuracao.controllers.DefaultController;
 import com.configuradorlicenciamento.configuracao.enums.Acao;
@@ -30,10 +27,12 @@ import java.util.Date;
 @RequestMapping("/tipologia")
 public class TipologiaController extends DefaultController {
 
+    private static final String HEADER_CORS = "Access-Control-Allow-Origin";
+
     @Autowired
     ITipologiaService tipologiaService;
 
-    @RequestMapping(method = RequestMethod.POST, value = "/salvar")
+    @PostMapping(value = "/salvar")
     public ResponseEntity<Tipologia> salvar (HttpServletRequest request, @Valid @RequestBody TipologiaDTO tipologiaDTO) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
@@ -41,12 +40,12 @@ public class TipologiaController extends DefaultController {
         Tipologia tipologia = tipologiaService.salvar(request, tipologiaDTO);
 
         return ResponseEntity.ok()
-                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
                 .body(tipologia);
 
     }
 
-    @RequestMapping(method = RequestMethod.POST, value="/editar")
+    @PostMapping(value="/editar")
     public ResponseEntity<Tipologia> editar(HttpServletRequest request, @Valid @RequestBody TipologiaDTO tipologiaDTO) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
@@ -54,8 +53,23 @@ public class TipologiaController extends DefaultController {
         Tipologia tipologia = tipologiaService.editar(request, tipologiaDTO);
 
         return ResponseEntity.ok()
-                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
                 .body(tipologia);
+
+    }
+
+    @PostMapping(value="/listar")
+    public ResponseEntity<Page<Tipologia>> listar(HttpServletRequest request,
+                                                  @PageableDefault(size = 20) Pageable pageable,
+                                                  @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        Page<Tipologia> tipologias = tipologiaService.listar(pageable, filtroPesquisa);
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(tipologias);
 
     }
 
@@ -71,21 +85,6 @@ public class TipologiaController extends DefaultController {
         mappingStrategy.setType(TipologiaCsv.class);
 
         downloadCsv(tipologiaService.listarTipologiaParaCsv(), nome, mappingStrategy, response);
-    }
-
-    @RequestMapping(method = RequestMethod.POST, value="/lista")
-    public ResponseEntity<Page<Tipologia>> lista(HttpServletRequest request,
-                                                     @PageableDefault(size = 20) Pageable pageable,
-                                                     @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
-
-        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
-
-        Page<Tipologia> tipologias = tipologiaService.lista(pageable, filtroPesquisa);
-
-        return ResponseEntity.ok()
-                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
-                .body(tipologias);
-
     }
 
 }

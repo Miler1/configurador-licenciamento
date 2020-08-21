@@ -16,7 +16,7 @@ public interface ILicencaService {
 
     Licenca editar(HttpServletRequest request, LicencaDTO licencaDTO);
 
-    Page<Licenca> lista(Pageable pageable, FiltroPesquisa filtro);
+    Page<Licenca> listar(Pageable pageable, FiltroPesquisa filtro);
 
     List<LicencaCsv> listarLicencasParaCsv() throws Exception;
 

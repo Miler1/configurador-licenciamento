@@ -80,7 +80,6 @@ public class AtividadeCnae implements Serializable {
 
     public AtividadeCnaeCsv preparaParaCsv() {
 
-        AtividadeCnaeCsv dto = new AtividadeCnaeCsv(this);
-        return dto;
+        return new AtividadeCnaeCsv(this);
     }
 }

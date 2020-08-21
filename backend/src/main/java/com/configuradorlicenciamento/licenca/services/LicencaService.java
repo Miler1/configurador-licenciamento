@@ -1,5 +1,6 @@
 package com.configuradorlicenciamento.licenca.services;
 
+import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.licenca.dtos.LicencaCsv;
 import com.configuradorlicenciamento.licenca.dtos.LicencaDTO;
@@ -25,31 +26,31 @@ import java.util.Optional;
 @Service
 public class LicencaService implements ILicencaService {
 
+    private static final String LICENCA_EXISTENTE = "Já existe uma licença com o mesmo tipo.";
+
     @Autowired
     LicencaRepository licencaRepository;
 
     @Autowired
     UsuarioLicenciamentoRepository usuarioLicenciamentoRepository;
 
-
     @Override
-    public Licenca salvar(HttpServletRequest request, LicencaDTO licencaDTO) throws Exception{
+    public Licenca salvar(HttpServletRequest request, LicencaDTO licencaDTO) throws Exception {
 
         Object login = request.getSession().getAttribute("login");
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
+        boolean existsSigla = licencaRepository.existsBySigla(licencaDTO.getSigla());
+
+        if (existsSigla) {
+            throw new ConstraintUniqueViolationException(LICENCA_EXISTENTE);
+        }
+
         Licenca licenca = new Licenca.LicencaBuilder(licencaDTO)
                 .setDataCadastro(new Date())
                 .setUsuarioLicencimento(usuarioLicenciamento)
                 .build();
-
-        String sigla = licencaDTO.getSigla();
-
-        if(licencaRepository.existsBySigla(sigla)) {
-
-            throw new RuntimeException("Uma licença do tipo '" + sigla + "' já está cadastrada.");
-        }
 
         licencaRepository.save(licenca);
 
@@ -63,6 +64,20 @@ public class LicencaService implements ILicencaService {
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
+        String sigla = licencaDTO.getSigla();
+
+        boolean existsSigla = licencaRepository.existsBySigla(sigla);
+
+        if (existsSigla) {
+
+            Licenca licencaExistente = licencaRepository.findBySigla(sigla);
+
+            if (licencaExistente != null && !licencaDTO.getId().equals(licencaExistente.getId())) {
+                throw new ConstraintUniqueViolationException(LICENCA_EXISTENTE);
+            }
+
+        }
+
         Optional<Licenca> licencaSalva = licencaRepository.findById(licencaDTO.getId())
                 .map(licenca -> {
                     licenca.setSigla(licencaDTO.getSigla());
@@ -75,39 +90,25 @@ public class LicencaService implements ILicencaService {
                     return licenca;
                 });
 
-        String sigla = licencaDTO.getSigla();
-
-        if(licencaRepository.existsBySigla(sigla)) {
-
-            Licenca licencaExistente = licencaRepository.findBySigla(sigla);
-
-            if (licencaExistente != null && !licencaDTO.getId().equals(licencaExistente.getId())) {
-
-                throw new RuntimeException("Uma licença do tipo '" + sigla + "' já está cadastrada.");
-            }
-
-        }
-
         licencaRepository.save(licencaSalva.get());
 
         return licencaSalva.get();
 
     }
 
-    public Page<Licenca> lista(Pageable pageable, FiltroPesquisa filtro) {
+    public Page<Licenca> listar(Pageable pageable, FiltroPesquisa filtro) {
 
         Specification<Licenca> specification = preparaFiltro(filtro);
 
-        Page<Licenca> licenca = licencaRepository.findAll(specification, pageable);
+        return licencaRepository.findAll(specification, pageable);
 
-        return licenca;
     }
 
     private Specification<Licenca> preparaFiltro(FiltroPesquisa filtro) {
 
-        Specification specification = Specification.where(LicencaSpecification.padrao());
+        Specification<Licenca> specification = Specification.where(LicencaSpecification.padrao());
 
-        if(filtro.getStringPesquisa() != null) {
+        if (filtro.getStringPesquisa() != null) {
             specification = specification.and(LicencaSpecification.nome(filtro.getStringPesquisa())
                     .or(LicencaSpecification.sigla(filtro.getStringPesquisa())));
         }
@@ -122,7 +123,7 @@ public class LicencaService implements ILicencaService {
     }
 
     @Override
-    public List<LicencaCsv> listarLicencasParaCsv(){
+    public List<LicencaCsv> listarLicencasParaCsv() {
 
         List<Licenca> licencas = listarLicencas();
         List<LicencaCsv> dtos = new ArrayList<>();
@@ -133,4 +134,5 @@ public class LicencaService implements ILicencaService {
 
         return dtos;
     }
+
 }

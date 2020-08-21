@@ -1,5 +1,6 @@
 package com.configuradorlicenciamento.tipologia.services;
 
+import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
 import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.tipologia.dtos.TipologiaCsv;
@@ -26,7 +27,7 @@ import java.util.Optional;
 @Service
 public class TipologiaService implements ITipologiaService {
 
-    private final String TIPOLOGIA_EXISTENTE = "Já existe uma tipologia com o nome semelhante.";
+    private static final String TIPOLOGIA_EXISTENTE = "Já existe uma tipologia com o nome semelhante.";
 
     @Autowired
     TipologiaRepository tipologiaRepository;
@@ -34,7 +35,7 @@ public class TipologiaService implements ITipologiaService {
     @Autowired
     UsuarioLicenciamentoRepository usuarioLicenciamentoRepository;
 
-    public Tipologia salvar(HttpServletRequest request, TipologiaDTO tipologiaDTO) throws Exception{
+    public Tipologia salvar(HttpServletRequest request, TipologiaDTO tipologiaDTO) throws Exception {
 
         Object login = request.getSession().getAttribute("login");
 
@@ -45,14 +46,15 @@ public class TipologiaService implements ITipologiaService {
                 .setUsuarioLicencimento(usuarioLicenciamento)
                 .build();
 
-        if(tipologiaRepository.existsByCodigo(tipologia.getCodigo())) {
-            throw new RuntimeException(TIPOLOGIA_EXISTENTE);
+        boolean existsCodigo = tipologiaRepository.existsByCodigo(tipologia.getCodigo());
+
+        if (existsCodigo) {
+            throw new ConstraintUniqueViolationException(TIPOLOGIA_EXISTENTE);
         }
 
         tipologiaRepository.save(tipologia);
 
         return tipologia;
-
     }
 
     @Override
@@ -70,7 +72,7 @@ public class TipologiaService implements ITipologiaService {
 
         Tipologia tipologia = tipologiaSalva.get();
 
-        if(tipologiaDTO.getAtivo() != tipologia.getAtivo()){
+        if(!tipologiaDTO.getAtivo().equals(tipologia.getAtivo())){
             tipologia.setAtivo(tipologiaDTO.getAtivo());
         } else {
 
@@ -79,31 +81,33 @@ public class TipologiaService implements ITipologiaService {
             tipologia.setUsuarioLicenciamento(usuarioLicenciamento);
             tipologia.setDataCadastro(new Date());
 
-            if(tipologiaRepository.existsByCodigo(tipologia.getCodigo())){
-                throw new RuntimeException(TIPOLOGIA_EXISTENTE);
+            boolean existsCodigo = tipologiaRepository.existsByCodigo(tipologia.getCodigo());
+
+            if(existsCodigo){
+                throw new ConstraintUniqueViolationException(TIPOLOGIA_EXISTENTE);
             }
         }
 
         tipologiaRepository.save(tipologia);
 
         return tipologia;
+
     }
 
     @Override
-    public Page<Tipologia> lista(Pageable pageable, FiltroPesquisa filtro) {
+    public Page<Tipologia> listar(Pageable pageable, FiltroPesquisa filtro) {
 
         Specification<Tipologia> specification = preparaFiltro(filtro);
 
-        Page<Tipologia> tipologias = tipologiaRepository.findAll(specification, pageable);
+        return tipologiaRepository.findAll(specification, pageable);
 
-        return tipologias;
     }
 
     private Specification<Tipologia> preparaFiltro(FiltroPesquisa filtro) {
 
-        Specification specification = Specification.where(TipologiaSpecification.padrao());
+        Specification<Tipologia> specification = Specification.where(TipologiaSpecification.padrao());
 
-        if(filtro.getStringPesquisa() != null) {
+        if (filtro.getStringPesquisa() != null) {
             specification = specification.and(TipologiaSpecification.nome(filtro.getStringPesquisa()));
         }
 
@@ -117,7 +121,7 @@ public class TipologiaService implements ITipologiaService {
     }
 
     @Override
-    public List<TipologiaCsv> listarTipologiaParaCsv(){
+    public List<TipologiaCsv> listarTipologiaParaCsv() {
 
         List<Tipologia> tipologias = listarTipologia();
         List<TipologiaCsv> dtos = new ArrayList<>();

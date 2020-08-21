@@ -1,12 +1,18 @@
 package com.configuradorlicenciamento.documento.services;
 
+import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
+import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
 import com.configuradorlicenciamento.documento.dtos.DocumentoDTO;
 import com.configuradorlicenciamento.documento.interfaces.IDocumentoService;
 import com.configuradorlicenciamento.documento.models.Documento;
 import com.configuradorlicenciamento.documento.repositories.DocumentoRepository;
+import com.configuradorlicenciamento.documento.specifications.DocumentoSpecification;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLicenciamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +20,8 @@ import java.util.Date;
 
 @Service
 public class DocumentoService implements IDocumentoService {
+
+    public static final String DOCUMENTO_EXISTENTE = "Já existe um documento com o mesmo nome.";
 
     @Autowired
     DocumentoRepository documentoRepository;
@@ -28,11 +36,10 @@ public class DocumentoService implements IDocumentoService {
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
-        String nome = documentoDTO.getNome();
+        boolean existsName = documentoRepository.existsByNome(documentoDTO.getNome());
 
-        if (documentoRepository.existsByNome(nome)) {
-
-            throw new RuntimeException("Um Ducumento com o nome '" + nome + "' já está cadastrado.");
+        if (existsName) {
+            throw new ConstraintUniqueViolationException(DOCUMENTO_EXISTENTE);
         }
 
         Documento documento = new Documento.DocumentoBuilder(documentoDTO)
@@ -44,6 +51,27 @@ public class DocumentoService implements IDocumentoService {
 
         return documento;
 
+    }
+
+    private Specification<Documento> preparaFiltro(FiltroPesquisa filtro) {
+
+        Specification specification = Specification.where(DocumentoSpecification.padrao());
+
+        if(filtro.getStringPesquisa() != null) {
+            specification = specification.and(DocumentoSpecification.nome(filtro.getStringPesquisa()));
+        }
+
+        return specification;
+
+    }
+
+    public Page<Documento> lista(Pageable pageable, FiltroPesquisa filtro) {
+
+        Specification<Documento> specification = preparaFiltro(filtro);
+
+        Page<Documento> documentos = documentoRepository.findAll(specification, pageable);
+
+        return documentos;
     }
 
 }

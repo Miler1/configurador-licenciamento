@@ -127,6 +127,7 @@ export default {
 							this.$store.dispatch(SET_SNACKBAR,
 								{color: 'success', text: SUCCESS_MESSAGES.cadastro, timeout: '6000'}
 							);
+
 							this.clear();
 							this.updatePagination();
 							this.resetaDadosFiltragem();
@@ -164,7 +165,6 @@ export default {
 								{color: 'error', text: ERROR_MESSAGES.cnae.editar, timeout: '6000'}
 							);
 
-							item.ativo = !item.ativo;
 							this.resetaDadosCadastro();
 
 						});
@@ -205,10 +205,13 @@ export default {
 					this.dadosListagem = response.data;
 				})
 				.catch(erro => {
+
 					console.error(erro);
+					
 					this.$store.dispatch(SET_SNACKBAR,
 						{color: 'error', text: ERROR_MESSAGES.cnae.listagem + ': ' + erro.message, timeout: '6000'}
 					);
+					
 				});
 
 		},
