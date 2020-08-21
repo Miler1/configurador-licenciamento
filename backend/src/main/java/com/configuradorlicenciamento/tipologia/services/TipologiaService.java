@@ -1,6 +1,5 @@
 package com.configuradorlicenciamento.tipologia.services;
 
-import br.ufla.lemaf.beans.pessoa.Tipo;
 import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.tipologia.dtos.TipologiaCsv;
@@ -9,8 +8,8 @@ import com.configuradorlicenciamento.tipologia.interfaces.ITipologiaService;
 import com.configuradorlicenciamento.tipologia.models.Tipologia;
 import com.configuradorlicenciamento.tipologia.repositories.TipologiaRepository;
 import com.configuradorlicenciamento.tipologia.specifications.TipologiaSpecification;
-import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
-import com.configuradorlicenciamento.usuarioLicenciamento.repositories.UsuarioLicenciamentoRepository;
+import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
+import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLicenciamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -45,7 +45,7 @@ public class DefaultService implements IDefaultService {
         Perfil perfil = usuarioSessao.perfis.stream().filter(p -> perfilSelecionado.contains(new SimpleGrantedAuthority(p.codigo))).findFirst().get();
 
         for (Acao acao : acoes)
-            permitido = permitido || (usuarioSessao != null && hasPermissao(perfil, acao.codigo));
+            permitido = permitido || (usuarioSessao != null && hasPermissao(perfil, acao.getCodigo()));
 
         return permitido;
     }

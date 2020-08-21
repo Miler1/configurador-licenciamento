@@ -1,18 +1,18 @@
-package com.configuradorlicenciamento.usuarioLicenciamento.models;
+package com.configuradorlicenciamento.usuariolicenciamento.models;
 
 import br.ufla.lemaf.beans.pessoa.Usuario;
 import com.configuradorlicenciamento.configuracao.utils.CpfCnpjUtil;
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 @Getter
 @Entity
 @Table(schema = GlobalReferences.ESQUEMA, name = "usuario_licenciamento")
-public class UsuarioLicenciamento {
+public class UsuarioLicenciamento implements Serializable {
 
     @Id
     @SuppressWarnings("unused")

@@ -4,8 +4,8 @@ import com.configuradorlicenciamento.documento.dtos.DocumentoDTO;
 import com.configuradorlicenciamento.documento.interfaces.IDocumentoService;
 import com.configuradorlicenciamento.documento.models.Documento;
 import com.configuradorlicenciamento.documento.repositories.DocumentoRepository;
-import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
-import com.configuradorlicenciamento.usuarioLicenciamento.repositories.UsuarioLicenciamentoRepository;
+import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
+import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLicenciamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

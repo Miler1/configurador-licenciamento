@@ -2,7 +2,7 @@ package com.configuradorlicenciamento.parametro.models;
 
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.parametro.dtos.ParametroDTO;
-import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
+import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
