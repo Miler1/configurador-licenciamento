@@ -21,6 +21,6 @@ public interface IAtividadeCnaeService {
 
     List<AtividadeCnaeCsv> listarCnaesParaCsv() throws Exception;
 
-    Page<AtividadeCnae> lista(Pageable pageable, FiltroPesquisa filtro);
+    Page<AtividadeCnae> listar(Pageable pageable, FiltroPesquisa filtro);
 
 }

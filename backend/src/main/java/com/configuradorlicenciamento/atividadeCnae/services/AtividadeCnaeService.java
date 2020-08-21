@@ -73,18 +73,17 @@ public class AtividadeCnaeService implements IAtividadeCnaeService {
     }
 
     @Override
-    public Page<AtividadeCnae> lista(Pageable pageable, FiltroPesquisa filtro) {
+    public Page<AtividadeCnae> listar(Pageable pageable, FiltroPesquisa filtro) {
 
         Specification<AtividadeCnae> specification = preparaFiltro(filtro);
 
-        Page<AtividadeCnae> atividadeCnaes = atividadeCnaeRepository.findAll(specification, pageable);
+        return atividadeCnaeRepository.findAll(specification, pageable);
 
-        return atividadeCnaes;
     }
 
     private Specification<AtividadeCnae> preparaFiltro(FiltroPesquisa filtro) {
 
-        Specification specification = Specification.where(AtividadeCnaeSpecification.padrao());
+        Specification<AtividadeCnae> specification = Specification.where(AtividadeCnaeSpecification.padrao());
 
         if(filtro.getStringPesquisa() != null) {
             specification = specification.and(AtividadeCnaeSpecification.nome(filtro.getStringPesquisa())

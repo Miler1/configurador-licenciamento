@@ -1,6 +1,5 @@
 package com.configuradorlicenciamento.tipologia.models;
 
-import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeCsv;
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.tipologia.dtos.TipologiaCsv;
@@ -13,7 +12,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 
 @Getter
@@ -107,7 +105,6 @@ public class Tipologia implements Serializable {
 
     public TipologiaCsv preparaParaCsv() {
 
-        TipologiaCsv dto = new TipologiaCsv(this);
-        return dto;
+        return new TipologiaCsv(this);
     }
 }

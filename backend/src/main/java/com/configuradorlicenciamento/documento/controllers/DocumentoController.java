@@ -12,10 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -24,10 +21,12 @@ import javax.validation.Valid;
 @RequestMapping("/documento")
 public class DocumentoController extends DefaultController {
 
+    private static final String HEADER_CORS = "Access-Control-Allow-Origin";
+
     @Autowired
     IDocumentoService documentoService;
 
-    @RequestMapping(method = RequestMethod.POST, value = "/salvar")
+    @PostMapping(value = "/salvar")
     public ResponseEntity<Documento> salvar (HttpServletRequest request, @Valid @RequestBody DocumentoDTO documentoDTO) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
@@ -35,7 +34,7 @@ public class DocumentoController extends DefaultController {
         Documento documento = documentoService.salvar(request, documentoDTO);
 
         return ResponseEntity.ok()
-                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
                 .body(documento);
 
     }

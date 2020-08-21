@@ -1,6 +1,7 @@
 package com.configuradorlicenciamento.documento.services;
 
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
+import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
 import com.configuradorlicenciamento.documento.dtos.DocumentoDTO;
 import com.configuradorlicenciamento.documento.interfaces.IDocumentoService;
 import com.configuradorlicenciamento.documento.models.Documento;
@@ -20,6 +21,8 @@ import java.util.Date;
 @Service
 public class DocumentoService implements IDocumentoService {
 
+    public static final String DOCUMENTO_EXISTENTE = "Já existe um documento com o mesmo nome.";
+
     @Autowired
     DocumentoRepository documentoRepository;
 
@@ -33,11 +36,10 @@ public class DocumentoService implements IDocumentoService {
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
-        String nome = documentoDTO.getNome();
+        boolean existsName = documentoRepository.existsByNome(documentoDTO.getNome());
 
-        if (documentoRepository.existsByNome(nome)) {
-
-            throw new RuntimeException("Um Ducumento com o nome '" + nome + "' já está cadastrado.");
+        if (existsName) {
+            throw new ConstraintUniqueViolationException(DOCUMENTO_EXISTENTE);
         }
 
         Documento documento = new Documento.DocumentoBuilder(documentoDTO)
