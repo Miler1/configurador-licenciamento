@@ -5,7 +5,7 @@ export default {
 	cadastrar: async (tipologia) => ApiService.post('/tipologia/salvar', tipologia),
 
 	listar: async (parametrosFiltro) => {
-		if(parametrosFiltro){
+		if (parametrosFiltro) {
 
 			return ApiService.post(`tipologia/listar/?
 						page=${parametrosFiltro.pagina > 0 ? parametrosFiltro.pagina : 0}
@@ -15,7 +15,7 @@ export default {
 			parametrosFiltro
 			);
 
-		}else {
+		} else {
 			return ApiService.post('tipologia/listar/?page=0&size=10&sort=dataCadastro,desc', {});
 		}
 	}

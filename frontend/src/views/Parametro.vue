@@ -227,7 +227,7 @@ export default {
 				.catch(erro => {
 
 					console.error(erro);
-					
+
 					this.$store.dispatch(SET_SNACKBAR,
 						{color: 'error', text: ERROR_MESSAGES.parametro.listagem + ': ' + erro.message, timeout: '6000'}
 					);
