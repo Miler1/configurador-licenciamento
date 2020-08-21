@@ -11,7 +11,7 @@ public enum Finalidade {
     RENOVACAO("RENOVACAO", "Renovação"),
     SOLICITACAO("SOLICITACAO", "Solicitação");
 
-    private static final Map<String, String> LABEL = new HashMap<>();
+    private static final Map<String, String> LABEL_FINALIDADE = new HashMap<>();
 
     public final String key;
     public final String label;
@@ -22,13 +22,13 @@ public enum Finalidade {
     }
 
     static {
-        for (Finalidade finalidade: values()) {
-            LABEL.put(finalidade.key, finalidade.label);
+        for (Finalidade finalidade : values()) {
+            LABEL_FINALIDADE.put(finalidade.key, finalidade.label);
         }
     }
 
     public static String valueOfLabel(String key) {
-        return LABEL.get(key);
+        return LABEL_FINALIDADE.get(key);
     }
 
 }

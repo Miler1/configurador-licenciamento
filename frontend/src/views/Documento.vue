@@ -15,10 +15,17 @@
 				:labelBotaoCadastrarEditar="labelBotaoCadastrarEditar",
 				:iconBotaoCadastrarEditar="iconBotaoCadastrarEditar"
 			)
-
-		//- DEVE SER REMOVIDO AO DESENVOLVER ATIVIDADE DE LISTAGEM
-		v-btn(width="100%", @click='gerarRelatorio', color="#F00")
-			span(style="color: #FFF") Clique aqui para baixar senhor dos aneis torrent grátis!
+		GridListagem.pa-7(
+			:tituloListagem="tituloListagem",
+			:placeholderPesquisa="placeholderPesquisa",
+			:gerarRelatorio="gerarRelatorio",
+			:headers="headerListagem",
+			:dadosListagem="dadosListagem",
+			:updatePagination="updatePagination",
+			:editarItem="editarItem",
+			:ativarDesativarItem="ativarDesativarItem",
+			:parametrosFiltro="parametrosFiltro"
+		)
 
 </template>
 
@@ -26,10 +33,13 @@
 
 import PanelCadastro from '@/components/PanelCadastro';
 import FormCadastroDocumento from '@/components/FormCadastroDocumento';
+import GridListagem from '@/components/GridListagem';
 import DocumentoService from '@/services/documento.service';
+import RelatorioService from '../services/relatorio.service';
 import { SET_SNACKBAR } from '@/store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 import RelatorioService from '../services/relatorio.service';
+import { HEADER } from '@/utils/dadosMockados/ListagemDocumentoHeader';
 
 export default {
 
@@ -37,11 +47,16 @@ export default {
 
 	components: {
 		PanelCadastro,
-		FormCadastroDocumento
+		FormCadastroDocumento,
+		GridListagem
 	},
 
 	data: () => {
 		return {
+			tituloListagem: 'Listagem de documentos',
+			placeholderPesquisa: "Pesquisar pelo nome do documento",
+			headerListagem: HEADER,
+			dadosListagem: {},
 			labelBotaoCadastrarEditar: "Cadastrar",
 			iconBotaoCadastrarEditar: "mdi-plus",
 			errorMessageEmpty: true,
@@ -49,6 +64,12 @@ export default {
 				nome: '',
 				prefixoNomeArquivo: '',
 				ativo: true
+			},
+			parametrosFiltro: {
+				pagina: 0,
+				itemsPorPagina: 10,
+				tipoOrdenacao: 'dataCadastro,desc',
+				stringPesquisa: ''
 			},
 			isCadastro: true,
 			dadosPanel: {
@@ -73,6 +94,14 @@ export default {
 			this.resetaDadosCadastro();
 
 		},
+
+		resetaDadosFiltragem() {
+			this.parametrosFiltro.pagina = 0;
+			this.parametrosFiltro.itemsPorPagina = 10;
+			this.parametrosFiltro.tipoOrdenacao = 'dataCadastro,desc';
+			this.parametrosFiltro.stringPesquisa = '';
+		},
+
 
 		resetaDadosCadastro() {
 
@@ -136,8 +165,8 @@ export default {
 			this.clear();
 
 			// Descomentar quando fizer a edição
-			// this.updatePagination();
-			// this.resetaDadosFiltragem();
+			this.updatePagination();
+			this.resetaDadosFiltragem();
 
 			if(edicao) this.dadosPanel.panel = [];
 		},
@@ -159,11 +188,40 @@ export default {
 			return this.errorMessageEmpty || value ? [] : 'Obrigatório';
 		},
 
-		//- DEVE SER ALTERADO AO DESENVOLVER ATIVIDADE DE LISTAGEM
 		gerarRelatorio() {
-			alert("Brinks, é só o CSV mesmo... Bons testes!\n:)");
 			RelatorioService.baixarRelatorio("/documento/relatorio");
-		}
+		},
+
+		editarItem(item) {
+
+		},
+
+		ativarDesativarItem(item) {
+
+		},
+
+		updatePagination(documentosFiltro) {
+
+			DocumentoService.listar(documentosFiltro)
+
+				.then((response) => {
+					this.dadosListagem = response.data;
+				})
+				.catch(erro => {
+					console.error(erro);
+					this.$store.dispatch(SET_SNACKBAR,
+						{color: 'error', text: ERROR_MESSAGES.documento.listagem + ': ' + erro.message, timeout: '6000'}
+					);
+				});
+
+		},
+
+	},
+
+	created () {
+
+		this.updatePagination();
+
 	}
 
 };
