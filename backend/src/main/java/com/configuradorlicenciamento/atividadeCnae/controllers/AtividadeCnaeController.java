@@ -26,10 +26,12 @@ import java.util.Date;
 @RequestMapping("/atividadeCnae")
 public class AtividadeCnaeController extends DefaultController {
 
+    private static final String HEADER_STATUS = "Access-Control-Allow-Origin";
+
     @Autowired
     IAtividadeCnaeService atividadeCnaeService;
 
-    @RequestMapping(method = RequestMethod.POST, value = "/salvar")
+    @PostMapping(value = "/salvar")
     public ResponseEntity<AtividadeCnae> salvar (HttpServletRequest request, @Valid @RequestBody AtividadeCnaeDTO atividadeCnaeDTO) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
@@ -37,12 +39,12 @@ public class AtividadeCnaeController extends DefaultController {
         AtividadeCnae atividadeCnae = atividadeCnaeService.salvar(request, atividadeCnaeDTO);
 
         return ResponseEntity.ok()
-                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_STATUS, VariaveisAmbientes.baseUrlFrontend())
                 .body(atividadeCnae);
 
     }
 
-    @RequestMapping(method = RequestMethod.POST, value="/editar")
+    @PostMapping(value="/editar")
     public ResponseEntity<AtividadeCnae> editar(HttpServletRequest request, @Valid @RequestBody AtividadeCnaeDTO atividadeCnaeDTO) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
@@ -50,22 +52,22 @@ public class AtividadeCnaeController extends DefaultController {
         AtividadeCnae atividadeCnae = atividadeCnaeService.editar(request, atividadeCnaeDTO);
 
         return ResponseEntity.ok()
-                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_STATUS, VariaveisAmbientes.baseUrlFrontend())
                 .body(atividadeCnae);
 
     }
 
-    @RequestMapping(method = RequestMethod.POST, value="/lista")
-    public ResponseEntity<Page<AtividadeCnae>> lista(HttpServletRequest request,
+    @PostMapping(value="/listar")
+    public ResponseEntity<Page<AtividadeCnae>> listar(HttpServletRequest request,
                                                  @PageableDefault(size = 20) Pageable pageable,
                                                  @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        Page<AtividadeCnae> atividadeCnaes = atividadeCnaeService.lista(pageable, filtroPesquisa);
+        Page<AtividadeCnae> atividadeCnaes = atividadeCnaeService.listar(pageable, filtroPesquisa);
 
         return ResponseEntity.ok()
-                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_STATUS, VariaveisAmbientes.baseUrlFrontend())
                 .body(atividadeCnaes);
 
     }

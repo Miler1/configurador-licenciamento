@@ -1,9 +1,6 @@
 package com.configuradorlicenciamento.tipologia.services;
 
-import br.ufla.lemaf.beans.pessoa.Tipo;
-import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeCsv;
-import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
-import com.configuradorlicenciamento.atividadeCnae.specifications.AtividadeCnaeSpecification;
+import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.tipologia.dtos.TipologiaCsv;
 import com.configuradorlicenciamento.tipologia.dtos.TipologiaDTO;
@@ -34,7 +31,7 @@ public class TipologiaService implements ITipologiaService {
     @Autowired
     UsuarioLicenciamentoRepository usuarioLicenciamentoRepository;
 
-    public Tipologia salvar(HttpServletRequest request, TipologiaDTO tipologiaDTO) throws Exception{
+    public Tipologia salvar(HttpServletRequest request, TipologiaDTO tipologiaDTO) throws Exception {
 
         Object login = request.getSession().getAttribute("login");
 
@@ -45,35 +42,33 @@ public class TipologiaService implements ITipologiaService {
                 .setUsuarioLicencimento(usuarioLicenciamento)
                 .build();
 
-        if(!tipologiaExiste(tipologia)) {
-            tipologiaRepository.save(tipologia);
-        } else {
-            throw new RuntimeException("Já existe uma tipologia com o nome semelhante.");
+        boolean existsCodigo = tipologiaRepository.existsByCodigo(tipologia.getCodigo());
+
+        if (existsCodigo) {
+
+            throw new ConstraintUniqueViolationException("Já existe uma tipologia com o nome semelhante.");
         }
+
+        tipologiaRepository.save(tipologia);
 
         return tipologia;
 
     }
 
-    public Boolean tipologiaExiste(Tipologia tipologia){
-        return !tipologiaRepository.findAll(TipologiaSpecification.codigo(tipologia.getCodigo())).isEmpty();
-    }
-
     @Override
-    public Page<Tipologia> lista(Pageable pageable, FiltroPesquisa filtro) {
+    public Page<Tipologia> listar(Pageable pageable, FiltroPesquisa filtro) {
 
         Specification<Tipologia> specification = preparaFiltro(filtro);
 
-        Page<Tipologia> tipologias = tipologiaRepository.findAll(specification, pageable);
+        return tipologiaRepository.findAll(specification, pageable);
 
-        return tipologias;
     }
 
     private Specification<Tipologia> preparaFiltro(FiltroPesquisa filtro) {
 
-        Specification specification = Specification.where(TipologiaSpecification.padrao());
+        Specification<Tipologia> specification = Specification.where(TipologiaSpecification.padrao());
 
-        if(filtro.getStringPesquisa() != null) {
+        if (filtro.getStringPesquisa() != null) {
             specification = specification.and(TipologiaSpecification.nome(filtro.getStringPesquisa()));
         }
 
@@ -87,7 +82,7 @@ public class TipologiaService implements ITipologiaService {
     }
 
     @Override
-    public List<TipologiaCsv> listarTipologiaParaCsv(){
+    public List<TipologiaCsv> listarTipologiaParaCsv() {
 
         List<Tipologia> tipologias = listarTipologia();
         List<TipologiaCsv> dtos = new ArrayList<>();

@@ -4,7 +4,6 @@ import br.ufla.lemaf.beans.pessoa.Usuario;
 import com.configuradorlicenciamento.configuracao.utils.CpfCnpjUtil;
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

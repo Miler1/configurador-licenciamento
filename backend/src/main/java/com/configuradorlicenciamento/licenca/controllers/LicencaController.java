@@ -26,10 +26,12 @@ import java.util.Date;
 @RequestMapping("/licenca")
 public class LicencaController extends DefaultController {
 
+    private static final String HEADER_STATUS = "Access-Control-Allow-Origin";
+
     @Autowired
     ILicencaService licencaService;
 
-    @RequestMapping(method = RequestMethod.POST, value = "/salvar")
+    @PostMapping(value = "/salvar")
     public ResponseEntity<Licenca> salvar(HttpServletRequest request, @Valid @RequestBody LicencaDTO licencaDTO) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
@@ -37,12 +39,12 @@ public class LicencaController extends DefaultController {
         Licenca licenca = licencaService.salvar(request, licencaDTO);
 
         return ResponseEntity.ok()
-                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_STATUS, VariaveisAmbientes.baseUrlFrontend())
                 .body(licenca);
 
     }
 
-    @RequestMapping(method = RequestMethod.POST, value="/editar")
+    @PostMapping(value="/editar")
     public ResponseEntity<Licenca> editar(HttpServletRequest request, @Valid @RequestBody LicencaDTO licencaDTO) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
@@ -50,22 +52,22 @@ public class LicencaController extends DefaultController {
         Licenca licenca = licencaService.editar(request, licencaDTO);
 
         return ResponseEntity.ok()
-                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_STATUS, VariaveisAmbientes.baseUrlFrontend())
                 .body(licenca);
 
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/lista")
-    public ResponseEntity<Page<Licenca>> lista(HttpServletRequest request,
+    @PostMapping(value = "/listar")
+    public ResponseEntity<Page<Licenca>> listar(HttpServletRequest request,
                                                      @PageableDefault(size = 20) Pageable pageable,
                                                      @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        Page<Licenca> licencas = licencaService.lista(pageable, filtroPesquisa);
+        Page<Licenca> licencas = licencaService.listar(pageable, filtroPesquisa);
 
         return ResponseEntity.ok()
-                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_STATUS, VariaveisAmbientes.baseUrlFrontend())
                 .body(licencas);
 
     }

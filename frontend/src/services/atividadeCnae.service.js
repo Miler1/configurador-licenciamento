@@ -7,9 +7,9 @@ export default {
 	editar: async (atividadeCnae) => ApiService.post('/atividadeCnae/editar', atividadeCnae),
 
 	listar: async (parametrosFiltro) => {
-		if(parametrosFiltro){
+		if (parametrosFiltro) {
 
-			return ApiService.post(`atividadeCnae/lista/?
+			return ApiService.post(`atividadeCnae/listar/?
 						page=${parametrosFiltro.pagina > 0 ? parametrosFiltro.pagina : 0}
 						&size=${parametrosFiltro.itemsPorPagina > 0 ? parametrosFiltro.itemsPorPagina : 10}
 						&sort=${parametrosFiltro.tipoOrdenacao ? parametrosFiltro.tipoOrdenacao : 'dataCadastro,desc'}`,
@@ -17,8 +17,8 @@ export default {
 			parametrosFiltro
 			);
 
-		}else {
-			return ApiService.post('atividadeCnae/lista/?page=0&size=10&sort=dataCadastro,desc', {});
+		} else {
+			return ApiService.post('atividadeCnae/listar/?page=0&size=10&sort=dataCadastro,desc', {});
 		}
 	}
 
