@@ -40,6 +40,19 @@ public class ParametroController extends DefaultController {
 
     }
 
+    @RequestMapping(method = RequestMethod.POST, value="/editar")
+    public ResponseEntity<Parametro> editar(HttpServletRequest request, @Valid @RequestBody ParametroDTO parametroDTO) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        Parametro parametro = parametroService.editar(request, parametroDTO);
+
+        return ResponseEntity.ok()
+                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .body(parametro);
+
+    }
+
     @RequestMapping(method = RequestMethod.POST, value="/lista")
     public ResponseEntity<Page<Parametro>> lista(HttpServletRequest request,
                                                      @PageableDefault(size = 20) Pageable pageable,

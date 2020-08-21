@@ -14,4 +14,6 @@ public interface IParametroService {
 
    Page<Parametro> lista(Pageable pageable, FiltroPesquisa filtro);
 
+   Parametro editar(HttpServletRequest request, ParametroDTO parametroDTO);
+
 }
