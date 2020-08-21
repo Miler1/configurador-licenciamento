@@ -1,6 +1,7 @@
 package com.configuradorlicenciamento.parametro.models;
 
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
+import com.configuradorlicenciamento.parametro.dtos.ParametroCsv;
 import com.configuradorlicenciamento.parametro.dtos.ParametroDTO;
 import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
 import lombok.Getter;
@@ -82,6 +83,11 @@ public class Parametro implements Serializable {
 
         public Parametro build(){return new Parametro(this);};
 
+    }
+
+    public ParametroCsv preparaParaCsv() {
+
+        return new ParametroCsv(this);
     }
 
 }

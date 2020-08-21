@@ -36,6 +36,7 @@
 import PanelCadastro from '@/components/PanelCadastro';
 import FormCadastroParametro from '@/components/FormCadastroParametro';
 import ParametroService from '@/services/parametro.service';
+import RelatorioService from '../services/relatorio.service';
 import GridListagem from '@/components/GridListagem';
 import { SET_SNACKBAR } from '@/store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
@@ -98,13 +99,21 @@ export default {
 
 		resetaDadosCadastro() {
 
+			this.dadosPanel.title = "Cadastro de parâmetros";
+			this.dadosPanel.iconName = "fa fa-sliders";
+			this.labelBotaoCadastrarEditar = "Cadastrar";
+			this.iconBotaoCadastrarEditar = "mdi-plus";
+			this.isCadastro = true;
+
 		},
 
 		resetaDadosFiltragem() {
+
 			this.parametrosFiltro.pagina = 0;
 			this.parametrosFiltro.itemsPorPagina = 10;
 			this.parametrosFiltro.tipoOrdenacao = 'dataCadastro,desc';
 			this.parametrosFiltro.stringPesquisa = '';
+
 		},
 		
 		submit() {
@@ -193,10 +202,11 @@ export default {
 				return 'Este campo permite apenas números inteiros';
 
 			}
+
 		},
 
 		gerarRelatorio() {
-			
+			RelatorioService.baixarRelatorio("/parametro/relatorio");
 		},
 
 		editarItem(item) {
@@ -215,10 +225,13 @@ export default {
 					this.dadosListagem = response.data;
 				})
 				.catch(erro => {
+
 					console.error(erro);
+					
 					this.$store.dispatch(SET_SNACKBAR,
 						{color: 'error', text: ERROR_MESSAGES.parametro.listagem + ': ' + erro.message, timeout: '6000'}
 					);
+
 				});
 
 		},

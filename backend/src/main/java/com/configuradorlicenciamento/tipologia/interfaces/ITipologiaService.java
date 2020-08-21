@@ -18,6 +18,6 @@ public interface ITipologiaService {
 
     List<TipologiaCsv> listarTipologiaParaCsv() throws Exception;
 
-    Page<Tipologia> lista(Pageable pageable, FiltroPesquisa filtro);
+    Page<Tipologia> listar(Pageable pageable, FiltroPesquisa filtro);
 
 }

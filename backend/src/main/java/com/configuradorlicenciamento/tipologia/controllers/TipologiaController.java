@@ -1,7 +1,5 @@
 package com.configuradorlicenciamento.tipologia.controllers;
 
-import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeCsv;
-import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.configuracao.components.VariaveisAmbientes;
 import com.configuradorlicenciamento.configuracao.controllers.DefaultController;
 import com.configuradorlicenciamento.configuracao.enums.Acao;
@@ -32,7 +30,7 @@ public class TipologiaController extends DefaultController {
     @Autowired
     ITipologiaService tipologiaService;
 
-    @RequestMapping(method = RequestMethod.POST, value = "/salvar")
+    @PostMapping(value = "/salvar")
     public ResponseEntity<Tipologia> salvar (HttpServletRequest request, @Valid @RequestBody TipologiaDTO tipologiaDTO) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
@@ -59,14 +57,14 @@ public class TipologiaController extends DefaultController {
         downloadCsv(tipologiaService.listarTipologiaParaCsv(), nome, mappingStrategy, response);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value="/lista")
-    public ResponseEntity<Page<Tipologia>> lista(HttpServletRequest request,
+    @PostMapping(value="/listar")
+    public ResponseEntity<Page<Tipologia>> listar(HttpServletRequest request,
                                                      @PageableDefault(size = 20) Pageable pageable,
                                                      @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        Page<Tipologia> tipologias = tipologiaService.lista(pageable, filtroPesquisa);
+        Page<Tipologia> tipologias = tipologiaService.listar(pageable, filtroPesquisa);
 
         return ResponseEntity.ok()
                 .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())

@@ -129,6 +129,7 @@ export default {
 							this.$store.dispatch(SET_SNACKBAR,
 								{color: 'success', text: SUCCESS_MESSAGES.cadastro, timeout: '6000'}
 							);
+
 							this.clear();
 							this.updatePagination();
 							this.resetaDadosFiltragem();
@@ -152,7 +153,7 @@ export default {
 							this.$store.dispatch(SET_SNACKBAR,
 								{color: 'success', text: SUCCESS_MESSAGES.editar, timeout: '6000'}
 							);
-
+							
 							this.clear();
 							this.updatePagination();
 							this.resetaDadosFiltragem();
@@ -223,7 +224,7 @@ export default {
 
 				return 'Primeiro selecione a finalidade';
 
-			}else if (this.errorMessageEmpty && (validade === '' || validade % 1 != 0)) {
+			}else if (this.errorMessageEmpty && (validade === '' || ((validade % 1 != 0) && validade > 0))) {
 
 				return 'Este campo permite apenas números inteiros';
 
@@ -245,14 +246,19 @@ export default {
 			LicencaService.listar(parametrosFiltro)
 
 				.then((response) => {
+
 					this.dadosListagem = response.data;
 					this.prepararDadosListar();
+
 				})
 				.catch(erro => {
+
 					console.error(erro);
+
 					this.$store.dispatch(SET_SNACKBAR,
 						{color: 'error', text: ERROR_MESSAGES.licenca.listagem + erro.message, timeout: '6000'}
 					);
+					
 				});
 
 		},
