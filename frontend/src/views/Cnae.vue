@@ -165,7 +165,6 @@ export default {
 								{color: 'error', text: ERROR_MESSAGES.cnae.editar, timeout: '6000'}
 							);
 
-							item.ativo = !item.ativo;
 							this.resetaDadosCadastro();
 
 						});
