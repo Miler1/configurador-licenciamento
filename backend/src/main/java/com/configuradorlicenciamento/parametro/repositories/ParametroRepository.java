@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ParametroRepository extends JpaRepository<Parametro, Integer>, JpaSpecificationExecutor<Parametro> {
 
-    boolean existsByCodigo(String codigo);
+    Boolean existsByCodigo(String codigo);
 
     Parametro findByCodigo(String codigo);
 

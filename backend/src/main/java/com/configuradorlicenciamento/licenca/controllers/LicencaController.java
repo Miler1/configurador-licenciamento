@@ -26,6 +26,8 @@ import java.util.Date;
 @RequestMapping("/licenca")
 public class LicencaController extends DefaultController {
 
+    private static final String HEADER_STATUS = "Access-Control-Allow-Origin";
+
     @Autowired
     ILicencaService licencaService;
 
@@ -37,7 +39,7 @@ public class LicencaController extends DefaultController {
         Licenca licenca = licencaService.salvar(request, licencaDTO);
 
         return ResponseEntity.ok()
-                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_STATUS, VariaveisAmbientes.baseUrlFrontend())
                 .body(licenca);
 
     }
@@ -50,7 +52,7 @@ public class LicencaController extends DefaultController {
         Licenca licenca = licencaService.editar(request, licencaDTO);
 
         return ResponseEntity.ok()
-                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_STATUS, VariaveisAmbientes.baseUrlFrontend())
                 .body(licenca);
 
     }
@@ -65,7 +67,7 @@ public class LicencaController extends DefaultController {
         Page<Licenca> licencas = licencaService.listar(pageable, filtroPesquisa);
 
         return ResponseEntity.ok()
-                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_STATUS, VariaveisAmbientes.baseUrlFrontend())
                 .body(licencas);
 
     }

@@ -125,22 +125,17 @@ export default {
 					ParametroService.salvar(this.parametro)
 						.then(() => {
 
-							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'success', text: SUCCESS_MESSAGES.cadastro, timeout: '6000'}
-							);
-
 							this.clear();
 							this.updatePagination();
 							this.resetaDadosFiltragem();
+							this.handlerSuccess(false);
 
 						})
 						.catch(erro => {
 
 							console.error(erro);
 
-							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'error', text: ERROR_MESSAGES.parametro.cadastro + ': ' + erro.message, timeout: '6000'}
-							);
+							this.handlerError(false);
 
 						});
 						
@@ -149,18 +144,14 @@ export default {
 					ParametroService.editar(this.parametro)
 						.then(() => {
 
-							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'success', text: SUCCESS_MESSAGES.parametro.editar, timeout: '6000'}
-							);
+							this.handlerSuccess(true);
 
 						})
 						.catch(erro => {
 
 							console.error(erro);
 
-							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'error', text: ERROR_MESSAGES.parametro.editar + erro.message, timeout: '6000'}
-							);
+							this.handlerError(true);
 					
 						});
 
@@ -202,6 +193,27 @@ export default {
 				return 'Este campo permite apenas números inteiros';
 
 			}
+
+		},
+
+		handlerSuccess(edicao = false) {
+
+			let message = edicao ? SUCCESS_MESSAGES.editar : SUCCESS_MESSAGES.cadastro;
+
+			this.$store.dispatch(SET_SNACKBAR,
+				{color: 'success', text: message, timeout: '6000'}
+			);
+
+		},
+
+		handlerError(error, edicao = false) {
+
+			let message = edicao ? ERROR_MESSAGES.parametro.editar : ERROR_MESSAGES.parametro.cadastro;
+			message += error.message;
+
+			this.$store.dispatch(SET_SNACKBAR,
+				{color: 'error', text: message, timeout: '6000'}
+			);
 
 		},
 

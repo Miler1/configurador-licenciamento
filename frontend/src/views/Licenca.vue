@@ -126,22 +126,17 @@ export default {
 					LicencaService.salvar(this.licenca)
 						.then((response) => {
 
-							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'success', text: SUCCESS_MESSAGES.cadastro, timeout: '6000'}
-							);
-
 							this.clear();
 							this.updatePagination();
 							this.resetaDadosFiltragem();
+							this.handlerSuccess(false);
 
 						})
 						.catch(erro => {
 
 							console.error(erro);
 
-							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'error', text: ERROR_MESSAGES.licenca.cadastro + erro.message, timeout: '6000'}
-							);
+							this.handlerError(erro, false);
 
 						});
 
@@ -149,14 +144,11 @@ export default {
 
 					LicencaService.editar(this.licenca)
 						.then(() => {
-
-							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'success', text: SUCCESS_MESSAGES.editar, timeout: '6000'}
-							);
 							
 							this.clear();
 							this.updatePagination();
 							this.resetaDadosFiltragem();
+							this.handlerSuccess(true);
 							this.dadosPanel.panel = [];
 
 						})
@@ -164,12 +156,8 @@ export default {
 
 							console.error(erro);
 
-							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'error', text: ERROR_MESSAGES.licenca.editar + erro.message, timeout: '6000'}
-							);
-
-							item.ativo = !item.ativo;
 							this.resetaDadosCadastro();
+							this.handlerError(erro, true);
 
 						});
 
@@ -178,6 +166,7 @@ export default {
 			} else {
 				this.errorMessageEmpty = false;
 			}
+
 		},
 
 		checkForm() {
@@ -204,7 +193,28 @@ export default {
 					
 			}
 
-		},	
+		},
+
+		handlerSuccess(edicao = false) {
+
+			let message = edicao ? SUCCESS_MESSAGES.editar : SUCCESS_MESSAGES.cadastro;
+
+			this.$store.dispatch(SET_SNACKBAR,
+				{color: 'success', text: message, timeout: '6000'}
+			);
+
+		},
+
+		handlerError(error, edicao = false) {
+
+			let message = edicao ? ERROR_MESSAGES.licenca.editar : ERROR_MESSAGES.licenca.cadastro;
+			message += error.message;
+
+			this.$store.dispatch(SET_SNACKBAR,
+				{color: 'error', text: message, timeout: '6000'}
+			);
+
+		},
 
 		resetErrorMessage() {
 			this.errorMessageEmpty = true;
@@ -224,13 +234,14 @@ export default {
 
 				return 'Primeiro selecione a finalidade';
 
-			}else if (this.errorMessageEmpty && (validade === '' || ((validade % 1 != 0) && validade > 0))) {
+			}else if (this.errorMessageEmpty && (validade === '' || validade % 1 != 0 || validade == '0')) {
 
-				return 'Este campo permite apenas números inteiros';
+				return 'Este campo permite apenas números inteiros maiores que zero';
 
 			}
 
 			return [];
+			
 		},	
 
 		errorMessage(value) {

@@ -25,6 +25,9 @@ import java.util.List;
 @Service
 public class ParametroService implements IParametroService {
 
+
+    private static final String UNIQUE_ERROR_MESSAGE = "Já existe um parâmetro com o mesmo código.";
+
     @Autowired
     ParametroRepository parametroRepository;
 
@@ -49,7 +52,7 @@ public class ParametroService implements IParametroService {
 
         if (existsCodigo) {
 
-            throw new ConstraintUniqueViolationException("Um parâmetro com código '" + codigo + "' já está cadastrado.");
+            throw new ConstraintUniqueViolationException(UNIQUE_ERROR_MESSAGE);
         }
 
         parametroRepository.save(parametro);

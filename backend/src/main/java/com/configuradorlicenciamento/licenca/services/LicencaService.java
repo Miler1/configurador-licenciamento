@@ -26,12 +26,13 @@ import java.util.Optional;
 @Service
 public class LicencaService implements ILicencaService {
 
+    private static final String UNIQUE_ERROR_MESSAGE = "Já existe uma licença com o mesmo tipo.";
+
     @Autowired
     LicencaRepository licencaRepository;
 
     @Autowired
     UsuarioLicenciamentoRepository usuarioLicenciamentoRepository;
-
 
     @Override
     public Licenca salvar(HttpServletRequest request, LicencaDTO licencaDTO) throws Exception{
@@ -51,7 +52,7 @@ public class LicencaService implements ILicencaService {
 
         if(existsSigla) {
 
-            throw new ConstraintUniqueViolationException("Uma licença do tipo '" + sigla + "' já está cadastrada.");
+            throw new ConstraintUniqueViolationException(UNIQUE_ERROR_MESSAGE);
         }
 
         licencaRepository.save(licenca);
@@ -88,7 +89,7 @@ public class LicencaService implements ILicencaService {
 
             if (licencaExistente != null && !licencaDTO.getId().equals(licencaExistente.getId())) {
 
-                throw new ConstraintUniqueViolationException("Uma licença do tipo '" + sigla + "' já está cadastrada.");
+                throw new ConstraintUniqueViolationException(UNIQUE_ERROR_MESSAGE);
             }
 
         }

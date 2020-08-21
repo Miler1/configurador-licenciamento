@@ -26,6 +26,8 @@ import java.util.Date;
 @RequestMapping("/parametro")
 public class ParametroController extends DefaultController {
 
+    private static final String HEADER_STATUS = "Access-Control-Allow-Origin";
+
     @Autowired
     IParametroService parametroService;
 
@@ -37,7 +39,7 @@ public class ParametroController extends DefaultController {
         Parametro parametro = parametroService.salvar(request, parametroDTO);
 
         return ResponseEntity.ok()
-                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_STATUS, VariaveisAmbientes.baseUrlFrontend())
                 .body(parametro);
 
     }
@@ -52,7 +54,7 @@ public class ParametroController extends DefaultController {
         Page<Parametro> parametros = parametroService.listar(pageable, filtroPesquisa);
 
         return ResponseEntity.ok()
-                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_STATUS, VariaveisAmbientes.baseUrlFrontend())
                 .body(parametros);
 
     }

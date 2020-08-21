@@ -29,7 +29,7 @@ const ERROR_MESSAGES = {
 	},
 
 	parametro: {
-		cadastro: ER_BASE + 'cadastrar Parâmetro',
+		cadastro: ER_BASE + 'cadastrar parâmetro',
 		listagem: ER_BASE + 'listar os parâmetros. ',
 	}
 };
@@ -53,6 +53,7 @@ const SUCCESS_MESSAGES = {
 		ativar: 'Sucesso! A tipologia foi ativada.',
 		desativar: 'Sucesso! A tipologia foi desativada.'
 	}
+	
 };
 
 export {

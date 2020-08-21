@@ -26,6 +26,8 @@ import java.util.Date;
 @RequestMapping("/atividadeCnae")
 public class AtividadeCnaeController extends DefaultController {
 
+    private static final String HEADER_STATUS = "Access-Control-Allow-Origin";
+
     @Autowired
     IAtividadeCnaeService atividadeCnaeService;
 
@@ -37,7 +39,7 @@ public class AtividadeCnaeController extends DefaultController {
         AtividadeCnae atividadeCnae = atividadeCnaeService.salvar(request, atividadeCnaeDTO);
 
         return ResponseEntity.ok()
-                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_STATUS, VariaveisAmbientes.baseUrlFrontend())
                 .body(atividadeCnae);
 
     }
@@ -50,7 +52,7 @@ public class AtividadeCnaeController extends DefaultController {
         AtividadeCnae atividadeCnae = atividadeCnaeService.editar(request, atividadeCnaeDTO);
 
         return ResponseEntity.ok()
-                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_STATUS, VariaveisAmbientes.baseUrlFrontend())
                 .body(atividadeCnae);
 
     }
@@ -65,7 +67,7 @@ public class AtividadeCnaeController extends DefaultController {
         Page<AtividadeCnae> atividadeCnaes = atividadeCnaeService.listar(pageable, filtroPesquisa);
 
         return ResponseEntity.ok()
-                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_STATUS, VariaveisAmbientes.baseUrlFrontend())
                 .body(atividadeCnaes);
 
     }
