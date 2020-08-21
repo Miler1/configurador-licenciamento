@@ -69,6 +69,7 @@ export default {
 				nome: '',
 				ativo: true
 			},
+			isCadastro: true,
 			dadosPanel: {
 				items: 1,
 				panel: [],
@@ -141,8 +142,9 @@ export default {
 
 			this.parametrosFiltro.pagina = 0;
 			this.parametrosFiltro.itemsPorPagina = 10;
-			this.parametrosFiltro.tipoOrdenacao = 'dataCadastro,desc';
+			this.parametrosFiltro.tipoOrdenacao = 'nome,asc';
 			this.parametrosFiltro.stringPesquisa = '';
+			this.isCadastro = true;
 
 		},
 
@@ -165,7 +167,7 @@ export default {
 
 		handleSuccess(response, edicao = false) {
 
-			let message = edicao ? SUCCESS_MESSAGES.edicao : SUCCESS_MESSAGES.cadastro;
+			let message = edicao ? SUCCESS_MESSAGES.editar : SUCCESS_MESSAGES.cadastro;
 
 			// if(response.data.codigo !== this.tipologia.codigo) {
 			// 	message = ` A tipologia salva com o código: ${response.data.codigo}`;
