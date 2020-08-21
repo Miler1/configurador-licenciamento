@@ -16,7 +16,7 @@ import java.util.Date;
 @Service
 public class DocumentoService implements IDocumentoService {
 
-    public static final String DOCUMENTO_EXISTENTE = "Já existe um parâmetro com o mesmo nome.";
+    public static final String DOCUMENTO_EXISTENTE = "Já existe um documento com o mesmo nome.";
 
     @Autowired
     DocumentoRepository documentoRepository;
