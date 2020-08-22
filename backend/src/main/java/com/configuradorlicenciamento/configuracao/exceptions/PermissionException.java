@@ -4,9 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.FORBIDDEN)
-public class PemissionException extends RuntimeException{
+public class PermissionException extends RuntimeException{
 
-    public PemissionException(String exception) {
+    public PermissionException(String exception) {
         super(exception);
     }
 

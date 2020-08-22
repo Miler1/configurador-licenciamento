@@ -135,7 +135,7 @@ export default {
 
 							console.error(erro);
 
-							this.handlerError(false);
+							this.handlerError(erro, false);
 
 						});
 						
@@ -157,7 +157,7 @@ export default {
 							console.error(erro);
 
 							this.resetaDadosCadastro();
-							this.handlerError(true);
+							this.handlerError(erro, true);
 					
 						});
 

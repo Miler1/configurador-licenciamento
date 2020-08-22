@@ -5,15 +5,15 @@ const ERROR_MESSAGES = {
 	logout: 'Erro ao realizar logout.',
 
 	cnae: {
-		cadastro: ER_BASE + 'cadastrar CNAE.',
-		listagem: ER_BASE + 'listar os CNAEs.',
-		editar: ER_BASE + 'editar o CNAE.',
+		cadastro: ER_BASE + 'cadastrar o CNAE. ',
+		listagem: ER_BASE + 'listar os CNAEs. ',
+		editar: ER_BASE + 'editar o CNAE. ',
 		ativar: ER_BASE + 'ativar o CNAE. ',
 		desativar: ER_BASE + 'desativar o CNAE. '
 	},
 
 	licenca: {
-		cadastro: ER_BASE + 'cadastrar licença. ',
+		cadastro: ER_BASE + 'cadastrar a licença. ',
 		editar: ER_BASE + 'editar a licença. ',
 		ativar: ER_BASE + 'ativar a licença. ',
 		listagem: ER_BASE + 'listar as licenças.',
@@ -21,7 +21,7 @@ const ERROR_MESSAGES = {
 	},
 
 	tipologia: {
-		cadastro: ER_BASE + 'cadastrar tipologia. ',
+		cadastro: ER_BASE + 'cadastrar a tipologia. ',
 		listagem: ER_BASE + 'listar as tipologias. ',
 		editar: ER_BASE + 'editar a tipoloigia. ',
 		ativar: ER_BASE + 'ativar a tipologia. ',
@@ -29,7 +29,7 @@ const ERROR_MESSAGES = {
 	},
 
 	parametro: {
-		cadastro: ER_BASE + 'cadastrar parâmetro',
+		cadastro: ER_BASE + 'cadastrar o parâmetro. ',
 		listagem: ER_BASE + 'listar os parâmetros. ',
 		editar: ER_BASE + 'editar o parâmetro. ',
 		ativar: ER_BASE + 'ativar o parâmetro. ',
@@ -37,7 +37,7 @@ const ERROR_MESSAGES = {
 	},
 
 	documento: {
-		cadastro: ER_BASE + 'cadastrar o Documento',
+		cadastro: ER_BASE + 'cadastrar o Documento. ',
 		listagem: ER_BASE + 'listar os documentos. ',
 	}
 };
