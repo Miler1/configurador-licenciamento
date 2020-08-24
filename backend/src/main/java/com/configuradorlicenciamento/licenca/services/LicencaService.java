@@ -135,4 +135,10 @@ public class LicencaService implements ILicencaService {
         return dtos;
     }
 
+    public List<Licenca> findAll() {
+
+        return licencaRepository.findAll();
+
+    }
+
 }

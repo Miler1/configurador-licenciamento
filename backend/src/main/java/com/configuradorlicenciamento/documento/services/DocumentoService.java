@@ -82,13 +82,19 @@ public class DocumentoService implements IDocumentoService {
 
     }
 
-    public Page<Documento> lista(Pageable pageable, FiltroPesquisa filtro) {
+    public Page<Documento> listar(Pageable pageable, FiltroPesquisa filtro) {
 
         Specification<Documento> specification = preparaFiltro(filtro);
 
         Page<Documento> documentos = documentoRepository.findAll(specification, pageable);
 
         return documentos;
+    }
+
+    public List<Documento> findAll() {
+
+        return documentoRepository.findAll();
+
     }
 
 }
