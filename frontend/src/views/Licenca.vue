@@ -221,7 +221,20 @@ export default {
 
 		validadeErrorMessage(validade) {
 
-			if (!this.errorMessageEmpty && !validade && this.licenca.finalidade && this.licenca.finalidade != 'CADASTRO') {
+			let er = /^-?[0-9]+$/;
+			let onlyPositiveIntegers = 'Este campo permite apenas números inteiros e maiores que zero';
+
+			if (validade && validade != '') {
+
+				if (!er.test(validade)) {
+					return onlyPositiveIntegers;
+				}
+
+				validade = parseInt(validade);
+
+			}
+
+			if (!this.errorMessageEmpty && validade === null && this.licenca.finalidade && this.licenca.finalidade != 'CADASTRO') {
 				
 				return 'Obrigatório';
 
@@ -233,13 +246,11 @@ export default {
 
 				return 'Primeiro selecione a finalidade';
 
-			}else if (this.errorMessageEmpty && (validade === '' || validade % 1 != 0 || validade == '0')) {
+			}else if (validade === '' || (validade != null && validade <= 0)) {
 
-				return 'Este campo permite apenas números inteiros maiores que zero';
+				return onlyPositiveIntegers;
 
 			}
-
-			return [];
 			
 		},	
 

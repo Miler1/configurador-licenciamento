@@ -190,13 +190,26 @@ export default {
 
 		codigoErrorMessage(casasDecimais) {
 
-			if (!this.errorMessageEmpty && !casasDecimais ) {
+			let er = /^-?[0-9]+$/;	
+			let onlyIntegers = 'Este campo permite apenas números inteiros e maiores e iguais a zero';
+		
+			if (casasDecimais && casasDecimais != '') {
 
-				return 'Obrigatório';
+				if (!er.test(casasDecimais)) {
+					return onlyIntegers;
+				}
 
-			} else if (this.errorMessageEmpty && (casasDecimais === '' || casasDecimais % 1 != 0)) {
+				casasDecimais = parseInt(casasDecimais);
 
-				return 'Este campo permite apenas números inteiros';
+			}
+
+			if (!this.errorMessageEmpty && casasDecimais === null) {
+
+				return msgField('obrigatorio');
+
+			} else if ((casasDecimais === '' || (casasDecimais != null && casasDecimais < 0))) {
+
+				return onlyIntegers;
 
 			}
 
@@ -311,7 +324,9 @@ export default {
 							item.ativo = !item.ativo;
 
 						});
+
 				}
+
 			}).catch((error) => {
 				console.error(error);
 			});
