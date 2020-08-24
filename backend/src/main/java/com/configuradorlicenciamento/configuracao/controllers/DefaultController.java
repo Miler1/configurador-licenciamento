@@ -21,7 +21,7 @@ import com.configuradorlicenciamento.configuracao.enums.Acao;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-import com.configuradorlicenciamento.configuracao.exceptions.PemissionException;
+import com.configuradorlicenciamento.configuracao.exceptions.PermissionException;
 import com.configuradorlicenciamento.configuracao.interfaces.IDefaultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import javax.servlet.http.HttpServletRequest;
@@ -63,7 +63,7 @@ public class DefaultController {
 		Boolean permitido = defaultService.verificaPermissao(request, acoes);
 
 		if(!permitido) {
-			throw new PemissionException("Usuário sem permissão para realizar a ação!");
+			throw new PermissionException("Usuário sem permissão para realizar a ação!");
 		}
 
 	}

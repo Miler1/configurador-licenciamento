@@ -35,9 +35,9 @@ import PanelCadastro from '@/components/PanelCadastro';
 import FormCadastroDocumento from '@/components/FormCadastroDocumento';
 import GridListagem from '@/components/GridListagem';
 import DocumentoService from '@/services/documento.service';
-import RelatorioService from '../services/relatorio.service';
 import { SET_SNACKBAR } from '@/store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
+import RelatorioService from '../services/relatorio.service';
 import { HEADER } from '@/utils/dadosMockados/ListagemDocumentoHeader';
 
 export default {
@@ -186,8 +186,9 @@ export default {
 		errorMessage(value) {
 			return this.errorMessageEmpty || value ? [] : 'Obrigatório';
 		},
+
 		gerarRelatorio() {
-			
+			RelatorioService.baixarRelatorio("/documento/relatorio");
 		},
 
 		editarItem(item) {
@@ -195,7 +196,7 @@ export default {
 		},
 
 		ativarDesativarItem(item) {
-		
+
 		},
 
 		updatePagination(documentosFiltro) {
