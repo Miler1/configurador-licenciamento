@@ -1,8 +1,9 @@
 package com.configuradorlicenciamento.documento.models;
 
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
+import com.configuradorlicenciamento.documento.dtos.DocumentoCsv;
 import com.configuradorlicenciamento.documento.dtos.DocumentoDTO;
-import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
+import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,6 +24,7 @@ public class Documento implements Serializable {
     @SuppressWarnings("unused")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
 
     @NotNull(message = "{validacao.notnull}")
     private String nome;
@@ -91,6 +93,10 @@ public class Documento implements Serializable {
 
         public Documento build() { return new Documento(this); }
 
+    }
+
+    public DocumentoCsv preparaParaCsv(){
+        return new DocumentoCsv(this);
     }
 
 }

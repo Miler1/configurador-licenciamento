@@ -5,8 +5,8 @@ import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoun
 import com.configuradorlicenciamento.entradaUnica.dtos.AutenticacaoDTO;
 import com.configuradorlicenciamento.entradaUnica.interfaces.IAutenticacaoService;
 import com.configuradorlicenciamento.seguranca.components.Autenticacao;
-import com.configuradorlicenciamento.usuarioLicenciamento.interfaces.IUsuarioLicenciamentoService;
-import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
+import com.configuradorlicenciamento.usuariolicenciamento.interfaces.IUsuarioLicenciamentoService;
+import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;

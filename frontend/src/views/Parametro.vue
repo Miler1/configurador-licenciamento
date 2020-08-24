@@ -57,7 +57,7 @@ export default {
 			errorMessageEmpty: true,
 			isCadastro: true,
 			tituloListagem: "Listagem de parâmetros cadastrados",
-			placeholderPesquisa: "Pesquisar por código ou nome do parâmetro",
+			placeholderPesquisa: "Pesquisar por código ou descrição do parâmetro",
 			labelBotaoCadastrarEditar: "Cadastrar",
 			iconBotaoCadastrarEditar: "mdi-plus",
 			parametro: {
@@ -135,7 +135,7 @@ export default {
 
 							console.error(erro);
 
-							this.handlerError(false);
+							this.handlerError(erro, false);
 
 						});
 						
@@ -157,7 +157,7 @@ export default {
 							console.error(erro);
 
 							this.resetaDadosCadastro();
-							this.handlerError(true);
+							this.handlerError(erro, true);
 					
 						});
 
