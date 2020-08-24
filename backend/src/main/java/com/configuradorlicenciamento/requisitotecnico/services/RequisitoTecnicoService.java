@@ -1,6 +1,7 @@
 package com.configuradorlicenciamento.requisitotecnico.services;
 
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
+import com.configuradorlicenciamento.requisitotecnico.dtos.RequisitoTecnicoCsv;
 import com.configuradorlicenciamento.requisitotecnico.interfaces.IRequisitoTecnicoService;
 import com.configuradorlicenciamento.requisitotecnico.models.RequisitoTecnico;
 import com.configuradorlicenciamento.requisitotecnico.repositories.RequisitoTecnicoRepository;
@@ -9,14 +10,18 @@ import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLi
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class RequisitoTecnicoService implements IRequisitoTecnicoService {
 
     @Autowired
-    RequisitoTecnicoRepository RequisitoTecnicoRepository;
+    RequisitoTecnicoRepository requisitoTecnicoRepository;
 
     @Autowired
     UsuarioLicenciamentoRepository usuarioLicenciamentoRepository;
@@ -26,7 +31,7 @@ public class RequisitoTecnicoService implements IRequisitoTecnicoService {
 
         Specification<RequisitoTecnico> specification = preparaFiltro(filtro);
 
-        return RequisitoTecnicoRepository.findAll(specification, pageable);
+        return requisitoTecnicoRepository.findAll(specification, pageable);
     }
 
     private Specification<RequisitoTecnico> preparaFiltro(FiltroPesquisa filtro) {
@@ -41,5 +46,19 @@ public class RequisitoTecnicoService implements IRequisitoTecnicoService {
         return specification;
 
     }
+
+    @Override
+    public List<RequisitoTecnicoCsv> listarDocumentoParaCsv() throws Exception {
+
+        List<RequisitoTecnico> requisitoTecnicoList = requisitoTecnicoRepository.findAll(Sort.by("codigo"));
+        List<RequisitoTecnicoCsv> dtos = new ArrayList<>();
+
+        for (RequisitoTecnico requisitoTecnico : requisitoTecnicoList) {
+            dtos.add(requisitoTecnico.preparaParaCsv());
+        }
+
+        return dtos;
+    }
+
 
 }
