@@ -7,13 +7,8 @@ import com.configuradorlicenciamento.documento.dtos.DocumentoDTO;
 import com.configuradorlicenciamento.documento.interfaces.IDocumentoService;
 import com.configuradorlicenciamento.documento.models.Documento;
 import com.configuradorlicenciamento.documento.repositories.DocumentoRepository;
-import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
 import com.configuradorlicenciamento.usuarioLicenciamento.repositories.UsuarioLicenciamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import com.configuradorlicenciamento.documento.specifications.DocumentoSpecification;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 

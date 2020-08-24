@@ -1,12 +1,15 @@
 package com.configuradorlicenciamento.configuracao.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum Acao {
 
     GERENCIAR_LICENCIAMENTO("GERENCIAR_LICENCIAMENTO");
 
-    public String codigo;
+    private String codigo;
 
-    private Acao(String codigo) {
+    Acao(String codigo) {
 
         this.codigo = codigo;
     }

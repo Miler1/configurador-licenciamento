@@ -39,6 +39,10 @@ const ERROR_MESSAGES = {
 	documento: {
 		cadastro: ER_BASE + 'cadastrar o Documento. ',
 		listagem: ER_BASE + 'listar os documentos. ',
+	},
+
+	requisitoTecnico: {
+		listagem: ER_BASE + 'listar os Requisitos Técnicos',
 	}
 };
 
