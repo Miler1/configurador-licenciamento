@@ -4,6 +4,8 @@ export default {
 
 	cadastrar: async (documento) => ApiService.post('/documento/salvar', documento),
 
+	editar: async (documento) => ApiService.post('/documento/editar', documento),
+
 	listar: async (documentosFiltro) => {
 		if(documentosFiltro){
 			return ApiService.post(`documento/listar/?

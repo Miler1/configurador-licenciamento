@@ -88,4 +88,17 @@ public class DocumentoController extends DefaultController {
 
     }
 
+    @RequestMapping(method = RequestMethod.POST, value = "/editar")
+    public ResponseEntity <Documento> editar(HttpServletRequest request,
+                                             @Valid @RequestBody DocumentoDTO documentoDTO) throws Exception{
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        Documento documento = documentoService.editar(request, documentoDTO);
+
+        return ResponseEntity.ok()
+                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .body(documento);
+    }
+
 }

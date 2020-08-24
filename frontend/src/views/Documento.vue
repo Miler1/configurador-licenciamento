@@ -75,7 +75,7 @@ export default {
 				items: 1,
 				panel: [],
 				readonly: true,
-				title: "Cadastro de Documentos",
+				title: "Cadastro de documentos",
 				iconName:'fa fa-file-text-o',
 
 			}
@@ -118,7 +118,7 @@ export default {
 				if(this.isCadastro) {
 					this.cadastrar();
 				} else {
-					// Edição
+					this.editar();
 				}
 
 			} else {
@@ -140,6 +140,17 @@ export default {
 
 		},
 
+		editar() {
+
+			DocumentoService.editar(this.documento)
+				.then(response => {
+					this.handleSuccess(response, true);
+				})
+				.catch(error => {
+					this.handleError(error, true);
+				});
+		},
+
 		handleError(error, edicao = false) {
 
 			let message = edicao ? ERROR_MESSAGES.documento.editar : ERROR_MESSAGES.documento.cadastro;
@@ -155,15 +166,13 @@ export default {
 
 		handleSuccess(edicao = false) {
 
-			let message = edicao ? SUCCESS_MESSAGES.edicao : SUCCESS_MESSAGES.cadastro;
+			let message = edicao ? SUCCESS_MESSAGES.editar : SUCCESS_MESSAGES.cadastro;
 
 			this.$store.dispatch(SET_SNACKBAR,
 				{color: 'success', text: message, timeout: '6000'}
 			);
 
 			this.clear();
-
-			// Descomentar quando fizer a edição
 			this.updatePagination();
 			this.resetaDadosFiltragem();
 
@@ -193,10 +202,92 @@ export default {
 
 		editarItem(item) {
 
+			this.dadosPanel.panel = [0];
+			this.dadosPanel.title = "Editar documento";
+			this.labelBotaoCadastrarEditar = "Editar";
+			this.iconBotaoCadastrarEditar = "mdi-pencil";
+			this.documento = { ... item};
+			this.isCadastro = false;
+			window.scrollTo(0,0);
+
 		},
 
 		ativarDesativarItem(item) {
 
+			this.$fire({
+
+				title: item.ativo ? 
+					'<p class="title-modal-confirm">Desativar Documento - ' + item.nome+ '</p>' :
+					'<p class="title-modal-confirm">Ativar Documento - ' + item.nome+ '</p>',
+
+				html: item.ativo ?
+					`<p class="message-modal-confirm">Ao desativar o Documento, ele não estará mais disponível no sistema.</p>
+					<p class="message-modal-confirm">
+						<b>Tem certeza que deseja desativar o Documento? Esta opção pode ser desfeita a qualquer momento ao ativá-lo novamente.</b>
+					</p>` :
+					`<p class="message-modal-confirm">Ao ativar o Documento, ele ficará disponível no sistema.</p>
+					<p class="message-modal-confirm">
+						<b>Tem certeza que deseja ativar o Documento? Esta opção pode ser desfeita a qualquer momento ao desativá-lo novamente.</b>
+					</p>`,
+				showCancelButton: true,
+				confirmButtonColor: item.ativo ? '#E6A23C' : '#67C23A',
+				cancelButtonColor: '#FFF',
+				showCloseButton: true,
+				focusConfirm: false,
+				confirmButtonText: item.ativo ? '<i class="fa fa-minus-circle"></i> Desativar' : '<i class="fa fa-check-circle"></i> Ativar',
+				cancelButtonText: '<i class="fa fa-close"></i> Cancelar',
+				reverseButtons: true
+
+			}).then((result) => {
+
+				if(result.value) {
+
+					item.ativo = !item.ativo;
+					DocumentoService.editar(item)
+						.then(() => {
+							
+							if(!item.ativo) {
+								
+								this.$store.dispatch(SET_SNACKBAR,
+									{color: 'success', text: SUCCESS_MESSAGES.documento.desativar, timeout: '6000'}
+								);
+							
+							} else {
+
+								this.$store.dispatch(SET_SNACKBAR,
+									{color: 'success', text: SUCCESS_MESSAGES.documento.ativar, timeout: '6000'}
+								);
+
+							}
+
+							this.updatePagination();
+							this.resetaDadosFiltragem();
+
+						})
+						.catch(erro => {
+
+							console.error(erro);
+							if(!item.ativo) {
+								
+								this.$store.dispatch(SET_SNACKBAR,
+									{color: 'error', text: ERROR_MESSAGES.documento.desativar + erro.message, timeout: '6000'}
+								);
+							
+							} else {
+
+								this.$store.dispatch(SET_SNACKBAR,
+									{color: 'error', text: ERROR_MESSAGES.documento.ativar + erro.message, timeout: '6000'}
+								);
+
+							}
+
+							item.ativo = !item.ativo;
+
+						});
+				}
+			}).catch((error) => {
+				console.error(error);
+			});		
 		},
 
 		updatePagination(documentosFiltro) {

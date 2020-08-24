@@ -1,14 +1,13 @@
 package com.configuradorlicenciamento.requisitoAdministrativo.services;
 
 
-
 import com.configuradorlicenciamento.licenca.models.Licenca;
 import com.configuradorlicenciamento.requisitoAdministrativo.dtos.RequisitoAdministrativoDTO;
 import com.configuradorlicenciamento.requisitoAdministrativo.interfaces.IRequisitoAdministrativoService;
 import com.configuradorlicenciamento.requisitoAdministrativo.models.RequisitoAdministrativo;
 import com.configuradorlicenciamento.requisitoAdministrativo.repositories.RequisitoAdministrativoRepository;
-import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
-import com.configuradorlicenciamento.usuarioLicenciamento.repositories.UsuarioLicenciamentoRepository;
+import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
+import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLicenciamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
