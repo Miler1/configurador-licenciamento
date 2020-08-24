@@ -10,7 +10,6 @@ import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.documento.dtos.DocumentoDTO;
 import com.configuradorlicenciamento.documento.interfaces.IDocumentoService;
 import com.configuradorlicenciamento.documento.models.Documento;
-import com.configuradorlicenciamento.tipologia.dtos.TipologiaCsv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -60,7 +59,7 @@ public class DocumentoController extends DefaultController {
         downloadCsv(documentoService.listarDocumentoParaCsv(), nome, mappingStrategy, response);
     }
     
-    @RequestMapping(method = RequestMethod.POST, value="/listar")
+    @PostMapping(value="/listar")
     public ResponseEntity<Page<Documento>> listar(HttpServletRequest request,
                                                  @PageableDefault(size = 20) Pageable pageable,
                                                  @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
@@ -70,7 +69,7 @@ public class DocumentoController extends DefaultController {
         Page<Documento> documentos = documentoService.listar(pageable, filtroPesquisa);
 
         return ResponseEntity.ok()
-                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
                 .body(documentos);
 
     }

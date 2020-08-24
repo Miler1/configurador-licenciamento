@@ -74,7 +74,7 @@ public class DocumentoService implements IDocumentoService {
 
     private Specification<Documento> preparaFiltro(FiltroPesquisa filtro) {
 
-        Specification specification = Specification.where(DocumentoSpecification.padrao());
+        Specification<Documento> specification = Specification.where(DocumentoSpecification.padrao());
 
         if(filtro.getStringPesquisa() != null) {
             specification = specification.and(DocumentoSpecification.nome(filtro.getStringPesquisa()));
@@ -89,6 +89,7 @@ public class DocumentoService implements IDocumentoService {
         Specification<Documento> specification = preparaFiltro(filtro);
 
         return documentoRepository.findAll(specification, pageable);
+
     }
 
     public List<Documento> findAll() {
@@ -104,6 +105,19 @@ public class DocumentoService implements IDocumentoService {
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
+        boolean existsNome = documentoRepository.existsByNome(documentoDTO.getNome());
+
+        if (existsNome){
+
+            Documento documentoExistente = documentoRepository.findByNome(documentoDTO.getNome());
+
+            if (documentoExistente != null && !documentoDTO.getId().equals(documentoExistente.getId())) {
+
+                throw new ConstraintUniqueViolationException(DOCUMENTO_EXISTENTE);
+            }
+
+        }
+
         Optional<Documento> documentoSalvo = documentoRepository.findById(documentoDTO.getId())
                 .map(documento -> {
                     documento.setNome(documentoDTO.getNome());
@@ -116,16 +130,6 @@ public class DocumentoService implements IDocumentoService {
                     return documento;
                 });
 
-        if (documentoRepository.existsByNome(documentoDTO.getNome())){
-
-            Documento documentoExistente = documentoRepository.findByNome(documentoDTO.getNome());
-
-            if (documentoExistente != null && !documentoDTO.getId().equals(documentoExistente.getId())) {
-
-                throw new RuntimeException("Um documento com nome '" + documentoDTO.getNome() + "' já está cadastrado.");
-            }
-
-        }
         documentoRepository.save(documentoSalvo.get());
 
         return documentoSalvo.get();
