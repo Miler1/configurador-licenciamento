@@ -89,6 +89,10 @@ public class StringUtil {
             }
         }
 
+        if(tratada.charAt(tratada.length() - 1) == ' '){
+            tratada = tratada.substring(0, tratada.length() - 1);
+        }
+
         return tratada;
     }
 
