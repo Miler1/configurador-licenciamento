@@ -6,8 +6,8 @@
 			:clear="clear",
 			:dadosPanel="dadosPanel"
 		)
-			FormCadastroDocumento(
-				:documento="documento",
+			FormCadastroRequisitoAdministrativo(
+				:requisitoAdministrativo="requisitoAdministrativo",
 				:clear="clear",
 				:submit="submit",
 				:resetErrorMessage="resetErrorMessage",
@@ -15,53 +15,41 @@
 				:labelBotaoCadastrarEditar="labelBotaoCadastrarEditar",
 				:iconBotaoCadastrarEditar="iconBotaoCadastrarEditar"
 			)
-		GridListagem.pa-7(
-			:tituloListagem="tituloListagem",
-			:placeholderPesquisa="placeholderPesquisa",
-			:gerarRelatorio="gerarRelatorio",
-			:headers="headerListagem",
-			:dadosListagem="dadosListagem",
-			:updatePagination="updatePagination",
-			:editarItem="editarItem",
-			:ativarDesativarItem="ativarDesativarItem",
-			:parametrosFiltro="parametrosFiltro"
-		)
 
 </template>
 
 <script>
 
 import PanelCadastro from '@/components/PanelCadastro';
-import FormCadastroDocumento from '@/components/FormCadastroDocumento';
-import GridListagem from '@/components/GridListagem';
+import FormCadastroRequisitoAdministrativo from '@/components/FormCadastroRequisitoAdministrativo';
+import RequisitoAdministrativoService from '@/services/requisitoAdministrativo.service';
 import DocumentoService from '@/services/documento.service';
 import { SET_SNACKBAR } from '@/store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
-import RelatorioService from '../services/relatorio.service';
-import { HEADER } from '@/utils/dadosMockados/ListagemDocumentoHeader';
 
 export default {
 
-	name: "Documento",
+	name: "RequisitoAdministrativo",
 
 	components: {
 		PanelCadastro,
-		FormCadastroDocumento,
-		GridListagem
+		FormCadastroRequisitoAdministrativo,
+
 	},
 
 	data: () => {
 		return {
-			tituloListagem: 'Listagem de documentos',
-			placeholderPesquisa: "Pesquisar pelo nome do documento",
-			headerListagem: HEADER,
+			tituloListagem: 'Listagem de requisitos administrativos',
+			placeholderPesquisa: "Pesquisar pelo nome do requisito",
 			dadosListagem: {},
 			labelBotaoCadastrarEditar: "Cadastrar",
 			iconBotaoCadastrarEditar: "mdi-plus",
 			errorMessageEmpty: true,
-			documento: {
-				nome: '',
-				prefixoNomeArquivo: '',
+			requisitoAdministrativo: {
+				documento: null,
+				licencas: null,
+				obrigatorio:null,
+				tipoPessoa:null,
 				ativo: true
 			},
 			parametrosFiltro: {
@@ -75,10 +63,10 @@ export default {
 				items: 1,
 				panel: [],
 				readonly: true,
-				title: "Cadastro de Documentos",
+				title: "Cadastro de requisitos administrativos",
 				iconName:'fa fa-file-text-o',
 
-			}
+			},
 		};
 	},
 
@@ -86,9 +74,11 @@ export default {
 
 		clear() {
 
-			this.documento.nome= '';
-			this.documento.prefixoNomeArquivo= '';
-			this.documento.ativo= true;
+			this.requisitoAdministrativo.documento= null;
+			this.requisitoAdministrativo.licencas = null;
+			this.requisitoAdministrativo.obrigatorio = null;
+			this.requisitoAdministrativo.tipoPessoa = null;
+			this.requisitoAdministrativo.ativo= true;
 			this.errorMessageEmpty=true;
 			this.resetaDadosCadastro();
 
@@ -104,7 +94,7 @@ export default {
 
 		resetaDadosCadastro() {
 
-			this.dadosPanel.title = "Cadastro de Documentos";
+			this.dadosPanel.title = "Cadastro de requisitos administrativos";
 			this.labelBotaoCadastrarEditar = "Cadastrar";
 			this.iconBotaoCadastrarEditar = "mdi-plus";
 			this.isCadastro = true;
@@ -129,7 +119,7 @@ export default {
 
 		cadastrar() {
 
-			DocumentoService.cadastrar(this.documento)
+			RequisitoAdministrativoService.cadastrar(this.requisitoAdministrativo)
 
 				.then(() => {
 					this.handleSuccess();
@@ -142,7 +132,7 @@ export default {
 
 		handleError(error, edicao = false) {
 
-			let message = edicao ? ERROR_MESSAGES.documento.editar : ERROR_MESSAGES.documento.cadastro;
+			let message = edicao ? ERROR_MESSAGES.requisitoAdministrativo.editar : ERROR_MESSAGES.requisitoAdministrativo.cadastro;
 			message += error.message;
 
 			this.$store.dispatch(SET_SNACKBAR,
@@ -164,18 +154,18 @@ export default {
 			this.clear();
 
 			// Descomentar quando fizer a edição
-			this.updatePagination();
-			this.resetaDadosFiltragem();
+			// this.updatePagination();
+			// this.resetaDadosFiltragem();
 
 			if(edicao) this.dadosPanel.panel = [];
 		},
 
 		checkForm() {
 
-			return this.documento.nome
-				&& this.documento.nome != ''
-				&& this.documento.prefixoNomeArquivo
-				&& this.documento.prefixoNomeArquivo != '';
+			return this.requisitoAdministrativo.documento !== null
+				&& this.requisitoAdministrativo.licencas !== null
+				&& this.requisitoAdministrativo.obrigatorio !== null
+				&& this.requisitoAdministrativo.tipoPessoa !== null;
 
 		},
 
@@ -188,7 +178,7 @@ export default {
 		},
 
 		gerarRelatorio() {
-			RelatorioService.baixarRelatorio("/documento/relatorio");
+			RelatorioService.baixarRelatorio("/requisitoAdministrativo/relatorio");
 		},
 
 		editarItem(item) {
@@ -199,19 +189,8 @@ export default {
 
 		},
 
-		updatePagination(documentosFiltro) {
+		updatePagination(requisitoAdministrativoFiltro) {
 
-			DocumentoService.listar(documentosFiltro)
-
-				.then((response) => {
-					this.dadosListagem = response.data;
-				})
-				.catch(erro => {
-					console.error(erro);
-					this.$store.dispatch(SET_SNACKBAR,
-						{color: 'error', text: ERROR_MESSAGES.documento.listagem + ': ' + erro.message, timeout: '6000'}
-					);
-				});
 
 		},
 

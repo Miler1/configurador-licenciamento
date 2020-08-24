@@ -22,4 +22,6 @@ public interface ILicencaService {
 
     List<Licenca> listarLicencas() throws Exception;
 
+    List<Licenca> findAll();
+
 }
