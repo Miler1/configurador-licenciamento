@@ -127,6 +127,7 @@ export default {
 			this.tipologia.nome = '';
 			this.tipologia.ativo = true;
 			this.errorMessageEmpty = true;
+			this.resetaDadosCadastro();
 
 		},
 
@@ -136,6 +137,16 @@ export default {
 
 		resetErrorMessage() {
 			this.errorMessageEmpty = true;
+		},
+
+		resetaDadosCadastro() {
+
+			this.dadosPanel.title = "Cadastro de tipologia";
+			this.dadosPanel.iconName = "mdi-format-list-bulleted-square";
+			this.labelBotaoCadastrarEditar = "Cadastrar";
+			this.iconBotaoCadastrarEditar = "mdi-plus";
+			this.isCadastro = true;
+
 		},
 
 		resetaDadosFiltragem() {
@@ -161,7 +172,6 @@ export default {
 				{color: 'error', text: message, timeout: '6000'}
 			);
 			
-			this.resetaDadosCadastro();
 		},
 
 		handleSuccess(response, edicao = false) {
