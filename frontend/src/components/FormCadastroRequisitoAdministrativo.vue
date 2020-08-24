@@ -37,7 +37,8 @@
 						required,
 						return-object=true,
 						multiple=true
-						chips=true
+						chips=true,
+						deletable-chips=true
 					)
 				v-col(cols="9", md="5")
 					v-label Pessoa
