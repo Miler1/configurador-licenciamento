@@ -59,7 +59,7 @@ export default {
 			dadosListagem: {},
 			parametrosFiltro: {
 				pagina: 0,
-				itemsPorPagina: 20,
+				itemsPorPagina: 10,
 				tipoOrdenacao: 'dataCadastro,desc',
 				stringPesquisa: ''
 			},

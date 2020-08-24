@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface IParametroService {
 
-   Parametro salvar(HttpServletRequest request, ParametroDTO parametroDTO) throws Exception;
+   Parametro salvar(HttpServletRequest request, ParametroDTO parametroDTO);
 
    Page<Parametro> listar(Pageable pageable, FiltroPesquisa filtro);
 
