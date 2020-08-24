@@ -16,6 +16,18 @@
 				:iconBotaoCadastrarEditar="iconBotaoCadastrarEditar"
 			)
 
+		GridListagem.pa-7(
+			:tituloListagem="tituloListagem",
+			:placeholderPesquisa="placeholderPesquisa",
+			:gerarRelatorio="gerarRelatorio",
+			:headers="headerListagem",
+			:dadosListagem="dadosListagem",
+			:updatePagination="updatePagination",
+			:editarItem="editarItem",
+			:ativarDesativarItem="ativarDesativarItem",
+			:parametrosFiltro="parametrosFiltro",
+		)
+
 </template>
 
 <script>
@@ -25,6 +37,7 @@ import FormCadastroRequisitoAdministrativo from '@/components/FormCadastroRequis
 
 import RequisitoAdministrativoService from '@/services/requisitoAdministrativo.service';
 import DocumentoService from '@/services/documento.service';
+import GridListagem from '@/components/GridListagem';
 import { SET_SNACKBAR } from '@/store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 
@@ -35,7 +48,7 @@ export default {
 	components: {
 		PanelCadastro,
 		FormCadastroRequisitoAdministrativo,
-
+		GridListagem
 	},
 
 	data: () => {
