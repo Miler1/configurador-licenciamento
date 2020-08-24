@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/documento")
@@ -66,7 +67,20 @@ public class DocumentoController extends DefaultController {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        Page<Documento> documentos = documentoService.lista(pageable, filtroPesquisa);
+        Page<Documento> documentos = documentoService.listar(pageable, filtroPesquisa);
+
+        return ResponseEntity.ok()
+                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .body(documentos);
+
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value="/findAll")
+    public ResponseEntity<List<Documento>> findAll(HttpServletRequest request) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        List<Documento> documentos = documentoService.findAll();
 
         return ResponseEntity.ok()
                 .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())

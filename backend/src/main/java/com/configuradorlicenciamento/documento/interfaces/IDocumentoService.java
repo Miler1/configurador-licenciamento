@@ -16,6 +16,8 @@ public interface IDocumentoService {
 
     List<DocumentoCsv> listarDocumentoParaCsv() throws Exception;
     
-    Page<Documento> lista(Pageable pageable, FiltroPesquisa filtro);
+    Page<Documento> listar(Pageable pageable, FiltroPesquisa filtro);
+
+    List<Documento> findAll();
 
 }
