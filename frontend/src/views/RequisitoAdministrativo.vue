@@ -16,6 +16,18 @@
 				:iconBotaoCadastrarEditar="iconBotaoCadastrarEditar"
 			)
 
+		GridListagem.pa-7(
+			:tituloListagem="tituloListagem",
+			:placeholderPesquisa="placeholderPesquisa",
+			:gerarRelatorio="gerarRelatorio",
+			:headers="headerListagem",
+			:dadosListagem="dadosListagem",
+			:updatePagination="updatePagination",
+			:editarItem="editarItem",
+			:ativarDesativarItem="ativarDesativarItem",
+			:parametrosFiltro="parametrosFiltro",
+		)
+
 </template>
 
 <script>
@@ -24,8 +36,10 @@ import PanelCadastro from '@/components/PanelCadastro';
 import FormCadastroRequisitoAdministrativo from '@/components/FormCadastroRequisitoAdministrativo';
 import RequisitoAdministrativoService from '@/services/requisitoAdministrativo.service';
 import DocumentoService from '@/services/documento.service';
+import GridListagem from '@/components/GridListagem';
 import { SET_SNACKBAR } from '@/store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
+import { HEADER } from '@/utils/dadosMockados/ListagemRequisitoAdministrativoHeader';
 
 export default {
 
@@ -34,7 +48,7 @@ export default {
 	components: {
 		PanelCadastro,
 		FormCadastroRequisitoAdministrativo,
-
+		GridListagem
 	},
 
 	data: () => {
@@ -52,6 +66,7 @@ export default {
 				tipoPessoa:null,
 				ativo: true
 			},
+			headerListagem: HEADER,
 			parametrosFiltro: {
 				pagina: 0,
 				itemsPorPagina: 10,
@@ -189,8 +204,22 @@ export default {
 
 		},
 
-		updatePagination(requisitoAdministrativoFiltro) {
+		updatePagination(parametrosFiltro) {
 
+			RequisitoAdministrativoService.listar(parametrosFiltro)
+
+				.then((response) => {
+					this.dadosListagem = response.data;
+				})
+				.catch(erro => {
+
+					console.error(erro);
+
+					this.$store.dispatch(SET_SNACKBAR,
+						{color: 'error', text: ERROR_MESSAGES.parametro.listagem + ': ' + erro.message, timeout: '6000'}
+					);
+
+				});
 
 		},
 
