@@ -1,6 +1,6 @@
-package com.configuradorlicenciamento.usuarioLicenciamento.repositories;
+package com.configuradorlicenciamento.usuariolicenciamento.repositories;
 
-import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
+import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UsuarioLicenciamentoRepository extends JpaRepository<UsuarioLicenciamento, Integer> {

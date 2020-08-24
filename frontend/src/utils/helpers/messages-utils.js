@@ -37,13 +37,17 @@ const ERROR_MESSAGES = {
 	},
 
 	documento: {
-		cadastro: ER_BASE + 'cadastrar o Documento. ',
+		cadastro: ER_BASE + 'cadastrar o documento',
 		listagem: ER_BASE + 'listar os documentos. ',
 	},
 
 	requisitoAdministrativo: {
 		cadastro: ER_BASE + 'cadastrar o requisito administrativo.',
 		listagem: ER_BASE + 'listar os requisito administrativo.',
+	},
+
+	requisitoTecnico: {
+		listagem: ER_BASE + 'listar os Requisitos Técnicos',
 	}
 };
 

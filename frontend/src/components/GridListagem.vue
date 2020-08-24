@@ -3,7 +3,7 @@
 #grid-listagem
 	b.titulo-listagem {{ tituloListagem }}
 	v-row
-		v-col(cols='12' md='8')
+		v-col(cols='12' md='6')
 			v-text-field#QA-input-pesquisar(outlined,
 			v-model="parametrosFiltro.stringPesquisa"
 			:placeholder="placeholderPesquisa",
@@ -12,10 +12,14 @@
 			dense,
 			@input='inputPesquisa')
 
-		v-col(cols='12' md='4')
+		v-col(cols='12' md='6')
+			v-btn#QA-btn-abrir-cadastro.float-right.ml-4(@click="abrirTelaCadastro", large, dark, color="#84A98C", v-if="buttonCadastrar")
+				v-icon mdi-plus
+				span Cadastrar
 			v-btn#QA-btn-gerar-relatorio.float-right(@click="gerarRelatorio", large, outlined, color="#84A98C")
 				v-icon mdi-download
 				span Gerar Relatório
+			
 
 	template
 		v-data-table.elevation-1(:headers="headers",
@@ -102,6 +106,12 @@ export default {
 		},
 		parametrosFiltro: {
 			type: [Object]
+		},
+		buttonCadastrar: {
+			type: [Boolean]
+		},
+		abrirTelaCadastro: {
+			type: [Function]
 		}
 
 	},
@@ -208,6 +218,10 @@ tbody tr:nth-of-type(odd) {
 	.v-input__slot {
 		font-size: 13px;
 	}
+}
+
+.v-btn {
+	text-transform: none !important;
 }
 
 </style>

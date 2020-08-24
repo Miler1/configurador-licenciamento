@@ -1,8 +1,7 @@
 package com.configuradorlicenciamento.requisitoAdministrativo.services;
 
-
-
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
+import com.configuradorlicenciamento.licenca.models.Licenca;
 import com.configuradorlicenciamento.requisitoAdministrativo.dtos.RequisitoAdministrativoDTO;
 import com.configuradorlicenciamento.requisitoAdministrativo.interfaces.IRequisitoAdministrativoService;
 import com.configuradorlicenciamento.requisitoAdministrativo.models.RequisitoAdministrativo;
@@ -19,7 +18,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class RequisitoAdministrativoService implements IRequisitoAdministrativoService {
@@ -31,20 +32,27 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
     UsuarioLicenciamentoRepository usuarioLicenciamentoRepository;
 
     @Override
-    public RequisitoAdministrativo salvar(HttpServletRequest request, RequisitoAdministrativoDTO requisitoAdministrativoDTO) throws Exception {
+    public List<RequisitoAdministrativo> salvar(HttpServletRequest request, RequisitoAdministrativoDTO requisitoAdministrativoDTO) throws Exception {
 
         Object login = request.getSession().getAttribute("login");
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
-        RequisitoAdministrativo requisitoAdministrativo = new RequisitoAdministrativo.RequisitoAdministrativoBuilder(requisitoAdministrativoDTO)
-                .setDataCadastro(new Date())
-                .setUsuarioLicencimento(usuarioLicenciamento)
-                .build();
+        List<RequisitoAdministrativo> requisitoAdministrativoList = new ArrayList<>();
 
-        requisitoAdministrativoRepository.save(requisitoAdministrativo);
+        for (Licenca licenca : requisitoAdministrativoDTO.getLicencas()){
+            RequisitoAdministrativo requisitoAdministrativo = new RequisitoAdministrativo.RequisitoAdministrativoBuilder(requisitoAdministrativoDTO)
+                    .setLicenca(licenca)
+                    .setDataCadastro(new Date())
+                    .setUsuarioLicencimento(usuarioLicenciamento)
+                    .build();
 
-        return requisitoAdministrativo;
+            requisitoAdministrativoRepository.save(requisitoAdministrativo);
+
+            requisitoAdministrativoList.add(requisitoAdministrativo);
+        }
+
+        return requisitoAdministrativoList;
 
     }
 

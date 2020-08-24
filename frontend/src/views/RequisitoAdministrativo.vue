@@ -61,7 +61,7 @@ export default {
 			errorMessageEmpty: true,
 			requisitoAdministrativo: {
 				documento: null,
-				licenca: null,
+				licencas: null,
 				obrigatorio:null,
 				tipoPessoa:null,
 				ativo: true
@@ -90,8 +90,8 @@ export default {
 		clear() {
 
 			this.requisitoAdministrativo.documento= null;
-			this.requisitoAdministrativo.licenca = null;
-			this.requisitoAdministrativo.obrigadorio = null;
+			this.requisitoAdministrativo.licencas = null;
+			this.requisitoAdministrativo.obrigatorio = null;
 			this.requisitoAdministrativo.tipoPessoa = null;
 			this.requisitoAdministrativo.ativo= true;
 			this.errorMessageEmpty=true;
@@ -178,7 +178,7 @@ export default {
 		checkForm() {
 
 			return this.requisitoAdministrativo.documento !== null
-				&& this.requisitoAdministrativo.licenca !== null
+				&& this.requisitoAdministrativo.licencas !== null
 				&& this.requisitoAdministrativo.obrigatorio !== null
 				&& this.requisitoAdministrativo.tipoPessoa !== null;
 

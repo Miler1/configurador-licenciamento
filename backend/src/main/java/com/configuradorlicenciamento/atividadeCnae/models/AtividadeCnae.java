@@ -3,7 +3,7 @@ package com.configuradorlicenciamento.atividadeCnae.models;
 import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeCsv;
 import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeDTO;
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
-import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
+import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

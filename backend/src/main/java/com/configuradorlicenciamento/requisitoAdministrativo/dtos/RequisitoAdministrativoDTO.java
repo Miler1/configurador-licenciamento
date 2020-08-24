@@ -12,6 +12,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -33,7 +34,7 @@ public class RequisitoAdministrativoDTO implements Serializable {
 
     @NotNull(message = "{validacao.notnull}")
     @NotBlank(message = "{validacao.notBlank}")
-    private Licenca licenca;
+    private List<Licenca> licencas;
 
     @NotNull(message = "{validacao.notnull}")
     @NotBlank(message = "{validacao.notBlank}")
