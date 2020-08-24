@@ -65,6 +65,11 @@ const routes = [
 				component: () => import('../views/Documento.vue')
 			},
 			{
+				path: 'requisitos-administrativos',
+				name: 'requisitos-administrativos',
+				component: () => import('../views/RequisitoAdministrativo.vue')
+			},	
+			{
 				path: 'requisitos-tecnicos',
 				name: 'RequisitosTecnicos',
 				component: () => import('../views/RequisitoTecnico.vue')

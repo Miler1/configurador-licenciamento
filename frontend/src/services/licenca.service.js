@@ -22,6 +22,10 @@ export default {
 			return ApiService.post('licenca/listar/?page=0&size=10&sort=dataCadastro,asc', {});
 		}
 
-	}
+	},
+
+	findAll: async () => { return ApiService.post(`licenca/findAll`);
+
+}
 
 };
