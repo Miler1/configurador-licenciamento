@@ -75,7 +75,8 @@ public class DocumentoService implements IDocumentoService {
         Specification specification = Specification.where(DocumentoSpecification.padrao());
 
         if(filtro.getStringPesquisa() != null) {
-            specification = specification.and(DocumentoSpecification.nome(filtro.getStringPesquisa()));
+            specification = specification.and(DocumentoSpecification.nome(filtro.getStringPesquisa())
+                    .or(DocumentoSpecification.prefixoNomeArquivo(filtro.getStringPesquisa())));
         }
 
         return specification;

@@ -13,19 +13,19 @@ import lombok.Getter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ParametroCsv {
 
-    @CsvBindByName(column = "Status")
+    @CsvBindByName(column = "Código")
     @CsvBindByPosition(position = 0)
     private String codigo;
 
-    @CsvBindByName(column = "Status")
+    @CsvBindByName(column = "Descrição")
     @CsvBindByPosition(position = 1)
     private String nome;
 
-    @CsvBindByName(column = "Status")
+    @CsvBindByName(column = "Casas decimais")
     @CsvBindByPosition(position = 2)
     private Integer casasDecimais;
 
-    @CsvBindByName(column = "Status")
+    @CsvBindByName(column = "Ativo")
     @CsvBindByPosition(position = 3)
     private String ativo;
 

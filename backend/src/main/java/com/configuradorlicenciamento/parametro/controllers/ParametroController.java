@@ -1,12 +1,12 @@
 package com.configuradorlicenciamento.parametro.controllers;
 
-import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeCsv;
 import com.configuradorlicenciamento.configuracao.components.VariaveisAmbientes;
 import com.configuradorlicenciamento.configuracao.controllers.DefaultController;
 import com.configuradorlicenciamento.configuracao.enums.Acao;
 import com.configuradorlicenciamento.configuracao.utils.DateUtil;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.configuracao.utils.csv.CustomMappingStrategy;
+import com.configuradorlicenciamento.parametro.dtos.ParametroCsv;
 import com.configuradorlicenciamento.parametro.dtos.ParametroDTO;
 import com.configuradorlicenciamento.parametro.interfaces.IParametroService;
 import com.configuradorlicenciamento.parametro.models.Parametro;
@@ -78,10 +78,10 @@ public class ParametroController extends DefaultController {
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
         String data = DateUtil.formataBrHoraMinuto(new Date());
-        String nome = "Relatorio_CNAE_" + data + ".csv";
+        String nome = "Relatorio_Parametros_" + data + ".csv";
 
-        CustomMappingStrategy<AtividadeCnaeCsv> mappingStrategy = new CustomMappingStrategy<>();
-        mappingStrategy.setType(AtividadeCnaeCsv.class);
+        CustomMappingStrategy<ParametroCsv> mappingStrategy = new CustomMappingStrategy<>();
+        mappingStrategy.setType(ParametroCsv.class);
 
         downloadCsv(parametroService.listarParametrosParaCsv(), nome, mappingStrategy, response);
 

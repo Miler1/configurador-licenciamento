@@ -59,7 +59,7 @@ export default {
 			dadosListagem: {},
 			parametrosFiltro: {
 				pagina: 0,
-				itemsPorPagina: 20,
+				itemsPorPagina: 10,
 				tipoOrdenacao: 'dataCadastro,desc',
 				stringPesquisa: ''
 			},
@@ -222,8 +222,8 @@ export default {
 			this.$fire({
 
 				title: item.ativo ?
-					'<p class="title-modal-confirm">Desativar tipologia - ' + item.nome+ '</p>' :
-					'<p class="title-modal-confirm">Ativar tipologia - ' + item.nome+ '</p>',
+					'<p class="title-modal-confirm">Desativar Tipologia - ' + item.nome+ '</p>' :
+					'<p class="title-modal-confirm">Ativar Tipologia - ' + item.nome+ '</p>',
 
 				html: item.ativo ?
 					`<p class="message-modal-confirm">Ao desativar a tipologia, ela não estará mais disponível no sistema.</p>
@@ -237,7 +237,7 @@ export default {
 				showCancelButton: true,
 				confirmButtonColor: item.ativo ? '#E6A23C' : '#67C23A',
 				cancelButtonColor: '#FFF',
-				showCloseButton: false,
+				showCloseButton: true,
 				focusConfirm: false,
 				confirmButtonText: item.ativo ? '<i class="fa fa-minus-circle"></i> Desativar' : '<i class="fa fa-check-circle"></i> Ativar',
 				cancelButtonText: '<i class="fa fa-close"></i> Cancelar',
