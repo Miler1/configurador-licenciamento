@@ -30,6 +30,9 @@
 			template#teste(v-slot:item.finalidade='{ item }')
 				span {{item.finalidade}}
 
+			template#teste(v-slot:item.obrigatorio='{ item }')
+				span {{item.obrigatorio ? 'Básico' : 'Complementar'}}
+
 			template(v-slot:item.ativo='{ item }')
 				span {{item.ativo ? 'Ativo' : 'Inativo'}}
 

@@ -204,8 +204,22 @@ export default {
 
 		},
 
-		updatePagination(requisitoAdministrativoFiltro) {
+		updatePagination(parametrosFiltro) {
 
+			RequisitoAdministrativoService.listar(parametrosFiltro)
+
+				.then((response) => {
+					this.dadosListagem = response.data;
+				})
+				.catch(erro => {
+
+					console.error(erro);
+
+					this.$store.dispatch(SET_SNACKBAR,
+						{color: 'error', text: ERROR_MESSAGES.parametro.listagem + ': ' + erro.message, timeout: '6000'}
+					);
+
+				});
 
 		},
 
