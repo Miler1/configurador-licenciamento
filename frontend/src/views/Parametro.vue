@@ -57,7 +57,7 @@ export default {
 			errorMessageEmpty: true,
 			isCadastro: true,
 			tituloListagem: "Listagem de parâmetros cadastrados",
-			placeholderPesquisa: "Pesquisar por código ou nome do parâmetro",
+			placeholderPesquisa: "Pesquisar por código ou descrição do parâmetro",
 			labelBotaoCadastrarEditar: "Cadastrar",
 			iconBotaoCadastrarEditar: "mdi-plus",
 			parametro: {

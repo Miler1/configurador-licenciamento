@@ -22,7 +22,7 @@
 						outlined,
 						dense,
 						color="#E0E0E0",
-						:placeholder="placeholder",
+						:placeholder="placeholderDescricao",
 						v-model="parametro.nome",
 						:error-messages="errorMessage(parametro.nome)",
 						@click.native="resetErrorMessage",
@@ -30,12 +30,13 @@
 
 					)
 				v-col(cols="12", md="2")
-					v-label Casas Decimais
+					v-label Casas decimais
 					v-text-field#QA-input-parametro-casas_decimais(
 						outlined,
 						dense,
 						type="number",
 						color="#E0E0E0",
+						:placeholder="placeholder",
 						min="0",
 						step="1",
 						v-model="parametro.casasDecimais",
@@ -63,7 +64,8 @@ export default {
 
 	data: () => {
 		return {
-			placeholder: "Digite aqui..."
+			placeholder: "Digite aqui...",
+			placeholderDescricao: "Informe o nome e a unidade de medida do parâmetro, se necessário. Ex: Área útil (ha)"
 		};
 	},
 
