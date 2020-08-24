@@ -149,8 +149,6 @@ export default {
 				{color: 'error', text: message, timeout: '9000'}
 			);
 
-			item.ativo = !item.ativo;
-			this.resetaDadosCadastro();
 		},
 
 		handleSuccess(edicao = false) {
@@ -168,6 +166,7 @@ export default {
 			this.resetaDadosFiltragem();
 
 			if(edicao) this.dadosPanel.panel = [];
+
 		},
 
 		checkForm() {

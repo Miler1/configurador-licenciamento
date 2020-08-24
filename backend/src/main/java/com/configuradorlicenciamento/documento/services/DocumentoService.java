@@ -73,7 +73,7 @@ public class DocumentoService implements IDocumentoService {
 
     private Specification<Documento> preparaFiltro(FiltroPesquisa filtro) {
 
-        Specification specification = Specification.where(DocumentoSpecification.padrao());
+        Specification<Documento> specification = Specification.where(DocumentoSpecification.padrao());
 
         if(filtro.getStringPesquisa() != null) {
             specification = specification.and(DocumentoSpecification.nome(filtro.getStringPesquisa()));
@@ -87,9 +87,8 @@ public class DocumentoService implements IDocumentoService {
 
         Specification<Documento> specification = preparaFiltro(filtro);
 
-        Page<Documento> documentos = documentoRepository.findAll(specification, pageable);
+        return documentoRepository.findAll(specification, pageable);
 
-        return documentos;
     }
 
 }
