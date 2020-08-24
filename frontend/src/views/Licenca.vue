@@ -129,11 +129,11 @@ export default {
 							this.handlerSuccess(false);
 
 						})
-						.catch(erro => {
+						.catch(error => {
 
-							console.error(erro);
+							console.error(error);
 
-							this.handlerError(erro, false);
+							this.handlerError(error, false);
 
 						});
 
@@ -146,11 +146,11 @@ export default {
 							this.dadosPanel.panel = [];
 
 						})
-						.catch(erro => {
+						.catch(error => {
 
-							console.error(erro);
+							console.error(error);
 
-							this.handlerError(erro, true);
+							this.handlerError(error, true);
 
 						});
 
@@ -211,8 +211,6 @@ export default {
 				{color: 'error', text: message, timeout: '6000'}
 			);
 
-			this.resetaDadosCadastro();
-
 		},
 
 		resetErrorMessage() {
@@ -272,12 +270,12 @@ export default {
 					this.prepararDadosListar();
 
 				})
-				.catch(erro => {
+				.catch(error => {
 
-					console.error(erro);
+					console.error(error);
 
 					this.$store.dispatch(SET_SNACKBAR,
-						{color: 'error', text: ERROR_MESSAGES.licenca.listagem + erro.message, timeout: '6000'}
+						{color: 'error', text: ERROR_MESSAGES.licenca.listagem + error.message, timeout: '6000'}
 					);
 					
 				});
@@ -366,19 +364,19 @@ export default {
 							this.resetaDadosFiltragem();
 
 						})
-						.catch(erro => {
+						.catch(error => {
 
-							console.error(erro);
+							console.error(error);
 							if(!item.ativo) {
 								
 								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.licenca.desativar + erro.message, timeout: '6000'}
+									{color: 'error', text: ERROR_MESSAGES.licenca.desativar + error.message, timeout: '6000'}
 								);
 							
 							} else {
 
 								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.licenca.ativar + erro.message, timeout: '6000'}
+									{color: 'error', text: ERROR_MESSAGES.licenca.ativar + error.message, timeout: '6000'}
 								);
 
 							}

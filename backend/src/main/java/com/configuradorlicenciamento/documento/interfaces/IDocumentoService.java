@@ -14,10 +14,11 @@ public interface IDocumentoService {
 
     Documento salvar(HttpServletRequest request, DocumentoDTO documentoDTO);
 
-    List<DocumentoCsv> listarDocumentoParaCsv() throws Exception;
-    
     Page<Documento> listar(Pageable pageable, FiltroPesquisa filtro);
 
+    Documento editar(HttpServletRequest request, DocumentoDTO documentoDTO);
+    
+    List<DocumentoCsv> listarDocumentoParaCsv() throws Exception;
+    
     List<Documento> findAll();
-
 }

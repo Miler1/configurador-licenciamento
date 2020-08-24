@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
 import java.util.List;
 
 @Service
@@ -73,10 +74,11 @@ public class DocumentoService implements IDocumentoService {
 
     private Specification<Documento> preparaFiltro(FiltroPesquisa filtro) {
 
-        Specification specification = Specification.where(DocumentoSpecification.padrao());
+        Specification<Documento> specification = Specification.where(DocumentoSpecification.padrao());
 
         if(filtro.getStringPesquisa() != null) {
-            specification = specification.and(DocumentoSpecification.nome(filtro.getStringPesquisa()));
+            specification = specification.and(DocumentoSpecification.nome(filtro.getStringPesquisa())
+                    .or(DocumentoSpecification.prefixoNomeArquivo(filtro.getStringPesquisa())));
         }
 
         return specification;
@@ -87,9 +89,8 @@ public class DocumentoService implements IDocumentoService {
 
         Specification<Documento> specification = preparaFiltro(filtro);
 
-        Page<Documento> documentos = documentoRepository.findAll(specification, pageable);
+        return documentoRepository.findAll(specification, pageable);
 
-        return documentos;
     }
 
     public List<Documento> findAll() {
@@ -98,4 +99,41 @@ public class DocumentoService implements IDocumentoService {
 
     }
 
+    @Override
+    public Documento editar (HttpServletRequest request, DocumentoDTO documentoDTO){
+
+        Object login = request.getSession().getAttribute("login");
+
+        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
+
+        boolean existsNome = documentoRepository.existsByNome(documentoDTO.getNome());
+
+        if (existsNome){
+
+            Documento documentoExistente = documentoRepository.findByNome(documentoDTO.getNome());
+
+            if (documentoExistente != null && !documentoDTO.getId().equals(documentoExistente.getId())) {
+
+                throw new ConstraintUniqueViolationException(DOCUMENTO_EXISTENTE);
+            }
+
+        }
+
+        Optional<Documento> documentoSalvo = documentoRepository.findById(documentoDTO.getId())
+                .map(documento -> {
+                    documento.setNome(documentoDTO.getNome());
+                    documento.setPrefixoNomeArquivo(documentoDTO.getPrefixoNomeArquivo());
+                    documento.setAtivo(documentoDTO.getAtivo());
+                    documento.setCaminhoPasta(documentoDTO.getCaminhoPasta());
+                    documento.setDataCadastro(documentoDTO.getDataCadastro());
+                    documento.setUsuarioLicenciamento(usuarioLicenciamento);
+
+                    return documento;
+                });
+
+        documentoRepository.save(documentoSalvo.get());
+
+        return documentoSalvo.get();
+
+    }
 }
