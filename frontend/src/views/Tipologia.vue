@@ -53,7 +53,7 @@ export default {
 
 	data: () => {
 		return {
-			tituloListagem: "Listagem de tipologias",
+			tituloListagem: "Listagem de tipologias cadastradas",
 			placeholderPesquisa: "Pesquisar pelo nome da tipologia",
 			headerListagem: HEADER,
 			dadosListagem: {},
