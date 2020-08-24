@@ -34,12 +34,12 @@
 
 import PanelCadastro from '@/components/PanelCadastro';
 import FormCadastroRequisitoAdministrativo from '@/components/FormCadastroRequisitoAdministrativo';
-
 import RequisitoAdministrativoService from '@/services/requisitoAdministrativo.service';
 import DocumentoService from '@/services/documento.service';
 import GridListagem from '@/components/GridListagem';
 import { SET_SNACKBAR } from '@/store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
+import { HEADER } from '@/utils/dadosMockados/ListagemRequisitoAdministrativoHeader';
 
 export default {
 
@@ -66,6 +66,7 @@ export default {
 				tipoPessoa:null,
 				ativo: true
 			},
+			headerListagem: HEADER,
 			parametrosFiltro: {
 				pagina: 0,
 				itemsPorPagina: 10,

@@ -35,9 +35,13 @@ public class RequisitoAdministrativo implements Serializable {
     private Boolean obrigatorio;
 
     @NotNull(message = "{validacao.notnull}")
+    @ManyToOne
+    @JoinColumn(name = "id_tipo_documento", referencedColumnName = "id")
     private Documento documento;
 
     @NotNull(message = "{validacao.notnull}")
+    @ManyToOne
+    @JoinColumn(name = "id_tipo_licenca", referencedColumnName = "id")
     private Licenca licenca;
 
     @NotNull(message = "{validacao.notnull}")
