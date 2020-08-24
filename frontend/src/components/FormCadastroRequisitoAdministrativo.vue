@@ -6,7 +6,7 @@
 
 				v-col(cols="9", md="8")
 					v-label Documento
-					v-select#QA-select-licenca-finalidade(
+					v-autocomplete#QA-select-licenca-finalidade(
 						outlined,
 						dense,
 						color="#E0E0E0",
@@ -15,26 +15,29 @@
 						v-model="requisitoAdministrativo.documento",
 						:items="documentos",
 						item-text="nome",
-						item-value="object",
 						:error-messages="errorMessage( requisitoAdministrativo.documento )",
 						@click.native="resetErrorMessage",
 						required,
+						return-object=true
 					)
-				span {{item-value}}
+
 				v-col(cols="9", md="3")
 					v-label Tipo Licença
-					v-select#QA-select-licenca-finalidade(
+					v-autocomplete#QA-select-licenca-finalidade(
 						outlined,
 						dense,
 						color="#E0E0E0",
 						:placeholder="placeholderSelect",
 						item-color="grey darken-3",
-						v-model="requisitoAdministrativo.licenca",
+						v-model="requisitoAdministrativo.licencas",
 						:items="licencas",
 						item-text="sigla",
-						:error-messages="errorMessage(requisitoAdministrativo.licenca)",
+						:error-messages="errorMessage(requisitoAdministrativo.licencas)",
 						@click.native="resetErrorMessage",
 						required,
+						return-object=true,
+						multiple=true
+						chips=true
 					)
 				v-col(cols="9", md="5")
 					v-label Pessoa
@@ -123,7 +126,6 @@ export default {
 	}
 
 };
-
 
 
 </script>

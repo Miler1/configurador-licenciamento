@@ -29,15 +29,20 @@ public class RequisitoAdministrativo implements Serializable {
     private Integer id;
 
     @NotNull(message = "{validacao.notnull}")
+    @Column(name = "tipo_pessoa")
     private String tipoPessoa;
 
     @NotNull(message = "{validacao.notnull}")
     private Boolean obrigatorio;
 
     @NotNull(message = "{validacao.notnull}")
+    @ManyToOne
+    @JoinColumn(name="id_tipo_documento", referencedColumnName="id")
     private Documento documento;
 
     @NotNull(message = "{validacao.notnull}")
+    @ManyToOne
+    @JoinColumn(name="id_tipo_licenca", referencedColumnName="id")
     private Licenca licenca;
 
     @NotNull(message = "{validacao.notnull}")
@@ -73,9 +78,9 @@ public class RequisitoAdministrativo implements Serializable {
 
         public RequisitoAdministrativoBuilder(RequisitoAdministrativoDTO requisitoAdministrativoDTO) {
             this.documento = requisitoAdministrativoDTO.getDocumento();
-            this.licenca = requisitoAdministrativoDTO.getLicenca();
             this.obrigatorio = requisitoAdministrativoDTO.getObrigatorio();
             this.tipoPessoa = requisitoAdministrativoDTO.getTipoPessoa();
+            this.ativo = requisitoAdministrativoDTO.getAtivo();
 
         }
 
@@ -86,6 +91,11 @@ public class RequisitoAdministrativo implements Serializable {
 
         public RequisitoAdministrativo.RequisitoAdministrativoBuilder setUsuarioLicencimento(UsuarioLicenciamento usuarioLicencimento) {
             this.usuarioLicenciamento = usuarioLicencimento;
+            return this;
+        }
+
+        public RequisitoAdministrativo.RequisitoAdministrativoBuilder setLicenca(Licenca licenca) {
+            this.licenca = licenca;
             return this;
         }
 

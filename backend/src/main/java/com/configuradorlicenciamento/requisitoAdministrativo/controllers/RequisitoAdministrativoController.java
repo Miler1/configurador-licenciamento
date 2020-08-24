@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/requisitoAdministrativo")
@@ -27,15 +28,15 @@ public class RequisitoAdministrativoController extends DefaultController {
     IRequisitoAdministrativoService requisitoAdministrativoService;
 
     @PostMapping(value = "/salvar")
-    public ResponseEntity<RequisitoAdministrativo> salvar(HttpServletRequest request, @Valid @RequestBody RequisitoAdministrativoDTO requisitoAdministrativoDTO) throws Exception {
+    public ResponseEntity<List<RequisitoAdministrativo>> salvar(HttpServletRequest request, @Valid @RequestBody RequisitoAdministrativoDTO requisitoAdministrativoDTO) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        RequisitoAdministrativo requisitoAdministrativo = requisitoAdministrativoService.salvar(request, requisitoAdministrativoDTO);
+        List<RequisitoAdministrativo> requisitoAdministrativoList = requisitoAdministrativoService.salvar(request, requisitoAdministrativoDTO);
 
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
-                .body(requisitoAdministrativo);
+                .body(requisitoAdministrativoList);
 
     }
 
