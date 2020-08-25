@@ -74,6 +74,11 @@ const routes = [
 				name: 'RequisitosTecnicos',
 				component: () => import('../views/RequisitoTecnico.vue')
 			},
+			{
+				path: 'taxas',
+				name: 'Taxas',
+				component: () => import('../views/Taxa.vue')
+			},
 			{ 
 				path: '*', 
 				component: () => import('../views/UnderConstruction.vue') 
