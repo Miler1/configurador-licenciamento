@@ -2,6 +2,7 @@ package com.configuradorlicenciamento.requisitoAdministrativo.services;
 
 
 
+import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
 import com.configuradorlicenciamento.licenca.models.Licenca;
 import com.configuradorlicenciamento.requisitoAdministrativo.dtos.RequisitoAdministrativoDTO;
 import com.configuradorlicenciamento.requisitoAdministrativo.interfaces.IRequisitoAdministrativoService;
@@ -20,6 +21,8 @@ import java.util.List;
 @Service
 public class RequisitoAdministrativoService implements IRequisitoAdministrativoService {
 
+    private static final String REQUISITO_ADMINISTRATIVO_EXISTENTE = "Já existe um requisito administrativo com o mesmo documento para esse tipo de licença.";
+
     @Autowired
     RequisitoAdministrativoRepository requisitoAdministrativoRepository;
 
@@ -36,6 +39,12 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
         List<RequisitoAdministrativo> requisitoAdministrativoList = new ArrayList<>();
 
         for (Licenca licenca : requisitoAdministrativoDTO.getLicencas()){
+
+            boolean existsRequisitoAdministrativo = requisitoAdministrativoRepository.existsByLicencaAndDocumento(licenca, requisitoAdministrativoDTO.getDocumento());
+
+            if (existsRequisitoAdministrativo) {
+                throw new ConstraintUniqueViolationException(REQUISITO_ADMINISTRATIVO_EXISTENTE);
+            }
             RequisitoAdministrativo requisitoAdministrativo = new RequisitoAdministrativo.RequisitoAdministrativoBuilder(requisitoAdministrativoDTO)
                     .setLicenca(licenca)
                     .setDataCadastro(new Date())
