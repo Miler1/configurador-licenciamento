@@ -111,10 +111,12 @@ export default {
 		},
 
 		resetaDadosFiltragem() {
+
 			this.parametrosFiltro.pagina = 0;
 			this.parametrosFiltro.itemsPorPagina = 10;
 			this.parametrosFiltro.tipoOrdenacao = 'dataCadastro,desc';
 			this.parametrosFiltro.stringPesquisa = '';
+
 		},
 
 		submit() {
@@ -187,10 +189,9 @@ export default {
 					&& this.licenca.sigla != ''	
 					&& this.licenca.nome 
 					&& this.licenca.nome != '' 
-					&& this.licenca.finalidade 
+					&& this.licenca.finalidade
 					&& this.licenca.finalidade != '' 
-					&& this.licenca.validadeEmAnos 
-					&& this.licenca.validadeEmAnos != ''
+					&& this.licenca.validadeEmAnos !== null
 					&& this.validarPrazo();
 					
 			}

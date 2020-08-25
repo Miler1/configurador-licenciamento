@@ -171,8 +171,7 @@ export default {
 				&& this.parametro.codigo != ''
 				&& this.parametro.nome
 				&& this.parametro.nome != ''
-				&& this.parametro.casasDecimais
-				&& this.parametro.casasDecimais != ''
+				&& this.parametro.casasDecimais !== null
 				&& this.validarCasasDecimais();
 				
 		},
@@ -187,7 +186,7 @@ export default {
 
 		codigoErrorMessage(casasDecimais) {
 			
-			let msgSomenteInteiros = 'Este campo permite apenas números inteiros e maiores e iguais a 0';
+			let msgSomenteInteiros = 'Este campo permite apenas números inteiros e maiores ou iguais a 0';
 		
 			if (this.errorMessageEmpty && casasDecimais && casasDecimais != '') {
 
