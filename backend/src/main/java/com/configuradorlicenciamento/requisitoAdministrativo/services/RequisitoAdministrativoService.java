@@ -7,10 +7,8 @@ import com.configuradorlicenciamento.requisitoAdministrativo.interfaces.IRequisi
 import com.configuradorlicenciamento.requisitoAdministrativo.models.RequisitoAdministrativo;
 import com.configuradorlicenciamento.requisitoAdministrativo.repositories.RequisitoAdministrativoRepository;
 import com.configuradorlicenciamento.requisitoAdministrativo.specifications.RequisitoAdministrativoSpecification;
-import com.configuradorlicenciamento.tipologia.models.Tipologia;
-import com.configuradorlicenciamento.tipologia.specifications.TipologiaSpecification;
-import com.configuradorlicenciamento.usuarioLicenciamento.models.UsuarioLicenciamento;
-import com.configuradorlicenciamento.usuarioLicenciamento.repositories.UsuarioLicenciamentoRepository;
+import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
+import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLicenciamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

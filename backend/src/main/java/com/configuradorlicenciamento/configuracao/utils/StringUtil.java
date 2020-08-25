@@ -71,7 +71,14 @@ public class StringUtil {
         return preposicoes;
     }
 
-    public static String removerEspacosRepetidos(String string){
+    /**
+     * O método toma uma string como parâmetro e remove espaços sobressalentes.
+     * Sejam eles repetidos dentro da frase, ou no início e fim
+     *
+     * @param string A string a ser tratada
+     * @return A string tratada sem os espaços desnecessários
+     */
+    public static String tratarEspacos(String string){
 
         String referencia = string;
         String tratada = string;
@@ -91,6 +98,10 @@ public class StringUtil {
 
         if(tratada.charAt(tratada.length() - 1) == ' '){
             tratada = tratada.substring(0, tratada.length() - 1);
+        }
+
+        if(tratada.charAt(0) == ' '){
+            tratada = tratada.substring(1, tratada.length());
         }
 
         return tratada;
