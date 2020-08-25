@@ -121,44 +121,52 @@ export default {
 
 			if (this.checkForm()) {
 
-				if(this.isCadastro) {
-						
-					LicencaService.salvar(this.licenca)
-						.then((response) => {
-
-							this.handlerSuccess(false);
-
-						})
-						.catch(error => {
-
-							console.error(error);
-
-							this.handlerError(error, false);
-
-						});
-
+				if (this.isCadastro) {
+					this.cadastrar();
 				} else {
-
-					LicencaService.editar(this.licenca)
-						.then(() => {
-							
-							this.handlerSuccess(true);
-							this.dadosPanel.panel = [];
-
-						})
-						.catch(error => {
-
-							console.error(error);
-
-							this.handlerError(error, true);
-
-						});
-
+					this.editar();
 				}
 
 			} else {
 				this.errorMessageEmpty = false;
 			}
+
+		},
+
+		cadastrar() {
+
+			LicencaService.salvar(this.licenca)
+				.then((response) => {
+
+					this.handlerSuccess(false);
+
+				})
+				.catch(error => {
+
+					console.error(error);
+
+					this.handlerError(error, false);
+
+				});
+
+		},
+		
+		editar() {
+
+			LicencaService.editar(this.licenca)
+				.then(() => {
+					
+					this.handlerSuccess(true);
+					this.dadosPanel.panel = [];
+
+				})
+				.catch(error => {
+
+					console.error(error);
+
+					this.handlerError(error, true);
+
+				});
 
 		},
 
@@ -182,7 +190,8 @@ export default {
 					&& this.licenca.finalidade 
 					&& this.licenca.finalidade != '' 
 					&& this.licenca.validadeEmAnos 
-					&& this.licenca.validadeEmAnos != '';
+					&& this.licenca.validadeEmAnos != ''
+					&& this.validarPrazo();
 					
 			}
 
@@ -219,16 +228,13 @@ export default {
 
 		validadeErrorMessage(validade) {
 
-			let er = /^-?[0-9]+$/;
 			let onlyPositiveIntegers = 'Este campo permite apenas números inteiros e maiores que zero';
 
 			if (validade && validade != '') {
 
-				if (!er.test(validade)) {
+				if (!this.validarPrazo()) {
 					return onlyPositiveIntegers;
 				}
-
-				validade = parseInt(validade);
 
 			}
 
@@ -244,13 +250,29 @@ export default {
 
 				return 'Primeiro selecione a finalidade';
 
-			}else if (validade === '' || (validade != null && validade <= 0)) {
+			}else if (validade === '' || (validade != null && !this.validarPrazo())) {
 
 				return onlyPositiveIntegers;
 
 			}
 			
-		},	
+		},
+
+		validarPrazo() {
+
+			let er = /^-?[0-9]+$/;
+
+			if (er.test(this.licenca.validade)) {
+
+				this.licenca.validade = parseInt(tis.licenca.validade);
+
+				return this.licenca.validade > 0;
+
+			}
+
+			return false;
+
+		},
 
 		errorMessage(value) {
 			return this.errorMessageEmpty || value ? [] : 'Obrigatório';
