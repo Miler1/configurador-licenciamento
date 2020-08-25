@@ -1,4 +1,4 @@
-package com.configuradorlicenciamento.requisitoAdministrativo.dtos;
+package com.configuradorlicenciamento.requisitoadministrativo.dtos;
 
 import com.configuradorlicenciamento.documento.models.Documento;
 import com.configuradorlicenciamento.licenca.models.Licenca;

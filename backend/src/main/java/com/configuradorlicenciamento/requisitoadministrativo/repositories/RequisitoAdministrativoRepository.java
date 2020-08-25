@@ -1,8 +1,8 @@
-package com.configuradorlicenciamento.requisitoAdministrativo.repositories;
+package com.configuradorlicenciamento.requisitoadministrativo.repositories;
 
 import com.configuradorlicenciamento.documento.models.Documento;
 import com.configuradorlicenciamento.licenca.models.Licenca;
-import com.configuradorlicenciamento.requisitoAdministrativo.models.RequisitoAdministrativo;
+import com.configuradorlicenciamento.requisitoadministrativo.models.RequisitoAdministrativo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;

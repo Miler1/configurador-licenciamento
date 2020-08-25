@@ -1,10 +1,10 @@
-package com.configuradorlicenciamento.requisitoAdministrativo.models;
+package com.configuradorlicenciamento.requisitoadministrativo.models;
 
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.documento.models.Documento;
 import com.configuradorlicenciamento.licenca.models.Licenca;
-import com.configuradorlicenciamento.requisitoAdministrativo.dtos.RequisitoAdministrativoCsv;
-import com.configuradorlicenciamento.requisitoAdministrativo.dtos.RequisitoAdministrativoDTO;
+import com.configuradorlicenciamento.requisitoadministrativo.dtos.RequisitoAdministrativoCsv;
+import com.configuradorlicenciamento.requisitoadministrativo.dtos.RequisitoAdministrativoDTO;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

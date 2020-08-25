@@ -34,7 +34,7 @@
 			template(v-slot:item.finalidade='{ item }')
 				span {{item.finalidade}}
 
-			templat(v-slot:item.obrigatorio='{ item }')
+			template(v-slot:item.obrigatorio='{ item }')
 				span {{item.obrigatorio ? 'Básico' : 'Complementar'}}
 
 			template(v-slot:item.ativo='{ item }')

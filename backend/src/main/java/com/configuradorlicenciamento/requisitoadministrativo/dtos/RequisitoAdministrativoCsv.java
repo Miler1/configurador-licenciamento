@@ -1,10 +1,8 @@
-package com.configuradorlicenciamento.requisitoAdministrativo.dtos;
+package com.configuradorlicenciamento.requisitoadministrativo.dtos;
 
 import com.configuradorlicenciamento.configuracao.utils.DateUtil;
-import com.configuradorlicenciamento.documento.models.Documento;
 import com.configuradorlicenciamento.entradaUnica.services.EntradaUnicaWS;
-import com.configuradorlicenciamento.licenca.models.Licenca;
-import com.configuradorlicenciamento.requisitoAdministrativo.models.RequisitoAdministrativo;
+import com.configuradorlicenciamento.requisitoadministrativo.models.RequisitoAdministrativo;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.opencsv.bean.CsvBindByName;
