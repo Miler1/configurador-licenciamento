@@ -230,7 +230,9 @@ export default {
 
 			let msgSomenteInteiros = 'Este campo permite apenas números inteiros e maiores ou iguais a 1';
 
-			if (validade && validade != '') {
+			if (this.errorMessageEmpty && validade && validade != '') {
+
+				console.log("validadePrazo", this.validarPrazo());
 
 				if (!this.validarPrazo()) {
 					return msgSomenteInteiros;
@@ -254,11 +256,11 @@ export default {
 
 			let er = /^-?[0-9]+$/;
 
-			if (er.test(this.licenca.validade)) {
+			if (er.test(this.licenca.validadeEmAnos)) {
 
-				this.licenca.validade = parseInt(tis.licenca.validade);
+				this.licenca.validadeEmAnos = parseInt(this.licenca.validadeEmAnos);
 
-				return this.licenca.validade > 0;
+				return this.licenca.validadeEmAnos > 0;
 
 			}
 
