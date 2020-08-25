@@ -18,7 +18,7 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RequisitoTecnicoCsv implements Serializable {
 
-    @CsvBindByName(column = "Codigo")
+    @CsvBindByName(column = "Código")
     @CsvBindByPosition(position = 0)
     private String codigo;
 
@@ -26,24 +26,25 @@ public class RequisitoTecnicoCsv implements Serializable {
     @CsvBindByPosition(position = 1)
     private String descricao;
 
-    @CsvBindByName(column = "Data de cadastro")
+    @CsvBindByName(column = "Status")
     @CsvBindByPosition(position = 2)
+    private String ativo;
+
+    @CsvBindByName(column = "Data de cadastro")
+    @CsvBindByPosition(position = 3)
     private String dataCadastro;
 
     @CsvBindByName(column = "Usuário")
-    @CsvBindByPosition(position = 3)
+    @CsvBindByPosition(position = 4)
     private String usuarioLicenciamento;
 
-    @CsvBindByName(column = "Status")
-    @CsvBindByPosition(position = 4)
-    private String status;
 
     public RequisitoTecnicoCsv(RequisitoTecnico requisitoTecnico) {
 
         this.codigo = requisitoTecnico.getCodigo();
         this.descricao = requisitoTecnico.getDescricao();
         this.dataCadastro = requisitoTecnico.getDataCadastro() != null ? DateUtil.formataBrSimples(requisitoTecnico.getDataCadastro()) : "-";
-        this.status = requisitoTecnico.getAtivo() ? "Ativo" : "Inativo";
+        this.ativo = requisitoTecnico.getAtivo() ? "Ativo" : "Inativo";
         this.usuarioLicenciamento = requisitoTecnico.getUsuarioLicenciamento() != null ? getNomeUsuario(requisitoTecnico.getUsuarioLicenciamento()) : "-";
 
     }
