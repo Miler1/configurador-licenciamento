@@ -25,7 +25,6 @@ public class Documento implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-
     @NotNull(message = "{validacao.notnull}")
     private String nome;
 

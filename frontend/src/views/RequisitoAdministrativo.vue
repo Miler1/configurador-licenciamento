@@ -37,6 +37,7 @@ import PanelCadastro from '@/components/PanelCadastro';
 import FormCadastroRequisitoAdministrativo from '@/components/FormCadastroRequisitoAdministrativo';
 import RequisitoAdministrativoService from '@/services/requisitoAdministrativo.service';
 import DocumentoService from '@/services/documento.service';
+import RelatorioService from '../services/relatorio.service';
 import GridListagem from '@/components/GridListagem';
 import { SET_SNACKBAR } from '@/store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
@@ -101,10 +102,12 @@ export default {
 		},
 
 		resetaDadosFiltragem() {
+
 			this.parametrosFiltro.pagina = 0;
 			this.parametrosFiltro.itemsPorPagina = 10;
 			this.parametrosFiltro.tipoOrdenacao = 'dataCadastro,desc';
 			this.parametrosFiltro.stringPesquisa = '';
+
 		},
 
 
@@ -167,8 +170,6 @@ export default {
 				{color: 'error', text: message, timeout: '9000'}
 			);
 
-			item.ativo = !item.ativo;
-			this.resetaDadosCadastro();
 		},
 
 		handleSuccess(edicao = false) {
@@ -184,6 +185,14 @@ export default {
 			this.clear();
 			this.resetaDadosFiltragem();
 			this.updatePagination();
+			this.clear();
+
+			if(edicao) this.dadosPanel.panel = [];
+
+		},
+
+		gerarRelatorio() {
+			RelatorioService.baixarRelatorio("/parametro/relatorio");
 		},
 
 		checkForm() {
@@ -258,43 +267,11 @@ export default {
 						.then(() => {
 							
 							this.handleSuccess();
-							/*if(!item.ativo) {
-								
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'success', text: SUCCESS_MESSAGES.tipologia.desativar, timeout: '6000'}
-								);
-							
-							} else {
-
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'success', text: SUCCESS_MESSAGES.tipologia.ativar, timeout: '6000'}
-								);
-
-							}
-
-							this.updatePagination();
-							this.resetaDadosFiltragem();*/
 
 						})
 						.catch(erro => {
 
 							this.handleError(erro, true);
-							/*console.error(erro);
-							if(!item.ativo) {
-								
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.tipologia.desativar, timeout: '6000'}
-								);
-							
-							} else {
-
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.tipologia.ativar, timeout: '6000'}
-								);
-
-							}
-
-							item.ativo = !item.ativo;*/
 
 						});
 				}

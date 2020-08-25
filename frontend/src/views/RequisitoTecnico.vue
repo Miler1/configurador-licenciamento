@@ -33,7 +33,7 @@ export default {
 
 	data: () => {
 		return {
-			tituloListagem: "Listagem de Requisitos Técnicos cadastrados",
+			tituloListagem: "Listagem de requisitos técnicos cadastrados",
 			placeholderPesquisa: "Pesquisar por código ou descrição do requisito",
 			headerListagem: HEADER,
 			dadosListagem: {},

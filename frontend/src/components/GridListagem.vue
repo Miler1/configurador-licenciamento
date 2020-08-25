@@ -13,9 +13,9 @@
 			@input='inputPesquisa')
 
 		v-col(cols='12' md='6')
-			v-btn#QA-btn-abrir-cadastro.float-right.ml-4(@click="abrirTelaCadastro", large, dark, color="#84A98C", v-if="buttonCadastrar")
-				v-icon mdi-plus
-				span Cadastrar
+			v-btn#QA-btn-abrir-cadastro.float-right.ml-4( @click="abrirTelaCadastro", large, dark, color="#84A98C", v-if="buttonCadastrar")
+				v-icon.font-cadastrar mdi-plus
+				span.font-cadastrar Cadastrar
 			v-btn#QA-btn-gerar-relatorio.float-right(@click="gerarRelatorio", large, outlined, color="#84A98C")
 				v-icon mdi-download
 				span Gerar Relatório
@@ -222,6 +222,10 @@ tbody tr:nth-of-type(odd) {
 
 .v-btn {
 	text-transform: none !important;
+}
+
+.font-cadastrar{
+	font-size:16px;
 }
 
 </style>

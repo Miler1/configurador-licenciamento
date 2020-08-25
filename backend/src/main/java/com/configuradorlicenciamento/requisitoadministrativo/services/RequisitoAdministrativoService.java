@@ -3,19 +3,27 @@ package com.configuradorlicenciamento.requisitoadministrativo.services;
 import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
 import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
+import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
+
 import com.configuradorlicenciamento.documento.models.Documento;
 import com.configuradorlicenciamento.documento.repositories.DocumentoRepository;
+
 import com.configuradorlicenciamento.licenca.models.Licenca;
+
+import com.configuradorlicenciamento.requisitoadministrativo.dtos.RequisitoAdministrativoCsv;
 import com.configuradorlicenciamento.requisitoadministrativo.dtos.RequisitoAdministrativoDTO;
 import com.configuradorlicenciamento.requisitoadministrativo.interfaces.IRequisitoAdministrativoService;
 import com.configuradorlicenciamento.requisitoadministrativo.models.RequisitoAdministrativo;
 import com.configuradorlicenciamento.requisitoadministrativo.repositories.RequisitoAdministrativoRepository;
 import com.configuradorlicenciamento.requisitoadministrativo.specifications.RequisitoAdministrativoSpecification;
+
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLicenciamentoRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +36,7 @@ import java.util.Optional;
 @Service
 public class RequisitoAdministrativoService implements IRequisitoAdministrativoService {
 
-    private static final String REQUISITO_EXISTENTE = "O documento já foi cadastrado para o tipo de licença.";
+    private static final String REQUISITO_ADMINISTRATIVO_EXISTENTE = "Já existe um requisito administrativo com o mesmo documento para esse tipo de licença.";
 
     @Autowired
     RequisitoAdministrativoRepository requisitoAdministrativoRepository;
@@ -40,7 +48,7 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
     DocumentoRepository documentoRepository;
 
     @Override
-    public List<RequisitoAdministrativo> salvar(HttpServletRequest request, RequisitoAdministrativoDTO requisitoAdministrativoDTO) throws Exception {
+    public List<RequisitoAdministrativo> salvar(HttpServletRequest request, RequisitoAdministrativoDTO requisitoAdministrativoDTO) {
 
         Object login = request.getSession().getAttribute("login");
 
@@ -49,6 +57,12 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
         List<RequisitoAdministrativo> requisitoAdministrativoList = new ArrayList<>();
 
         for (Licenca licenca : requisitoAdministrativoDTO.getLicencas()){
+
+            boolean existsRequisitoAdministrativo = requisitoAdministrativoRepository.existsByLicencaAndDocumento(licenca, requisitoAdministrativoDTO.getDocumento());
+
+            if (existsRequisitoAdministrativo) {
+                throw new ConstraintUniqueViolationException(REQUISITO_ADMINISTRATIVO_EXISTENTE);
+            }
             RequisitoAdministrativo requisitoAdministrativo = new RequisitoAdministrativo.RequisitoAdministrativoBuilder(requisitoAdministrativoDTO)
                     .setLicenca(licenca)
                     .setDataCadastro(new Date())
@@ -91,7 +105,7 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
             long alreadyExistents = requisitoAdministrativoRepository.count(RequisitoAdministrativoSpecification.documentoAndLicenca(novoDocumento.getId(), requisitoAdministrativo.getLicenca().getId()));
 
             if(alreadyExistents > 0){
-                throw new ConstraintUniqueViolationException(REQUISITO_EXISTENTE);
+                throw new ConstraintUniqueViolationException(REQUISITO_ADMINISTRATIVO_EXISTENTE);
             }
         }
 
@@ -111,6 +125,25 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
 
         return requisitoAdministrativoRepository.findAll(specification, pageable);
 
+    }
+
+    @Override
+    public List<RequisitoAdministrativoCsv> listarRequisitosAdministrativosParaCsv() {
+
+        List<RequisitoAdministrativo> requisitosAdministrativos = requisitoAdministrativoRepository.findAll(Sort.by("documento"));
+        List<RequisitoAdministrativoCsv> dtos = new ArrayList<>();
+
+        for (RequisitoAdministrativo requisitoAdministrativo: requisitosAdministrativos) {
+            dtos.add(requisitoAdministrativo.preparaParaCsv());
+        }
+
+        return dtos;
+
+    }
+
+    @Override
+    public List<RequisitoAdministrativo> findAll() {
+        return requisitoAdministrativoRepository.findAll();
     }
 
     private Specification<RequisitoAdministrativo> preparaFiltro(FiltroPesquisa filtro) {
