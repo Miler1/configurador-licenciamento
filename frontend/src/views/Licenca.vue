@@ -239,21 +239,13 @@ export default {
 			}
 
 			if (!this.errorMessageEmpty && validade === null && this.licenca.finalidade && this.licenca.finalidade != 'CADASTRO') {
-				
 				return 'Obrigatório';
-
 			}else if (!validade && this.licenca.finalidade && this.licenca.finalidade === 'CADASTRO') {
-
 				return 'A finalidade escolhida não permite prazo de validade';
-
 			}else if (!validade  && !this.licenca.finalidade){
-
 				return 'Primeiro selecione a finalidade';
-
 			}else if (validade === '' || (validade != null && !this.validarPrazo())) {
-
 				return msgSomenteInteiros;
-
 			}
 			
 		},

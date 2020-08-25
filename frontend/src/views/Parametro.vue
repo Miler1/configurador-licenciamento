@@ -192,20 +192,15 @@ export default {
 			if (this.errorMessageEmpty && casasDecimais && casasDecimais != '') {
 
 				if (!this.validarCasasDecimais()) {
-					
 					return msgSomenteInteiros;
 				}
 
 			}
 
 			if (!this.errorMessageEmpty && casasDecimais === null) {
-
 				return 'obrigatorio';
-
-			} else if ((casasDecimais === '' || (casasDecimais != null && !this.validarCasasDecimais()))) {
-
+			} else if (casasDecimais === '' || (casasDecimais != null && !this.validarCasasDecimais())) {
 				return msgSomenteInteiros;
-
 			}
 
 		},
@@ -223,6 +218,7 @@ export default {
 			}
 
 			return false;
+			
 		},
 
 		handlerSuccess(edicao = false) {
