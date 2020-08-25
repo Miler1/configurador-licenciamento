@@ -25,9 +25,9 @@ public class ParametroCsv {
     @CsvBindByPosition(position = 2)
     private Integer casasDecimais;
 
-    @CsvBindByName(column = "Ativo")
+    @CsvBindByName(column = "Status")
     @CsvBindByPosition(position = 3)
-    private String ativo;
+    private String status;
 
     @CsvBindByName(column = "Data de cadastro")
     @CsvBindByPosition(position = 4)
@@ -42,7 +42,7 @@ public class ParametroCsv {
         this.codigo = parametro.getCodigo();
         this.nome = parametro.getNome();
         this.casasDecimais = parametro.getCasasDecimais();
-        this.ativo = parametro.getAtivo() ? "Ativo" : "Inativo";
+        this.status = parametro.getAtivo() ? "Ativo" : "Inativo";
         this.dataCadastro = parametro.getDataCadastro() != null ? DateUtil.formataBrSimples(parametro.getDataCadastro()) : "-";
 
         this.usuarioLicenciamento = parametro.getUsuarioLicenciamento() != null ? getNomeUsuario(parametro.getUsuarioLicenciamento()) : "-";
