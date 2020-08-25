@@ -129,11 +129,11 @@ export default {
 							this.handlerSuccess(false);
 
 						})
-						.catch(erro => {
+						.catch(error => {
 
-							console.error(erro);
+							console.error(error);
 
-							this.handlerError(erro, false);
+							this.handlerError(error, false);
 
 						});
 
@@ -146,11 +146,11 @@ export default {
 							this.dadosPanel.panel = [];
 
 						})
-						.catch(erro => {
+						.catch(error => {
 
-							console.error(erro);
+							console.error(error);
 
-							this.handlerError(erro, true);
+							this.handlerError(error, true);
 
 						});
 
@@ -211,8 +211,6 @@ export default {
 				{color: 'error', text: message, timeout: '6000'}
 			);
 
-			this.resetaDadosCadastro();
-
 		},
 
 		resetErrorMessage() {
@@ -221,7 +219,20 @@ export default {
 
 		validadeErrorMessage(validade) {
 
-			if (!this.errorMessageEmpty && !validade && this.licenca.finalidade && this.licenca.finalidade != 'CADASTRO') {
+			let er = /^-?[0-9]+$/;
+			let onlyPositiveIntegers = 'Este campo permite apenas números inteiros e maiores que zero';
+
+			if (validade && validade != '') {
+
+				if (!er.test(validade)) {
+					return onlyPositiveIntegers;
+				}
+
+				validade = parseInt(validade);
+
+			}
+
+			if (!this.errorMessageEmpty && validade === null && this.licenca.finalidade && this.licenca.finalidade != 'CADASTRO') {
 				
 				return 'Obrigatório';
 
@@ -233,13 +244,11 @@ export default {
 
 				return 'Primeiro selecione a finalidade';
 
-			}else if (this.errorMessageEmpty && (validade === '' || validade % 1 != 0 || validade == '0')) {
+			}else if (validade === '' || (validade != null && validade <= 0)) {
 
-				return 'Este campo permite apenas números inteiros maiores que zero';
+				return onlyPositiveIntegers;
 
 			}
-
-			return [];
 			
 		},	
 
@@ -261,12 +270,12 @@ export default {
 					this.prepararDadosListar();
 
 				})
-				.catch(erro => {
+				.catch(error => {
 
-					console.error(erro);
+					console.error(error);
 
 					this.$store.dispatch(SET_SNACKBAR,
-						{color: 'error', text: ERROR_MESSAGES.licenca.listagem + erro.message, timeout: '6000'}
+						{color: 'error', text: ERROR_MESSAGES.licenca.listagem + error.message, timeout: '6000'}
 					);
 					
 				});
@@ -355,19 +364,19 @@ export default {
 							this.resetaDadosFiltragem();
 
 						})
-						.catch(erro => {
+						.catch(error => {
 
-							console.error(erro);
+							console.error(error);
 							if(!item.ativo) {
 								
 								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.licenca.desativar + erro.message, timeout: '6000'}
+									{color: 'error', text: ERROR_MESSAGES.licenca.desativar + error.message, timeout: '6000'}
 								);
 							
 							} else {
 
 								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.licenca.ativar + erro.message, timeout: '6000'}
+									{color: 'error', text: ERROR_MESSAGES.licenca.ativar + error.message, timeout: '6000'}
 								);
 
 							}

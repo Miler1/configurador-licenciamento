@@ -60,7 +60,7 @@ public class Tipologia implements Serializable {
         private UsuarioLicenciamento usuarioLicenciamento;
 
         public TipologiaBuilder(TipologiaDTO tipologiaDTO) {
-            this.nome = StringUtil.removerEspacosRepetidos(tipologiaDTO.getNome());
+            this.nome = StringUtil.tratarEspacos(tipologiaDTO.getNome());
             this.ativo = tipologiaDTO.getAtivo();
 
 //            if(tipologiaDTO.getCodigo().isBlank()){
@@ -89,8 +89,8 @@ public class Tipologia implements Serializable {
             String codigo = "";
 
             codigo = StringUtil.removeAccents(string).toLowerCase();
-            codigo = StringUtil.removerEspacosRepetidos(codigo);
-            //codigo = codigo.replace("_", " ").toUpperCase();
+            codigo = StringUtil.tratarEspacos(codigo);
+            //codigo = codigo.replace("_", " ");
             codigo = StringUtil.removeCaracteresEspeciais(codigo);
 
             for(String preposicao : StringUtil.preposicoes()) {

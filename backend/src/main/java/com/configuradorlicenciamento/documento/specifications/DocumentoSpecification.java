@@ -20,6 +20,14 @@ public class DocumentoSpecification {
 
     }
 
+    public static Specification<Documento> prefixoNomeArquivo(String prefixoNomeArquivo) {
+
+        return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(
+                criteriaBuilder.function("unaccent", String.class, criteriaBuilder.lower(root.get("prefixoNomeArquivo"))),
+                "%" + StringUtil.removeAccents(prefixoNomeArquivo.toLowerCase()) + "%");
+
+    }
+
     public static Specification<Documento> codigo(String codigo) {
         return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(criteriaBuilder.lower(root.get("codigo")), "%" + codigo.toLowerCase() + "%");
     }

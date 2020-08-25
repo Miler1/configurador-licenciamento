@@ -57,7 +57,7 @@ export default {
 			errorMessageEmpty: true,
 			isCadastro: true,
 			tituloListagem: "Listagem de parâmetros cadastrados",
-			placeholderPesquisa: "Pesquisar por código ou nome do parâmetro",
+			placeholderPesquisa: "Pesquisar por código ou descrição do parâmetro",
 			labelBotaoCadastrarEditar: "Cadastrar",
 			iconBotaoCadastrarEditar: "mdi-plus",
 			parametro: {
@@ -125,17 +125,12 @@ export default {
 					ParametroService.salvar(this.parametro)
 						.then(() => {
 
-							this.clear();
-							this.updatePagination();
-							this.resetaDadosFiltragem();
 							this.handlerSuccess(false);
 
 						})
-						.catch(erro => {
+						.catch(error => {
 
-							console.error(erro);
-
-							this.handlerError(erro, false);
+							this.handlerError(error, false);
 
 						});
 						
@@ -145,19 +140,12 @@ export default {
 						.then(() => {
 
 							this.handlerSuccess(true);
-
-							this.clear();
-							this.updatePagination();
-							this.resetaDadosFiltragem();
 							this.dadosPanel.panel = [];
 
 						})
-						.catch(erro => {
+						.catch(error => {
 
-							console.error(erro);
-
-							this.resetaDadosCadastro();
-							this.handlerError(erro, true);
+							this.handlerError(error, true);
 					
 						});
 
@@ -190,13 +178,26 @@ export default {
 
 		codigoErrorMessage(casasDecimais) {
 
-			if (!this.errorMessageEmpty && !casasDecimais ) {
+			let er = /^-?[0-9]+$/;	
+			let onlyIntegers = 'Este campo permite apenas números inteiros e maiores e iguais a zero';
+		
+			if (casasDecimais && casasDecimais != '') {
 
-				return 'Obrigatório';
+				if (!er.test(casasDecimais)) {
+					return onlyIntegers;
+				}
 
-			} else if (this.errorMessageEmpty && (casasDecimais === '' || casasDecimais % 1 != 0)) {
+				casasDecimais = parseInt(casasDecimais);
 
-				return 'Este campo permite apenas números inteiros';
+			}
+
+			if (!this.errorMessageEmpty && casasDecimais === null) {
+
+				return msgField('obrigatorio');
+
+			} else if ((casasDecimais === '' || (casasDecimais != null && casasDecimais < 0))) {
+
+				return onlyIntegers;
 
 			}
 
@@ -210,9 +211,15 @@ export default {
 				{color: 'success', text: message, timeout: '6000'}
 			);
 
+			this.clear();
+			this.updatePagination();
+			this.resetaDadosFiltragem();
+
 		},
 
 		handlerError(error, edicao = false) {
+
+			console.error(error);
 
 			let message = edicao ? ERROR_MESSAGES.parametro.editar : ERROR_MESSAGES.parametro.cadastro;
 			message += error.message;
@@ -291,19 +298,19 @@ export default {
 							this.resetaDadosFiltragem();
 
 						})
-						.catch(erro => {
+						.catch(error => {
 
-							console.error(erro);
+							console.error(error);
 							if(!item.ativo) {
 								
 								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.parametro.desativar + erro.message, timeout: '6000'}
+									{color: 'error', text: ERROR_MESSAGES.parametro.desativar + error.message, timeout: '6000'}
 								);
 							
 							} else {
 
 								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.parametro.ativar + erro.message, timeout: '6000'}
+									{color: 'error', text: ERROR_MESSAGES.parametro.ativar + error.message, timeout: '6000'}
 								);
 
 							}
@@ -311,7 +318,9 @@ export default {
 							item.ativo = !item.ativo;
 
 						});
+
 				}
+
 			}).catch((error) => {
 				console.error(error);
 			});
@@ -325,12 +334,12 @@ export default {
 				.then((response) => {
 					this.dadosListagem = response.data;
 				})
-				.catch(erro => {
+				.catch(error => {
 
-					console.error(erro);
+					console.error(error);
 
 					this.$store.dispatch(SET_SNACKBAR,
-						{color: 'error', text: ERROR_MESSAGES.parametro.listagem + ': ' + erro.message, timeout: '6000'}
+						{color: 'error', text: ERROR_MESSAGES.parametro.listagem + ': ' + error.message, timeout: '6000'}
 					);
 
 				});

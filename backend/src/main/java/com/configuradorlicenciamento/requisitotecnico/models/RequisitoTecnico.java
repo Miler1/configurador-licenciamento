@@ -2,6 +2,7 @@ package com.configuradorlicenciamento.requisitotecnico.models;
 
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.requisitotecnico.dtos.RequisitoTecnicoDTO;
+import com.configuradorlicenciamento.requisitotecnico.dtos.RequisitoTecnicoCsv;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -75,6 +76,11 @@ public class RequisitoTecnico implements Serializable {
         }
 
         public RequisitoTecnico build() { return new RequisitoTecnico(this); }
+
+    }
+    
+    public RequisitoTecnicoCsv preparaParaCsv(){
+        return new RequisitoTecnicoCsv(this);
     }
 
 }

@@ -31,8 +31,11 @@
 			template#text-align-center(v-slot:item.validadeEmAnos='{ item }')
 				span {{item.validadeEmAnos ? item.validadeEmAnos : ' ‒'}}
 
-			template#teste(v-slot:item.finalidade='{ item }')
+			template(v-slot:item.finalidade='{ item }')
 				span {{item.finalidade}}
+
+			templat(v-slot:item.obrigatorio='{ item }')
+				span {{item.obrigatorio ? 'Básico' : 'Complementar'}}
 
 			template(v-slot:item.ativo='{ item }')
 				span {{item.ativo ? 'Ativo' : 'Inativo'}}

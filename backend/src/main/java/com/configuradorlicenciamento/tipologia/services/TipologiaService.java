@@ -27,7 +27,7 @@ import java.util.Optional;
 @Service
 public class TipologiaService implements ITipologiaService {
 
-    private static final String TIPOLOGIA_EXISTENTE = "Já existe uma tipologia com o nome semelhante.";
+    private static final String TIPOLOGIA_EXISTENTE = "Já existe uma tipologia com o mesmo nome ou semelhante.";
 
     @Autowired
     TipologiaRepository tipologiaRepository;

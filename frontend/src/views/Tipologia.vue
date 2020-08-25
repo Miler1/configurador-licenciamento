@@ -127,6 +127,7 @@ export default {
 			this.tipologia.nome = '';
 			this.tipologia.ativo = true;
 			this.errorMessageEmpty = true;
+			this.resetaDadosCadastro();
 
 		},
 
@@ -136,6 +137,16 @@ export default {
 
 		resetErrorMessage() {
 			this.errorMessageEmpty = true;
+		},
+
+		resetaDadosCadastro() {
+
+			this.dadosPanel.title = "Cadastro de tipologia";
+			this.dadosPanel.iconName = "mdi-format-list-bulleted-square";
+			this.labelBotaoCadastrarEditar = "Cadastrar";
+			this.iconBotaoCadastrarEditar = "mdi-plus";
+			this.isCadastro = true;
+
 		},
 
 		resetaDadosFiltragem() {
@@ -161,7 +172,6 @@ export default {
 				{color: 'error', text: message, timeout: '6000'}
 			);
 			
-			this.resetaDadosCadastro();
 		},
 
 		handleSuccess(response, edicao = false) {
@@ -222,8 +232,8 @@ export default {
 			this.$fire({
 
 				title: item.ativo ?
-					'<p class="title-modal-confirm">Desativar tipologia - ' + item.nome+ '</p>' :
-					'<p class="title-modal-confirm">Ativar tipologia - ' + item.nome+ '</p>',
+					'<p class="title-modal-confirm">Desativar Tipologia - ' + item.nome+ '</p>' :
+					'<p class="title-modal-confirm">Ativar Tipologia - ' + item.nome+ '</p>',
 
 				html: item.ativo ?
 					`<p class="message-modal-confirm">Ao desativar a tipologia, ela não estará mais disponível no sistema.</p>
@@ -237,7 +247,7 @@ export default {
 				showCancelButton: true,
 				confirmButtonColor: item.ativo ? '#E6A23C' : '#67C23A',
 				cancelButtonColor: '#FFF',
-				showCloseButton: false,
+				showCloseButton: true,
 				focusConfirm: false,
 				confirmButtonText: item.ativo ? '<i class="fa fa-minus-circle"></i> Desativar' : '<i class="fa fa-check-circle"></i> Ativar',
 				cancelButtonText: '<i class="fa fa-close"></i> Cancelar',
