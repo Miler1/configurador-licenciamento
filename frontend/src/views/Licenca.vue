@@ -228,7 +228,7 @@ export default {
 
 		validadeErrorMessage(validade) {
 
-			let onlyPositiveIntegers = 'Este campo permite apenas números inteiros e maiores que zero';
+			let onlyPositiveIntegers = 'Este campo permite apenas números inteiros e maiores ou iguais a 1';
 
 			if (validade && validade != '') {
 
