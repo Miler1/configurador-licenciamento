@@ -53,7 +53,7 @@ export default {
 	data: () => {
 		return {
 			tituloListagem: 'Listagem de documentos',
-			placeholderPesquisa: "Pesquisar pelo nome do documento",
+			placeholderPesquisa: "Pesquisar pelo nome do documento ou nome para exibição",
 			headerListagem: HEADER,
 			dadosListagem: {},
 			labelBotaoCadastrarEditar: "Cadastrar",

@@ -11,6 +11,8 @@ import com.configuradorlicenciamento.documento.specifications.DocumentoSpecifica
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLicenciamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -59,7 +61,7 @@ public class DocumentoService implements IDocumentoService {
     }
 
     @Override
-    public List<DocumentoCsv> listarDocumentoParaCsv() throws Exception {
+    public List<DocumentoCsv> listarDocumentoParaCsv() {
 
         List<Documento> documentos = documentoRepository.findAll(Sort.by("nome"));
         List<DocumentoCsv> dtos = new ArrayList<>();

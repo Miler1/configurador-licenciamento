@@ -36,6 +36,7 @@ import PanelCadastro from '@/components/PanelCadastro';
 import FormCadastroRequisitoAdministrativo from '@/components/FormCadastroRequisitoAdministrativo';
 import RequisitoAdministrativoService from '@/services/requisitoAdministrativo.service';
 import DocumentoService from '@/services/documento.service';
+import RelatorioService from '../services/relatorio.service';
 import GridListagem from '@/components/GridListagem';
 import { SET_SNACKBAR } from '@/store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
@@ -100,10 +101,12 @@ export default {
 		},
 
 		resetaDadosFiltragem() {
+
 			this.parametrosFiltro.pagina = 0;
 			this.parametrosFiltro.itemsPorPagina = 10;
 			this.parametrosFiltro.tipoOrdenacao = 'dataCadastro,desc';
 			this.parametrosFiltro.stringPesquisa = '';
+
 		},
 
 
@@ -154,8 +157,6 @@ export default {
 				{color: 'error', text: message, timeout: '9000'}
 			);
 
-			item.ativo = !item.ativo;
-			this.resetaDadosCadastro();
 		},
 
 		handleSuccess(edicao = false) {
@@ -169,10 +170,15 @@ export default {
 			this.clear();
 
 			// Descomentar quando fizer a edição
-			// this.updatePagination();
+			this.updatePagination();
 			// this.resetaDadosFiltragem();
 
 			if(edicao) this.dadosPanel.panel = [];
+
+		},
+
+		gerarRelatorio() {
+			RelatorioService.baixarRelatorio("/parametro/relatorio");
 		},
 
 		checkForm() {

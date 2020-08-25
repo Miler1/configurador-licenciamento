@@ -67,7 +67,7 @@ public class RequisitoTecnicoController extends DefaultController {
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
         String data = DateUtil.formataBrHoraMinuto(new Date());
-        String nome = "Relatorio_Requisitos_Tecnicos" + data + ".csv";
+        String nome = "Relatorio_Requisitos_Tecnicos_" + data + ".csv";
 
         CustomMappingStrategy<RequisitoTecnicoCsv> mappingStrategy = new CustomMappingStrategy<>();
         mappingStrategy.setType(RequisitoTecnicoCsv.class);

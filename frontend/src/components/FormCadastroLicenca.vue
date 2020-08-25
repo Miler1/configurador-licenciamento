@@ -15,6 +15,7 @@
 						@click.native="resetErrorMessage",
 						@input="v => {licenca.sigla = v.toUpperCase()}",
 						required,
+						:maxLength="maxLengthTipo"
 					)
 				v-col(cols="12", md="9")
 					v-label Nomenclatura
@@ -90,6 +91,7 @@ export default {
 			placeholder: "Digite aqui...",
 			placeholderSelect: "Selecione",
 			finalidades: FinalidadeEnum,
+			maxLengthTipo: 15
 		};
 	},
 

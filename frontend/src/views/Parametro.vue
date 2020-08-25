@@ -121,39 +121,47 @@ export default {
 			if (this.checkForm()) {
 
 				if(this.isCadastro) {
-
-					ParametroService.salvar(this.parametro)
-						.then(() => {
-
-							this.handlerSuccess(false);
-
-						})
-						.catch(error => {
-
-							this.handlerError(error, false);
-
-						});
-						
+					this.cadastrar();
 				} else {
-
-					ParametroService.editar(this.parametro)
-						.then(() => {
-
-							this.handlerSuccess(true);
-							this.dadosPanel.panel = [];
-
-						})
-						.catch(error => {
-
-							this.handlerError(error, true);
-					
-						});
-
+					this.editar();
 				}
 
 			} else {
 				this.errorMessageEmpty = false;
 			}
+
+		},
+
+		cadastrar() {
+
+			ParametroService.salvar(this.parametro)
+				.then(() => {
+
+					this.handlerSuccess(false);
+
+				})
+				.catch(error => {
+
+					this.handlerError(error, false);
+
+				});
+
+		},
+
+		editar() {
+
+			ParametroService.editar(this.parametro)
+				.then(() => {
+
+					this.handlerSuccess(true);
+					this.dadosPanel.panel = [];
+
+				})
+				.catch(error => {
+
+					this.handlerError(error, true);
+					
+				});
 
 		},
 
@@ -164,7 +172,8 @@ export default {
 				&& this.parametro.nome
 				&& this.parametro.nome != ''
 				&& this.parametro.casasDecimais
-				&& this.parametro.casasDecimais != '';
+				&& this.parametro.casasDecimais != ''
+				&& this.validarCasasDecimais();
 				
 		},
 
@@ -177,30 +186,39 @@ export default {
 		},
 
 		codigoErrorMessage(casasDecimais) {
-
-			let er = /^-?[0-9]+$/;	
-			let onlyIntegers = 'Este campo permite apenas números inteiros e maiores e iguais a zero';
+			
+			let msgSomenteInteiros = 'Este campo permite apenas números inteiros e maiores e iguais a 0';
 		
-			if (casasDecimais && casasDecimais != '') {
+			if (this.errorMessageEmpty && casasDecimais && casasDecimais != '') {
 
-				if (!er.test(casasDecimais)) {
-					return onlyIntegers;
+				if (!this.validarCasasDecimais()) {
+					return msgSomenteInteiros;
 				}
-
-				casasDecimais = parseInt(casasDecimais);
 
 			}
 
 			if (!this.errorMessageEmpty && casasDecimais === null) {
+				return 'obrigatorio';
+			} else if (casasDecimais === '' || (casasDecimais != null && !this.validarCasasDecimais())) {
+				return msgSomenteInteiros;
+			}
 
-				return msgField('obrigatorio');
+		},
 
-			} else if ((casasDecimais === '' || (casasDecimais != null && casasDecimais < 0))) {
+		validarCasasDecimais() {
 
-				return onlyIntegers;
+			let er = /^-?[0-9]+$/;
+
+			if (er.test(this.parametro.casasDecimais)) {
+
+				this.parametro.casasDecimais = parseInt(this.parametro.casasDecimais);
+
+				return this.parametro.casasDecimais >= 0;
 
 			}
 
+			return false;
+			
 		},
 
 		handlerSuccess(edicao = false) {
