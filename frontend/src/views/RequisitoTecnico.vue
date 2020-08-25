@@ -13,7 +13,6 @@
 			:buttonCadastrar="buttonCadastrar",
 			:abrirTelaCadastro="abrirTelaCadastro"
 		)
-		| {{checkTelaCadastro}}
 
 </template>
 
@@ -22,7 +21,7 @@
 import GridListagem from '@/components/GridListagem';
 import RelatorioService from '../services/relatorio.service';
 import RequisitoTecnicoService from '../services/requisitoTecnico.service';
-import { HEADER } from '@/utils/dadosMockados/ListagemRequisitoTecnico';
+import { HEADER } from '@/utils/dadosHeader/ListagemRequisitoTecnicoHeader';
 
 export default {
 

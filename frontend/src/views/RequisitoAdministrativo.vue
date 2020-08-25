@@ -39,7 +39,7 @@ import DocumentoService from '@/services/documento.service';
 import GridListagem from '@/components/GridListagem';
 import { SET_SNACKBAR } from '@/store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
-import { HEADER } from '@/utils/dadosMockados/ListagemRequisitoAdministrativoHeader';
+import { HEADER } from '@/utils/dadosHeader/ListagemRequisitoAdministrativoHeader';
 
 export default {
 

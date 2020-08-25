@@ -55,7 +55,7 @@
 					input(type="radio" value="true" v-model="requisitoAdministrativo.obrigatorio")
 					| &nbsp;Básico
 					
-					input.radio-inline(type="radio" value="false" v-model="requisitoAdministrativo.obrigatorio")
+					input.ml-3(type="radio" value="false" v-model="requisitoAdministrativo.obrigatorio")
 					| &nbsp;Complementar
 			v-row
 				v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
@@ -128,13 +128,4 @@ export default {
 
 };
 
-
 </script>
-
-<style lang="less" scope>
-
-.radio-inline{
-	margin-left: 10px;
-}
-
-</style>

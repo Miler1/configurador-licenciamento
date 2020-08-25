@@ -25,6 +25,6 @@ public class RequisitoTecnicoDTO {
 
     @NotNull(message = "{validacao.notnull}")
     @NotBlank(message = "{validacao.notBlank}")
-    private List<TipoLicencaGrupoDocumentoDTO> listTipoLicencaGrupoDocumentoDTO;
+    private List<TipoLicencaGrupoDocumentoDTO> listRequisitos;
 
 }

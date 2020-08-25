@@ -18,7 +18,7 @@
 				span Cadastrar
 			v-btn#QA-btn-gerar-relatorio.float-right(@click="gerarRelatorio", large, outlined, color="#84A98C")
 				v-icon mdi-download
-				span Gerar Relatório
+				span Gerar relatório
 			
 
 	template

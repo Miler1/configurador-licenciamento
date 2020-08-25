@@ -50,6 +50,8 @@ const ERROR_MESSAGES = {
 	},
 
 	requisitoTecnico: {
+		cadastro: ER_BASE + 'cadastrar o requisito Técnico.',
+		editar: ER_BASE + 'editar o requisito Técnico.',
 		listagem: ER_BASE + 'listar os Requisitos Técnicos',
 	}
 };

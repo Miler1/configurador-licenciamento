@@ -27,9 +27,9 @@ public class TipoLicencaGrupoDocumentoService implements ITipoLicencaGrupoDocume
     LicencaRepository licencaRepository;
 
     @Override
-    public void salvar(List<TipoLicencaGrupoDocumentoDTO> listTipoLicencaGrupoDocumentoDTO, RequisitoTecnico requisitoTecnico) {
+    public void salvar(List<TipoLicencaGrupoDocumentoDTO> listRequisitos, RequisitoTecnico requisitoTecnico) {
 
-        listTipoLicencaGrupoDocumentoDTO.stream().forEach(tipoLicencaGrupoDocumentoDTO -> {
+        listRequisitos.stream().forEach(tipoLicencaGrupoDocumentoDTO -> {
             tipoLicencaGrupoDocumentoRepository.save(montaObjetoParaSalvar(tipoLicencaGrupoDocumentoDTO, requisitoTecnico));
         });
     }

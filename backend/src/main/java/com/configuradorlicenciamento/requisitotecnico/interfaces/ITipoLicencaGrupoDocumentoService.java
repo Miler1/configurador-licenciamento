@@ -5,5 +5,5 @@ import com.configuradorlicenciamento.requisitotecnico.models.RequisitoTecnico;
 import java.util.List;
 
 public interface ITipoLicencaGrupoDocumentoService {
-    void salvar(List<TipoLicencaGrupoDocumentoDTO> listTipoLicencaGrupoDocumentoDTO, RequisitoTecnico requisitoTecnico);
+    void salvar(List<TipoLicencaGrupoDocumentoDTO> listRequisitos, RequisitoTecnico requisitoTecnico);
 }

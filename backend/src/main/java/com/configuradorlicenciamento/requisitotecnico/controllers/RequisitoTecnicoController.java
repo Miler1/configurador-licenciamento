@@ -36,7 +36,7 @@ public class RequisitoTecnicoController extends DefaultController {
     @PostMapping(value = "/salvar")
     public ResponseEntity<RequisitoTecnico> salvar(HttpServletRequest request, @Valid @RequestBody RequisitoTecnicoDTO requisitoTecnicoDTO) throws Exception {
 
-//        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
         RequisitoTecnico requisitoTecnico = requisitoTecnicoService.salvar(request, requisitoTecnicoDTO);
 

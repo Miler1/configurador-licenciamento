@@ -41,7 +41,7 @@ import GridListagem from '@/components/GridListagem';
 import mapFinalidadeEnum from '../utils/helpers/finalidade-helper';
 import { SET_SNACKBAR } from '../store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
-import { HEADER } from '@/utils/dadosMockados/ListagemLicencaHeader';
+import { HEADER } from '@/utils/dadosHeader/ListagemLicencaHeader';
 
 export default {
 

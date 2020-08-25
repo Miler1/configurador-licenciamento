@@ -39,7 +39,7 @@ public class RequisitoTecnicoService implements IRequisitoTecnicoService {
 
         Object login = request.getSession().getAttribute("login");
 
-        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin("12739938616");
+        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
         RequisitoTecnico requisitoTecnico = new RequisitoTecnico.RequisitoTecnicoBuilder(requisitoTecnicoDTO)
                 .setDataCadastro(new Date())
@@ -48,7 +48,7 @@ public class RequisitoTecnicoService implements IRequisitoTecnicoService {
 
         requisitoTecnicoRepository.save(requisitoTecnico);
 
-        tipoLicencaGrupoDocumentoService.salvar(requisitoTecnicoDTO.getListTipoLicencaGrupoDocumentoDTO(), requisitoTecnico);
+        tipoLicencaGrupoDocumentoService.salvar(requisitoTecnicoDTO.getListRequisitos(), requisitoTecnico);
 
         return requisitoTecnico;
 
