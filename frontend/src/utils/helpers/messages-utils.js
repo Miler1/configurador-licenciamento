@@ -46,13 +46,13 @@ const ERROR_MESSAGES = {
 
 	requisitoAdministrativo: {
 		cadastro: ER_BASE + 'cadastrar o requisito administrativo.',
-		listagem: ER_BASE + 'listar os requisito administrativo.',
+		listagem: ER_BASE + 'listar os requisitos administrativos.',
 	},
 
 	requisitoTecnico: {
-		cadastro: ER_BASE + 'cadastrar o requisito Técnico.',
-		editar: ER_BASE + 'editar o requisito Técnico.',
-		listagem: ER_BASE + 'listar os Requisitos Técnicos',
+		cadastro: ER_BASE + 'cadastrar o requisito técnico.',
+		editar: ER_BASE + 'editar o requisito técnico.',
+		listagem: ER_BASE + 'listar os tequisitos técnicos',
 	}
 };
 
