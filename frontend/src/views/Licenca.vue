@@ -228,12 +228,12 @@ export default {
 
 		validadeErrorMessage(validade) {
 
-			let onlyPositiveIntegers = 'Este campo permite apenas números inteiros e maiores ou iguais a 1';
+			let msgSomenteInteiros = 'Este campo permite apenas números inteiros e maiores ou iguais a 1';
 
 			if (validade && validade != '') {
 
 				if (!this.validarPrazo()) {
-					return onlyPositiveIntegers;
+					return msgSomenteInteiros;
 				}
 
 			}
@@ -252,7 +252,7 @@ export default {
 
 			}else if (validade === '' || (validade != null && !this.validarPrazo())) {
 
-				return onlyPositiveIntegers;
+				return msgSomenteInteiros;
 
 			}
 			

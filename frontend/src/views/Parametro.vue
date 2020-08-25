@@ -187,13 +187,13 @@ export default {
 
 		codigoErrorMessage(casasDecimais) {
 			
-			let onlyIntegers = 'Este campo permite apenas números inteiros e maiores e iguais a 0';
+			let msgSomenteInteiros = 'Este campo permite apenas números inteiros e maiores e iguais a 0';
 		
 			if (this.errorMessageEmpty && casasDecimais && casasDecimais != '') {
 
 				if (!this.validarCasasDecimais()) {
 					
-					return onlyIntegers;
+					return msgSomenteInteiros;
 				}
 
 			}
@@ -204,7 +204,7 @@ export default {
 
 			} else if ((casasDecimais === '' || (casasDecimais != null && !this.validarCasasDecimais()))) {
 
-				return onlyIntegers;
+				return msgSomenteInteiros;
 
 			}
 
