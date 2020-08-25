@@ -1,12 +1,18 @@
 package com.configuradorlicenciamento.requisitoAdministrativo.services;
 
+import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
+import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
+import com.configuradorlicenciamento.documento.models.Documento;
+import com.configuradorlicenciamento.documento.repositories.DocumentoRepository;
 import com.configuradorlicenciamento.licenca.models.Licenca;
 import com.configuradorlicenciamento.requisitoAdministrativo.dtos.RequisitoAdministrativoDTO;
 import com.configuradorlicenciamento.requisitoAdministrativo.interfaces.IRequisitoAdministrativoService;
 import com.configuradorlicenciamento.requisitoAdministrativo.models.RequisitoAdministrativo;
 import com.configuradorlicenciamento.requisitoAdministrativo.repositories.RequisitoAdministrativoRepository;
 import com.configuradorlicenciamento.requisitoAdministrativo.specifications.RequisitoAdministrativoSpecification;
+import com.configuradorlicenciamento.tipologia.dtos.TipologiaDTO;
+import com.configuradorlicenciamento.tipologia.models.Tipologia;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLicenciamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,19 +21,26 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.print.Doc;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RequisitoAdministrativoService implements IRequisitoAdministrativoService {
+
+    private static final String REQUISITO_EXISTENTE = "O documento já foi cadastrado para o tipo de licença.";
 
     @Autowired
     RequisitoAdministrativoRepository requisitoAdministrativoRepository;
 
     @Autowired
     UsuarioLicenciamentoRepository usuarioLicenciamentoRepository;
+
+    @Autowired
+    DocumentoRepository documentoRepository;
 
     @Override
     public List<RequisitoAdministrativo> salvar(HttpServletRequest request, RequisitoAdministrativoDTO requisitoAdministrativoDTO) throws Exception {
@@ -51,6 +64,46 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
         }
 
         return requisitoAdministrativoList;
+
+    }
+
+    @Override
+    public RequisitoAdministrativo editar(HttpServletRequest request, RequisitoAdministrativoDTO requisitoAdministrativoDTO) {
+
+        Object login = request.getSession().getAttribute("login");
+
+        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
+
+        Optional<RequisitoAdministrativo> requisitoAdministrativoSalvo = requisitoAdministrativoRepository.findById(requisitoAdministrativoDTO.getId());
+
+        if(requisitoAdministrativoSalvo.isEmpty()){
+            throw new ConfiguradorNotFoundException("O requisito não foi encontrado no sistema. Atualize a página e tente novamente.");
+        }
+
+        RequisitoAdministrativo requisitoAdministrativo = requisitoAdministrativoSalvo.get();
+
+        if(requisitoAdministrativo.getAtivo() != requisitoAdministrativoDTO.getAtivo()){
+            requisitoAdministrativo.setAtivo(requisitoAdministrativoDTO.getAtivo());
+        } else {
+
+            Documento novoDocumento = requisitoAdministrativoDTO.getDocumento();
+
+            requisitoAdministrativo.setDocumento(novoDocumento);
+            requisitoAdministrativo.setUsuarioLicenciamento(usuarioLicenciamento);
+            requisitoAdministrativo.setDataCadastro(new Date());
+            requisitoAdministrativo.setObrigatorio(requisitoAdministrativoDTO.getObrigatorio());
+
+            //long alreadyExistents = requisitoAdministrativoRepository.count(RequisitoAdministrativoSpecification.documentoAndLicenca(novoDocumento.getId(), requisitoAdministrativo.getLicenca().getId()));
+
+            if(requisitoAdministrativoRepository.existsByDocumentoAndLicenca(novoDocumento, requisitoAdministrativo.getLicenca()))
+            /*if(alreadyExistents > 0)*/{
+                throw new ConstraintUniqueViolationException(REQUISITO_EXISTENTE);
+            }
+        }
+
+        requisitoAdministrativoRepository.save(requisitoAdministrativo);
+
+        return requisitoAdministrativo;
 
     }
 

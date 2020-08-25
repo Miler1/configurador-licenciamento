@@ -25,6 +25,7 @@
 					v-label Tipo Licença
 					v-autocomplete#QA-select-licenca-finalidade(
 						outlined,
+						:disabled="!cadastro",
 						dense,
 						color="#E0E0E0",
 						:placeholder="placeholderSelect",
@@ -123,6 +124,9 @@ export default {
 		},
 		iconBotaoCadastrarEditar: {
 			type: [String]
+		},
+		cadastro: {
+			type: [Boolean]
 		}
 	}
 

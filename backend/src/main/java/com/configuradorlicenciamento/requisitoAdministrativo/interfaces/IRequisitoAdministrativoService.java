@@ -13,6 +13,8 @@ public interface IRequisitoAdministrativoService {
 
     List<RequisitoAdministrativo> salvar(HttpServletRequest request, RequisitoAdministrativoDTO requisitoAdministrativoDTO) throws Exception;
 
+    RequisitoAdministrativo editar(HttpServletRequest request, RequisitoAdministrativoDTO requisitoAdministrativoDTO);
+
     Page<RequisitoAdministrativo> listar(Pageable pageable, FiltroPesquisa filtro);
 
 }

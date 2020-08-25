@@ -13,7 +13,8 @@
 				:resetErrorMessage="resetErrorMessage",
 				:errorMessage="errorMessage",
 				:labelBotaoCadastrarEditar="labelBotaoCadastrarEditar",
-				:iconBotaoCadastrarEditar="iconBotaoCadastrarEditar"
+				:iconBotaoCadastrarEditar="iconBotaoCadastrarEditar",
+				:cadastro="isCadastro"
 			)
 
 		GridListagem.pa-7(
@@ -123,7 +124,7 @@ export default {
 				if(this.isCadastro) {
 					this.cadastrar();
 				} else {
-					// Edição
+					this.editar();
 				}
 
 			} else {
@@ -143,6 +144,18 @@ export default {
 					this.handleError(erro);
 				});
 
+		},
+
+		editar() {
+
+			RequisitoAdministrativoService.cadastrar(this.requisitoAdministrativo)
+
+				.then(() => {
+					this.handleSuccess();
+				})
+				.catch(erro => {
+					this.handleError(erro, true);
+				});
 		},
 
 		handleError(error, edicao = false) {
@@ -166,13 +179,11 @@ export default {
 				{color: 'success', text: message, timeout: '6000'}
 			);
 
-			this.clear();
-
-			// Descomentar quando fizer a edição
-			// this.updatePagination();
-			// this.resetaDadosFiltragem();
-
 			if(edicao) this.dadosPanel.panel = [];
+
+			this.clear();
+			this.resetaDadosFiltragem();
+			this.updatePagination();
 		},
 
 		checkForm() {
@@ -198,10 +209,98 @@ export default {
 
 		editarItem(item) {
 
+			this.dadosPanel.panel = [0];
+			this.dadosPanel.title = "Editar requisito administrativo";
+			this.labelBotaoCadastrarEditar = "Editar";
+			this.iconBotaoCadastrarEditar = "mdi-pencil";
+			this.requisitoAdministrativo = { ... item};
+			this.requisitoAdministrativo.licencas = [item.licenca];
+			this.isCadastro = false;
+
+			console.log(this.requisitoAdministrativo);
+			window.scrollTo(0,0);
+
 		},
 
 		ativarDesativarItem(item) {
 
+			this.$fire({
+
+				title: item.ativo ?
+					'<p class="title-modal-confirm">Desativar Requisito Administrativo - ' + item.documento.nome + '</p>' :
+					'<p class="title-modal-confirm">Ativar Requisito Administrativo - ' + item.documento.nome + '</p>',
+
+				html: item.ativo ?
+					`<p class="message-modal-confirm">Ao desativar o requisito, ele não estará mais disponível no sistema.</p>
+					<p class="message-modal-confirm">
+						<b>Tem certeza que deseja desativar o requisito? Esta opção pode ser desfeita a qualquer momento ao ativá-lo novamente.</b>
+					</p>` :
+					`<p class="message-modal-confirm">Ao ativar o requisito, ele ficará disponível no sistema.</p>
+					<p class="message-modal-confirm">
+						<b>Tem certeza que deseja ativar o requisito? Esta opção pode ser desfeita a qualquer momento ao desativá-lo novamente.</b>
+					</p>`,
+				showCancelButton: true,
+				confirmButtonColor: item.ativo ? '#E6A23C' : '#67C23A',
+				cancelButtonColor: '#FFF',
+				showCloseButton: true,
+				focusConfirm: false,
+				confirmButtonText: item.ativo ? '<i class="fa fa-minus-circle"></i> Desativar' : '<i class="fa fa-check-circle"></i> Ativar',
+				cancelButtonText: '<i class="fa fa-close"></i> Cancelar',
+				reverseButtons: true
+
+			}).then((result) => {
+
+				if(result.value) {
+
+					item.ativo = !item.ativo;
+
+					RequisitoAdministrativoService.editar(item)
+						.then(() => {
+							
+							this.handleSuccess();
+							/*if(!item.ativo) {
+								
+								this.$store.dispatch(SET_SNACKBAR,
+									{color: 'success', text: SUCCESS_MESSAGES.tipologia.desativar, timeout: '6000'}
+								);
+							
+							} else {
+
+								this.$store.dispatch(SET_SNACKBAR,
+									{color: 'success', text: SUCCESS_MESSAGES.tipologia.ativar, timeout: '6000'}
+								);
+
+							}
+
+							this.updatePagination();
+							this.resetaDadosFiltragem();*/
+
+						})
+						.catch(erro => {
+
+							this.handleError(erro, true);
+							/*console.error(erro);
+							if(!item.ativo) {
+								
+								this.$store.dispatch(SET_SNACKBAR,
+									{color: 'error', text: ERROR_MESSAGES.tipologia.desativar, timeout: '6000'}
+								);
+							
+							} else {
+
+								this.$store.dispatch(SET_SNACKBAR,
+									{color: 'error', text: ERROR_MESSAGES.tipologia.ativar, timeout: '6000'}
+								);
+
+							}
+
+							item.ativo = !item.ativo;*/
+
+						});
+				}
+			}).catch((error) => {
+				console.error(error);
+			});
 		},
 
 		updatePagination(parametrosFiltro) {
