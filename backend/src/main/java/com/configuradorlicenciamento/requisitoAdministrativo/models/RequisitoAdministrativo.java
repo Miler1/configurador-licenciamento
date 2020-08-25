@@ -1,11 +1,10 @@
 package com.configuradorlicenciamento.requisitoAdministrativo.models;
 
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
-import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.documento.models.Documento;
 import com.configuradorlicenciamento.licenca.models.Licenca;
+import com.configuradorlicenciamento.requisitoAdministrativo.dtos.RequisitoAdministrativoCsv;
 import com.configuradorlicenciamento.requisitoAdministrativo.dtos.RequisitoAdministrativoDTO;
-import com.configuradorlicenciamento.tipologia.dtos.TipologiaDTO;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -81,7 +80,6 @@ public class RequisitoAdministrativo implements Serializable {
             this.obrigatorio = requisitoAdministrativoDTO.getObrigatorio();
             this.tipoPessoa = requisitoAdministrativoDTO.getTipoPessoa();
             this.ativo = requisitoAdministrativoDTO.getAtivo();
-
         }
 
         public RequisitoAdministrativo.RequisitoAdministrativoBuilder setDataCadastro(Date dataCadastro) {
@@ -102,4 +100,9 @@ public class RequisitoAdministrativo implements Serializable {
         public RequisitoAdministrativo build() { return new RequisitoAdministrativo(this); }
 
     }
+
+    public RequisitoAdministrativoCsv preparaParaCsv(){
+        return  new RequisitoAdministrativoCsv(this);
+    }
+
 }

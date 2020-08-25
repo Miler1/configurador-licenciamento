@@ -5,6 +5,7 @@ import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 
 import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
 import com.configuradorlicenciamento.licenca.models.Licenca;
+import com.configuradorlicenciamento.requisitoAdministrativo.dtos.RequisitoAdministrativoCsv;
 import com.configuradorlicenciamento.requisitoAdministrativo.dtos.RequisitoAdministrativoDTO;
 import com.configuradorlicenciamento.requisitoAdministrativo.interfaces.IRequisitoAdministrativoService;
 import com.configuradorlicenciamento.requisitoAdministrativo.models.RequisitoAdministrativo;
@@ -15,6 +16,7 @@ import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLi
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +37,7 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
     UsuarioLicenciamentoRepository usuarioLicenciamentoRepository;
 
     @Override
-    public List<RequisitoAdministrativo> salvar(HttpServletRequest request, RequisitoAdministrativoDTO requisitoAdministrativoDTO) throws Exception {
+    public List<RequisitoAdministrativo> salvar(HttpServletRequest request, RequisitoAdministrativoDTO requisitoAdministrativoDTO) {
 
         Object login = request.getSession().getAttribute("login");
 
@@ -72,6 +74,25 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
 
         return requisitoAdministrativoRepository.findAll(specification, pageable);
 
+    }
+
+    @Override
+    public List<RequisitoAdministrativoCsv> listarRequisitosAdministrativosParaCsv() {
+
+        List<RequisitoAdministrativo> requisitosAdministrativos = requisitoAdministrativoRepository.findAll(Sort.by("documento"));
+        List<RequisitoAdministrativoCsv> dtos = new ArrayList<>();
+
+        for (RequisitoAdministrativo requisitoAdministrativo: requisitosAdministrativos) {
+            dtos.add(requisitoAdministrativo.preparaParaCsv());
+        }
+
+        return dtos;
+
+    }
+
+    @Override
+    public List<RequisitoAdministrativo> findAll() {
+        return requisitoAdministrativoRepository.findAll();
     }
 
     private Specification<RequisitoAdministrativo> preparaFiltro(FiltroPesquisa filtro) {
