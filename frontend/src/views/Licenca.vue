@@ -187,10 +187,9 @@ export default {
 					&& this.licenca.sigla != ''	
 					&& this.licenca.nome 
 					&& this.licenca.nome != '' 
-					&& this.licenca.finalidade 
+					&& this.licenca.finalidade
 					&& this.licenca.finalidade != '' 
-					&& this.licenca.validadeEmAnos 
-					&& this.licenca.validadeEmAnos != ''
+					&& this.licenca.validadeEmAnos !== null
 					&& this.validarPrazo();
 					
 			}
