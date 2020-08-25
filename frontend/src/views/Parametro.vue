@@ -40,7 +40,7 @@ import RelatorioService from '../services/relatorio.service';
 import GridListagem from '@/components/GridListagem';
 import { SET_SNACKBAR } from '@/store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
-import { HEADER } from '@/utils/dadosMockados/ListagemParametroHeader';
+import { HEADER } from '@/utils/dadosHeader/ListagemParametroHeader';
 
 export default {
 

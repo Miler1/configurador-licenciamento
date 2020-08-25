@@ -2,6 +2,8 @@ import ApiService from './api.service';
 
 export default {
 
+	cadastrar: async (requisitoTecnico) => ApiService.post('/requisitoTecnico/salvar', requisitoTecnico ),
+
 	listar: async (parametrosFiltro) => {
 		
 		if (parametrosFiltro) {

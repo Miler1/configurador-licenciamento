@@ -39,7 +39,7 @@ import TipologiaService from '../services/tipologia.service';
 import RelatorioService from '../services/relatorio.service';
 import { SET_SNACKBAR } from '../store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
-import { HEADER } from '@/utils/dadosMockados/ListagemTipologiaHeader';
+import { HEADER } from '@/utils/dadosHeader/ListagemTipologiaHeader';
 
 export default {
 
