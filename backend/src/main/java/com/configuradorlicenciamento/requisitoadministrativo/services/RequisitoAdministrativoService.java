@@ -1,4 +1,4 @@
-package com.configuradorlicenciamento.requisitoAdministrativo.services;
+package com.configuradorlicenciamento.requisitoadministrativo.services;
 
 import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
 import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
@@ -6,13 +6,11 @@ import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.documento.models.Documento;
 import com.configuradorlicenciamento.documento.repositories.DocumentoRepository;
 import com.configuradorlicenciamento.licenca.models.Licenca;
-import com.configuradorlicenciamento.requisitoAdministrativo.dtos.RequisitoAdministrativoDTO;
-import com.configuradorlicenciamento.requisitoAdministrativo.interfaces.IRequisitoAdministrativoService;
-import com.configuradorlicenciamento.requisitoAdministrativo.models.RequisitoAdministrativo;
-import com.configuradorlicenciamento.requisitoAdministrativo.repositories.RequisitoAdministrativoRepository;
-import com.configuradorlicenciamento.requisitoAdministrativo.specifications.RequisitoAdministrativoSpecification;
-import com.configuradorlicenciamento.tipologia.dtos.TipologiaDTO;
-import com.configuradorlicenciamento.tipologia.models.Tipologia;
+import com.configuradorlicenciamento.requisitoadministrativo.dtos.RequisitoAdministrativoDTO;
+import com.configuradorlicenciamento.requisitoadministrativo.interfaces.IRequisitoAdministrativoService;
+import com.configuradorlicenciamento.requisitoadministrativo.models.RequisitoAdministrativo;
+import com.configuradorlicenciamento.requisitoadministrativo.repositories.RequisitoAdministrativoRepository;
+import com.configuradorlicenciamento.requisitoadministrativo.specifications.RequisitoAdministrativoSpecification;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLicenciamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +19,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import javax.print.Doc;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
@@ -89,17 +86,17 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
             Documento novoDocumento = requisitoAdministrativoDTO.getDocumento();
 
             requisitoAdministrativo.setDocumento(novoDocumento);
-            requisitoAdministrativo.setUsuarioLicenciamento(usuarioLicenciamento);
-            requisitoAdministrativo.setDataCadastro(new Date());
             requisitoAdministrativo.setObrigatorio(requisitoAdministrativoDTO.getObrigatorio());
 
-            //long alreadyExistents = requisitoAdministrativoRepository.count(RequisitoAdministrativoSpecification.documentoAndLicenca(novoDocumento.getId(), requisitoAdministrativo.getLicenca().getId()));
+            long alreadyExistents = requisitoAdministrativoRepository.count(RequisitoAdministrativoSpecification.documentoAndLicenca(novoDocumento.getId(), requisitoAdministrativo.getLicenca().getId()));
 
-            if(requisitoAdministrativoRepository.existsByDocumentoAndLicenca(novoDocumento, requisitoAdministrativo.getLicenca()))
-            /*if(alreadyExistents > 0)*/{
+            if(alreadyExistents > 0){
                 throw new ConstraintUniqueViolationException(REQUISITO_EXISTENTE);
             }
         }
+
+        requisitoAdministrativo.setUsuarioLicenciamento(usuarioLicenciamento);
+        requisitoAdministrativo.setDataCadastro(new Date());
 
         requisitoAdministrativoRepository.save(requisitoAdministrativo);
 

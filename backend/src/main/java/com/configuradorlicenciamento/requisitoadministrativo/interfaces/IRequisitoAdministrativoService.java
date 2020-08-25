@@ -1,8 +1,8 @@
-package com.configuradorlicenciamento.requisitoAdministrativo.interfaces;
+package com.configuradorlicenciamento.requisitoadministrativo.interfaces;
 
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
-import com.configuradorlicenciamento.requisitoAdministrativo.dtos.RequisitoAdministrativoDTO;
-import com.configuradorlicenciamento.requisitoAdministrativo.models.RequisitoAdministrativo;
+import com.configuradorlicenciamento.requisitoadministrativo.dtos.RequisitoAdministrativoDTO;
+import com.configuradorlicenciamento.requisitoadministrativo.models.RequisitoAdministrativo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

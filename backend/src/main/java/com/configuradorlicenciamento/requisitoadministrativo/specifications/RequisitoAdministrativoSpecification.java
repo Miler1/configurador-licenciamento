@@ -1,14 +1,11 @@
-package com.configuradorlicenciamento.requisitoAdministrativo.specifications;
+package com.configuradorlicenciamento.requisitoadministrativo.specifications;
 
 import com.configuradorlicenciamento.configuracao.utils.StringUtil;
-import com.configuradorlicenciamento.documento.models.Documento;
-import com.configuradorlicenciamento.licenca.models.Licenca;
-import com.configuradorlicenciamento.requisitoAdministrativo.models.RequisitoAdministrativo;
+import com.configuradorlicenciamento.requisitoadministrativo.models.RequisitoAdministrativo;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Subquery;
 
 @AllArgsConstructor
 public class RequisitoAdministrativoSpecification {

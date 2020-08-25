@@ -148,7 +148,7 @@ export default {
 
 		editar() {
 
-			RequisitoAdministrativoService.cadastrar(this.requisitoAdministrativo)
+			RequisitoAdministrativoService.editar(this.requisitoAdministrativo)
 
 				.then(() => {
 					this.handleSuccess();

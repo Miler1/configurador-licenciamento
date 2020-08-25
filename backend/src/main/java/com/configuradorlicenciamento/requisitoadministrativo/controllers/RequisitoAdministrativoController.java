@@ -1,15 +1,13 @@
-package com.configuradorlicenciamento.requisitoAdministrativo.controllers;
+package com.configuradorlicenciamento.requisitoadministrativo.controllers;
 
 import com.configuradorlicenciamento.configuracao.components.VariaveisAmbientes;
 import com.configuradorlicenciamento.configuracao.controllers.DefaultController;
 
 import com.configuradorlicenciamento.configuracao.enums.Acao;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
-import com.configuradorlicenciamento.requisitoAdministrativo.dtos.RequisitoAdministrativoDTO;
-import com.configuradorlicenciamento.requisitoAdministrativo.interfaces.IRequisitoAdministrativoService;
-import com.configuradorlicenciamento.requisitoAdministrativo.models.RequisitoAdministrativo;
-import com.configuradorlicenciamento.tipologia.dtos.TipologiaDTO;
-import com.configuradorlicenciamento.tipologia.models.Tipologia;
+import com.configuradorlicenciamento.requisitoadministrativo.dtos.RequisitoAdministrativoDTO;
+import com.configuradorlicenciamento.requisitoadministrativo.interfaces.IRequisitoAdministrativoService;
+import com.configuradorlicenciamento.requisitoadministrativo.models.RequisitoAdministrativo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

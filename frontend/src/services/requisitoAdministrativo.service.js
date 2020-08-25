@@ -13,13 +13,13 @@ export default {
 			return ApiService.post(`requisitoAdministrativo/listar/?
 						page=${parametrosFiltro.pagina > 0 ? parametrosFiltro.pagina : 0}
 						&size=${parametrosFiltro.itemsPorPagina > 0 ? parametrosFiltro.itemsPorPagina : 10}
-						&sort=${parametrosFiltro.tipoOrdenacao ? parametrosFiltro.tipoOrdenacao : 'dataCadastro,asc'}`,
+						&sort=${parametrosFiltro.tipoOrdenacao ? parametrosFiltro.tipoOrdenacao : 'dataCadastro,desc'}`,
 
 			parametrosFiltro
 			);
 
 		} else {
-			return ApiService.post('parametro/listar/?page=0&size=10&sort=dataCadastro,asc', {});
+			return ApiService.post('requisitoAdministrativo/listar/?page=0&size=10&sort=dataCadastro,desc', {});
 		}
 
 	}
