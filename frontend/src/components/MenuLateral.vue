@@ -42,24 +42,24 @@ export default {
 	data: () => ({
 		drawer: true,
 		items: [
-			{ title: 'CNAE', icon: {vuetify: true, value: 'fa fa-industry'}, path: 'cnae'},
-			{ title: 'Licença', icon: {vuetify: true, value: 'mdi-card-account-details'}, path: 'licenca'},
+			{ title: 'CNAE', icon: {vuetify: true, value: 'fa fa-industry'}, path: '/home/cnae'},
+			{ title: 'Licença', icon: {vuetify: true, value: 'mdi-card-account-details'}, path: '/home/licenca'},
 			/*{ title: 'Municípios capacitados', icon: {vuetify: true, value: 'mdi-city'}, path: 'municipios-capacitados'},*/
-			{ title: 'Tipologia', icon: {vuetify: true, value: 'mdi-format-list-bulleted-square'}, path: 'tipologia'},
-			{ title: 'Parâmetros', icon: {vuetify: false, value: 'fa fa-sliders'}, path: 'parametro'},
-			{ title: 'Taxa', icon: {vuetify: true, value: 'mdi-cash-usd-outline'}, path: 'taxa'},
+			{ title: 'Tipologia', icon: {vuetify: true, value: 'mdi-format-list-bulleted-square'}, path: '/home/tipologia'},
+			{ title: 'Parâmetros', icon: {vuetify: false, value: 'fa fa-sliders'}, path: '/home/parametro'},
+			{ title: 'Taxa', icon: {vuetify: true, value: 'mdi-cash-usd-outline'}, path: '/home/taxa'},
 			{ title: 'Requisitos', icon: {vuetify: true, value: 'mdi-clipboard-list'}, model: true,
 				children: [
-					{ title: 'Documentos', path: 'documentos'},
-					{ title: 'Requisitos administrativos', path: 'requisitos-administrativos'},
-					{ title: 'Requisitos técnicos', path: 'requisitos-tecnicos' }
+					{ title: 'Documentos', path: '/home/documentos'},
+					{ title: 'Requisitos administrativos', path: '/home/requisitos-administrativos'},
+					{ title: 'Requisitos técnicos', path: '/home/requisitos-tecnicos' }
 				],
 			},
-			{ title: 'Atividades licenciáveis', icon: {vuetify: true, value: 'mdi-account-multiple-plus'}, path: 'atividades-licenciaveis'},
+			{ title: 'Atividades licenciáveis', icon: {vuetify: true, value: 'mdi-account-multiple-plus'}, path: '/home/atividades-licenciaveis'},
 			{ title: 'Atividades dispensáveis', icon: {vuetify: true, value: 'mdi-account-multiple-remove'}, model: true,
 				children: [
-					{ title: 'Perguntas', path: 'perguntas' },
-					{ title: 'CNAEs dispensáveis', path: 'cnaes-dispensaveis' }
+					{ title: 'Perguntas', path: '/home/perguntas' },
+					{ title: 'CNAEs dispensáveis', path: '/home/cnaes-dispensaveis' }
 				],
 			}
 		],
