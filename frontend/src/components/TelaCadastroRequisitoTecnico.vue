@@ -48,9 +48,9 @@
 					v-form(ref="atividadeCnae")
 						v-container.pa-0
 							v-row
-								v-col(cols="9", md="6")
+								v-col(cols="12", md="7")
 									v-label Documento
-									v-autocomplete#QA-select-licenca-finalidade(
+									v-autocomplete#QA-select-requisito-tecnico-documento(
 										outlined,
 										dense,
 										color="#E0E0E0",
@@ -65,9 +65,9 @@
 										return-object=true
 									)
 
-								v-col(cols="9", md="3")
+								v-col(cols="12", md="3")
 									v-label Tipo Licença
-									v-autocomplete#QA-select-licenca-finalidade(
+									v-autocomplete#QA-select-requisito-tecnico-licenca(
 										outlined,
 										dense,
 										color="#E0E0E0",
@@ -86,22 +86,31 @@
 										:disabled="!isInclusao"
 									)
 								
-								v-col(cols="9", md="2")
-									v-label Tipo do requisito
-									br
-									input.mt-3(type="radio" value="true" v-model="grupoRequisito.obrigatorio")
-									| &nbsp;Básico
-									
-									input.mt-3.ml-3(type="radio" value="false" v-model="grupoRequisito.obrigatorio")
-									| &nbsp;Complementar
+								v-col.d-flex.flex-column(cols="12", md="2")
+									v-col.pa-0
+										v-label Tipo do requisito
+									v-col.pa-0
+										v-btn-toggle#QA-btn-toggle-requisito-tecnico(
+											v-model="grupoRequisito.obrigatorio",
+											tile,c
+											color="green lighten-4",
+										)
+											span Básico
+									v-col.pa-0
+										v-btn-toggle#QA-btn-toggle-requisito-tecnico(
+											v-model="grupoRequisito.obrigatorio",
+											tile,c
+											color="green lighten-4",
+										)
+											span Complementar
 							
 							v-row
 								v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
-									a#QA-limpar-dados-cnae.d-flex.flex-row.align-center.justify-end(@click="clear")
+									a#QA-limpar-dados-requisito-tecnico.d-flex.flex-row.align-center.justify-end(@click="clear")
 										v-icon mdi-delete
 										span Limpar dados
 								
-									v-btn#QA-btn-cadastrar-cnae.btn-cadastrar(@click="incluirDados", large)
+									v-btn#QA-btn-incluir-requisito-tecnico.btn-cadastrar(@click="incluirDados", large)
 										v-icon(color="white") mdi-plus
 										span Incluir
 
@@ -115,11 +124,11 @@
 
 		v-row.px-7
 			v-col.align-center(cols="12", md="12")
-				v-btn#QA-btn-cadastrar-cnae(@click="cancelar", outlined, large, color="red")
+				v-btn#QA-btn-cancelar-requisito-tecnico(@click="cancelar", outlined, large, color="red")
 					v-icon mdi-close
 					span Cancelar
 
-				v-btn#QA-btn-cadastrar-cnae.btn-cadastrar.float-right(@click="submit", large)
+				v-btn#QA-btn-cadastrar-requisito-tecnico.btn-cadastrar.float-right(@click="submit", large)
 					v-icon(color="white") {{iconBotaoCadastrarEditar}}
 					span {{labelBotaoCadastrarEditar}}
 
@@ -182,10 +191,13 @@ export default {
 		},
 
 		errorMessage(value, isVinculacao) {
+
 			if(isVinculacao) {
 				return this.errorMessageEmpty || value || (this.dadosListagem.length > 0) ? [] : 'Obrigatório';
 			}
+
 			return this.errorMessageEmpty || value ? [] : 'Obrigatório';
+
 		},
 
 		clearRequisito() {
@@ -198,9 +210,11 @@ export default {
 		},
 
 		clear() {
+
 			this.grupoRequisito.documento = null;
 			this.grupoRequisito.licencas = null;
 			this.grupoRequisito.obrigatorio = null;
+
 		},
 
 		incluirDados() {
@@ -337,10 +351,13 @@ export default {
 		},
 
 		excluirItem(item) {
+
 			var list = [];
+
 			this.dadosListagem = this.dadosListagem.filter(
 				dado => dado.documento.nome != item.documento.nome || dado.licenca.sigla != item.licenca.sigla
 			);
+
 		}
 	},
 
@@ -365,65 +382,81 @@ export default {
 
 @import "../assets/css/variaveis.less";
 
-	.v-expansion-panel-header {
-		background-color: @bg-header;
-		color: @text-color;
-		cursor: default;
-		font-size: 21px;
-		height: 70px;
-		padding: 0 20px;
+.v-expansion-panel-header {
+	background-color: @bg-header;
+	color: @text-color;
+	cursor: default;
+	font-size: 21px;
+	height: 70px;
+	padding: 0 20px;
 
-		.v-btn {
-			font-size: 16px;
-			padding: 20px !important;
-			text-transform: none !important;
-		}
+	.v-btn {
+		font-size: 16px;
+		padding: 20px !important;
+		text-transform: none !important;
+	}
 
-		.v-icon {
-			font-size: 20px !important;
+	.v-icon {
+		font-size: 20px !important;
+	}
+}
+
+.btn-cadastrar {
+	background-color: @green-primary !important;
+	color: @bg-text-field !important;
+}
+
+.v-label {
+	color: @text-color !important;
+}
+
+.v-text-field, .v-checkbox {
+
+	fieldset {
+		border: 1px solid @border-components;
+		border-radius: 2px;
+	}
+}
+
+#form-actions {
+	padding: 0 12px;
+
+	a {
+		margin-right: 20px;
+
+		.v-icon, span {
+			color: @red;
 		}
 	}
 
-	.btn-cadastrar {
+	.v-btn {
 		background-color: @green-primary !important;
 		color: @bg-text-field !important;
+		font-size: 16px;
+		height: auto;
+		padding: 12px 20px !important;
+		text-transform: none !important;
 	}
 
-	.v-label {
-		color: @text-color !important;
+	.v-icon {
+		font-size: 20px !important;
 	}
+}
 
-	.v-text-field, .v-checkbox {
+.theme--light.v-btn-toggle:not(.v-btn-toggle--group) {
 
-		fieldset {
-			border: 1px solid @border-components;
-			border-radius: 2px;
-		}
-	}
+	.v-btn--active {
+		border-color: @green-primary !important;
 
-	#form-actions {
-		padding: 0 12px;
-
-		a {
-			margin-right: 20px;
-
-			.v-icon, span {
-				color: @red;
-			}
-		}
-
-		.v-btn {
-			background-color: @green-primary !important;
-			color: @bg-text-field !important;
-			font-size: 16px;
-			height: auto;
-			padding: 12px 20px !important;
-			text-transform: none !important;
-		}
-
-		.v-icon {
-			font-size: 20px !important;
+		span {
+			color: @green-primary !important;
 		}
 	}
+}
+
+.v-btn-toggle > .v-btn.v-btn:not(:first-child) {
+	
+	border-left-width: 1px !important;
+}
 
 </style>

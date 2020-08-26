@@ -1,7 +1,5 @@
 package com.configuradorlicenciamento.requisitotecnico.controllers;
 
-import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeDTO;
-import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.configuracao.components.VariaveisAmbientes;
 import com.configuradorlicenciamento.configuracao.controllers.DefaultController;
 import com.configuradorlicenciamento.configuracao.enums.Acao;

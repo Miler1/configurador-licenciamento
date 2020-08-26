@@ -1,6 +1,5 @@
 package com.configuradorlicenciamento.seguranca.components;
 
-import com.configuradorlicenciamento.seguranca.enuns.PerfilEnum;
 import lombok.Getter;
 import br.ufla.lemaf.beans.pessoa.Perfil;
 import br.ufla.lemaf.beans.pessoa.Permissao;
