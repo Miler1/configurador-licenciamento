@@ -16,6 +16,7 @@
 						:items="documentos",
 						item-text="nome",
 						:error-messages="errorMessage( requisitoAdministrativo.documento )",
+						no-data-text="Nenhum documento encontrado",
 						@click.native="resetErrorMessage",
 						required,
 						return-object=true
@@ -34,6 +35,7 @@
 						:items="licencas",
 						item-text="sigla",
 						:error-messages="errorMessage(requisitoAdministrativo.licencas)",
+						no-data-text="Nenhum tipo de licença encontrado",
 						@click.native="resetErrorMessage",
 						required,
 						return-object=true,

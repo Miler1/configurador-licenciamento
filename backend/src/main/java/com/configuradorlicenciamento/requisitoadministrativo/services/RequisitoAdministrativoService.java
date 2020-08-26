@@ -120,11 +120,7 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
     @Override
     public Page<RequisitoAdministrativo> listar(Pageable pageable, FiltroPesquisa filtro) {
 
-        Specification<RequisitoAdministrativo> specification = Specification.where(RequisitoAdministrativoSpecification.licencaSigla(filtro.getStringPesquisa()));
-
-        if(requisitoAdministrativoRepository.findAll(specification).isEmpty()) {
-            specification = preparaFiltro(filtro);
-        }
+        Specification<RequisitoAdministrativo> specification = preparaFiltro(filtro);
 
         return requisitoAdministrativoRepository.findAll(specification, pageable);
     }
@@ -153,7 +149,12 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
         Specification<RequisitoAdministrativo> specification = Specification.where(RequisitoAdministrativoSpecification.padrao());
 
         if (filtro.getStringPesquisa() != null) {
-            specification = specification.and(RequisitoAdministrativoSpecification.documento(filtro.getStringPesquisa()));
+
+            specification = specification.and(RequisitoAdministrativoSpecification.licencaSigla(filtro.getStringPesquisa()));
+
+            if(requisitoAdministrativoRepository.findAll(specification).isEmpty()){
+                specification = specification.and(RequisitoAdministrativoSpecification.documento(filtro.getStringPesquisa()));
+            }
         }
 
         return specification;
