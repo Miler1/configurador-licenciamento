@@ -198,9 +198,14 @@ export default {
 		},
 
 		clear() {
+
+			if(this.isInclusao){
+				this.grupoRequisito.licencas = null;
+			}
+
 			this.grupoRequisito.documento = null;
-			this.grupoRequisito.licencas = null;
 			this.grupoRequisito.obrigatorio = null;
+
 		},
 
 		incluirDados() {

@@ -3,7 +3,6 @@ package com.configuradorlicenciamento.requisitoadministrativo.services;
 import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
 import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
-import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
 
 import com.configuradorlicenciamento.documento.models.Documento;
 import com.configuradorlicenciamento.documento.repositories.DocumentoRepository;
@@ -124,7 +123,6 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
         Specification<RequisitoAdministrativo> specification = preparaFiltro(filtro);
 
         return requisitoAdministrativoRepository.findAll(specification, pageable);
-
     }
 
     @Override
@@ -151,7 +149,12 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
         Specification<RequisitoAdministrativo> specification = Specification.where(RequisitoAdministrativoSpecification.padrao());
 
         if (filtro.getStringPesquisa() != null) {
-            specification = specification.and(RequisitoAdministrativoSpecification.documento(filtro.getStringPesquisa()));
+
+            specification = specification.and(RequisitoAdministrativoSpecification.licencaSigla(filtro.getStringPesquisa()));
+
+            if(requisitoAdministrativoRepository.findAll(specification).isEmpty()){
+                specification = specification.and(RequisitoAdministrativoSpecification.documento(filtro.getStringPesquisa()));
+            }
         }
 
         return specification;
