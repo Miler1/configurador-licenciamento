@@ -29,16 +29,30 @@ public class TipoLicencaGrupoDocumentoService implements ITipoLicencaGrupoDocume
     @Override
     public void salvar(List<TipoLicencaGrupoDocumentoDTO> listRequisitos, RequisitoTecnico requisitoTecnico) {
 
-        listRequisitos.stream().forEach(tipoLicencaGrupoDocumentoDTO -> {
-            tipoLicencaGrupoDocumentoRepository.save(montaObjetoParaSalvar(tipoLicencaGrupoDocumentoDTO, requisitoTecnico));
+        listRequisitos.forEach(tipoLicencaGrupoDocumentoDTO ->
+            tipoLicencaGrupoDocumentoRepository.save(montaObjetoParaSalvar(tipoLicencaGrupoDocumentoDTO, requisitoTecnico))
+        );
+    }
+
+    @Override
+    public void editar(List<TipoLicencaGrupoDocumentoDTO> listRequisitos, RequisitoTecnico requisitoTecnico) {
+
+        List<TipoLicencaGrupoDocumento> tipoLicencaGrupoDocumentoList = tipoLicencaGrupoDocumentoRepository.findByRequisitoTecnico(requisitoTecnico);
+
+        tipoLicencaGrupoDocumentoList.forEach(tipoLicencaGrupoDocumento -> {
+                tipoLicencaGrupoDocumentoRepository.delete( tipoLicencaGrupoDocumento );
         });
+
+        listRequisitos.forEach(tipoLicencaGrupoDocumentoDTO ->
+            tipoLicencaGrupoDocumentoRepository.save(montaObjetoParaSalvar(tipoLicencaGrupoDocumentoDTO, requisitoTecnico))
+        );
     }
 
     public TipoLicencaGrupoDocumento montaObjetoParaSalvar(TipoLicencaGrupoDocumentoDTO tDTO, RequisitoTecnico requisitoTecnico) {
 
-        Documento documento = documentoRepository.findById(tDTO.getIdTipoDocumento()).get();
+        Documento documento = documentoRepository.findById(tDTO.getIdTipoDocumento()).orElseThrow(RuntimeException::new);
 
-        Licenca licenca = licencaRepository.findById(tDTO.getIdTipoLicenca()).get();
+        Licenca licenca = licencaRepository.findById(tDTO.getIdTipoLicenca()).orElseThrow(RuntimeException::new);
 
         return new TipoLicencaGrupoDocumento.TipoLicencaGrupoDocumentoBuilder(tDTO)
                 .setDocumento(documento)
@@ -46,4 +60,12 @@ public class TipoLicencaGrupoDocumentoService implements ITipoLicencaGrupoDocume
                 .setRequisitoTecnico(requisitoTecnico)
                 .build();
     }
+
+    @Override
+    public List<TipoLicencaGrupoDocumento> findByRequisito(RequisitoTecnico requisitoTecnico) {
+
+        return tipoLicencaGrupoDocumentoRepository.findByRequisitoTecnico(requisitoTecnico);
+
+    }
+
 }
