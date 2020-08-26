@@ -39,7 +39,7 @@ import GridListagem from '@/components/GridListagem';
 import AtividadeCnaeService from '@/services/atividadeCnae.service';
 import { SET_SNACKBAR } from '@/store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
-import { HEADER } from '@/utils/dadosMockados/ListagemCnaeHeader';
+import { HEADER } from '@/utils/dadosHeader/ListagemCnaeHeader';
 
 export default {
 
