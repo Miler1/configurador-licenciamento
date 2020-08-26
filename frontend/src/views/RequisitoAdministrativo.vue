@@ -56,7 +56,7 @@ export default {
 	data: () => {
 		return {
 			tituloListagem: 'Listagem de requisitos administrativos',
-			placeholderPesquisa: "Pesquisar pelo nome do requisito",
+			placeholderPesquisa: "Pesquisar pelo nome do documento ou tipo licença",
 			dadosListagem: {},
 			labelBotaoCadastrarEditar: "Cadastrar",
 			iconBotaoCadastrarEditar: "mdi-plus",

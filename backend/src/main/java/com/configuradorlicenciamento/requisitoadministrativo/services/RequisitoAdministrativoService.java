@@ -3,7 +3,6 @@ package com.configuradorlicenciamento.requisitoadministrativo.services;
 import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
 import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
-import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
 
 import com.configuradorlicenciamento.documento.models.Documento;
 import com.configuradorlicenciamento.documento.repositories.DocumentoRepository;
@@ -121,10 +120,13 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
     @Override
     public Page<RequisitoAdministrativo> listar(Pageable pageable, FiltroPesquisa filtro) {
 
-        Specification<RequisitoAdministrativo> specification = preparaFiltro(filtro);
+        Specification<RequisitoAdministrativo> specification = Specification.where(RequisitoAdministrativoSpecification.licencaSigla(filtro.getStringPesquisa()));
+
+        if(requisitoAdministrativoRepository.findAll(specification).isEmpty()) {
+            specification = preparaFiltro(filtro);
+        }
 
         return requisitoAdministrativoRepository.findAll(specification, pageable);
-
     }
 
     @Override
