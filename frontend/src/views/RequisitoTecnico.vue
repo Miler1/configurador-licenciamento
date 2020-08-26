@@ -2,7 +2,7 @@
 
 	v-container
 
-		GridListagem.pa-7(
+		GridListagem.pa-7(v-if="!checkTelaCadastro",
 			:tituloListagem="tituloListagem",
 			:placeholderPesquisa="placeholderPesquisa",
 			:gerarRelatorio="gerarRelatorio",
@@ -21,7 +21,7 @@
 import GridListagem from '@/components/GridListagem';
 import RelatorioService from '../services/relatorio.service';
 import RequisitoTecnicoService from '../services/requisitoTecnico.service';
-import { HEADER } from '@/utils/dadosMockados/ListagemRequisitoTecnico';
+import { HEADER } from '@/utils/dadosHeader/ListagemRequisitoTecnicoHeader';
 
 export default {
 
@@ -74,10 +74,17 @@ export default {
 
 		abrirTelaCadastro() {
 
-			//chamaTelaCadastro
+			this.$router.push({name: 'CadastrarRequisitosTecnicos'});
 
+		},
+	},
+
+	computed: {
+		
+		checkTelaCadastro() {
+			console.log(this.$router.history.current.path.indexOf('/cadastrar'));
+			return this.$router.history.current.path.indexOf('/cadastrar') > -1;
 		}
-
 	}
 
 };
