@@ -45,8 +45,8 @@ const ERROR_MESSAGES = {
 	},
 
 	requisitoAdministrativo: {
-		cadastro: ER_BASE + 'cadastrar o requisito administrativo.',
-		listagem: ER_BASE + 'listar os requisitos administrativos.',
+		cadastro: ER_BASE + 'cadastrar o requisito administrativo. ',
+		listagem: ER_BASE + 'listar os requisitos administrativos. ',
 		editar: ER_BASE + 'editar o requisito administrativo. ',
 		ativar: ER_BASE + 'ativar o requisito administrativo. ',
 		desativar: ER_BASE + 'desativar o requisito administrativo. ',
