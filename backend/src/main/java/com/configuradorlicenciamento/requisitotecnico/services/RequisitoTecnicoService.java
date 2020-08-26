@@ -1,5 +1,7 @@
 package com.configuradorlicenciamento.requisitotecnico.services;
 
+import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
+import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.requisitotecnico.dtos.RequisitoTecnicoDTO;
 import com.configuradorlicenciamento.requisitotecnico.dtos.RequisitoTecnicoCsv;
@@ -21,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RequisitoTecnicoService implements IRequisitoTecnicoService {
@@ -51,6 +54,32 @@ public class RequisitoTecnicoService implements IRequisitoTecnicoService {
         tipoLicencaGrupoDocumentoService.salvar(requisitoTecnicoDTO.getListRequisitos(), requisitoTecnico);
 
         return requisitoTecnico;
+
+    }
+
+    @Override
+    public RequisitoTecnico editar(HttpServletRequest request, RequisitoTecnicoDTO requisitoTecnicoDTO) {
+
+        Object login = request.getSession().getAttribute("login");
+
+        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
+
+        RequisitoTecnico requisitoTecnicosalvo = requisitoTecnicoRepository.findById(requisitoTecnicoDTO.getId())
+                .map(requisitoTecnico -> {
+                    requisitoTecnico.setCodigo(requisitoTecnicoDTO.getCodigo());
+                    requisitoTecnico.setDescricao(requisitoTecnicoDTO.getDescricao());
+                    requisitoTecnico.setUsuarioLicenciamento(usuarioLicenciamento);
+                    requisitoTecnico.setDataCadastro(new Date());
+                    requisitoTecnico.setAtivo(requisitoTecnicoDTO.getAtivo());
+                    return requisitoTecnico;
+                })
+                .orElseThrow(() -> new ConfiguradorNotFoundException("Não Foi possível editar o Requisito"));
+
+        requisitoTecnicoRepository.save(requisitoTecnicosalvo);
+
+        tipoLicencaGrupoDocumentoService.editar(requisitoTecnicoDTO.getListRequisitos(), requisitoTecnicosalvo);
+
+        return requisitoTecnicosalvo;
 
     }
 

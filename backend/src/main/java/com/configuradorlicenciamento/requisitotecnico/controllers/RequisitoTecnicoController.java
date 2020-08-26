@@ -1,7 +1,5 @@
 package com.configuradorlicenciamento.requisitotecnico.controllers;
 
-import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeDTO;
-import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.configuracao.components.VariaveisAmbientes;
 import com.configuradorlicenciamento.configuracao.controllers.DefaultController;
 import com.configuradorlicenciamento.configuracao.enums.Acao;
@@ -39,6 +37,19 @@ public class RequisitoTecnicoController extends DefaultController {
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
         RequisitoTecnico requisitoTecnico = requisitoTecnicoService.salvar(request, requisitoTecnicoDTO);
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(requisitoTecnico);
+
+    }
+
+    @PostMapping(value = "/editar")
+    public ResponseEntity<RequisitoTecnico> editar(HttpServletRequest request, @Valid @RequestBody RequisitoTecnicoDTO requisitoTecnicoDTO) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        RequisitoTecnico requisitoTecnico = requisitoTecnicoService.editar(request, requisitoTecnicoDTO);
 
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())

@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ITipoLicencaGrupoDocumentoService {
     void salvar(List<TipoLicencaGrupoDocumentoDTO> listRequisitos, RequisitoTecnico requisitoTecnico);
+
+    void editar(List<TipoLicencaGrupoDocumentoDTO> listRequisitos, RequisitoTecnico requisitoTecnico);
 }
