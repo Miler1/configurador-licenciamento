@@ -58,6 +58,19 @@ public class RequisitoTecnicoController extends DefaultController {
 
     }
 
+    @PostMapping(value = "/ativarDesativar/{idRequisito}")
+    public ResponseEntity<RequisitoTecnico> ativarDesativar(HttpServletRequest request, @PathVariable("idRequisito") Integer idRequisito) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        RequisitoTecnico requisitoTecnico = requisitoTecnicoService.ativarDesativar(idRequisito);
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(requisitoTecnico);
+
+    }
+
     @PostMapping(value = "/listar")
     public ResponseEntity<Page<RequisitoTecnico>> lista(HttpServletRequest request,
                                                         @PageableDefault(size = 20) Pageable pageable,

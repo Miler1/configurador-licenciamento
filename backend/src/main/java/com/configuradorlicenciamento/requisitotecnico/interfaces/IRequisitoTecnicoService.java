@@ -18,6 +18,8 @@ public interface IRequisitoTecnicoService {
 
     RequisitoTecnico editar(HttpServletRequest request, RequisitoTecnicoDTO requisitoTecnicoDTO);
 
+    RequisitoTecnico ativarDesativar(Integer idRequisito);
+
     Page<RequisitoTecnico> listar(Pageable pageable, FiltroPesquisa filtro);
 
     List<RequisitoTecnicoCsv> listarDocumentoParaCsv() throws Exception;

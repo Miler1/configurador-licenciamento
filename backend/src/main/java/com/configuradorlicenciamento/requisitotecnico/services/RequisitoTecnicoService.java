@@ -84,6 +84,19 @@ public class RequisitoTecnicoService implements IRequisitoTecnicoService {
     }
 
     @Override
+    public RequisitoTecnico ativarDesativar(Integer idRequisito) {
+
+        RequisitoTecnico requisitoTecnico = requisitoTecnicoRepository.findById(idRequisito).orElseThrow(() ->
+                new ConfiguradorNotFoundException("Não Foi possível Ativar/Desativar o Requisito"));
+
+        requisitoTecnico.setAtivo(!requisitoTecnico.getAtivo());
+
+        requisitoTecnicoRepository.save(requisitoTecnico);
+
+        return requisitoTecnico;
+    }
+
+    @Override
     public Page<RequisitoTecnico> listar(Pageable pageable, FiltroPesquisa filtro) {
 
         Specification<RequisitoTecnico> specification = preparaFiltro(filtro);

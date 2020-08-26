@@ -6,6 +6,8 @@ export default {
 
 	editar: async (requisitoTecnico) => ApiService.post('/requisitoTecnico/editar', requisitoTecnico ),
 
+	ativarDesativar: async (idRequisito) => ApiService.post('/requisitoTecnico/ativarDesativar/' + idRequisito ),
+
 	listar: async (parametrosFiltro) => {
 		
 		if (parametrosFiltro) {
