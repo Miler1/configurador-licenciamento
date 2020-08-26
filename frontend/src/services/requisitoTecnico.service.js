@@ -4,6 +4,8 @@ export default {
 
 	cadastrar: async (requisitoTecnico) => ApiService.post('/requisitoTecnico/salvar', requisitoTecnico ),
 
+	editar: async (requisitoTecnico) => ApiService.post('/requisitoTecnico/editar', requisitoTecnico ),
+
 	listar: async (parametrosFiltro) => {
 		
 		if (parametrosFiltro) {
@@ -20,6 +22,8 @@ export default {
 			return ApiService.post('requisitoTecnico/listar/?page=0&size=10&sort=dataCadastro,desc', {});
 		}
 
-	}
+	},
+
+	findById: async (idRequisito) => ApiService.get('requisitoTecnico/findById/' + idRequisito )
 
 };

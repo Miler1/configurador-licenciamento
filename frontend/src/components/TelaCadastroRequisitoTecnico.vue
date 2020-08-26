@@ -10,7 +10,7 @@
 					template(v-slot:actions)
 						v-icon
 				v-expansion-panel-content
-					v-form(ref="atividadeCnae")
+					v-form(ref="requisito")
 						v-container.pa-0
 							v-row
 								v-col(cols="12", md="3")
@@ -45,7 +45,7 @@
 					template(v-slot:actions)
 						v-icon
 				v-expansion-panel-content
-					v-form(ref="atividadeCnae")
+					v-form(ref="requisitolist")
 						v-container.pa-0
 							v-row
 								v-col(cols="9", md="6")
@@ -97,11 +97,11 @@
 							
 							v-row
 								v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
-									a#QA-limpar-dados-cnae.d-flex.flex-row.align-center.justify-end(@click="clear")
+									a#QA-limpar-dados-requisito.d-flex.flex-row.align-center.justify-end(@click="clear")
 										v-icon mdi-delete
 										span Limpar dados
 								
-									v-btn#QA-btn-cadastrar-cnae.btn-cadastrar(@click="incluirDados", large)
+									v-btn#QA-btn-cadastrar-requisito.btn-cadastrar(@click="incluirDados", large)
 										v-icon(color="white") mdi-plus
 										span Incluir
 
@@ -115,11 +115,11 @@
 
 		v-row.px-7
 			v-col.align-center(cols="12", md="12")
-				v-btn#QA-btn-cadastrar-cnae(@click="cancelar", outlined, large, color="red")
+				v-btn#QA-btn-cadastrar-requisito(@click="cancelar", outlined, large, color="red")
 					v-icon mdi-close
 					span Cancelar
 
-				v-btn#QA-btn-cadastrar-cnae.btn-cadastrar.float-right(@click="submit", large)
+				v-btn#QA-btn-cadastrar-requisito.btn-cadastrar.float-right(@click="submit", large)
 					v-icon(color="white") {{iconBotaoCadastrarEditar}}
 					span {{labelBotaoCadastrarEditar}}
 
@@ -129,11 +129,11 @@
 
 import DocumentoService from '@/services/documento.service';
 import LicencaService from '@/services/licenca.service';
+import RequisitoTecnicoService from '../services/requisitoTecnico.service';
 import GridListagemInclusao from '@/components/GridListagemInclusao';
 import { HEADER } from '@/utils/dadosHeader/ListagemRequisitoTecnicoInclusao';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 import { SET_SNACKBAR } from '@/store/actions.type';
-import RequisitoTecnicoService from '../services/requisitoTecnico.service';
 
 export default {
 
@@ -244,7 +244,7 @@ export default {
 				if(this.isCadastro) {
 					this.cadastrar();
 				} else {
-					// this.editar();
+					this.editar();
 				}
 
 			} else {
@@ -262,6 +262,19 @@ export default {
 				})
 				.catch(erro => {
 					this.handleError(erro);
+				});
+
+		},
+
+		editar() {
+
+			RequisitoTecnicoService.editar(this.preparaPraSalvar())
+
+				.then(() => {
+					this.handleSuccess(true);
+				})
+				.catch(erro => {
+					this.handleError(erro, true);
 				});
 
 		},
@@ -297,7 +310,7 @@ export default {
 
 		handleSuccess(edicao = false) {
 
-			let message = edicao ? SUCCESS_MESSAGES.edicao : SUCCESS_MESSAGES.cadastro;
+			let message = edicao ? SUCCESS_MESSAGES.editar : SUCCESS_MESSAGES.cadastro;
 
 			this.$store.dispatch(SET_SNACKBAR,
 				{color: 'success', text: message, timeout: '6000'}
@@ -341,6 +354,18 @@ export default {
 			this.dadosListagem = this.dadosListagem.filter(
 				dado => dado.documento.nome != item.documento.nome || dado.licenca.sigla != item.licenca.sigla
 			);
+		},
+
+		preparaDadosParaEdicao(requisito) {
+
+			this.requisitoTecnico.codigo = requisito.codigo;
+			this.requisitoTecnico.descricao = requisito.descricao;
+			this.requisitoTecnico.ativo = requisito.ativo;
+			this.requisitoTecnico.id = this.$route.params.idRequisito;
+			
+			this.dadosListagem = [];
+			this.dadosListagem = requisito.tipoLicencaGrupoDocumentoList;
+
 		}
 	},
 
@@ -357,6 +382,25 @@ export default {
 			});
 
 	},
+
+	mounted() {
+
+		if(this.$route.params.idRequisito) {
+			this.labelBotaoCadastrarEditar = "Editar";
+			this.iconBotaoCadastrarEditar = "mdi-pencil";
+			this.isCadastro = false;
+
+			RequisitoTecnicoService.findById(this.$route.params.idRequisito)
+				.then((response) => {
+					this.preparaDadosParaEdicao(response.data);
+				})
+				.catch((error) => {
+					this.$store.dispatch(SET_SNACKBAR,
+						{color: 'error', text: error.message, timeout: '9000'}
+					);
+				});
+		}
+	}
 
 };
 </script>

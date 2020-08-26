@@ -12,6 +12,4 @@ public interface TipoLicencaGrupoDocumentoRepository extends JpaRepository<TipoL
 
     List<TipoLicencaGrupoDocumento> findByRequisitoTecnico(RequisitoTecnico requisitoTecnico);
 
-    void deleteByRequisitoTecnico(RequisitoTecnico requisitoTecnico);
-
 }

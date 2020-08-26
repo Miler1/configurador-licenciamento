@@ -1,13 +1,14 @@
 package com.configuradorlicenciamento.requisitotecnico.services;
 
-import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.requisitotecnico.dtos.RequisitoTecnicoDTO;
 import com.configuradorlicenciamento.requisitotecnico.dtos.RequisitoTecnicoCsv;
+import com.configuradorlicenciamento.requisitotecnico.dtos.RequisitoTecnicoEdicaoDTO;
 import com.configuradorlicenciamento.requisitotecnico.interfaces.IRequisitoTecnicoService;
 import com.configuradorlicenciamento.requisitotecnico.interfaces.ITipoLicencaGrupoDocumentoService;
 import com.configuradorlicenciamento.requisitotecnico.models.RequisitoTecnico;
+import com.configuradorlicenciamento.requisitotecnico.models.TipoLicencaGrupoDocumento;
 import com.configuradorlicenciamento.requisitotecnico.repositories.RequisitoTecnicoRepository;
 import com.configuradorlicenciamento.requisitotecnico.specifications.RequisitoTecnicoSpecification;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
@@ -23,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RequisitoTecnicoService implements IRequisitoTecnicoService {
@@ -117,5 +117,15 @@ public class RequisitoTecnicoService implements IRequisitoTecnicoService {
         return dtos;
     }
 
+    @Override
+    public RequisitoTecnicoEdicaoDTO findById(Integer idRequisito) {
 
+        RequisitoTecnico requisitoTecnico = requisitoTecnicoRepository.findById(idRequisito).orElseThrow(() ->
+                new ConfiguradorNotFoundException("Não foi encontrado requisito com o Id " + idRequisito));
+
+        List<TipoLicencaGrupoDocumento> tipoLicencaGrupoDocumentoList = tipoLicencaGrupoDocumentoService.findByRequisito(requisitoTecnico);
+
+        return new RequisitoTecnicoEdicaoDTO(requisitoTecnico, tipoLicencaGrupoDocumentoList);
+
+    }
 }

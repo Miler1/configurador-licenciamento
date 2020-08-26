@@ -225,8 +225,6 @@ export default {
 			this.requisitoAdministrativo = { ... item};
 			this.requisitoAdministrativo.licencas = [item.licenca];
 			this.isCadastro = false;
-
-			console.log(this.requisitoAdministrativo);
 			window.scrollTo(0,0);
 
 		},

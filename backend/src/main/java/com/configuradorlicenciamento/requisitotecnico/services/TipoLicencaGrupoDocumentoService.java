@@ -37,7 +37,11 @@ public class TipoLicencaGrupoDocumentoService implements ITipoLicencaGrupoDocume
     @Override
     public void editar(List<TipoLicencaGrupoDocumentoDTO> listRequisitos, RequisitoTecnico requisitoTecnico) {
 
-        tipoLicencaGrupoDocumentoRepository.deleteByRequisitoTecnico(requisitoTecnico);
+        List<TipoLicencaGrupoDocumento> tipoLicencaGrupoDocumentoList = tipoLicencaGrupoDocumentoRepository.findByRequisitoTecnico(requisitoTecnico);
+
+        tipoLicencaGrupoDocumentoList.forEach(tipoLicencaGrupoDocumento -> {
+                tipoLicencaGrupoDocumentoRepository.delete( tipoLicencaGrupoDocumento );
+        });
 
         listRequisitos.forEach(tipoLicencaGrupoDocumentoDTO ->
             tipoLicencaGrupoDocumentoRepository.save(montaObjetoParaSalvar(tipoLicencaGrupoDocumentoDTO, requisitoTecnico))
@@ -55,6 +59,13 @@ public class TipoLicencaGrupoDocumentoService implements ITipoLicencaGrupoDocume
                 .setLicenca(licenca)
                 .setRequisitoTecnico(requisitoTecnico)
                 .build();
+    }
+
+    @Override
+    public List<TipoLicencaGrupoDocumento> findByRequisito(RequisitoTecnico requisitoTecnico) {
+
+        return tipoLicencaGrupoDocumentoRepository.findByRequisitoTecnico(requisitoTecnico);
+
     }
 
 }

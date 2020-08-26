@@ -2,13 +2,15 @@
 
 	v-container
 
-		GridListagem.pa-7(v-if="!checkTelaCadastro",
+		GridListagem.pa-7(
 			:tituloListagem="tituloListagem",
 			:placeholderPesquisa="placeholderPesquisa",
 			:gerarRelatorio="gerarRelatorio",
 			:headers="headerListagem",
 			:dadosListagem="dadosListagem",
 			:updatePagination="updatePagination",
+			:editarItem="editarItem",
+			:ativarDesativarItem="ativarDesativarItem",
 			:parametrosFiltro="parametrosFiltro",
 			:buttonCadastrar="buttonCadastrar",
 			:abrirTelaCadastro="abrirTelaCadastro"
@@ -77,16 +79,17 @@ export default {
 			this.$router.push({name: 'CadastrarRequisitosTecnicos'});
 
 		},
-	},
 
-	computed: {
-		
-		checkTelaCadastro() {
-			console.log(this.$router.history.current.path.indexOf('/cadastrar'));
-			return this.$router.history.current.path.indexOf('/cadastrar') > -1;
+		editarItem(item) {
+
+			this.$router.push({name: 'EditarRequisitosTecnicos', params: { idRequisito: item.id }});
+
+		},
+
+		ativarDesativarItem(item) {
+
 		}
-	}
-
+	},
 };
 
 </script>
