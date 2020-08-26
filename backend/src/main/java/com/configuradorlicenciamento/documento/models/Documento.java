@@ -67,7 +67,7 @@ public class Documento implements Serializable {
 
         public DocumentoBuilder(DocumentoDTO documentoDTO) {
 
-            this.nome = documentoDTO.getNome();
+            this.nome = documentoDTO.getNome().replace("–", "-");
 
             //Ele pega o prefixo nome arquivo, pois no banco os dois sempre são iguais
             this.caminhoPasta = documentoDTO.getPrefixoNomeArquivo();
