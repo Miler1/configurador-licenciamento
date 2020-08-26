@@ -22,6 +22,7 @@ import GridListagem from '@/components/GridListagem';
 import { SET_SNACKBAR } from '@/store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 import { HEADER } from '@/utils/dadosMockados/ListagemTaxaHeader';
+import TaxaService from '../services/taxa.service';
 
 export default {
 
@@ -35,15 +36,18 @@ export default {
 	data: () => {
 		return {
 			tituloListagem: 'Listagem de taxas cadastradas',
-			placeholderPesquisa: "Pesquisar pelo nome do documento ou nome para exibição",
+			placeholderPesquisa: "Pesquisar pelo código ou descrição",
 			headerListagem: HEADER,
 			dadosListagem: {},
 			labelBotaoCadastrarEditar: "Cadastrar",
 			iconBotaoCadastrarEditar: "mdi-plus",
 			errorMessageEmpty: true,
 			taxa: {
-				nome: '',
-				prefixoNomeArquivo: '',
+				porteEmpreendimento: '',
+				potencialPoluidor: '',
+				licenca: '',
+				codigo: '',
+				valor: '',
 				ativo: true
 			},
 			parametrosFiltro: {
@@ -61,11 +65,11 @@ export default {
 
 		clear() {
 
-			this.documento.nome= '';
-			this.documento.prefixoNomeArquivo= '';
-			this.documento.ativo= true;
-			this.errorMessageEmpty=true;
-			this.resetaDadosCadastro();
+			// this.documento.nome= '';
+			// this.documento.prefixoNomeArquivo= '';
+			// this.documento.ativo= true;
+			// this.errorMessageEmpty=true;
+			// this.resetaDadosCadastro();
 
 		},
 
@@ -91,9 +95,9 @@ export default {
 			if (this.checkForm()) {
 
 				if(this.isCadastro) {
-					this.cadastrar();
+					// this.cadastrar();
 				} else {
-					this.editar();
+					// this.editar();
 				}
 
 			} else {

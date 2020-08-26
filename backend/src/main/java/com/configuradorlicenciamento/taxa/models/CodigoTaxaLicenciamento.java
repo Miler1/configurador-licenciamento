@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -14,14 +15,13 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(schema = GlobalReferences.ESQUEMA, name = "porte_empreendimento")
-public class PorteEmpreendimento implements Serializable{
+@Table(schema = GlobalReferences.ESQUEMA, name = "codigos_taxa_licenciamento")
+public class CodigoTaxaLicenciamento implements Serializable {
 
     @Id
     private Integer id;
 
-    private String nome;
-
-    private String codigo;
+    @Column(name="descricao")
+    private String descricao;
 
 }

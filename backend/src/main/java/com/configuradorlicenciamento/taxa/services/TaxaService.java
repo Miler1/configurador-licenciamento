@@ -1,8 +1,6 @@
 package com.configuradorlicenciamento.taxa.services;
 
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
-import com.configuradorlicenciamento.requisitotecnico.models.RequisitoTecnico;
-import com.configuradorlicenciamento.requisitotecnico.specifications.RequisitoTecnicoSpecification;
 import com.configuradorlicenciamento.taxa.interfaces.ITaxaService;
 import com.configuradorlicenciamento.taxa.models.Taxa;
 import com.configuradorlicenciamento.taxa.repositories.TaxaRepository;
@@ -12,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
 
+@Service
 public class TaxaService implements ITaxaService {
 
     @Autowired
@@ -33,9 +33,9 @@ public class TaxaService implements ITaxaService {
 
         Specification<Taxa> specification = Specification.where(TaxaSpecification.padrao());
 
-        if(filtro.getStringPesquisa() != null) {
-            specification = specification.and(TaxaSpecification.codigo(filtro.getStringPesquisa()));
-        }
+//        if(filtro.getStringPesquisa() != null) {
+//            specification = specification.and(TaxaSpecification.codigo(filtro.getStringPesquisa()));
+//        }
 
         return specification;
 

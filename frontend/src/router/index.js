@@ -75,8 +75,8 @@ const routes = [
 				component: () => import('../views/RequisitoTecnico.vue')
 			},
 			{
-				path: 'taxas',
-				name: 'Taxas',
+				path: 'taxa',
+				name: 'Taxa',
 				component: () => import('../views/Taxa.vue')
 			},
 			{ 

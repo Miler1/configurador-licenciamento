@@ -30,6 +30,7 @@ public class Taxa implements Serializable {
     @JoinColumn(name="id_porte_empreendimento")
     private PorteEmpreendimento porteEmpreendimento;
 
+    @NotNull(message = "{validacao.notnull}")
     @ManyToOne
     @JoinColumn(name="id_potencial_poluidor")
     public PotencialPoluidor potencialPoluidor;
@@ -39,8 +40,10 @@ public class Taxa implements Serializable {
     @JoinColumn(name="id_tipo_licenca", referencedColumnName="id")
     private Licenca licenca;
 
-    @Column(name="codigo")
-    public Integer codigo;
+    @NotNull(message = "{validacao.notnull}")
+    @OneToOne
+    @JoinColumn(name="codigo", referencedColumnName = "id")
+    public CodigoTaxaLicenciamento codigo;
 
     public String valor;
 
