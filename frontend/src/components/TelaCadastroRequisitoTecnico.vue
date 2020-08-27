@@ -164,6 +164,7 @@ export default {
 			documentos: [],
 			licencas: [],
 			errorMessageEmpty: true,
+			errorMessageEmptyInclusao: true,
 			tituloListagem: "Listagem de dados vinculados",
 			headerListagem: HEADER,
 			dadosListagem: [],
@@ -179,11 +180,12 @@ export default {
 
 		resetErrorMessage() {
 			this.errorMessageEmpty = true;
+			this.errorMessageEmptyInclusao = true;
 		},
 
 		errorMessage(value, isVinculacao) {
 			if(isVinculacao) {
-				return this.errorMessageEmpty || value || (this.dadosListagem.length > 0) ? [] : 'Obrigatório';
+				return this.errorMessageEmptyInclusao || value || (this.dadosListagem.length > 0) ? [] : 'Obrigatório';
 			}
 			return this.errorMessageEmpty || value ? [] : 'Obrigatório';
 		},
@@ -210,35 +212,43 @@ export default {
 
 		incluirDados() {
 
-			var dadoListagem = {};
+			if(this.checkFormVinculacao()){
 
-			if(this.isInclusao) {
+				
 
-				this.grupoRequisito.licencas.forEach(licenca => {
+				var dadoListagem = {};
+
+				if(this.isInclusao) {
+
+					this.grupoRequisito.licencas.forEach(licenca => {
+
+						dadoListagem.documento = this.grupoRequisito.documento;
+						dadoListagem.licenca = licenca;
+						dadoListagem.obrigatorio = this.grupoRequisito.obrigatorio;
+
+						this.dadosListagem.push(dadoListagem);
+						dadoListagem = {};
+				
+					});
+
+				} else {
 
 					dadoListagem.documento = this.grupoRequisito.documento;
-					dadoListagem.licenca = licenca;
+					dadoListagem.licenca = this.grupoRequisito.licencas[0];
 					dadoListagem.obrigatorio = this.grupoRequisito.obrigatorio;
 
-					this.dadosListagem.push(dadoListagem);
+					this.dadosListagem.splice(this.indexItemEdicao, 1, dadoListagem);
 					dadoListagem = {};
-			
-				});
+					this.indexItemEdicao = null;
+					this.isInclusao = true;
+
+				}
+
+				this.clear();
 
 			} else {
-
-				dadoListagem.documento = this.grupoRequisito.documento;
-				dadoListagem.licenca = this.grupoRequisito.licencas[0];
-				dadoListagem.obrigatorio = this.grupoRequisito.obrigatorio;
-
-				this.dadosListagem.splice(this.indexItemEdicao, 1, dadoListagem);
-				dadoListagem = {};
-				this.indexItemEdicao = null;
-				this.isInclusao = true;
-
+				this.errorMessageEmptyInclusao = false;
 			}
-
-			this.clear();
 
 		},
 
@@ -254,6 +264,7 @@ export default {
 
 			} else {
 				this.errorMessageEmpty = false;
+				this.errorMessageEmptyInclusao = false;
 			}
 
 		},
@@ -335,6 +346,14 @@ export default {
 				&& this.dadosListagem
 				&& this.dadosListagem.length > 0;
 
+		},
+
+		checkFormVinculacao() {
+			return this.grupoRequisito.documento
+				&& this.grupoRequisito.documento != ''
+				&& this.grupoRequisito.licencas
+				&& this.grupoRequisito.licencas.length > 0
+				&& this.grupoRequisito.obrigatorio != null;
 		},
 
 		cancelar() {
