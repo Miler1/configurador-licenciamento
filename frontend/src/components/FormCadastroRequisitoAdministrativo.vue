@@ -3,7 +3,7 @@
 	v-form(ref="requisitoAdministrativo")
 		v-container.pa-0
 			v-row
-				v-col(cols="12", md="8")
+				v-col(cols="12", md="9")
 					v-label Documento
 					v-autocomplete#QA-select-requisito-administrativo-documento(
 						outlined,
@@ -19,7 +19,7 @@
 						required,
 						return-object=true
 					)
-				v-col(cols="12", md="4")
+				v-col(cols="12", md="3")
 					v-label Tipo Licença
 					v-autocomplete#QA-select-requisito-administrativo-licenca(
 						outlined,
@@ -45,14 +45,13 @@
 						v-label Pessoa
 					v-col.pa-0
 						v-btn-toggle#QA-btn-toggle-pessoa(
-								v-model="requisitoAdministrativo.tipoPessoa", 
-								mandatory, 
+								v-model="requisitoAdministrativo.tipoPessoa",
 								tile, 
 								color="green lighten-4",							
 							)
 							v-btn#QA-btn-requisito-administrativo-pessoa-fisica(
 								value="PF",
-								width="140px",						
+								width="140px",					
 							) 
 								span Física
 							v-btn#QA-btn-requisito-administrativo-pessoa-juridica(
@@ -66,18 +65,17 @@
 					v-col.pa-0
 						v-btn-toggle#QA-btn-toggle-requisito(
 								v-model="requisitoAdministrativo.obrigatorio",
-								mandatory,
 								tile,
 								color="green lighten-4", 
 							)
-							v-btn#QA-btn-requisito-administrativo-requisito-basico(
-								width="140px",
+							v-btn#QA-btn-requisito-administrativo-basico(
 								value=true,
+								width="140px",
 							) 
 								span Básico
-							v-btn#QA-btn-requisito-administrativo-requisito-complementar(
+							v-btn#QA-btn-requisito-administrativo-complementar(
+								value=false,
 								width="140px",
-								value=false, 
 							) 
 								span Complementar			
 			v-row

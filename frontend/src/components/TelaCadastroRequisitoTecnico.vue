@@ -48,7 +48,7 @@
 					v-form(ref="atividadeCnae")
 						v-container.pa-0
 							v-row
-								v-col(cols="12", md="7")
+								v-col(cols="12", md="9")
 									v-label Documento
 									v-autocomplete#QA-select-requisito-tecnico-documento(
 										outlined,
@@ -64,7 +64,6 @@
 										required,
 										return-object=true
 									)
-
 								v-col(cols="12", md="3")
 									v-label Tipo Licença
 									v-autocomplete#QA-select-requisito-tecnico-licenca(
@@ -85,25 +84,28 @@
 										deletable-chips=true
 										:disabled="!isInclusao"
 									)
-								
-								v-col.d-flex.flex-column(cols="12", md="2")
+							v-row
+								v-col.d-flex.flex-column(cols="12", md="5")
 									v-col.pa-0
 										v-label Tipo do requisito
 									v-col.pa-0
-										v-btn-toggle#QA-btn-toggle-requisito-tecnico(
-											v-model="grupoRequisito.obrigatorio",
-											tile,c
-											color="green lighten-4",
-										)
-											span Básico
-									v-col.pa-0
-										v-btn-toggle#QA-btn-toggle-requisito-tecnico(
-											v-model="grupoRequisito.obrigatorio",
-											tile,c
-											color="green lighten-4",
-										)
-											span Complementar
-							
+										v-btn-toggle#QA-btn-toggle-requisito(
+												v-model="grupoRequisito.obrigatorio",
+												tile,
+												color="green lighten-4", 
+											)
+											v-btn#QA-btn-requisito-tecnico-basico(
+												value=true,
+												width="140px",
+												dense
+											) 
+												span Básico
+											v-btn#QA-btn-requisito-tecnico-complementar(
+												value=false,
+												width="140px",
+												dense
+											) 
+												span Complementar		
 							v-row
 								v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
 									a#QA-limpar-dados-requisito-tecnico.d-flex.flex-row.align-center.justify-end(@click="clear")
@@ -392,7 +394,6 @@ export default {
 
 	.v-btn {
 		font-size: 16px;
-		padding: 20px !important;
 		text-transform: none !important;
 	}
 
@@ -443,20 +444,11 @@ export default {
 	}
 }
 
-.theme--light.v-btn-toggle:not(.v-btn-toggle--group) {
+.v-btn--active {
 
-	.v-btn--active {
-		border-color: @green-primary !important;
-
-		span {
-			color: @green-primary !important;
-		}
+	span {
+		color: @green-primary !important;
 	}
-}
-
-.v-btn-toggle > .v-btn.v-btn:not(:first-child) {
-	
-	border-left-width: 1px !important;
 }
 
 </style>
