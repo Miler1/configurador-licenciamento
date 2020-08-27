@@ -12,8 +12,7 @@ build:
     script:
         - bash /n 14.6.0
         - cd /builds/amapa/configurador-licenciamento/frontend
-        - rm package-lock.json
-        - npm --version
+        - rm -f package-lock.json
         - npm install
         - npm run test
 
