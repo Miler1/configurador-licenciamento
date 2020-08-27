@@ -49,11 +49,11 @@
 						v-btn-toggle#QA-btn-toggle-pessoa(
 								v-model="requisitoAdministrativo.tipoPessoa",
 								tile, 
-								color="green lighten-4",							
+								color="green lighten-4",
 							)
 							v-btn#QA-btn-requisito-administrativo-pessoa-fisica(
 								value="PF",
-								width="140px",					
+								width="140px",
 							) 
 								span Física
 							v-btn#QA-btn-requisito-administrativo-pessoa-juridica(
@@ -61,6 +61,10 @@
 								width="140px",
 							) 
 								span Jurídica
+
+					v-col.pa-0
+						span.v-messages.theme--light.error--text.v-messages__message {{ !this.requisitoAdministrativo.tipoPessoa && this.errorMessage().length ? this.errorMessage() : "" }}
+
 				v-col.d-flex.flex-column(cols="12", md="4")
 					v-col.pa-0
 						v-label Tipo do requisito
@@ -79,7 +83,11 @@
 								value=false,
 								width="140px",
 							) 
-								span Complementar			
+								span Complementar
+
+					v-col.pa-0
+						span.v-messages.theme--light.error--text.v-messages__message {{ this.requisitoAdministrativo.obrigatorio === null && this.errorMessage().length ? this.errorMessage() : "" }}
+
 			v-row
 				v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
 					a#QA-limpar-dados-requisito-administrativo.d-flex.flex-row.align-center.justify-end(@click="clear")
