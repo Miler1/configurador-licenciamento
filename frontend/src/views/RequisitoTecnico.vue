@@ -132,7 +132,7 @@ export default {
 					RequisitoTecnicoService.ativarDesativar(item.id)
 						.then(() => {
 							
-							if(!item.ativo) {
+							if(item.ativo) {
 								
 								this.$store.dispatch(SET_SNACKBAR,
 									{color: 'success', text: SUCCESS_MESSAGES.requisitoTecnico.desativar, timeout: '6000'}
