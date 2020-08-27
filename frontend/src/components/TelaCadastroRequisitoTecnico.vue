@@ -127,9 +127,9 @@
 			:excluirItem="excluirItem"
 		)
 
-		v-row.px-7
+		v-row.pt-6.px-7
 			v-col.align-center(cols="12", md="12")
-				v-btn#QA-btn-cancelar-requisito-tecnico(@click="cancelar", outlined, large, color="red")
+				v-btn#QA-btn-cancelar-requisito-tecnico(@click="cancelar", outlined, large, color="#84A98C")
 					v-icon mdi-close
 					span Cancelar
 
