@@ -153,7 +153,7 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
             specification = specification.and(RequisitoAdministrativoSpecification.licencaSigla(filtro.getStringPesquisa()));
 
             if(requisitoAdministrativoRepository.findAll(specification).isEmpty()){
-                specification = specification.and(RequisitoAdministrativoSpecification.documento(filtro.getStringPesquisa()));
+                specification = specification.or(RequisitoAdministrativoSpecification.documento(filtro.getStringPesquisa()));
             }
         }
 

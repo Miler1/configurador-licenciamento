@@ -74,7 +74,7 @@ public class DocumentoController extends DefaultController {
 
     }
 
-    @PostMapping(value="/findAll")
+    @GetMapping( value="/findAll")
     public ResponseEntity<List<Documento>> findAll(HttpServletRequest request) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);

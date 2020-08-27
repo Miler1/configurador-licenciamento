@@ -233,8 +233,6 @@ export default {
 
 			if (this.errorMessageEmpty && validade && validade != '') {
 
-				console.log("validadePrazo", this.validarPrazo());
-
 				if (!this.validarPrazo()) {
 					return msgSomenteInteiros;
 				}
