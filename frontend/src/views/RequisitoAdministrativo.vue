@@ -263,9 +263,9 @@ export default {
 							this.handleSuccess();
 
 						})
-						.catch(erro => {
+						.catch(error => {
 
-							this.handleError(erro, true);
+							this.handleError(error, true);
 
 						});
 				}
