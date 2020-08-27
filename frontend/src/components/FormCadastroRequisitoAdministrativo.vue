@@ -65,7 +65,7 @@
 								span Jurídica
 
 					v-col.pa-0
-						span.v-messages.theme--light.error--text.v-messages__message {{ !this.requisitoAdministrativo.tipoPessoa && this.errorMessage().length ? this.errorMessage() : "" }}
+						span.v-messages.theme--light.error--text.v-messages__message {{ errorMessage(requisitoAdministrativo.tipoPessoa) }}
 
 				v-col.d-flex.flex-column(cols="12", md="4")
 					v-col.pa-0
@@ -88,7 +88,7 @@
 							) 
 								span Complementar
 					v-col.pa-0
-						span.v-messages.theme--light.error--text.v-messages__message {{ this.requisitoAdministrativo.obrigatorio === null && this.errorMessage().length ? this.errorMessage() : "" }}
+						span.v-messages.theme--light.error--text.v-messages__message {{ errorMessage(requisitoAdministrativo.obrigatorio) }}
 			v-row
 				v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
 					a#QA-limpar-dados-requisito-administrativo.d-flex.flex-row.align-center.justify-end(@click="clear")

@@ -104,7 +104,9 @@
 												value="false",
 												width="140px",
 											) 
-												span Complementar		
+												span Complementar
+									v-col.pa-0
+										span.v-messages.theme--light.error--text.v-messages__message {{ errorMessage(grupoRequisito.obrigatorio, true) }}				
 							v-row
 								v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
 									a#QA-limpar-dados-requisito-tecnico.d-flex.flex-row.align-center.justify-end(@click="clear")
@@ -209,10 +211,10 @@ export default {
 					return 'Obrigatório';
 				}
 
-				return this.errorMessageEmpty || value || (this.dadosListagem.length > 0) ? [] : 'Obrigatório';
+				return this.errorMessageEmpty || value || (this.dadosListagem.length > 0) ? '' : 'Obrigatório';
 			}
 
-			return this.errorMessageEmpty || value ? [] : 'Obrigatório';
+			return this.errorMessageEmpty || value ? '' : 'Obrigatório';
 
 		},
 

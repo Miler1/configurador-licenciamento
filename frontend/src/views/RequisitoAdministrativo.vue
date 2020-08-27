@@ -208,7 +208,7 @@ export default {
 		},
 
 		errorMessage(value) {
-			return this.errorMessageEmpty || value ? [] : 'Obrigatório';
+			return this.errorMessageEmpty || value ? '' : 'Obrigatório';
 		},
 
 		gerarRelatorio() {
