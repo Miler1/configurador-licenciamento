@@ -74,7 +74,7 @@ public class DocumentoController extends DefaultController {
 
     }
 
-    @RequestMapping(method = RequestMethod.POST, value="/findAll")
+    @PostMapping(value="/findAll")
     public ResponseEntity<List<Documento>> findAll(HttpServletRequest request) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
@@ -82,12 +82,12 @@ public class DocumentoController extends DefaultController {
         List<Documento> documentos = documentoService.findAll();
 
         return ResponseEntity.ok()
-                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
                 .body(documentos);
 
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/editar")
+    @PostMapping(value = "/editar")
     public ResponseEntity <Documento> editar(HttpServletRequest request,
                                              @Valid @RequestBody DocumentoDTO documentoDTO) throws Exception{
 
@@ -96,7 +96,7 @@ public class DocumentoController extends DefaultController {
         Documento documento = documentoService.editar(request, documentoDTO);
 
         return ResponseEntity.ok()
-                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
                 .body(documento);
     }
 

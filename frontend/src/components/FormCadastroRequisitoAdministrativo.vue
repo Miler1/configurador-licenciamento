@@ -49,7 +49,7 @@
 					input(type="radio" value="PF" v-model="requisitoAdministrativo.tipoPessoa")
 					| &nbsp;Física
 
-					input.radio-inline(type="radio" value="PJ" v-model="requisitoAdministrativo.tipoPessoa")
+					input.ml-3(type="radio" value="PJ" v-model="requisitoAdministrativo.tipoPessoa")
 					| &nbsp;Jurídica
 
 				v-col(cols="9", md="3")
@@ -135,3 +135,13 @@ export default {
 };
 
 </script>
+
+<style lang="less">
+
+.theme--light.v-list-item .v-list-item__mask{
+
+	color:white;
+	background: #65afef;;
+	
+}
+</style>
