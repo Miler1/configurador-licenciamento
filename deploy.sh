@@ -133,10 +133,10 @@ test)
 
 	echo -e "--> FAZENDO DEPLOY DA APLICAÇÃO NO AMBIENTE DE TESTES\n\n\n"
 
-	echo -e "|--------------------------------|\n"
-	echo -e "|--------- HOME OFFICE? ---------|\n"
-	echo -e "|------ ESTEJA NA VPN UFLA ------|\n"
-	echo -e "|--------------------------------|\n\n\n"
+	echo -e "|--------------------------------|"
+	echo -e "|--------- HOME OFFICE? ---------|"
+	echo -e "|------ ESTEJA NA VPN UFLA ------|"
+	echo -e "|--------------------------------|\n\n"
 
 	server_ssh=$test_server_host
 	server_pass=$test_server_passwd
