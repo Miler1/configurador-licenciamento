@@ -6,7 +6,7 @@
 			v-expansion-panel
 				v-expansion-panel-header
 					div.d-flex.flex-row.align-center.justify-start
-						span.align-baseline Requisito
+						span.align-baseline Grupo de requisito técnico
 					template(v-slot:actions)
 						v-icon
 				v-expansion-panel-content
@@ -41,7 +41,7 @@
 			v-expansion-panel
 				v-expansion-panel-header
 					div.d-flex.flex-row.align-center.justify-start
-						span.align-baseline Requisitos Técnicos para Solicitação de Licenciamento
+						span.align-baseline Requisito técnico para solicitação de licenciamento
 					template(v-slot:actions)
 						v-icon
 				v-expansion-panel-content
@@ -89,18 +89,19 @@
 									v-col.pa-0
 										v-label Tipo do requisito
 									v-col.pa-0
-										v-btn-toggle#QA-btn-toggle-requisito(
+										v-btn-toggle#QA-btn-toggle-requisito-tecnico(
 												v-model="grupoRequisito.obrigatorio",
-												tile,
 												color="green lighten-4", 
 											)
 											v-btn#QA-btn-requisito-tecnico-basico(
 												value=true,
+												color="white",
 												width="140px",
 											) 
 												span Básico
 											v-btn#QA-btn-requisito-tecnico-complementar(
 												value=false,
+												color="white",
 												width="140px",
 											) 
 												span Complementar		
@@ -110,11 +111,11 @@
 										v-icon mdi-delete
 										span Limpar dados
 								
-									v-btn#QA-btn-incluir-requisito.btn-cadastrar(@click="incluirDados", large, v-if="isInclusao")
-										v-icon(color="white") mdi-plus
-										span Incluir
+									v-btn#QA-btn-adicionar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
+										v-icon(color="#84A98C") mdi-plus
+										span Adicionar
 								
-									v-btn#QA-btn-incluir-requisito.btn-cadastrar(@click="incluirDados", large, v-if="!isInclusao")
+									v-btn#QA-btn-editar-requisito-tecnico.btn-cadastrar(@click="incluirDados", large, v-if="!isInclusao")
 										v-icon(color="white") mdi-pencil
 										span Editar
 
@@ -178,7 +179,7 @@ export default {
 			licencas: [],
 			errorMessageEmpty: true,
 			errorMessageEmptyInclusao: true,
-			tituloListagem: "Listagem de dados vinculados",
+			tituloListagem: "Listagem de documentos adicionados para este grupo",
 			headerListagem: HEADER,
 			dadosListagem: [],
 			labelBotaoCadastrarEditar: 'Cadastrar',
@@ -470,6 +471,7 @@ export default {
 	.v-icon {
 		font-size: 20px !important;
 	}
+
 }
 
 .btn-cadastrar {
@@ -501,11 +503,7 @@ export default {
 	}
 
 	.v-btn {
-		background-color: @green-primary !important;
-		color: @bg-text-field !important;
 		font-size: 16px;
-		height: auto;
-		padding: 12px 20px !important;
 		text-transform: none !important;
 	}
 
@@ -524,12 +522,12 @@ export default {
 	}
 }
 
-	.v-input--is-disabled{
-		pointer-events: auto !important;
+.v-input--is-disabled{
+	pointer-events: auto !important;
 
-		.v-input__slot{
-			cursor: not-allowed !important;
-		}
+	.v-input__slot{
+		cursor: not-allowed !important;
 	}
+}
 
 </style>

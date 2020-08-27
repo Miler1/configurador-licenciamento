@@ -354,7 +354,10 @@ export default {
 			ParametroService.listar(parametrosFiltro)
 
 				.then((response) => {
+
 					this.dadosListagem = response.data;
+					this.dadosListagem.nomeItem = "parâmetros";
+
 				})
 				.catch(error => {
 

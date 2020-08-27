@@ -69,25 +69,24 @@
 					v-col.pa-0
 						v-label Tipo do requisito
 					v-col.pa-0
-						v-btn-toggle#QA-btn-toggle-requisito(
+						v-btn-toggle#QA-btn-toggle-requisito-administrativo(
 								v-model="requisitoAdministrativo.obrigatorio",
-								tile,
 								color="green lighten-4", 
 							)
 							v-btn#QA-btn-requisito-administrativo-basico(
 								value=true,
+								color="white",
 								width="140px",
 							) 
 								span Básico
 							v-btn#QA-btn-requisito-administrativo-complementar(
 								value=false,
+								color="white",
 								width="140px",
 							) 
 								span Complementar
-
 					v-col.pa-0
 						span.v-messages.theme--light.error--text.v-messages__message {{ this.requisitoAdministrativo.obrigatorio === null && this.errorMessage().length ? this.errorMessage() : "" }}
-
 			v-row
 				v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
 					a#QA-limpar-dados-requisito-administrativo.d-flex.flex-row.align-center.justify-end(@click="clear")

@@ -4,11 +4,12 @@
 	b.titulo-listagem {{ tituloListagem }}
 
 	template
-		v-data-table.elevation-1(:headers="headers",
+		v-data-table.elevation-1(
+				:headers="headers",
 				:items='dadosListagem',
 				hide-default-footer,
-				@update:options="sortBy")
-
+				@update:options="sortBy"
+			)
 			template(v-slot:item.obrigatorio='{ item }')
 				span {{item.obrigatorio=='true' ? 'Básico' : 'Complementar'}}
 
@@ -19,7 +20,7 @@
 					| mdi-close-circle
 
 			template(v-slot:no-data)
-				span Não existem registros incluídos.
+				span Não existem registros a serem exibidos.
 
 </template>
 

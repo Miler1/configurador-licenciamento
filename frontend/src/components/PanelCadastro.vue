@@ -106,8 +106,6 @@ export default {
 			background-color: @green-primary !important;
 			color: @bg-text-field !important;
 			font-size: 16px;
-			height: auto;
-			padding: 12px 20px !important;
 			text-transform: none !important;
 		}
 

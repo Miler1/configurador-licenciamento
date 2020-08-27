@@ -4,29 +4,42 @@
 	b.titulo-listagem {{ tituloListagem }}
 	v-row
 		v-col(cols='12' md='6')
-			v-text-field#QA-input-pesquisar(outlined,
-			v-model="parametrosFiltro.stringPesquisa"
-			:placeholder="placeholderPesquisa",
-			prepend-inner-icon="mdi-magnify",
-			color="#E0E0E0",
-			dense,
-			@input='inputPesquisa')
-
+			v-text-field#QA-input-pesquisar(
+				outlined,
+				v-model="parametrosFiltro.stringPesquisa"
+				:placeholder="placeholderPesquisa",
+				prepend-inner-icon="mdi-magnify",
+				color="#E0E0E0",
+				dense,
+				@input='inputPesquisa'
+			)
 		v-col(cols='12' md='6')
-			v-btn#QA-btn-abrir-cadastro.float-right.ml-4( @click="abrirTelaCadastro", large, dark, color="#84A98C", v-if="buttonCadastrar")
+			v-btn#QA-btn-abrir-cadastro.float-right.ml-4(
+					@click="abrirTelaCadastro",
+					large,
+					dark,
+					color="#84A98C",
+					v-if="buttonCadastrar"
+				)
 				v-icon.font-cadastrar mdi-plus
 				span.font-cadastrar Cadastrar
-			v-btn#QA-btn-gerar-relatorio.float-right(@click="gerarRelatorio", large, outlined, color="#84A98C")
+			v-btn#QA-btn-gerar-relatorio.float-right(
+					@click="gerarRelatorio",
+					large,
+					outlined,
+					color="#84A98C"
+				)
 				v-icon mdi-download
 				span Gerar relatório
 			
-
 	template
-		v-data-table.elevation-1(:headers="headers",
+		v-data-table.elevation-1(
+				:headers="headers",
 				:items='dadosListagem.content',
 				hide-default-footer,
 				:items-per-page="itensPerPage",
-				@update:options="sortBy")
+				@update:options="sortBy"
+			)
 
 			template#text-align-center(v-slot:item.validadeEmAnos='{ item }')
 				span {{item.validadeEmAnos ? item.validadeEmAnos : ' ‒'}}
@@ -53,26 +66,30 @@
 					span {{item.ativo ? 'Ativar ' + tituloAba: 'Desativar ' + tituloAba}}
 
 			template(v-slot:no-data)
-				span Não existem registros a serem exibidos.
+				span Não existem {{dadosListagem.nomeItem}} a serem exibidos.
 
 			template(v-slot:footer, v-if="dadosListagem.numberOfElements > 0")
 				v-row
 					v-col(cols='12' md='8')
-						v-pagination.float-left(v-model="page"
+						v-pagination.float-left(
+								v-model="page"
 								:length="dadosListagem.totalPages"
 								:page="page"
 								:total-visible="totalVisible",
 								@input="input",
-								color="#84A98C")
+								color="#84A98C"
+							)
 						span.float-left.exibicao-paginas.mt-4
 							| Exibindo {{dadosListagem.numberOfElements}} de {{dadosListagem.totalElements}} registros
 
 					v-col.flex-row.mt-3(cols='12' md='4')
-						v-select.float-right.d-inline-flex.mx-4.w-80(:items="itensPerPages", 
+						v-select.float-right.d-inline-flex.mx-4.w-80(
+								:items="itensPerPages", 
 								solo, 
 								dense, 
 								@input="changeValue", 
-								v-model="itensPerPage")
+								v-model="itensPerPage"
+							)
 						span.float-right.exibicao-paginas.mt-2.ml-1
 							| Resultados por página
 

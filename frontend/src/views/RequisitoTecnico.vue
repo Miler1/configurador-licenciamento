@@ -39,8 +39,8 @@ export default {
 	data: () => {
 		return {
 			tituloAba: "requisito técnico",
-			tituloListagem: "Listagem de requisitos técnicos cadastrados",
-			placeholderPesquisa: "Pesquisar por código ou descrição do requisito",
+			tituloListagem: "Listagem de grupos de requisitos técnicos cadastrados",
+			placeholderPesquisa: "Pesquisar por código ou descrição do grupo de requisito",
 			headerListagem: HEADER,
 			dadosListagem: {},
 			parametrosFiltro: {
@@ -64,7 +64,10 @@ export default {
 			RequisitoTecnicoService.listar(parametrosFiltro)
 
 				.then((response) => {
+
 					this.dadosListagem = response.data;
+					this.dadosListagem.nomeItem = "grupos de requisitos";
+
 				})
 				.catch(erro => {
 
