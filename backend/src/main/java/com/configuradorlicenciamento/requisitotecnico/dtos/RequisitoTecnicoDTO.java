@@ -11,6 +11,8 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RequisitoTecnicoDTO {
 
+    private Integer id;
+
     @NotNull(message = "{validacao.notnull}")
     @NotBlank(message = "{validacao.notBlank}")
     private String codigo;

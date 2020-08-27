@@ -53,9 +53,11 @@ const ERROR_MESSAGES = {
 	},
 
 	requisitoTecnico: {
-		cadastro: ER_BASE + 'cadastrar o requisito técnico.',
-		editar: ER_BASE + 'editar o requisito técnico.',
-		listagem: ER_BASE + 'listar os tequisitos técnicos',
+		cadastro: ER_BASE + 'cadastrar o requisito técnico. ',
+		editar: ER_BASE + 'editar o requisito técnico. ',
+		listagem: ER_BASE + 'listar os tequisitos técnicos. ',
+		ativar: ER_BASE + 'ativar o requisito técnico. ',
+		desativar: ER_BASE + 'desativar o requisito técnico. ',
 	}
 };
 
@@ -87,6 +89,11 @@ const SUCCESS_MESSAGES = {
 	documento: {
 		ativar: 'Sucesso! O documento foi ativado.',
 		desativar: 'Sucesso! O documento foi desativado.',
+	},
+
+	requisitoTecnico: {
+		ativar: 'Sucesso! O requisito técnico foi ativado.',
+		desativar: 'Sucesso! O requisito técnico foi desativado.',
 	}
 	
 };

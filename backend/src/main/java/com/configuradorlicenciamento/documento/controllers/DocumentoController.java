@@ -74,7 +74,7 @@ public class DocumentoController extends DefaultController {
 
     }
 
-    @RequestMapping(method = RequestMethod.POST, value="/findAll")
+    @GetMapping( value="/findAll")
     public ResponseEntity<List<Documento>> findAll(HttpServletRequest request) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
@@ -87,7 +87,7 @@ public class DocumentoController extends DefaultController {
 
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/editar")
+    @PostMapping(value = "/editar")
     public ResponseEntity <Documento> editar(HttpServletRequest request,
                                              @Valid @RequestBody DocumentoDTO documentoDTO) throws Exception{
 
