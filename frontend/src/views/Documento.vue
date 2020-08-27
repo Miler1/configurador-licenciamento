@@ -54,7 +54,7 @@ export default {
 	data: () => {
 		return {
 			tituloAba: "documento",
-			tituloListagem: 'Listagem de documentos',
+			tituloListagem: 'Listagem de documentos cadastrados',
 			placeholderPesquisa: "Pesquisar pelo nome do documento ou nome para exibição",
 			headerListagem: HEADER,
 			dadosListagem: {},
@@ -77,7 +77,7 @@ export default {
 				items: 1,
 				panel: [],
 				readonly: true,
-				title: "Cadastro de documentos",
+				title: "Cadastro de documento",
 				iconName:'fa fa-file-text-o',
 				tipo: "cadastro"
 			}
@@ -106,7 +106,7 @@ export default {
 
 		resetaDadosCadastro() {
 
-			this.dadosPanel.title = "Cadastro de Documentos";
+			this.dadosPanel.title = "Cadastro de documento";
 			this.labelBotaoCadastrarEditar = "Cadastrar";
 			this.dadosPanel.tipo = "cadastro";
 			this.iconBotaoCadastrarEditar = "mdi-plus";
