@@ -101,9 +101,13 @@
 										v-icon mdi-delete
 										span Limpar dados
 								
-									v-btn#QA-btn-cadastrar-requisito.btn-cadastrar(@click="incluirDados", large)
+									v-btn#QA-btn-cadastrar-requisito.btn-cadastrar(@click="incluirDados", large, v-if="isInclusao")
 										v-icon(color="white") mdi-plus
 										span Incluir
+								
+									v-btn#QA-btn-cadastrar-requisito.btn-cadastrar(@click="incluirDados", large, v-if="!isInclusao")
+										v-icon(color="white") mdi-pencil
+										span Editar
 
 		GridListagemInclusao.px-7(
 			:tituloListagem="tituloListagem",
@@ -184,7 +188,13 @@ export default {
 		},
 
 		errorMessage(value, isVinculacao) {
+
 			if(isVinculacao) {
+
+				if (!this.isInclusao && Array.isArray(value)) {
+					return 'Este campo não permite ser editado';
+				}
+
 				return this.errorMessageEmptyInclusao || value || (this.dadosListagem.length > 0) ? [] : 'Obrigatório';
 			}
 			return this.errorMessageEmpty || value ? [] : 'Obrigatório';
@@ -201,12 +211,10 @@ export default {
 
 		clear() {
 
-			if(this.isInclusao){
-				this.grupoRequisito.licencas = null;
-			}
-
+			this.grupoRequisito.licencas = null;
 			this.grupoRequisito.documento = null;
 			this.grupoRequisito.obrigatorio = null;
+			this.isInclusao = true;
 
 		},
 
@@ -491,6 +499,14 @@ export default {
 
 		.v-icon {
 			font-size: 20px !important;
+		}
+	}
+
+	.v-input--is-disabled{
+		pointer-events: auto !important;
+
+		.v-input__slot{
+			cursor: not-allowed !important;
 		}
 	}
 
