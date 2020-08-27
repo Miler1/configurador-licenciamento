@@ -97,13 +97,11 @@
 											v-btn#QA-btn-requisito-tecnico-basico(
 												value=true,
 												width="140px",
-												dense
 											) 
 												span Básico
 											v-btn#QA-btn-requisito-tecnico-complementar(
 												value=false,
 												width="140px",
-												dense
 											) 
 												span Complementar		
 							v-row
@@ -297,8 +295,8 @@ export default {
 				.then(() => {
 					this.handleSuccess();
 				})
-				.catch(erro => {
-					this.handleError(erro);
+				.catch(error => {
+					this.handleError(error);
 				});
 
 		},
@@ -310,8 +308,8 @@ export default {
 				.then(() => {
 					this.handleSuccess(true);
 				})
-				.catch(erro => {
-					this.handleError(erro, true);
+				.catch(error => {
+					this.handleError(error, true);
 				});
 
 		},
@@ -516,7 +514,10 @@ export default {
 	}
 }
 
-.v-btn--active {
+.theme--light.v-btn-toggle > .v-btn.v-btn.v-btn--active {
+
+	border-color: @green-primary !important;
+	border-left-width: 1px !important;
 
 	span {
 		color: @green-primary !important;
