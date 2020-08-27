@@ -1,5 +1,5 @@
 const HEADER = [
-	{ text: 'Descrição do Requisito', value: 'documento.nome' },
+	{ text: 'Documento', value: 'documento.nome' },
 	{ text: 'Licença', value: 'licenca.sigla', width: '100px'},
 	{ text: 'Pessoa', value: 'tipoPessoa', width: '100px'},
 	{ text: 'Tipo do Requisito', value: 'obrigatorio', width: '145px'}, //Basico é obrigatorio

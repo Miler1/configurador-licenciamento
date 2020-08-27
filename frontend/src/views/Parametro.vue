@@ -18,6 +18,7 @@
 			)
 		
 		GridListagem.pa-7(
+			:tituloAba="tituloAba",
 			:tituloListagem="tituloListagem",
 			:placeholderPesquisa="placeholderPesquisa",
 			:gerarRelatorio="gerarRelatorio",
@@ -40,7 +41,7 @@ import RelatorioService from '../services/relatorio.service';
 import GridListagem from '@/components/GridListagem';
 import { SET_SNACKBAR } from '@/store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
-import { HEADER } from '@/utils/dadosMockados/ListagemParametroHeader';
+import { HEADER } from '@/utils/dadosHeader/ListagemParametroHeader';
 
 export default {
 
@@ -56,6 +57,7 @@ export default {
 		return {
 			errorMessageEmpty: true,
 			isCadastro: true,
+			tituloAba: "parâmetro",
 			tituloListagem: "Listagem de parâmetros cadastrados",
 			placeholderPesquisa: "Pesquisar por código ou descrição do parâmetro",
 			labelBotaoCadastrarEditar: "Cadastrar",
@@ -80,6 +82,7 @@ export default {
 				readonly: true,
 				title: "Cadastro de parâmetros",
 				iconName:'fa fa-sliders',
+				tipo: "cadastro"
 			},
 		};
 	},
@@ -101,6 +104,7 @@ export default {
 
 			this.dadosPanel.title = "Cadastro de parâmetros";
 			this.dadosPanel.iconName = "fa fa-sliders";
+			this.dadosPanel.tipo = "cadastro";
 			this.labelBotaoCadastrarEditar = "Cadastrar";
 			this.iconBotaoCadastrarEditar = "mdi-plus";
 			this.isCadastro = true;
@@ -171,8 +175,7 @@ export default {
 				&& this.parametro.codigo != ''
 				&& this.parametro.nome
 				&& this.parametro.nome != ''
-				&& this.parametro.casasDecimais
-				&& this.parametro.casasDecimais != ''
+				&& this.parametro.casasDecimais !== null
 				&& this.validarCasasDecimais();
 				
 		},
@@ -187,7 +190,7 @@ export default {
 
 		codigoErrorMessage(casasDecimais) {
 			
-			let msgSomenteInteiros = 'Este campo permite apenas números inteiros e maiores e iguais a 0';
+			let msgSomenteInteiros = 'Este campo permite apenas números inteiros e maiores ou iguais a 0';
 		
 			if (this.errorMessageEmpty && casasDecimais && casasDecimais != '') {
 
@@ -256,6 +259,7 @@ export default {
 
 			this.dadosPanel.panel = [0];
 			this.dadosPanel.title = "Editar parâmetro";
+			this.dadosPanel.tipo = "edição";
 			this.labelBotaoCadastrarEditar = "Editar";
 			this.iconBotaoCadastrarEditar = "mdi-pencil";
 			this.parametro = { ... item};

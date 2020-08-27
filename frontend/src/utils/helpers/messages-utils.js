@@ -46,16 +46,24 @@ const ERROR_MESSAGES = {
 
 	requisitoAdministrativo: {
 		cadastro: ER_BASE + 'cadastrar o requisito administrativo. ',
-		listagem: ER_BASE + 'listar os requisito administrativo. ',
+		listagem: ER_BASE + 'listar os requisitos administrativos. ',
+		editar: ER_BASE + 'editar o requisito administrativo. ',
+		ativar: ER_BASE + 'ativar o requisito administrativo. ',
+		desativar: ER_BASE + 'desativar o requisito administrativo. ',
 	},
 
 	requisitoTecnico: {
-		listagem: ER_BASE + 'listar os requisitos técnicos. ',
+		cadastro: ER_BASE + 'cadastrar o requisito técnico. ',
+		editar: ER_BASE + 'editar o requisito técnico. ',
+		listagem: ER_BASE + 'listar os tequisitos técnicos. ',
+		ativar: ER_BASE + 'ativar o requisito técnico. ',
+		desativar: ER_BASE + 'desativar o requisito técnico. ',
 	},
 
 	taxa: {
 		listagem: ER_BASE + 'listar as taxas. ',
 	}
+
 };
 
 const SUCCESS_MESSAGES = {
@@ -86,6 +94,11 @@ const SUCCESS_MESSAGES = {
 	documento: {
 		ativar: 'Sucesso! O documento foi ativado.',
 		desativar: 'Sucesso! O documento foi desativado.',
+	},
+
+	requisitoTecnico: {
+		ativar: 'Sucesso! O requisito técnico foi ativado.',
+		desativar: 'Sucesso! O requisito técnico foi desativado.',
 	}
 	
 };

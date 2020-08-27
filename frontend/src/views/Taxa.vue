@@ -3,6 +3,7 @@
 	v-container
         
 		GridListagem.pa-7(
+			:tituloAba="tituloAba"
 			:tituloListagem="tituloListagem",
 			:placeholderPesquisa="placeholderPesquisa",
 			:gerarRelatorio="gerarRelatorio",
@@ -10,7 +11,6 @@
 			:dadosListagem="dadosListagem",
 			:updatePagination="updatePagination",
 			:editarItem="editarItem",
-			:ativarDesativarItem="ativarDesativarItem",
 			:parametrosFiltro="parametrosFiltro"
 		)
 
@@ -35,6 +35,7 @@ export default {
 
 	data: () => {
 		return {
+			tituloAba:' taxa',
 			tituloListagem: 'Listagem de taxas cadastradas',
 			placeholderPesquisa: "Pesquisar pelo código ou descrição",
 			headerListagem: HEADER,

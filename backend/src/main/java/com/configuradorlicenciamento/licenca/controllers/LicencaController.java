@@ -74,7 +74,7 @@ public class LicencaController extends DefaultController {
 
     }
 
-    @GetMapping("/relatorio")
+    @GetMapping(value = "/relatorio")
     public void relatorioCSV(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
@@ -89,7 +89,7 @@ public class LicencaController extends DefaultController {
 
     }
 
-    @PostMapping("/findAll")
+    @GetMapping(value = "/findAll")
     public ResponseEntity<List<Licenca>> findAll(HttpServletRequest request) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
@@ -97,7 +97,7 @@ public class LicencaController extends DefaultController {
         List<Licenca> licencas = licencaService.findAll();
 
         return ResponseEntity.ok()
-                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
                 .body(licencas);
 
     }

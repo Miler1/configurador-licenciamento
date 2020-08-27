@@ -17,6 +17,7 @@
 			)
 
 		GridListagem.pa-7(
+			:tituloAba="tituloAba",
 			:tituloListagem="tituloListagem",
 			:placeholderPesquisa="placeholderPesquisa",
 			:gerarRelatorio="gerarRelatorio",
@@ -39,7 +40,7 @@ import TipologiaService from '../services/tipologia.service';
 import RelatorioService from '../services/relatorio.service';
 import { SET_SNACKBAR } from '../store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
-import { HEADER } from '@/utils/dadosMockados/ListagemTipologiaHeader';
+import { HEADER } from '@/utils/dadosHeader/ListagemTipologiaHeader';
 
 export default {
 
@@ -53,6 +54,7 @@ export default {
 
 	data: () => {
 		return {
+			tituloAba: "tipologia",
 			tituloListagem: "Listagem de tipologias cadastradas",
 			placeholderPesquisa: "Pesquisar pelo nome da tipologia",
 			headerListagem: HEADER,
@@ -76,6 +78,7 @@ export default {
 				readonly: true,
 				title: "Cadastro de tipologia",
 				iconName:'mdi-format-list-bulleted-square',
+				tipo: "cadastro"
 			},
 			labelBotaoCadastrarEditar: "Cadastrar",
 			iconBotaoCadastrarEditar: "mdi-plus"
@@ -143,6 +146,7 @@ export default {
 
 			this.dadosPanel.title = "Cadastro de tipologia";
 			this.dadosPanel.iconName = "mdi-format-list-bulleted-square";
+			this.dadosPanel.tipo = "cadastro";
 			this.labelBotaoCadastrarEditar = "Cadastrar";
 			this.iconBotaoCadastrarEditar = "mdi-plus";
 			this.isCadastro = true;
@@ -219,6 +223,7 @@ export default {
 			
 			this.dadosPanel.panel = [0];
 			this.dadosPanel.title = "Editar tipologia";
+			this.dadosPanel.tipo = "edição";
 			this.labelBotaoCadastrarEditar = "Editar";
 			this.iconBotaoCadastrarEditar = "mdi-pencil";
 			this.tipologia = { ... item};

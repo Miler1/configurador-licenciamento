@@ -37,7 +37,7 @@ public class DocumentoCsv implements Serializable {
 
     public DocumentoCsv(Documento documento) {
 
-        this.nome = documento.getNome();
+        this.nome = documento.getNome().replace("–", "-");
         this.nomeExibicao = documento.getPrefixoNomeArquivo();
         this.status = documento.getAtivo() ? "Ativo" : "Inativo";
         this.dataCadastro = documento.getDataCadastro() != null ? DateUtil.formataBrSimples(documento.getDataCadastro()) : "-";

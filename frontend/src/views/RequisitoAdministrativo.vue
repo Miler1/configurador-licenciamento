@@ -13,10 +13,12 @@
 				:resetErrorMessage="resetErrorMessage",
 				:errorMessage="errorMessage",
 				:labelBotaoCadastrarEditar="labelBotaoCadastrarEditar",
-				:iconBotaoCadastrarEditar="iconBotaoCadastrarEditar"
+				:iconBotaoCadastrarEditar="iconBotaoCadastrarEditar",
+				:cadastro="isCadastro"
 			)
 
 		GridListagem.pa-7(
+			:tituloAba="tituloAba",
 			:tituloListagem="tituloListagem",
 			:placeholderPesquisa="placeholderPesquisa",
 			:gerarRelatorio="gerarRelatorio",
@@ -40,7 +42,7 @@ import RelatorioService from '../services/relatorio.service';
 import GridListagem from '@/components/GridListagem';
 import { SET_SNACKBAR } from '@/store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
-import { HEADER } from '@/utils/dadosMockados/ListagemRequisitoAdministrativoHeader';
+import { HEADER } from '@/utils/dadosHeader/ListagemRequisitoAdministrativoHeader';
 
 export default {
 
@@ -54,8 +56,9 @@ export default {
 
 	data: () => {
 		return {
+			tituloAba: "requisito administrativo",
 			tituloListagem: 'Listagem de requisitos administrativos',
-			placeholderPesquisa: "Pesquisar pelo nome do requisito",
+			placeholderPesquisa: "Pesquisar pelo nome do documento ou tipo licença",
 			dadosListagem: {},
 			labelBotaoCadastrarEditar: "Cadastrar",
 			iconBotaoCadastrarEditar: "mdi-plus",
@@ -81,7 +84,7 @@ export default {
 				readonly: true,
 				title: "Cadastro de requisitos administrativos",
 				iconName:'fa fa-file-text-o',
-
+				tipo: "cadastro"
 			},
 		};
 	},
@@ -113,6 +116,7 @@ export default {
 		resetaDadosCadastro() {
 
 			this.dadosPanel.title = "Cadastro de requisitos administrativos";
+			this.dadosPanel.tipo = "cadastro";
 			this.labelBotaoCadastrarEditar = "Cadastrar";
 			this.iconBotaoCadastrarEditar = "mdi-plus";
 			this.isCadastro = true;
@@ -123,10 +127,10 @@ export default {
 
 			if (this.checkForm()) {
 
-				if(this.isCadastro) {
+				if (this.isCadastro) {
 					this.cadastrar();
 				} else {
-					// Edição
+					this.editar();
 				}
 
 			} else {
@@ -142,10 +146,22 @@ export default {
 				.then(() => {
 					this.handleSuccess();
 				})
-				.catch(erro => {
-					this.handleError(erro);
+				.catch(error => {
+					this.handleError(error, true);
 				});
 
+		},
+
+		editar() {
+
+			RequisitoAdministrativoService.editar(this.requisitoAdministrativo)
+
+				.then(() => {
+					this.handleSuccess();
+				})
+				.catch(error => {
+					this.handleError(error, true);
+				});
 		},
 
 		handleError(error, edicao = false) {
@@ -161,24 +177,21 @@ export default {
 
 		handleSuccess(edicao = false) {
 
-			let message = edicao ? SUCCESS_MESSAGES.edicao : SUCCESS_MESSAGES.cadastro;
+			let message = edicao ? SUCCESS_MESSAGES.requisitoAdministrativo.editar : SUCCESS_MESSAGES.cadastro;
 
 			this.$store.dispatch(SET_SNACKBAR,
 				{color: 'success', text: message, timeout: '6000'}
 			);
 
-			this.clear();
+			if(edicao) this.dadosPanel.panel = [];
 
-			// Descomentar quando fizer a edição
+			this.clear();
+			this.resetaDadosFiltragem();
 			this.updatePagination();
-			// this.resetaDadosFiltragem();
+			this.clear();
 
 			if(edicao) this.dadosPanel.panel = [];
 
-		},
-
-		gerarRelatorio() {
-			RelatorioService.baixarRelatorio("/parametro/relatorio");
 		},
 
 		checkForm() {
@@ -204,9 +217,65 @@ export default {
 
 		editarItem(item) {
 
+			this.dadosPanel.panel = [0];
+			this.dadosPanel.title = "Editar requisito administrativo";
+			this.dadosPanel.tipo = "edição";
+			this.labelBotaoCadastrarEditar = "Editar";
+			this.iconBotaoCadastrarEditar = "mdi-pencil";
+			this.requisitoAdministrativo = { ... item};
+			this.requisitoAdministrativo.licencas = [item.licenca];
+			this.isCadastro = false;
+			window.scrollTo(0,0);
+
 		},
 
 		ativarDesativarItem(item) {
+
+			this.$fire({
+
+				title: item.ativo ?
+					'<p class="title-modal-confirm">Desativar Requisito Administrativo - ' + item.documento.nome + '</p>' :
+					'<p class="title-modal-confirm">Ativar Requisito Administrativo - ' + item.documento.nome + '</p>',
+
+				html: item.ativo ?
+					`<p class="message-modal-confirm">Ao desativar o requisito, ele não estará mais disponível no sistema.</p>
+					<p class="message-modal-confirm">
+						<b>Tem certeza que deseja desativar o requisito? Esta opção pode ser desfeita a qualquer momento ao ativá-lo novamente.</b>
+					</p>` :
+					`<p class="message-modal-confirm">Ao ativar o requisito, ele ficará disponível no sistema.</p>
+					<p class="message-modal-confirm">
+						<b>Tem certeza que deseja ativar o requisito? Esta opção pode ser desfeita a qualquer momento ao desativá-lo novamente.</b>
+					</p>`,
+				showCancelButton: true,
+				confirmButtonColor: item.ativo ? '#E6A23C' : '#67C23A',
+				cancelButtonColor: '#FFF',
+				showCloseButton: true,
+				focusConfirm: false,
+				confirmButtonText: item.ativo ? '<i class="fa fa-minus-circle"></i> Desativar' : '<i class="fa fa-check-circle"></i> Ativar',
+				cancelButtonText: '<i class="fa fa-close"></i> Cancelar',
+				reverseButtons: true
+
+			}).then((result) => {
+
+				if(result.value) {
+
+					item.ativo = !item.ativo;
+
+					RequisitoAdministrativoService.editar(item)
+						.then(() => {
+							
+							this.handleSuccess();
+
+						})
+						.catch(error => {
+
+							this.handleError(error, true);
+
+						});
+				}
+			}).catch((error) => {
+				console.error(error);
+			});
 
 		},
 
@@ -217,12 +286,12 @@ export default {
 				.then((response) => {
 					this.dadosListagem = response.data;
 				})
-				.catch(erro => {
+				.catch(error => {
 
-					console.error(erro);
+					console.error(error);
 
 					this.$store.dispatch(SET_SNACKBAR,
-						{color: 'error', text: ERROR_MESSAGES.parametro.listagem + ': ' + erro.message, timeout: '6000'}
+						{color: 'error', text: ERROR_MESSAGES.requisitoAdministrativo.listagem + erro.message, timeout: '6000'}
 					);
 
 				});

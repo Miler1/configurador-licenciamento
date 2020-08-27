@@ -24,8 +24,6 @@ export default {
 
 	},
 
-	findAll: async () => { return ApiService.post(`licenca/findAll`);
-
-}
+	findAll: async () => ApiService.get(`licenca/findAll`)
 
 };

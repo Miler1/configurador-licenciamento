@@ -1,4 +1,4 @@
-package com.configuradorlicenciamento.requisitoAdministrativo.controllers;
+package com.configuradorlicenciamento.requisitoadministrativo.controllers;
 
 import com.configuradorlicenciamento.configuracao.components.VariaveisAmbientes;
 import com.configuradorlicenciamento.configuracao.controllers.DefaultController;
@@ -7,11 +7,10 @@ import com.configuradorlicenciamento.configuracao.enums.Acao;
 import com.configuradorlicenciamento.configuracao.utils.DateUtil;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.configuracao.utils.csv.CustomMappingStrategy;
-import com.configuradorlicenciamento.licenca.dtos.LicencaCsv;
-import com.configuradorlicenciamento.requisitoAdministrativo.dtos.RequisitoAdministrativoCsv;
-import com.configuradorlicenciamento.requisitoAdministrativo.dtos.RequisitoAdministrativoDTO;
-import com.configuradorlicenciamento.requisitoAdministrativo.interfaces.IRequisitoAdministrativoService;
-import com.configuradorlicenciamento.requisitoAdministrativo.models.RequisitoAdministrativo;
+import com.configuradorlicenciamento.requisitoadministrativo.dtos.RequisitoAdministrativoCsv;
+import com.configuradorlicenciamento.requisitoadministrativo.dtos.RequisitoAdministrativoDTO;
+import com.configuradorlicenciamento.requisitoadministrativo.interfaces.IRequisitoAdministrativoService;
+import com.configuradorlicenciamento.requisitoadministrativo.models.RequisitoAdministrativo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -44,6 +43,19 @@ public class RequisitoAdministrativoController extends DefaultController {
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
                 .body(requisitoAdministrativoList);
+
+    }
+
+    @PostMapping(value="/editar")
+    public ResponseEntity<RequisitoAdministrativo> editar(HttpServletRequest request, @Valid @RequestBody RequisitoAdministrativoDTO requisitoAdministrativoDTO) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        RequisitoAdministrativo requisitoAdministrativo = requisitoAdministrativoService.editar(request, requisitoAdministrativoDTO);
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(requisitoAdministrativo);
 
     }
 

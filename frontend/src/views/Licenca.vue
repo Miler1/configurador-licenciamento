@@ -18,6 +18,7 @@
 			)
 
 		GridListagem.pa-7(
+			:tituloAba="tituloAba",
 			:tituloListagem="tituloListagem",
 			:placeholderPesquisa="placeholderPesquisa",
 			:gerarRelatorio="gerarRelatorio",
@@ -41,7 +42,7 @@ import GridListagem from '@/components/GridListagem';
 import mapFinalidadeEnum from '../utils/helpers/finalidade-helper';
 import { SET_SNACKBAR } from '../store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
-import { HEADER } from '@/utils/dadosMockados/ListagemLicencaHeader';
+import { HEADER } from '@/utils/dadosHeader/ListagemLicencaHeader';
 
 export default {
 
@@ -63,6 +64,7 @@ export default {
 				validadeEmAnos: null,
 				ativo: true
 			},
+			tituloAba: "licenca",
 			tituloListagem: "Listagem de licenças ambientais cadastradas",
 			placeholderPesquisa: "Pesquisar por tipo ou nomenclatura da licença",
 			labelBotaoCadastrarEditar: "Cadastrar",
@@ -82,6 +84,7 @@ export default {
 				readonly: true,
 				title: "Cadastro de licença ambiental",
 				iconName: "mdi-card-account-details",
+				tipo: "cadastro"
 			},
 		};
 	},
@@ -104,6 +107,7 @@ export default {
 
 			this.dadosPanel.title = "Cadastro de licença ambiental";
 			this.dadosPanel.iconName = "mdi-card-account-details";
+			this.dadosPanel.tipo = "cadastro";
 			this.labelBotaoCadastrarEditar = "Cadastrar";
 			this.iconBotaoCadastrarEditar = "mdi-plus";
 			this.isCadastro = true;
@@ -111,10 +115,12 @@ export default {
 		},
 
 		resetaDadosFiltragem() {
+
 			this.parametrosFiltro.pagina = 0;
 			this.parametrosFiltro.itemsPorPagina = 10;
 			this.parametrosFiltro.tipoOrdenacao = 'dataCadastro,desc';
 			this.parametrosFiltro.stringPesquisa = '';
+
 		},
 
 		submit() {
@@ -187,10 +193,9 @@ export default {
 					&& this.licenca.sigla != ''	
 					&& this.licenca.nome 
 					&& this.licenca.nome != '' 
-					&& this.licenca.finalidade 
+					&& this.licenca.finalidade
 					&& this.licenca.finalidade != '' 
-					&& this.licenca.validadeEmAnos 
-					&& this.licenca.validadeEmAnos != ''
+					&& this.licenca.validadeEmAnos !== null
 					&& this.validarPrazo();
 					
 			}
@@ -230,7 +235,7 @@ export default {
 
 			let msgSomenteInteiros = 'Este campo permite apenas números inteiros e maiores ou iguais a 1';
 
-			if (validade && validade != '') {
+			if (this.errorMessageEmpty && validade && validade != '') {
 
 				if (!this.validarPrazo()) {
 					return msgSomenteInteiros;
@@ -254,11 +259,11 @@ export default {
 
 			let er = /^-?[0-9]+$/;
 
-			if (er.test(this.licenca.validade)) {
+			if (er.test(this.licenca.validadeEmAnos)) {
 
-				this.licenca.validade = parseInt(tis.licenca.validade);
+				this.licenca.validadeEmAnos = parseInt(this.licenca.validadeEmAnos);
 
-				return this.licenca.validade > 0;
+				return this.licenca.validadeEmAnos > 0;
 
 			}
 
@@ -316,6 +321,7 @@ export default {
 
 			this.dadosPanel.panel = [0];
 			this.dadosPanel.title = "Editar licença ambiental";
+			this.dadosPanel.tipo = "edição";
 			this.labelBotaoCadastrarEditar = "Editar";
 			this.iconBotaoCadastrarEditar = "mdi-pencil";
 			this.licenca = { ... item};

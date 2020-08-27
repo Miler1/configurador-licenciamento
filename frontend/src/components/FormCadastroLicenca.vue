@@ -48,7 +48,7 @@
 							required,
 						)
 				v-col.d-flex.flex-column.justify-start.pl-0(cols="12", md="9")
-					v-col.pb-0(cols="12", md="8")
+					v-col.pb-0(cols="12", md="12")
 						label Prazo de validade
 					v-col.d-flex.flex-row.justify-start.pt-0(cols="12", md="12")
 						div.d-flex.flex-row

@@ -33,9 +33,10 @@ public class TaxaService implements ITaxaService {
 
         Specification<Taxa> specification = Specification.where(TaxaSpecification.padrao());
 
-//        if(filtro.getStringPesquisa() != null) {
-//            specification = specification.and(TaxaSpecification.codigo(filtro.getStringPesquisa()));
-//        }
+        if(filtro.getStringPesquisa() != null) {
+            specification = specification.and(TaxaSpecification.codigoTaxa(filtro.getStringPesquisa())
+                    .or(TaxaSpecification.descricao(filtro.getStringPesquisa())));
+        }
 
         return specification;
 

@@ -21,6 +21,9 @@ public class CodigoTaxaLicenciamento implements Serializable {
     @Id
     private Integer id;
 
+    @Column(name="codigo")
+    private String codigo;
+
     @Column(name="descricao")
     private String descricao;
 
