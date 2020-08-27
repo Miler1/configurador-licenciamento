@@ -10,7 +10,7 @@ v-navigation-drawer(app v-model='drawer', :mini-variant.sync='mini', dark, color
 	v-list(dense)
 		v-list-item-group(v-model="active", dark, mandatory, color="#fff")
 			template(v-for='item in items')
-				v-list-group(v-if='item.children' :key='item.title' v-model='!item.model' :append-icon="item.model ? 'mdi-chevron-down' : 'mdi-chevron-up'" color="#fff")
+				v-list-group(v-if='item.children' :key='item.title' color="#fff")
 					template(v-slot:activator)
 						v-list-item-icon
 							v-icon(v-if='item.icon.vuetify') {{ item.icon.value }}
