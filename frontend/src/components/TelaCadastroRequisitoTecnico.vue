@@ -104,7 +104,9 @@
 												value="false",
 												width="140px",
 											) 
-												span Complementar		
+												span Complementar
+									v-col.pa-0
+										span.v-messages.theme--light.error--text.v-messages__message {{ errorMessage(grupoRequisito.obrigatorio, true) }}				
 							v-row
 								v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
 									a#QA-limpar-dados-requisito-tecnico.d-flex.flex-row.align-center.justify-end(@click="clear")
@@ -112,7 +114,7 @@
 										span Limpar dados
 								
 									v-btn#QA-btn-adicionar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
-										v-icon(color="#84A98C") mdi-plus
+										v-icon mdi-plus
 										span Adicionar
 								
 									v-btn#QA-btn-editar-requisito-tecnico.btn-cadastrar(@click="incluirDados", large, v-if="!isInclusao")
@@ -209,10 +211,10 @@ export default {
 					return 'Obrigatório';
 				}
 
-				return this.errorMessageEmpty || value || (this.dadosListagem.length > 0) ? [] : 'Obrigatório';
+				return this.errorMessageEmpty || value || (this.dadosListagem.length > 0) ? '' : 'Obrigatório';
 			}
 
-			return this.errorMessageEmpty || value ? [] : 'Obrigatório';
+			return this.errorMessageEmpty || value ? '' : 'Obrigatório';
 
 		},
 
@@ -547,7 +549,7 @@ export default {
 	}
 }
 
-.theme--light.v-btn-toggle > .v-btn.v-btn.v-btn--active {
+.theme--light.v-btn-toggle:not(.v-btn-toggle--group) .v-btn.v-btn.v-btn--active {
 	border-color: @green-primary !important;
 	border-left-width: 1px !important;
 

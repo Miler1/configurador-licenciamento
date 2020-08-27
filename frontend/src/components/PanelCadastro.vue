@@ -8,7 +8,7 @@
 					span.align-baseline {{dadosPanel.title}}
 				
 				template(v-slot:actions)
-					v-btn#QA-btn-expand_cadastrar(@click="abrirPanel", v-if="dadosPanel.panel.length === 0")
+					v-btn#QA-btn-expand_cadastrar(@click="abrirPanel", v-if="dadosPanel.panel.length === 0", color="#84A98C")
 						v-icon(color="white") mdi-plus
 						span Cadastrar	
 					v-tooltip(bottom, v-if="dadosPanel.panel.length > 0")
@@ -54,64 +54,62 @@ export default {
 };
 </script>
 
-<style lang="less" scope>
+<style lang="less">
 
 @import "../assets/css/variaveis.less";
 
-	.v-expansion-panel-header {
-		background-color: @bg-header;
-		color: @text-color;
-		cursor: default;
-		font-size: 21px;
-		height: 70px;
-		padding: 0 20px;
+.v-expansion-panel-header {
+	background-color: @bg-header;
+	color: @text-color;
+	cursor: default;
+	font-size: 21px;
+	height: 70px;
+	padding: 0 20px;
 
-		.v-btn {
-			background-color: @green-primary !important;
-			color: @bg-text-field !important;
-			font-size: 16px;
-			padding: 20px !important;
-			text-transform: none !important;
-		}
+	.v-btn {
+		background-color: @green-primary !important;
+		color: @bg-text-field !important;
+		font-size: 16px;
+		padding: 20px !important;
+		text-transform: none !important;
+	}
 
-		.v-icon {
-			font-size: 20px !important;
+	.v-icon {
+		font-size: 20px !important;
+	}
+}
+
+.v-label {
+	color: @text-color !important;
+}
+
+.v-text-field, .v-checkbox {
+
+	fieldset {
+		border: 1px solid @border-components;
+		border-radius: 2px;
+	}
+}
+
+#form-actions {
+	padding: 0 12px;
+
+	a {
+		margin-right: 20px;
+
+		.v-icon, span {
+			color: @red;
 		}
 	}
 
-	.v-label {
-		color: @text-color !important;
+	.v-btn {
+		font-size: 16px;
+		text-transform: none !important;
 	}
 
-	.v-text-field, .v-checkbox {
-
-		fieldset {
-			border: 1px solid @border-components;
-			border-radius: 2px;
-		}
+	.v-icon {
+		font-size: 20px !important;
 	}
-
-	#form-actions {
-		padding: 0 12px;
-
-		a {
-			margin-right: 20px;
-
-			.v-icon, span {
-				color: @red;
-			}
-		}
-
-		.v-btn {
-			background-color: @green-primary !important;
-			color: @bg-text-field !important;
-			font-size: 16px;
-			text-transform: none !important;
-		}
-
-		.v-icon {
-			font-size: 20px !important;
-		}
-	}
+}
 
 </style>
