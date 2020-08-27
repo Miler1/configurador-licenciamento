@@ -9,9 +9,11 @@
 				:items='dadosListagem',
 				hide-default-footer,
 				@update:options="sortBy"
+				:items-per-page="itemsPerPage"
 			)
+
 			template(v-slot:item.obrigatorio='{ item }')
-				span {{item.obrigatorio=='true' ? 'Básico' : 'Complementar'}}
+				span {{item.obrigatorio ? 'Básico' : 'Complementar'}}
 
 			template(v-slot:item.actions='{ item }')
 				v-icon.mr-2(small @click='editarItem(item)')
@@ -20,13 +22,19 @@
 					| mdi-close-circle
 
 			template(v-slot:no-data)
-				span Não existem registros a serem exibidos.
+				span Não existem documentos adicionados.
 
 </template>
 
 <script>
 
 export default {
+
+	data: () => ({
+
+		itemsPerPage: 200
+
+	}),
 
 	name:'GridListagemInclusao',
 
@@ -48,26 +56,7 @@ export default {
 			type: [Function]
 		}
 
-	},
-
-	methods: {
-
-		sortBy(value) {
-
-			// if(value.sortBy.length > 0) {
-			// 	this.parametrosFiltro.tipoOrdenacao = value.sortBy[0] + (value.sortDesc[0] ? ',desc' : ',asc');
-			// } else {
-			// 	this.parametrosFiltro.tipoOrdenacao = null;
-			// }
-			// this.updatePagination(this.parametrosFiltro);
-
-		},
-
-		dadosListagemIsNull() {
-			return this.dadosListagem == null;
-		},
-
-	},
+	}
 
 };
 

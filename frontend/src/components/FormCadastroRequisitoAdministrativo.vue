@@ -74,14 +74,14 @@
 								color="green lighten-4", 
 							)
 							v-btn#QA-btn-requisito-administrativo-basico(
-								value=true,
 								color="white",
+								value="true",
 								width="140px",
 							) 
 								span Básico
 							v-btn#QA-btn-requisito-administrativo-complementar(
-								value=false,
 								color="white",
+								value="false",
 								width="140px",
 							) 
 								span Complementar
@@ -162,7 +162,7 @@ export default {
 
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 
 @import "../assets/css/variaveis.less";
 

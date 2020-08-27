@@ -94,14 +94,14 @@
 												color="green lighten-4", 
 											)
 											v-btn#QA-btn-requisito-tecnico-basico(
-												value=true,
 												color="white",
+												value="true",
 												width="140px",
 											) 
 												span Básico
 											v-btn#QA-btn-requisito-tecnico-complementar(
-												value=false,
 												color="white",
+												value="false",
 												width="140px",
 											) 
 												span Complementar		
@@ -205,7 +205,11 @@ export default {
 					return 'Este campo não permite ser editado';
 				}
 
-				return this.errorMessageEmptyInclusao || value || (this.dadosListagem.length > 0) ? [] : 'Obrigatório';
+				else if(!this.errorMessageEmptyInclusao && !value) {
+					return 'Obrigatório';
+				}
+
+				return this.errorMessageEmpty || value || (this.dadosListagem.length > 0) ? [] : 'Obrigatório';
 			}
 
 			return this.errorMessageEmpty || value ? [] : 'Obrigatório';
@@ -233,8 +237,6 @@ export default {
 		incluirDados() {
 
 			if(this.checkFormVinculacao()){
-
-				
 
 				var dadoListagem = {};
 
@@ -284,7 +286,6 @@ export default {
 
 			} else {
 				this.errorMessageEmpty = false;
-				this.errorMessageEmptyInclusao = false;
 			}
 
 		},
@@ -369,11 +370,13 @@ export default {
 		},
 
 		checkFormVinculacao() {
+
 			return this.grupoRequisito.documento
 				&& this.grupoRequisito.documento != ''
 				&& this.grupoRequisito.licencas
 				&& this.grupoRequisito.licencas.length > 0
 				&& this.grupoRequisito.obrigatorio != null;
+
 		},
 
 		cancelar() {
@@ -513,7 +516,6 @@ export default {
 }
 
 .theme--light.v-btn-toggle > .v-btn.v-btn.v-btn--active {
-
 	border-color: @green-primary !important;
 	border-left-width: 1px !important;
 
