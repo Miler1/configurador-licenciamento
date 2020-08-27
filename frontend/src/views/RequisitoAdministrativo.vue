@@ -124,7 +124,7 @@ export default {
 
 			if (this.checkForm()) {
 
-				if(this.isCadastro) {
+				if (this.isCadastro) {
 					this.cadastrar();
 				} else {
 					this.editar();
@@ -143,8 +143,8 @@ export default {
 				.then(() => {
 					this.handleSuccess();
 				})
-				.catch(erro => {
-					this.handleError(erro);
+				.catch(error => {
+					this.handleError(error, true);
 				});
 
 		},
@@ -156,8 +156,8 @@ export default {
 				.then(() => {
 					this.handleSuccess();
 				})
-				.catch(erro => {
-					this.handleError(erro, true);
+				.catch(error => {
+					this.handleError(error, true);
 				});
 		},
 
@@ -174,7 +174,7 @@ export default {
 
 		handleSuccess(edicao = false) {
 
-			let message = edicao ? SUCCESS_MESSAGES.edicao : SUCCESS_MESSAGES.cadastro;
+			let message = edicao ? SUCCESS_MESSAGES.requisitoAdministrativo.editar : SUCCESS_MESSAGES.cadastro;
 
 			this.$store.dispatch(SET_SNACKBAR,
 				{color: 'success', text: message, timeout: '6000'}
@@ -272,6 +272,7 @@ export default {
 			}).catch((error) => {
 				console.error(error);
 			});
+
 		},
 
 		updatePagination(parametrosFiltro) {
@@ -281,9 +282,9 @@ export default {
 				.then((response) => {
 					this.dadosListagem = response.data;
 				})
-				.catch(erro => {
+				.catch(error => {
 
-					console.error(erro);
+					console.error(error);
 
 					this.$store.dispatch(SET_SNACKBAR,
 						{color: 'error', text: ERROR_MESSAGES.requisitoAdministrativo.listagem + erro.message, timeout: '6000'}

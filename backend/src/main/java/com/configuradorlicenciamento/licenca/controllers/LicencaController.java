@@ -97,7 +97,7 @@ public class LicencaController extends DefaultController {
         List<Licenca> licencas = licencaService.findAll();
 
         return ResponseEntity.ok()
-                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
                 .body(licencas);
 
     }
