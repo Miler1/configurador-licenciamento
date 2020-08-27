@@ -380,7 +380,39 @@ export default {
 		},
 
 		cancelar() {
-			this.$router.push({name: 'RequisitosTecnicos'});
+
+			this.$fire({
+
+				title: '<p class="title-modal-confirm">Confirmar cancelamento </p>',
+
+				html: this.isCadastro ?
+					`<p class="message-modal-confirm">Ao cancelar o cadastro, todas as informações serão perdidas.</p>
+					<p class="message-modal-confirm">
+						<b>Tem certeza que deseja cancelar o cadastro? Esta opção não poderá ser desfeita e todas as informações serão perdidas.</b>
+					</p>` :
+					`<p class="message-modal-confirm">Ao cancelar a edição, todas as informações alteradas serão perdidas.</p>
+					<p class="message-modal-confirm">
+						<b>Tem certeza que deseja cancelar o cadastro? Esta opção não poderá ser desfeita e todas as informações serão perdidas.</b>
+					</p>`,
+				showCancelButton: true,
+				confirmButtonColor: '#67C23A',
+				cancelButtonColor: '#FFF',
+				showCloseButton: true,
+				focusConfirm: false,
+				confirmButtonText: '<i class="fa fa-check-circle"></i> Confirmar',
+				cancelButtonText: '<i class="fa fa-close"></i> Cancelar',
+				reverseButtons: true
+
+			}).then((result) => {
+
+				if (result.value) {
+					this.$router.push({name: 'RequisitosTecnicos'});
+				}
+				
+			}).catch((error) => {
+				console.error(error);
+			});
+
 		},
 
 		editarItem(item) {
