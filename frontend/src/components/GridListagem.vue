@@ -41,10 +41,16 @@
 				span {{item.ativo ? 'Ativo' : 'Inativo'}}
 
 			template(v-slot:item.actions='{ item }')
-				v-icon.mr-2(small @click='editarItem(item)')
-					| mdi-pencil
-				v-icon(small @click='ativarDesativarItem(item)')
-					| {{item.ativo ? 'mdi-minus-circle' : 'mdi-check-circle'}}
+				v-tooltip(bottom)
+					template(v-slot:activator="{ on, attrs }")
+						v-icon.mr-2(small @click='editarItem(item)', v-on='on')
+							| mdi-pencil
+					span Editar {{tituloAba}}
+				v-tooltip(bottom)
+					template(v-slot:activator="{ on, attrs }")
+						v-icon(small @click='ativarDesativarItem(item)', v-on='on')
+							| {{item.ativo ? 'mdi-minus-circle' : 'mdi-check-circle'}}
+					span {{item.ativo ? 'Ativar ' + tituloAba: 'Desativar ' + tituloAba}}
 
 			template(v-slot:no-data)
 				span Não existem registros a serem exibidos.
@@ -80,6 +86,9 @@ export default {
 
 	props: {
 
+		tituloAba: {
+			type: [String]
+		},
 		tituloListagem: {
 			type: [String]
 		},

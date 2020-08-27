@@ -18,6 +18,7 @@
 			)
 
 		GridListagem.pa-7(
+			:tituloAba="tituloAba",
 			:tituloListagem="tituloListagem",
 			:placeholderPesquisa="placeholderPesquisa",
 			:gerarRelatorio="gerarRelatorio",
@@ -55,6 +56,7 @@ export default {
 
 	data: () => {
 		return {
+			tituloAba: "requisito administrativo",
 			tituloListagem: 'Listagem de requisitos administrativos',
 			placeholderPesquisa: "Pesquisar pelo nome do documento ou tipo licença",
 			dadosListagem: {},
@@ -82,7 +84,7 @@ export default {
 				readonly: true,
 				title: "Cadastro de requisitos administrativos",
 				iconName:'fa fa-file-text-o',
-
+				tipo: "cadastro"
 			},
 		};
 	},
@@ -114,6 +116,7 @@ export default {
 		resetaDadosCadastro() {
 
 			this.dadosPanel.title = "Cadastro de requisitos administrativos";
+			this.dadosPanel.tipo = "cadastro";
 			this.labelBotaoCadastrarEditar = "Cadastrar";
 			this.iconBotaoCadastrarEditar = "mdi-plus";
 			this.isCadastro = true;
@@ -216,6 +219,7 @@ export default {
 
 			this.dadosPanel.panel = [0];
 			this.dadosPanel.title = "Editar requisito administrativo";
+			this.dadosPanel.tipo = "edição";
 			this.labelBotaoCadastrarEditar = "Editar";
 			this.iconBotaoCadastrarEditar = "mdi-pencil";
 			this.requisitoAdministrativo = { ... item};

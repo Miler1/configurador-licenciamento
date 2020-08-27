@@ -17,6 +17,7 @@
 			)
 		
 		GridListagem.pa-7(
+			:tituloAba="tituloAba",
 			:tituloListagem="tituloListagem",
 			:placeholderPesquisa="placeholderPesquisa",
 			:gerarRelatorio="gerarRelatorio",
@@ -53,6 +54,7 @@ export default {
 
 	data: () => {
 		return {
+			tituloAba: "CNAE",
 			tituloListagem: "Listagem de CNAEs cadastrados",
 			placeholderPesquisa: "Pesquisar por código ou nome do CNAE",
 			labelBotaoCadastrarEditar: "Cadastrar",
@@ -77,6 +79,7 @@ export default {
 				panel: [],
 				readonly: true,
 				title: "Cadastro de CNAE",
+				tipo: "cadastro",
 				iconName:'fa fa-industry',
 				
 			}
@@ -99,6 +102,7 @@ export default {
 
 			this.dadosPanel.title = "Cadastro de CNAE";
 			this.dadosPanel.iconName = 'fa fa-industry';
+			this.dadosPanel.tipo = "cadastro";
 			this.labelBotaoCadastrarEditar = "Cadastrar";
 			this.iconBotaoCadastrarEditar = "mdi-plus";
 			this.isCadastro = true;
@@ -220,6 +224,7 @@ export default {
 			
 			this.dadosPanel.panel = [0];
 			this.dadosPanel.title = "Editar CNAE";
+			this.dadosPanel.tipo = "edição";
 			this.labelBotaoCadastrarEditar = "Editar";
 			this.iconBotaoCadastrarEditar = "mdi-pencil";
 			this.atividadeCnae = { ... item};
