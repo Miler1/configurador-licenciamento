@@ -298,7 +298,10 @@ export default {
 			DocumentoService.listar(documentosFiltro)
 
 				.then((response) => {
+
 					this.dadosListagem = response.data;
+					this.dadosListagem.nomeItem = "documentos";
+
 				})
 				.catch(erro => {
 					console.error(erro);

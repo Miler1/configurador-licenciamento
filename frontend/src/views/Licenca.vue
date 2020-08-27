@@ -286,6 +286,7 @@ export default {
 				.then((response) => {
 
 					this.dadosListagem = response.data;
+					this.dadosListagem.nomeItem = "licenças";
 					this.prepararDadosListar();
 
 				})

@@ -92,7 +92,7 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
 
         RequisitoAdministrativo requisitoAdministrativo = requisitoAdministrativoSalvo.get();
 
-        if(requisitoAdministrativo.getAtivo() != requisitoAdministrativoDTO.getAtivo()){
+        if(!requisitoAdministrativo.getAtivo().equals(requisitoAdministrativoDTO.getAtivo())){
             requisitoAdministrativo.setAtivo(requisitoAdministrativoDTO.getAtivo());
         } else {
 

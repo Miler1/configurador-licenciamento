@@ -206,7 +206,10 @@ export default {
 			AtividadeCnaeService.listar(parametrosFiltro)
 
 				.then((response) => {
+
 					this.dadosListagem = response.data;
+					this.dadosListagem.nomeItem = "CNAEs";
+
 				})
 				.catch(erro => {
 

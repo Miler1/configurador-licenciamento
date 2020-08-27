@@ -284,7 +284,10 @@ export default {
 			RequisitoAdministrativoService.listar(parametrosFiltro)
 
 				.then((response) => {
+
 					this.dadosListagem = response.data;
+					this.dadosListagem.nomeItem = "requisitos administrativos";
+
 				})
 				.catch(error => {
 
