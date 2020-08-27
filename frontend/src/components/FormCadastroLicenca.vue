@@ -72,9 +72,9 @@
 						v-icon mdi-delete
 						span Limpar dados
 
-					v-btn#QA-btn-cadastrar-licenca(@click="submit")
+					v-btn#QA-btn-cadastrar-licenca(@click="submit", large, color="#84A98C")
 						v-icon(color="white") {{iconBotaoCadastrarEditar}}
-						span {{labelBotaoCadastrarEditar}}
+						span.label-btn-cadastrar {{labelBotaoCadastrarEditar}}
 
 </template>
 
@@ -160,9 +160,11 @@ export default {
 }
 
 #QA-input-licenca-validade:disabled {
-
 	background-color: @bg-header;
+}
 
+.label-btn-cadastrar {
+	color: white !important;
 }
 
 </style>

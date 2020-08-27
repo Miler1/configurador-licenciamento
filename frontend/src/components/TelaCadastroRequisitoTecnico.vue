@@ -112,7 +112,7 @@
 										span Limpar dados
 								
 									v-btn#QA-btn-adicionar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
-										v-icon(color="#84A98C") mdi-plus
+										v-icon mdi-plus
 										span Adicionar
 								
 									v-btn#QA-btn-editar-requisito-tecnico.btn-cadastrar(@click="incluirDados", large, v-if="!isInclusao")
@@ -547,7 +547,7 @@ export default {
 	}
 }
 
-.theme--light.v-btn-toggle > .v-btn.v-btn.v-btn--active {
+.theme--light.v-btn-toggle:not(.v-btn-toggle--group) .v-btn.v-btn.v-btn--active {
 	border-color: @green-primary !important;
 	border-left-width: 1px !important;
 

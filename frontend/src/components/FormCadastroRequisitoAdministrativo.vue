@@ -52,11 +52,13 @@
 								color="green lighten-4",
 							)
 							v-btn#QA-btn-requisito-administrativo-pessoa-fisica(
+								color="white",
 								value="PF",
 								width="140px",
 							) 
 								span Física
 							v-btn#QA-btn-requisito-administrativo-pessoa-juridica(
+								color="white",
 								value="PJ",
 								width="140px",
 							) 
@@ -92,9 +94,9 @@
 					a#QA-limpar-dados-requisito-administrativo.d-flex.flex-row.align-center.justify-end(@click="clear")
 						v-icon mdi-delete
 						span Limpar dados
-					v-btn#QA-btn-cadastrar-requisito-administrativo(@click="submit", large)
+					v-btn#QA-btn-cadastrar-requisito-administrativo(@click="submit", large, color="#84A98C")
 						v-icon(color="white") {{iconBotaoCadastrarEditar}}
-						span {{labelBotaoCadastrarEditar}}
+						span.label-btn-cadastrar {{labelBotaoCadastrarEditar}}
 </template>
 
 <script>
@@ -166,26 +168,22 @@ export default {
 
 @import "../assets/css/variaveis.less";
 
-.theme--light.v-btn-toggle:not(.v-btn-toggle--group) {
+.label-btn-cadastrar {
+	color: white !important;
+}
 
-	.v-btn--active {
-		border-color: @green-primary !important;
+.theme--light.v-btn-toggle:not(.v-btn-toggle--group) .v-btn.v-btn.v-btn--active {
+	border-color: @green-primary !important;
+	border-left-width: 1px !important;
 
-		span {
-			color: @green-primary !important;
-		}
+	span {
+		color: @green-primary !important;
 	}
 }
 
-.v-btn-toggle > .v-btn.v-btn:not(:first-child) {
-	
-	border-left-width: 1px !important;
-}
-
 .theme--light.v-list-item .v-list-item__mask{
-
 	color:white;
-	background: #65afef;;
+	background: #65afef;
 }
 
 </style>
