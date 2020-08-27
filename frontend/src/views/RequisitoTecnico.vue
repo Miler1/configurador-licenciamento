@@ -3,6 +3,7 @@
 	v-container
 
 		GridListagem.pa-7(
+			:tituloAba="tituloAba",
 			:tituloListagem="tituloListagem",
 			:placeholderPesquisa="placeholderPesquisa",
 			:gerarRelatorio="gerarRelatorio",
@@ -37,6 +38,7 @@ export default {
 
 	data: () => {
 		return {
+			tituloAba: "requisito técnico",
 			tituloListagem: "Listagem de requisitos técnicos cadastrados",
 			placeholderPesquisa: "Pesquisar por código ou descrição do requisito",
 			headerListagem: HEADER,
