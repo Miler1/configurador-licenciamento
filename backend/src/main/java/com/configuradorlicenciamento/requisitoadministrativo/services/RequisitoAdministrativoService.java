@@ -100,10 +100,12 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
 
             requisitoAdministrativo.setDocumento(novoDocumento);
             requisitoAdministrativo.setObrigatorio(requisitoAdministrativoDTO.getObrigatorio());
+            requisitoAdministrativo.setTipoPessoa(requisitoAdministrativoDTO.getTipoPessoa());
+            requisitoAdministrativo.setObrigatorio(requisitoAdministrativoDTO.getObrigatorio());
 
-            long alreadyExistents = requisitoAdministrativoRepository.count(RequisitoAdministrativoSpecification.documentoAndLicenca(novoDocumento.getId(), requisitoAdministrativo.getLicenca().getId()));
+            List<RequisitoAdministrativo> alreadyExistents = requisitoAdministrativoRepository.findAll(RequisitoAdministrativoSpecification.documentoAndLicenca(novoDocumento.getId(), requisitoAdministrativo.getLicenca().getId(), requisitoAdministrativo.getTipoPessoa()));
 
-            if(alreadyExistents > 0){
+            if(alreadyExistents.size() > 1 || !alreadyExistents.isEmpty() && !alreadyExistents.get(0).getId().equals(requisitoAdministrativo.getId())){
                 throw new ConstraintUniqueViolationException(REQUISITO_ADMINISTRATIVO_EXISTENTE);
             }
         }

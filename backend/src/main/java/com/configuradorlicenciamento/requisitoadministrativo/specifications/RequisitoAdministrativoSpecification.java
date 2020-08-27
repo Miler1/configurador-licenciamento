@@ -35,11 +35,12 @@ public class RequisitoAdministrativoSpecification {
                 "%" + StringUtil.removeAccents(licenca.toLowerCase()) + "%");
     }
 
-    public static Specification<RequisitoAdministrativo> documentoAndLicenca(Integer documento, Integer licenca){
+    public static Specification<RequisitoAdministrativo> documentoAndLicenca(Integer documento, Integer licenca, String tipoPessoa){
 
         return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.and(
                     criteriaBuilder.equal(root.get("documento"), documento),
-                    criteriaBuilder.equal(root.get("licenca"), licenca));
+                    criteriaBuilder.equal(root.get("licenca"), licenca),
+                    criteriaBuilder.equal(root.get("tipoPessoa"), tipoPessoa));
     }
 
 }

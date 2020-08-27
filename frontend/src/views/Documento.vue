@@ -16,6 +16,7 @@
 				:iconBotaoCadastrarEditar="iconBotaoCadastrarEditar"
 			)
 		GridListagem.pa-7(
+			:tituloAba="tituloAba",
 			:tituloListagem="tituloListagem",
 			:placeholderPesquisa="placeholderPesquisa",
 			:gerarRelatorio="gerarRelatorio",
@@ -52,6 +53,7 @@ export default {
 
 	data: () => {
 		return {
+			tituloAba: "documento",
 			tituloListagem: 'Listagem de documentos',
 			placeholderPesquisa: "Pesquisar pelo nome do documento ou nome para exibição",
 			headerListagem: HEADER,
@@ -77,7 +79,7 @@ export default {
 				readonly: true,
 				title: "Cadastro de documentos",
 				iconName:'fa fa-file-text-o',
-
+				tipo: "cadastro"
 			}
 		};
 	},
@@ -106,6 +108,7 @@ export default {
 
 			this.dadosPanel.title = "Cadastro de Documentos";
 			this.labelBotaoCadastrarEditar = "Cadastrar";
+			this.dadosPanel.tipo = "cadastro";
 			this.iconBotaoCadastrarEditar = "mdi-plus";
 			this.isCadastro = true;
 
@@ -203,6 +206,7 @@ export default {
 
 			this.dadosPanel.panel = [0];
 			this.dadosPanel.title = "Editar documento";
+			this.dadosPanel.tipo = "edição";
 			this.labelBotaoCadastrarEditar = "Editar";
 			this.iconBotaoCadastrarEditar = "mdi-pencil";
 			this.documento = { ... item};

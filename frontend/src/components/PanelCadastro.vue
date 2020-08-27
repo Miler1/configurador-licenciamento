@@ -6,16 +6,20 @@
 				div.d-flex.flex-row.align-center.justify-start
 					v-icon.pr-3(color="#84A98C") {{dadosPanel.iconName}}
 					span.align-baseline {{dadosPanel.title}}
+				
 				template(v-slot:actions)
 					v-btn#QA-btn-expand_cadastrar(@click="abrirPanel", v-if="dadosPanel.panel.length === 0")
 						v-icon(color="white") mdi-plus
-						span Cadastrar
-					v-btn#QA-btn-fechar_cadastro(
-						icon,
-						@click="fecharPanel",
-						v-if="dadosPanel.panel.length > 0"
-					)
-						v-icon.pa-3(color="white") mdi-close
+						span Cadastrar	
+					v-tooltip(bottom, v-if="dadosPanel.panel.length > 0")
+						template(v-slot:activator="{ on, attrs }")
+							v-btn#QA-btn-fechar_cadastro(
+								icon,
+								v-on="on",
+								@click="fecharPanel"
+							)
+								v-icon.pa-3(color="white") mdi-close
+						span Cancelar {{dadosPanel.tipo}}
 			v-expansion-panel-content
 				slot
 
