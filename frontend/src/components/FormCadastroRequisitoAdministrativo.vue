@@ -75,12 +75,12 @@
 								color="green lighten-4", 
 							)
 							v-btn#QA-btn-requisito-administrativo-basico(
-								value=true,
+								value="true",
 								width="140px",
 							) 
 								span Básico
 							v-btn#QA-btn-requisito-administrativo-complementar(
-								value=false,
+								value="false",
 								width="140px",
 							) 
 								span Complementar
