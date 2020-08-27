@@ -18,6 +18,7 @@
 			)
 
 		GridListagem.pa-7(
+			:tituloAba="tituloAba",
 			:tituloListagem="tituloListagem",
 			:placeholderPesquisa="placeholderPesquisa",
 			:gerarRelatorio="gerarRelatorio",
@@ -63,6 +64,7 @@ export default {
 				validadeEmAnos: null,
 				ativo: true
 			},
+			tituloAba: "licenca",
 			tituloListagem: "Listagem de licenças ambientais cadastradas",
 			placeholderPesquisa: "Pesquisar por tipo ou nomenclatura da licença",
 			labelBotaoCadastrarEditar: "Cadastrar",
@@ -82,6 +84,7 @@ export default {
 				readonly: true,
 				title: "Cadastro de licença ambiental",
 				iconName: "mdi-card-account-details",
+				tipo: "cadastro"
 			},
 		};
 	},
@@ -104,6 +107,7 @@ export default {
 
 			this.dadosPanel.title = "Cadastro de licença ambiental";
 			this.dadosPanel.iconName = "mdi-card-account-details";
+			this.dadosPanel.tipo = "cadastro";
 			this.labelBotaoCadastrarEditar = "Cadastrar";
 			this.iconBotaoCadastrarEditar = "mdi-plus";
 			this.isCadastro = true;
@@ -317,6 +321,7 @@ export default {
 
 			this.dadosPanel.panel = [0];
 			this.dadosPanel.title = "Editar licença ambiental";
+			this.dadosPanel.tipo = "edição";
 			this.labelBotaoCadastrarEditar = "Editar";
 			this.iconBotaoCadastrarEditar = "mdi-pencil";
 			this.licenca = { ... item};

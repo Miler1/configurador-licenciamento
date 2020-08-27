@@ -18,6 +18,7 @@
 			)
 		
 		GridListagem.pa-7(
+			:tituloAba="tituloAba",
 			:tituloListagem="tituloListagem",
 			:placeholderPesquisa="placeholderPesquisa",
 			:gerarRelatorio="gerarRelatorio",
@@ -56,6 +57,7 @@ export default {
 		return {
 			errorMessageEmpty: true,
 			isCadastro: true,
+			tituloAba: "parâmetro",
 			tituloListagem: "Listagem de parâmetros cadastrados",
 			placeholderPesquisa: "Pesquisar por código ou descrição do parâmetro",
 			labelBotaoCadastrarEditar: "Cadastrar",
@@ -80,6 +82,7 @@ export default {
 				readonly: true,
 				title: "Cadastro de parâmetros",
 				iconName:'fa fa-sliders',
+				tipo: "cadastro"
 			},
 		};
 	},
@@ -101,6 +104,7 @@ export default {
 
 			this.dadosPanel.title = "Cadastro de parâmetros";
 			this.dadosPanel.iconName = "fa fa-sliders";
+			this.dadosPanel.tipo = "cadastro";
 			this.labelBotaoCadastrarEditar = "Cadastrar";
 			this.iconBotaoCadastrarEditar = "mdi-plus";
 			this.isCadastro = true;
@@ -255,6 +259,7 @@ export default {
 
 			this.dadosPanel.panel = [0];
 			this.dadosPanel.title = "Editar parâmetro";
+			this.dadosPanel.tipo = "edição";
 			this.labelBotaoCadastrarEditar = "Editar";
 			this.iconBotaoCadastrarEditar = "mdi-pencil";
 			this.parametro = { ... item};
