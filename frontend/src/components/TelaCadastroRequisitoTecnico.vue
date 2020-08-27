@@ -10,7 +10,7 @@
 					template(v-slot:actions)
 						v-icon
 				v-expansion-panel-content
-					v-form(ref="atividadeCnae")
+					v-form(ref="requisito")
 						v-container.pa-0
 							v-row
 								v-col(cols="12", md="3")
@@ -45,7 +45,7 @@
 					template(v-slot:actions)
 						v-icon
 				v-expansion-panel-content
-					v-form(ref="atividadeCnae")
+					v-form(ref="requisitolist")
 						v-container.pa-0
 							v-row
 								v-col(cols="12", md="9")
@@ -140,11 +140,11 @@
 
 import DocumentoService from '@/services/documento.service';
 import LicencaService from '@/services/licenca.service';
+import RequisitoTecnicoService from '../services/requisitoTecnico.service';
 import GridListagemInclusao from '@/components/GridListagemInclusao';
 import { HEADER } from '@/utils/dadosHeader/ListagemRequisitoTecnicoInclusao';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 import { SET_SNACKBAR } from '@/store/actions.type';
-import RequisitoTecnicoService from '../services/requisitoTecnico.service';
 
 export default {
 
@@ -175,6 +175,7 @@ export default {
 			documentos: [],
 			licencas: [],
 			errorMessageEmpty: true,
+			errorMessageEmptyInclusao: true,
 			tituloListagem: "Listagem de dados vinculados",
 			headerListagem: HEADER,
 			dadosListagem: [],
@@ -190,12 +191,13 @@ export default {
 
 		resetErrorMessage() {
 			this.errorMessageEmpty = true;
+			this.errorMessageEmptyInclusao = true;
 		},
 
 		errorMessage(value, isVinculacao) {
 
 			if(isVinculacao) {
-				return this.errorMessageEmpty || value || (this.dadosListagem.length > 0) ? [] : 'Obrigatório';
+				return this.errorMessageEmptyInclusao || value || (this.dadosListagem.length > 0) ? [] : 'Obrigatório';
 			}
 
 			return this.errorMessageEmpty || value ? [] : 'Obrigatório';
@@ -213,43 +215,54 @@ export default {
 
 		clear() {
 
+			if(this.isInclusao){
+				this.grupoRequisito.licencas = null;
+			}
+
 			this.grupoRequisito.documento = null;
-			this.grupoRequisito.licencas = null;
 			this.grupoRequisito.obrigatorio = null;
 
 		},
 
 		incluirDados() {
 
-			var dadoListagem = {};
+			if(this.checkFormVinculacao()){
 
-			if(this.isInclusao) {
+				
 
-				this.grupoRequisito.licencas.forEach(licenca => {
+				var dadoListagem = {};
+
+				if(this.isInclusao) {
+
+					this.grupoRequisito.licencas.forEach(licenca => {
+
+						dadoListagem.documento = this.grupoRequisito.documento;
+						dadoListagem.licenca = licenca;
+						dadoListagem.obrigatorio = this.grupoRequisito.obrigatorio;
+
+						this.dadosListagem.push(dadoListagem);
+						dadoListagem = {};
+				
+					});
+
+				} else {
 
 					dadoListagem.documento = this.grupoRequisito.documento;
-					dadoListagem.licenca = licenca;
+					dadoListagem.licenca = this.grupoRequisito.licencas[0];
 					dadoListagem.obrigatorio = this.grupoRequisito.obrigatorio;
 
-					this.dadosListagem.push(dadoListagem);
+					this.dadosListagem.splice(this.indexItemEdicao, 1, dadoListagem);
 					dadoListagem = {};
-			
-				});
+					this.indexItemEdicao = null;
+					this.isInclusao = true;
+
+				}
+
+				this.clear();
 
 			} else {
-
-				dadoListagem.documento = this.grupoRequisito.documento;
-				dadoListagem.licenca = this.grupoRequisito.licencas[0];
-				dadoListagem.obrigatorio = this.grupoRequisito.obrigatorio;
-
-				this.dadosListagem.splice(this.indexItemEdicao, 1, dadoListagem);
-				dadoListagem = {};
-				this.indexItemEdicao = null;
-				this.isInclusao = true;
-
+				this.errorMessageEmptyInclusao = false;
 			}
-
-			this.clear();
 
 		},
 
@@ -260,11 +273,12 @@ export default {
 				if(this.isCadastro) {
 					this.cadastrar();
 				} else {
-					// this.editar();
+					this.editar();
 				}
 
 			} else {
 				this.errorMessageEmpty = false;
+				this.errorMessageEmptyInclusao = false;
 			}
 
 		},
@@ -278,6 +292,19 @@ export default {
 				})
 				.catch(erro => {
 					this.handleError(erro);
+				});
+
+		},
+
+		editar() {
+
+			RequisitoTecnicoService.editar(this.preparaPraSalvar())
+
+				.then(() => {
+					this.handleSuccess(true);
+				})
+				.catch(erro => {
+					this.handleError(erro, true);
 				});
 
 		},
@@ -313,7 +340,7 @@ export default {
 
 		handleSuccess(edicao = false) {
 
-			let message = edicao ? SUCCESS_MESSAGES.edicao : SUCCESS_MESSAGES.cadastro;
+			let message = edicao ? SUCCESS_MESSAGES.editar : SUCCESS_MESSAGES.cadastro;
 
 			this.$store.dispatch(SET_SNACKBAR,
 				{color: 'success', text: message, timeout: '6000'}
@@ -333,6 +360,14 @@ export default {
 				&& this.dadosListagem
 				&& this.dadosListagem.length > 0;
 
+		},
+
+		checkFormVinculacao() {
+			return this.grupoRequisito.documento
+				&& this.grupoRequisito.documento != ''
+				&& this.grupoRequisito.licencas
+				&& this.grupoRequisito.licencas.length > 0
+				&& this.grupoRequisito.obrigatorio != null;
 		},
 
 		cancelar() {
@@ -359,6 +394,17 @@ export default {
 			this.dadosListagem = this.dadosListagem.filter(
 				dado => dado.documento.nome != item.documento.nome || dado.licenca.sigla != item.licenca.sigla
 			);
+		},
+
+		preparaDadosParaEdicao(requisito) {
+
+			this.requisitoTecnico.codigo = requisito.codigo;
+			this.requisitoTecnico.descricao = requisito.descricao;
+			this.requisitoTecnico.ativo = requisito.ativo;
+			this.requisitoTecnico.id = this.$route.params.idRequisito;
+			
+			this.dadosListagem = [];
+			this.dadosListagem = requisito.tipoLicencaGrupoDocumentoList;
 
 		}
 	},
@@ -376,6 +422,25 @@ export default {
 			});
 
 	},
+
+	mounted() {
+
+		if(this.$route.params.idRequisito) {
+			this.labelBotaoCadastrarEditar = "Editar";
+			this.iconBotaoCadastrarEditar = "mdi-pencil";
+			this.isCadastro = false;
+
+			RequisitoTecnicoService.findById(this.$route.params.idRequisito)
+				.then((response) => {
+					this.preparaDadosParaEdicao(response.data);
+				})
+				.catch((error) => {
+					this.$store.dispatch(SET_SNACKBAR,
+						{color: 'error', text: error.message, timeout: '9000'}
+					);
+				});
+		}
+	}
 
 };
 </script>

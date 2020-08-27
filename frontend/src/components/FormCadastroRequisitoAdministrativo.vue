@@ -15,6 +15,7 @@
 						:items="documentos",
 						item-text="nome",
 						:error-messages="errorMessage( requisitoAdministrativo.documento )",
+						no-data-text="Nenhum documento encontrado",
 						@click.native="resetErrorMessage",
 						required,
 						return-object=true
@@ -32,6 +33,7 @@
 						:items="licencas",
 						item-text="sigla",
 						:error-messages="errorMessage(requisitoAdministrativo.licencas)",
+						no-data-text="Nenhum tipo de licença encontrado",
 						@click.native="resetErrorMessage",
 						required,
 						return-object=true,
@@ -171,6 +173,12 @@ export default {
 .v-btn-toggle > .v-btn.v-btn:not(:first-child) {
 	
 	border-left-width: 1px !important;
+}
+
+.theme--light.v-list-item .v-list-item__mask{
+
+	color:white;
+	background: #65afef;;
 }
 
 </style>

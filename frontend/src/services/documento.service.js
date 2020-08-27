@@ -19,10 +19,6 @@ export default {
 		}
 	},
 
-	findAll: async () => {
-		
-			return ApiService.post(`documento/findAll`);
-
-	}
+	findAll: async () => ApiService.get(`documento/findAll`)
 
 };

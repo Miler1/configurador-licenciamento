@@ -56,7 +56,7 @@ export default {
 	data: () => {
 		return {
 			tituloListagem: 'Listagem de requisitos administrativos',
-			placeholderPesquisa: "Pesquisar pelo nome do requisito",
+			placeholderPesquisa: "Pesquisar pelo nome do documento ou tipo licença",
 			dadosListagem: {},
 			labelBotaoCadastrarEditar: "Cadastrar",
 			iconBotaoCadastrarEditar: "mdi-plus",
@@ -191,10 +191,6 @@ export default {
 
 		},
 
-		gerarRelatorio() {
-			RelatorioService.baixarRelatorio("/parametro/relatorio");
-		},
-
 		checkForm() {
 
 			return this.requisitoAdministrativo.documento !== null
@@ -225,8 +221,6 @@ export default {
 			this.requisitoAdministrativo = { ... item};
 			this.requisitoAdministrativo.licencas = [item.licenca];
 			this.isCadastro = false;
-
-			console.log(this.requisitoAdministrativo);
 			window.scrollTo(0,0);
 
 		},
@@ -293,7 +287,7 @@ export default {
 					console.error(error);
 
 					this.$store.dispatch(SET_SNACKBAR,
-						{color: 'error', text: ERROR_MESSAGES.parametro.listagem + ': ' + erro.message, timeout: '6000'}
+						{color: 'error', text: ERROR_MESSAGES.requisitoAdministrativo.listagem + erro.message, timeout: '6000'}
 					);
 
 				});

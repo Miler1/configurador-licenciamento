@@ -8,6 +8,7 @@ import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.requisitotecnico.dtos.RequisitoTecnicoDTO;
 import com.configuradorlicenciamento.configuracao.utils.csv.CustomMappingStrategy;
 import com.configuradorlicenciamento.requisitotecnico.dtos.RequisitoTecnicoCsv;
+import com.configuradorlicenciamento.requisitotecnico.dtos.RequisitoTecnicoEdicaoDTO;
 import com.configuradorlicenciamento.requisitotecnico.interfaces.IRequisitoTecnicoService;
 import com.configuradorlicenciamento.requisitotecnico.models.RequisitoTecnico;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,32 @@ public class RequisitoTecnicoController extends DefaultController {
 
     }
 
+    @PostMapping(value = "/editar")
+    public ResponseEntity<RequisitoTecnico> editar(HttpServletRequest request, @Valid @RequestBody RequisitoTecnicoDTO requisitoTecnicoDTO) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        RequisitoTecnico requisitoTecnico = requisitoTecnicoService.editar(request, requisitoTecnicoDTO);
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(requisitoTecnico);
+
+    }
+
+    @PostMapping(value = "/ativarDesativar/{idRequisito}")
+    public ResponseEntity<RequisitoTecnico> ativarDesativar(HttpServletRequest request, @PathVariable("idRequisito") Integer idRequisito) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        RequisitoTecnico requisitoTecnico = requisitoTecnicoService.ativarDesativar(idRequisito);
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(requisitoTecnico);
+
+    }
+
     @PostMapping(value = "/listar")
     public ResponseEntity<Page<RequisitoTecnico>> lista(HttpServletRequest request,
                                                         @PageableDefault(size = 20) Pageable pageable,
@@ -71,6 +98,20 @@ public class RequisitoTecnicoController extends DefaultController {
         mappingStrategy.setType(RequisitoTecnicoCsv.class);
 
         downloadCsv(requisitoTecnicoService.listarDocumentoParaCsv(), nome, mappingStrategy, response);
+    }
+
+    @GetMapping(value = "/findById/{idRequisito}")
+    public ResponseEntity<RequisitoTecnicoEdicaoDTO> findById(HttpServletRequest request,
+                                                        @PathVariable("idRequisito") Integer idRequisito) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        RequisitoTecnicoEdicaoDTO requisitoTecnicoDTO = requisitoTecnicoService.findById(idRequisito);
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(requisitoTecnicoDTO);
+
     }
 
 }
