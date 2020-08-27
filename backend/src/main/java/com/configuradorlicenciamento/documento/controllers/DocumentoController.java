@@ -82,7 +82,7 @@ public class DocumentoController extends DefaultController {
         List<Documento> documentos = documentoService.findAll();
 
         return ResponseEntity.ok()
-                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
                 .body(documentos);
 
     }
@@ -96,7 +96,7 @@ public class DocumentoController extends DefaultController {
         Documento documento = documentoService.editar(request, documentoDTO);
 
         return ResponseEntity.ok()
-                .header("Access-Control-Allow-Origin", VariaveisAmbientes.baseUrlFrontend())
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
                 .body(documento);
     }
 
