@@ -10,6 +10,7 @@ build:
         - homologation
     stage: build
     script:
+        - bash n --version
         - cd /builds/amapa/configurador-licenciamento/frontend
         - rm package-lock.json
         - npm install
@@ -32,7 +33,8 @@ deploy_dev:
         - mvn package
 
         - cd /builds/amapa/configurador-licenciamento/backend
-        - sshpass -p "$SSH_HOST_TESTE_SENHA" scp -v -o StrictHostKeyChecking=no backend/target/*.jar $SSH_HOST_TESTE_USER@$SSH_HOST_TESTE:/var/spring/configurador-licenciamento/configuradorlicenciamento-0.0.1.jar
+        - sshpass -p "$SSH_HOST_TESTE_SENHA" scp -v -o StrictHostKeyChecking=no backend/target/*.jar $SSH_HOST_TESTE_USER@$SSH_HOST_TESTE:/var/spring/configurador-licenciamento/configuradorlicenciamento-0.0.1.jar; sudo /usr/bin/systemctl restart monitoramento-gestaoDemandas.service;
+        - sshpass -p "$SSH_HOST_TESTE_SENHA" ssh -tt -o StrictHostKeyChecking=no $SSH_HOST_TESTE_USER@$SSH_HOST_TESTE 'sudo /usr/bin/systemctl restart configurador-licenciamento.service;'
 
 deploy_homologation:
     only:
