@@ -48,7 +48,6 @@
 					v-col.pa-0
 						v-btn-toggle#QA-btn-toggle-pessoa(
 								v-model="requisitoAdministrativo.tipoPessoa",
-								tile, 
 								color="green lighten-4",
 							)
 							v-btn#QA-btn-requisito-administrativo-pessoa-fisica(
