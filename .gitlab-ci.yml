@@ -58,6 +58,6 @@ deploy_homologation:
         - mvn package
 
         - vpnc-connect /etc/vpnc/vpn-prodap
-        - sshpass -p "$SSH_HOST_HOMOLOG_SENHA" scp -P 15012 -v -o StrictHostKeyChecking=no /builds/amapa/configurador-licenciamento/backend/target/*.jar $SSH_HOST_HOMOLOG_USER@$SSH_HOST_HOMOLOG:/var/spring/configurador-licenciamento/configuradorlicenciamento-0.0.1.jar;
+        - sshpass -p "$SSH_HOST_HOMOLOG_SENHA" scp -P 15012 -v -o StrictHostKeyChecking=no /builds/amapa/configurador-licenciamento/backend/target/*.jar $SSH_HOST_HOMOLOG_USER@$SSH_HOST_HOMOLOG:/dados/var/spring/configurador-licenciamento/configuradorlicenciamento-0.0.1.jar;
         - sshpass -p "$SSH_HOST_HOMOLOG_SENHA" ssh -p 15012 -tt -o StrictHostKeyChecking=no $SSH_HOST_TESTE_USER@$SSH_HOST_TESTE 'sudo /usr/bin/systemctl restart configurador-licenciamento.service;'
         - vpnc-disconnect
