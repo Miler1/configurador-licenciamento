@@ -58,7 +58,12 @@ const ERROR_MESSAGES = {
 		listagem: ER_BASE + 'listar os tequisitos técnicos. ',
 		ativar: ER_BASE + 'ativar o requisito técnico. ',
 		desativar: ER_BASE + 'desativar o requisito técnico. ',
+	},
+
+	taxa: {
+		listagem: ER_BASE + 'listar as taxas. ',
 	}
+
 };
 
 const SUCCESS_MESSAGES = {
