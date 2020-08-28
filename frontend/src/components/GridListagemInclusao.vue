@@ -16,10 +16,16 @@
 				span {{item.obrigatorio ? 'Básico' : 'Complementar'}}
 
 			template(v-slot:item.actions='{ item }')
-				v-icon.mr-2(small @click='editarItem(item)')
-					| mdi-pencil
-				v-icon(small @click='excluirItem(item)')
-					| mdi-close-circle
+				v-tooltip(bottom)
+					template(v-slot:activator="{ on, attrs }")
+						v-icon.mr-2(small @click='editarItem(item)', v-on='on', color='#9EBAA4')
+							| mdi-pencil
+					span Editar	documento	
+				v-tooltip(bottom)
+					template(v-slot:activator="{ on, attrs }")
+						v-icon(small @click='excluirItem(item)', v-on='on', color='#EB2D30')
+							| mdi-close-circle
+					span Remover documento	
 
 			template(v-slot:no-data)
 				span Não existem documentos adicionados.
