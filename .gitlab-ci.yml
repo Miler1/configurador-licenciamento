@@ -21,10 +21,13 @@ deploy_dev:
         - development
     stage: deploy
     script:
+        #Frontend
+        - bash /n 14.6.0
         - cd /builds/amapa/configurador-licenciamento/frontend
-        - rm package-lock.json
+        - rm -f package-lock.json
         - npm install
         - npm run test
+        #Backend
         - update-alternatives --set java /opt/jdk-14.0.1/bin/java
         - export JAVA_HOME=/opt/jdk-14.0.1
         - cd /builds/amapa/configurador-licenciamento/backend
