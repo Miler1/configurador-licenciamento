@@ -10,7 +10,7 @@ build:
         - homologation
     stage: build
     script:
-        - bash n --version
+        - n --version
         - cd /builds/amapa/configurador-licenciamento/frontend
         - rm package-lock.json
         - npm install
