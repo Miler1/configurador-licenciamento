@@ -356,8 +356,12 @@ export default {
 			);
 
 			this.clearRequisito();
-			this.cancelar();
+			this.redirectListagem();
 
+		},
+
+		redirectListagem() {
+			this.$router.push({name: 'RequisitosTecnicos'});
 		},
 
 		checkForm() {
