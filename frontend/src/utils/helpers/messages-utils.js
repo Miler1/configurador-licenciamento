@@ -23,7 +23,7 @@ const ERROR_MESSAGES = {
 	tipologia: {
 		cadastro: ER_BASE + 'cadastrar a tipologia. ',
 		listagem: ER_BASE + 'listar as tipologias. ',
-		editar: ER_BASE + 'editar a tipoloigia. ',
+		editar: ER_BASE + 'editar a tipologia. ',
 		ativar: ER_BASE + 'ativar a tipologia. ',
 		desativar: ER_BASE + 'desativar a tipologia. ',
 	},

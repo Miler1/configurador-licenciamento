@@ -65,7 +65,7 @@
 										return-object=true
 									)
 								v-col(cols="12", md="3")
-									v-label Tipos de licença
+									v-label Tipos de licenças
 									v-autocomplete#QA-select-requisito-tecnico-licenca(
 										outlined,
 										dense,
@@ -130,12 +130,12 @@
 		)
 
 		v-row.pt-6.px-7
-			v-col.align-center(cols="12", md="12")
+			v-col#form-actions.d-flex.justify-space-between(cols="12", md="12")
 				v-btn#QA-btn-cancelar-requisito-tecnico(@click="cancelar", outlined, large, color="#84A98C")
 					v-icon mdi-close
 					span Cancelar
 
-				v-btn#QA-btn-cadastrar-requisito-tecnico.btn-cadastrar.float-right(@click="submit", large)
+				v-btn#QA-btn-cadastrar-requisito-tecnico.btn-cadastrar(@click="submit", large)
 					v-icon(color="white") {{iconBotaoCadastrarEditar}}
 					span {{labelBotaoCadastrarEditar}}
 
@@ -538,11 +538,6 @@ export default {
 
 }
 
-.btn-cadastrar {
-	background-color: @green-primary !important;
-	color: @bg-text-field !important;
-}
-
 .v-label {
 	color: @text-color !important;
 }
@@ -574,6 +569,12 @@ export default {
 	.v-icon {
 		font-size: 20px !important;
 	}
+
+	.btn-cadastrar {
+		background-color: @green-primary !important;
+		color: @bg-text-field !important;
+	}
+
 }
 
 .theme--light.v-btn-toggle:not(.v-btn-toggle--group) .v-btn.v-btn.v-btn--active {

@@ -78,11 +78,3 @@ export default {
 };
 
 </script>
-
-<style lang="less">
-
-.label-btn-cadastrarr {
-	color: white !important;
-}
-
-</style>
