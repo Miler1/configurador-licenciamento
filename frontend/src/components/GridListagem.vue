@@ -63,7 +63,7 @@
 					template(v-slot:activator="{ on, attrs }")
 						v-icon(small @click='ativarDesativarItem(item)', v-on='on')
 							| {{item.ativo ? 'mdi-minus-circle' : 'mdi-check-circle'}}
-					span {{item.ativo ? 'Ativar ' + tituloAba: 'Desativar ' + tituloAba}}
+					span {{item.ativo ? 'Desativar ' + tituloAba : 'Ativar ' + tituloAba }}
 
 			template(v-slot:no-data)
 				span Não existem {{dadosListagem.nomeItem}} a serem exibidos.

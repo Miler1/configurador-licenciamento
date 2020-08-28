@@ -104,7 +104,9 @@
 												value="false",
 												width="140px",
 											) 
-												span Complementar		
+												span Complementar
+									v-col.pa-0
+										span.v-messages.theme--light.error--text.v-messages__message {{ errorMessage(grupoRequisito.obrigatorio, true) }}				
 							v-row
 								v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
 									a#QA-limpar-dados-requisito-tecnico.d-flex.flex-row.align-center.justify-end(@click="clear")
@@ -112,7 +114,7 @@
 										span Limpar dados
 								
 									v-btn#QA-btn-adicionar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
-										v-icon(color="#84A98C") mdi-plus
+										v-icon mdi-plus
 										span Adicionar
 								
 									v-btn#QA-btn-editar-requisito-tecnico.btn-cadastrar(@click="incluirDados", large, v-if="!isInclusao")
@@ -127,9 +129,9 @@
 			:excluirItem="excluirItem"
 		)
 
-		v-row.px-7
+		v-row.pt-6.px-7
 			v-col.align-center(cols="12", md="12")
-				v-btn#QA-btn-cancelar-requisito-tecnico(@click="cancelar", outlined, large, color="red")
+				v-btn#QA-btn-cancelar-requisito-tecnico(@click="cancelar", outlined, large, color="#84A98C")
 					v-icon mdi-close
 					span Cancelar
 
@@ -209,10 +211,10 @@ export default {
 					return 'Obrigatório';
 				}
 
-				return this.errorMessageEmpty || value || (this.dadosListagem.length > 0) ? [] : 'Obrigatório';
+				return this.errorMessageEmpty || value || (this.dadosListagem.length > 0) ? '' : 'Obrigatório';
 			}
 
-			return this.errorMessageEmpty || value ? [] : 'Obrigatório';
+			return this.errorMessageEmpty || value ? '' : 'Obrigatório';
 
 		},
 
@@ -380,7 +382,39 @@ export default {
 		},
 
 		cancelar() {
-			this.$router.push({name: 'RequisitosTecnicos'});
+
+			this.$fire({
+
+				title: '<p class="title-modal-confirm">Confirmar cancelamento </p>',
+
+				html: this.isCadastro ?
+					`<p class="message-modal-confirm">Ao cancelar o cadastro, todas as informações serão perdidas.</p>
+					<p class="message-modal-confirm">
+						<b>Tem certeza que deseja cancelar o cadastro? Esta opção não poderá ser desfeita e todas as informações serão perdidas.</b>
+					</p>` :
+					`<p class="message-modal-confirm">Ao cancelar a edição, todas as informações alteradas serão perdidas.</p>
+					<p class="message-modal-confirm">
+						<b>Tem certeza que deseja cancelar o cadastro? Esta opção não poderá ser desfeita e todas as informações serão perdidas.</b>
+					</p>`,
+				showCancelButton: true,
+				confirmButtonColor: '#67C23A',
+				cancelButtonColor: '#FFF',
+				showCloseButton: true,
+				focusConfirm: false,
+				confirmButtonText: '<i class="fa fa-check-circle"></i> Confirmar',
+				cancelButtonText: '<i class="fa fa-close"></i> Cancelar',
+				reverseButtons: true
+
+			}).then((result) => {
+
+				if (result.value) {
+					this.$router.push({name: 'RequisitosTecnicos'});
+				}
+				
+			}).catch((error) => {
+				console.error(error);
+			});
+
 		},
 
 		editarItem(item) {
@@ -515,7 +549,7 @@ export default {
 	}
 }
 
-.theme--light.v-btn-toggle > .v-btn.v-btn.v-btn--active {
+.theme--light.v-btn-toggle:not(.v-btn-toggle--group) .v-btn.v-btn.v-btn--active {
 	border-color: @green-primary !important;
 	border-left-width: 1px !important;
 

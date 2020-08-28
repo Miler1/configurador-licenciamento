@@ -163,10 +163,6 @@ export default {
 
 		},
 
-		checkErrorMessage(value) {
-			return this.errorMessageEmpty || value ? [] : 'Obrigatório';
-		},
-
 		handleError(error, edicao = false) {
 
 			let message = edicao ? ERROR_MESSAGES.tipologia.editar : ERROR_MESSAGES.tipologia.cadastro;
