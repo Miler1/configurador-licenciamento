@@ -21,7 +21,7 @@
 						return-object=true
 					)
 				v-col(cols="12", md="3")
-					v-label Tipo Licença
+					v-label Tipos de licença
 					v-autocomplete#QA-select-requisito-administrativo-licenca(
 						outlined,
 						:disabled="!cadastro",
