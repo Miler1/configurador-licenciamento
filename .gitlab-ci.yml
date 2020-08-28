@@ -34,7 +34,7 @@ deploy_dev:
 
         #- cd /builds/amapa/configurador-licenciamento/backend
         #- sshpass -p "$SSH_HOST_TESTE_SENHA" scp backend/target/*.jar $SSH_HOST_TESTE_USER@SSH_HOST_TESTE:/var/spring/configurador-licenciamento/configuradorlicenciamento-0.0.1.jar;
-        - sshpass -p "$SSH_HOST_TESTE_SENHA" scp -v -o StrictHostKeyChecking=no backend/target/configuradorlicenciamento-0.0.1.jar $SSH_HOST_TESTE_USER@$SSH_HOST_TESTE:/var/spring/configurador-licenciamento/configuradorlicenciamento-0.0.1.jar;
+        - sshpass -p "$SSH_HOST_TESTE_SENHA" scp -v -o StrictHostKeyChecking=no target/*.jar $SSH_HOST_TESTE_USER@$SSH_HOST_TESTE:/var/spring/configurador-licenciamento/configuradorlicenciamento-0.0.1.jar;
         - sshpass -p "$SSH_HOST_TESTE_SENHA" ssh -tt -o StrictHostKeyChecking=no $SSH_HOST_TESTE_USER@$SSH_HOST_TESTE 'sudo /usr/bin/systemctl restart configurador-licenciamento.service;'
 
 deploy_homologation:
