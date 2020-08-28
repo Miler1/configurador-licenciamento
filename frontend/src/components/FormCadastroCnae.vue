@@ -33,9 +33,9 @@
 						v-icon mdi-delete
 						span Limpar dados  
 				
-					v-btn#QA-btn-cadastrar-cnae(@click="submit", large)
+					v-btn#QA-btn-cadastrar-cnae(@click="submit",color="#84A98C", large)
 						v-icon(color="white") {{iconBotaoCadastrarEditar}}
-						span {{labelBotaoCadastrarEditar}}
+						span.label-btn-cadastrar {{labelBotaoCadastrarEditar}}
 
 </template>
 
@@ -79,6 +79,10 @@ export default {
 
 </script>
 
-<style lang="less" scope>
+<style lang="less">
+
+.label-btn-cadastrarr {
+	color: white !important;
+}
 
 </style>

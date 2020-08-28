@@ -64,7 +64,7 @@ export default {
 				validadeEmAnos: null,
 				ativo: true
 			},
-			tituloAba: "licenca",
+			tituloAba: "licença",
 			tituloListagem: "Listagem de licenças ambientais cadastradas",
 			placeholderPesquisa: "Pesquisar por tipo ou nomenclatura da licença",
 			labelBotaoCadastrarEditar: "Cadastrar",
@@ -286,6 +286,7 @@ export default {
 				.then((response) => {
 
 					this.dadosListagem = response.data;
+					this.dadosListagem.nomeItem = "licenças";
 					this.prepararDadosListar();
 
 				})

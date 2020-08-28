@@ -57,7 +57,7 @@ export default {
 	data: () => {
 		return {
 			tituloAba: "requisito administrativo",
-			tituloListagem: 'Listagem de requisitos administrativos',
+			tituloListagem: 'Listagem de requisitos administrativos cadastrados',
 			placeholderPesquisa: "Pesquisar pelo nome do documento ou tipo licença",
 			dadosListagem: {},
 			labelBotaoCadastrarEditar: "Cadastrar",
@@ -82,7 +82,7 @@ export default {
 				items: 1,
 				panel: [],
 				readonly: true,
-				title: "Cadastro de requisitos administrativos",
+				title: "Cadastro de requisito administrativo",
 				iconName:'fa fa-file-text-o',
 				tipo: "cadastro"
 			},
@@ -115,7 +115,7 @@ export default {
 
 		resetaDadosCadastro() {
 
-			this.dadosPanel.title = "Cadastro de requisitos administrativos";
+			this.dadosPanel.title = "Cadastro de requisito administrativo";
 			this.dadosPanel.tipo = "cadastro";
 			this.labelBotaoCadastrarEditar = "Cadastrar";
 			this.iconBotaoCadastrarEditar = "mdi-plus";
@@ -208,7 +208,7 @@ export default {
 		},
 
 		errorMessage(value) {
-			return this.errorMessageEmpty || value ? [] : 'Obrigatório';
+			return this.errorMessageEmpty || value ? '' : 'Obrigatório';
 		},
 
 		gerarRelatorio() {
@@ -222,6 +222,7 @@ export default {
 			this.dadosPanel.tipo = "edição";
 			this.labelBotaoCadastrarEditar = "Editar";
 			this.iconBotaoCadastrarEditar = "mdi-pencil";
+			item.obrigatorio = item.obrigatorio === true ? "true" : "false";
 			this.requisitoAdministrativo = { ... item};
 			this.requisitoAdministrativo.licencas = [item.licenca];
 			this.isCadastro = false;
@@ -284,7 +285,10 @@ export default {
 			RequisitoAdministrativoService.listar(parametrosFiltro)
 
 				.then((response) => {
+
 					this.dadosListagem = response.data;
+					this.dadosListagem.nomeItem = "requisitos administrativos";
+
 				})
 				.catch(error => {
 

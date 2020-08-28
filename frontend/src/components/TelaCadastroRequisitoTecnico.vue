@@ -6,7 +6,7 @@
 			v-expansion-panel
 				v-expansion-panel-header
 					div.d-flex.flex-row.align-center.justify-start
-						span.align-baseline Requisito
+						span.align-baseline Grupo de requisito técnico
 					template(v-slot:actions)
 						v-icon
 				v-expansion-panel-content
@@ -41,7 +41,7 @@
 			v-expansion-panel
 				v-expansion-panel-header
 					div.d-flex.flex-row.align-center.justify-start
-						span.align-baseline Requisitos Técnicos para Solicitação de Licenciamento
+						span.align-baseline Requisito técnico para solicitação de licenciamento
 					template(v-slot:actions)
 						v-icon
 				v-expansion-panel-content
@@ -89,32 +89,35 @@
 									v-col.pa-0
 										v-label Tipo do requisito
 									v-col.pa-0
-										v-btn-toggle#QA-btn-toggle-requisito(
+										v-btn-toggle#QA-btn-toggle-requisito-tecnico(
 												v-model="grupoRequisito.obrigatorio",
-												tile,
 												color="green lighten-4", 
 											)
 											v-btn#QA-btn-requisito-tecnico-basico(
+												color="white",
 												value="true",
 												width="140px",
 											) 
 												span Básico
 											v-btn#QA-btn-requisito-tecnico-complementar(
+												color="white",
 												value="false",
 												width="140px",
 											) 
-												span Complementar		
+												span Complementar
+									v-col.pa-0
+										span.v-messages.theme--light.error--text.v-messages__message {{ errorMessage(grupoRequisito.obrigatorio, true) }}				
 							v-row
 								v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
 									a#QA-limpar-dados-requisito-tecnico.d-flex.flex-row.align-center.justify-end(@click="clear")
 										v-icon mdi-delete
 										span Limpar dados
 								
-									v-btn#QA-btn-incluir-requisito.btn-cadastrar(@click="incluirDados", large, v-if="isInclusao")
-										v-icon(color="white") mdi-plus
-										span Incluir
+									v-btn#QA-btn-adicionar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
+										v-icon mdi-plus
+										span Adicionar
 								
-									v-btn#QA-btn-incluir-requisito.btn-cadastrar(@click="incluirDados", large, v-if="!isInclusao")
+									v-btn#QA-btn-editar-requisito-tecnico.btn-cadastrar(@click="incluirDados", large, v-if="!isInclusao")
 										v-icon(color="white") mdi-pencil
 										span Editar
 
@@ -126,9 +129,9 @@
 			:excluirItem="excluirItem"
 		)
 
-		v-row.px-7
+		v-row.pt-6.px-7
 			v-col.align-center(cols="12", md="12")
-				v-btn#QA-btn-cancelar-requisito-tecnico(@click="cancelar", outlined, large, color="red")
+				v-btn#QA-btn-cancelar-requisito-tecnico(@click="cancelar", outlined, large, color="#84A98C")
 					v-icon mdi-close
 					span Cancelar
 
@@ -178,7 +181,7 @@ export default {
 			licencas: [],
 			errorMessageEmpty: true,
 			errorMessageEmptyInclusao: true,
-			tituloListagem: "Listagem de dados vinculados",
+			tituloListagem: "Listagem de documentos adicionados para este grupo",
 			headerListagem: HEADER,
 			dadosListagem: [],
 			labelBotaoCadastrarEditar: 'Cadastrar',
@@ -208,10 +211,10 @@ export default {
 					return 'Obrigatório';
 				}
 
-				return this.errorMessageEmpty || value || (this.dadosListagem.length > 0) ? [] : 'Obrigatório';
+				return this.errorMessageEmpty || value || (this.dadosListagem.length > 0) ? '' : 'Obrigatório';
 			}
 
-			return this.errorMessageEmpty || value ? [] : 'Obrigatório';
+			return this.errorMessageEmpty || value ? '' : 'Obrigatório';
 
 		},
 
@@ -353,8 +356,12 @@ export default {
 			);
 
 			this.clearRequisito();
-			this.cancelar();
+			this.redirectListagem();
 
+		},
+
+		redirectListagem() {
+			this.$router.push({name: 'RequisitosTecnicos'});
 		},
 
 		checkForm() {
@@ -379,7 +386,39 @@ export default {
 		},
 
 		cancelar() {
-			this.$router.push({name: 'RequisitosTecnicos'});
+
+			this.$fire({
+
+				title: '<p class="title-modal-confirm">Confirmar cancelamento </p>',
+
+				html: this.isCadastro ?
+					`<p class="message-modal-confirm">Ao cancelar o cadastro, todas as informações serão perdidas.</p>
+					<p class="message-modal-confirm">
+						<b>Tem certeza que deseja cancelar o cadastro? Esta opção não poderá ser desfeita e todas as informações serão perdidas.</b>
+					</p>` :
+					`<p class="message-modal-confirm">Ao cancelar a edição, todas as informações alteradas serão perdidas.</p>
+					<p class="message-modal-confirm">
+						<b>Tem certeza que deseja cancelar o cadastro? Esta opção não poderá ser desfeita e todas as informações serão perdidas.</b>
+					</p>`,
+				showCancelButton: true,
+				confirmButtonColor: '#67C23A',
+				cancelButtonColor: '#FFF',
+				showCloseButton: true,
+				focusConfirm: false,
+				confirmButtonText: '<i class="fa fa-check-circle"></i> Confirmar',
+				cancelButtonText: '<i class="fa fa-close"></i> Cancelar',
+				reverseButtons: true
+
+			}).then((result) => {
+
+				if (result.value) {
+					this.$router.push({name: 'RequisitosTecnicos'});
+				}
+				
+			}).catch((error) => {
+				console.error(error);
+			});
+
 		},
 
 		editarItem(item) {
@@ -473,6 +512,7 @@ export default {
 	.v-icon {
 		font-size: 20px !important;
 	}
+
 }
 
 .btn-cadastrar {
@@ -504,11 +544,7 @@ export default {
 	}
 
 	.v-btn {
-		background-color: @green-primary !important;
-		color: @bg-text-field !important;
 		font-size: 16px;
-		height: auto;
-		padding: 12px 20px !important;
 		text-transform: none !important;
 	}
 
@@ -517,8 +553,7 @@ export default {
 	}
 }
 
-.theme--light.v-btn-toggle > .v-btn.v-btn.v-btn--active {
-
+.theme--light.v-btn-toggle:not(.v-btn-toggle--group) .v-btn.v-btn.v-btn--active {
 	border-color: @green-primary !important;
 	border-left-width: 1px !important;
 
@@ -527,12 +562,12 @@ export default {
 	}
 }
 
-	.v-input--is-disabled{
-		pointer-events: auto !important;
+.v-input--is-disabled{
+	pointer-events: auto !important;
 
-		.v-input__slot{
-			cursor: not-allowed !important;
-		}
+	.v-input__slot{
+		cursor: not-allowed !important;
 	}
+}
 
 </style>

@@ -163,10 +163,6 @@ export default {
 
 		},
 
-		checkErrorMessage(value) {
-			return this.errorMessageEmpty || value ? [] : 'Obrigatório';
-		},
-
 		handleError(error, edicao = false) {
 
 			let message = edicao ? ERROR_MESSAGES.tipologia.editar : ERROR_MESSAGES.tipologia.cadastro;
@@ -205,7 +201,10 @@ export default {
 			TipologiaService.listar(parametrosFiltro)
 
 				.then((response) => {
+
 					this.dadosListagem = response.data;
+					this.dadosListagem.nomeItem = "tipologias";
+
 				})
 				.catch(erro => {
 
@@ -256,7 +255,7 @@ export default {
 				focusConfirm: false,
 				confirmButtonText: item.ativo ? '<i class="fa fa-minus-circle"></i> Desativar' : '<i class="fa fa-check-circle"></i> Ativar',
 				cancelButtonText: '<i class="fa fa-close"></i> Cancelar',
-				reverseButtons: true
+				reverseButtons: true,
 
 			}).then((result) => {
 
@@ -314,7 +313,3 @@ export default {
 };
 
 </script>
-
-<style lang="less">
-
-</style>
