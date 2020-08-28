@@ -107,17 +107,17 @@ export default {
 			this.$fire({
 
 				title: item.ativo ? 
-					'<p class="title-modal-confirm">Desativar Requisito Técnico - ' + item.codigo+ '</p>' :
-					'<p class="title-modal-confirm">Ativar Requisito Técnico - ' + item.codigo+ '</p>',
+					'<p class="title-modal-confirm">Desativar Grupo de Requisito Técnico - ' + item.codigo+ '</p>' :
+					'<p class="title-modal-confirm">Ativar Grupo de Requisito Técnico - ' + item.codigo+ '</p>',
 
 				html: item.ativo ?
-					`<p class="message-modal-confirm">Ao desativar o Requisito Técnico, ele não estará mais disponível no sistema.</p>
+					`<p class="message-modal-confirm">Ao desativar o Grupo de Requisito Técnico, ele não estará mais disponível no sistema.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja desativar o Requisito Técnico? Esta opção pode ser desfeita a qualquer momento ao ativá-lo novamente.</b>
+						<b>Tem certeza que deseja desativar o Grupo de Requisito Técnico? Esta opção pode ser desfeita a qualquer momento ao ativá-lo novamente.</b>
 					</p>` :
-					`<p class="message-modal-confirm">Ao ativar o Requisito Técnico, ele ficará disponível no sistema.</p>
+					`<p class="message-modal-confirm">Ao ativar o Grupo de Requisito Técnico, ele ficará disponível no sistema.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja ativar o Requisito Técnico? Esta opção pode ser desfeita a qualquer momento ao desativá-lo novamente.</b>
+						<b>Tem certeza que deseja ativar o Grupo de Requisito Técnico? Esta opção pode ser desfeita a qualquer momento ao desativá-lo novamente.</b>
 					</p>`,
 				showCancelButton: true,
 				confirmButtonColor: item.ativo ? '#E6A23C' : '#67C23A',
