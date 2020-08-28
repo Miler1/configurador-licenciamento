@@ -222,6 +222,7 @@ export default {
 			this.dadosPanel.tipo = "edição";
 			this.labelBotaoCadastrarEditar = "Editar";
 			this.iconBotaoCadastrarEditar = "mdi-pencil";
+			item.obrigatorio = item.obrigatorio === true ? "true" : "false";
 			this.requisitoAdministrativo = { ... item};
 			this.requisitoAdministrativo.licencas = [item.licenca];
 			this.isCadastro = false;
