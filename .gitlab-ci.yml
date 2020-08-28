@@ -10,9 +10,9 @@ build:
         - homologation
     stage: build
     script:
-        - n --version
+        - bash /n 14.6.0
         - cd /builds/amapa/configurador-licenciamento/frontend
-        - rm package-lock.json
+        - rm -f package-lock.json
         - npm install
         - npm run test
 
@@ -21,10 +21,13 @@ deploy_dev:
         - development
     stage: deploy
     script:
-        # - cd /builds/amapa/configurador-licenciamento/frontend
-        # - rm package-lock.json
-        # - npm install
-        # - npm run test
+        #Frontend
+        - bash /n 14.6.0
+        - cd /builds/amapa/configurador-licenciamento/frontend
+        - rm -f package-lock.json
+        - npm install
+        - npm run test
+        #Backend
         - update-alternatives --set java /opt/jdk-14.0.1/bin/java
         - export JAVA_HOME=/opt/jdk-14.0.1
         - cd /builds/amapa/configurador-licenciamento/backend
@@ -32,8 +35,7 @@ deploy_dev:
         - mvn compile
         - mvn package
 
-        - cd /builds/amapa/configurador-licenciamento/backend
-        - sshpass -p "$SSH_HOST_TESTE_SENHA" scp -v -o StrictHostKeyChecking=no backend/target/*.jar $SSH_HOST_TESTE_USER@$SSH_HOST_TESTE:/var/spring/configurador-licenciamento/configuradorlicenciamento-0.0.1.jar; sudo /usr/bin/systemctl restart monitoramento-gestaoDemandas.service;
+        - sshpass -p "$SSH_HOST_TESTE_SENHA" scp -v -o StrictHostKeyChecking=no /builds/amapa/configurador-licenciamento/backend/target/*.jar $SSH_HOST_TESTE_USER@$SSH_HOST_TESTE:/var/spring/configurador-licenciamento/configuradorlicenciamento-0.0.1.jar;
         - sshpass -p "$SSH_HOST_TESTE_SENHA" ssh -tt -o StrictHostKeyChecking=no $SSH_HOST_TESTE_USER@$SSH_HOST_TESTE 'sudo /usr/bin/systemctl restart configurador-licenciamento.service;'
 
 deploy_homologation:
@@ -41,23 +43,22 @@ deploy_homologation:
         - homologation
     stage: deploy
     script:
-        - cd /builds/amapa/monitoramento_ap/gestao-demandas/backend
-        - /opt/play-1.5.1/play deps --sync
-        - cd /builds/amapa/monitoramento_ap/gestao-demandas/frontend
+        # Ainda falta alterar os diretórios :)
+        - cd /builds/amapa/configurador-licenciamento/frontend
+        - rm package-lock.json
         - npm install
-        - bower install --allow-root
-        - bower update --allow-root
-        - grunt homologation
-        - cd /builds/amapa/monitoramento_ap/gestao-demandas/backend
-        - cp -R app conf lib modules db /builds/amapa/monitoramento_ap/gestao-demandas/dist/
-        - echo "" >> /builds/amapa/monitoramento_ap/gestao-demandas/dist/conf/application.conf
-        - echo "server.version=Homologation" >> /builds/amapa/monitoramento_ap/gestao-demandas/dist/conf/application.conf
-        - echo "server.update=$(TZ='America/Sao_Paulo' date +%d-%m-%Y\ %H:%M:%S)" >> /builds/amapa/monitoramento_ap/gestao-demandas/dist/conf/application.conf
-        - echo "server.name=sema-car-vmapp01" >> /builds/amapa/monitoramento_ap/gestao-demandas/dist/conf/application.conf
-        - echo "server.geradaPor=GITLAB-CI" >> /builds/amapa/monitoramento_ap/gestao-demandas/dist/conf/application.conf
-        - echo "@include.production = application_homolog.conf" >> /builds/amapa/monitoramento_ap/gestao-demandas/dist/conf/application.conf
-        - cd /builds/amapa/monitoramento_ap/gestao-demandas
-        - zip -r release-gestao-demandas-ap-Homologation.zip dist
+        - npm run test
+        - update-alternatives --set java /opt/jdk-14.0.1/bin/java
+        - export JAVA_HOME=/opt/jdk-14.0.1
+        - cd /builds/amapa/configurador-licenciamento/backend
+        - mvn clean
+        - mvn compile
+        - mvn package
+
+        #- sshpass -p "$SSH_HOST_TESTE_SENHA" scp -v -o StrictHostKeyChecking=no /builds/amapa/configurador-licenciamento/backend/target/*.jar $SSH_HOST_TESTE_USER@$SSH_HOST_TESTE:/var/spring/configurador-licenciamento/configuradorlicenciamento-0.0.1.jar;
+        #- sshpass -p "$SSH_HOST_TESTE_SENHA" ssh -tt -o StrictHostKeyChecking=no $SSH_HOST_TESTE_USER@$SSH_HOST_TESTE 'sudo /usr/bin/systemctl restart configurador-licenciamento.service;'
+        #- zip -r release-gestao-demandas-ap-Homologation.zip dist
+
         - vpnc-connect /etc/vpnc/vpn-prodap
         - sshpass -p "$SSH_HOST_HOMOLOG_SENHA" scp -P 15012 -v -o StrictHostKeyChecking=no release-gestao-demandas-ap-Homologation.zip $SSH_HOST_HOMOLOG_USER@$SSH_HOST_HOMOLOG:/var/tmp  
         - sshpass -p "$SSH_HOST_HOMOLOG_SENHA" ssh -p 15012 -tt -o StrictHostKeyChecking=no $SSH_HOST_HOMOLOG_USER@$SSH_HOST_HOMOLOG 'unzip /var/tmp/release-gestao-demandas-ap-Homologation.zip -d /var/tmp; tar czvf /var/tmp/gestao-demandas-ap-homolog-bkp-$(date  +%d-%m-%Y-%H.%M.%S).tgz /dados/var/play/monitoramento-ap/gestaoDemandas/ ;cp -rf /var/tmp/dist/* /dados/var/play/monitoramento-ap/gestaoDemandas/; sudo /usr/bin/systemctl restart monitoramento-gestaoDemandas.service; rm -rf /var/tmp/dist /var/tmp/release-gestao-demandas-ap-Homologation.zip' 

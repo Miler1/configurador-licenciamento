@@ -3,7 +3,7 @@
 versao=$(git describe --tags)
 data_atual=$(date +'%Y.%m.%d-%H:%M')
 
-test_server_host="sysadmin@177.105.35.81"
+test_server_host="configurador-licenciamento@177.105.35.81"
 
 test_server_passwd="L3m4f S3rv3r"
 
