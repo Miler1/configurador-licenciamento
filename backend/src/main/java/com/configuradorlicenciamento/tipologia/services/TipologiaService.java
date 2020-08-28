@@ -72,20 +72,24 @@ public class TipologiaService implements ITipologiaService {
 
         Tipologia tipologia = tipologiaSalva.get();
 
+        boolean existsCodigo = tipologiaRepository.existsByCodigo(tipologia.getCodigo());
+
+        if(existsCodigo){
+
+            Tipologia tipologiaExistente = tipologiaRepository.findByCodigo(tipologia.getCodigo());
+
+            if (tipologiaExistente != null && !tipologia.getId().equals(tipologiaExistente.getId())) {
+                throw new ConstraintUniqueViolationException(TIPOLOGIA_EXISTENTE);
+            }
+        }
+
         if(!tipologiaDTO.getAtivo().equals(tipologia.getAtivo())){
             tipologia.setAtivo(tipologiaDTO.getAtivo());
         } else {
-
             tipologia.setNome(tipologiaDTO.getNome());
             tipologia.setCodigo(Tipologia.TipologiaBuilder.gerarCodigo(tipologia.getNome()));
             tipologia.setUsuarioLicenciamento(usuarioLicenciamento);
             tipologia.setDataCadastro(new Date());
-
-            boolean existsCodigo = tipologiaRepository.existsByCodigo(tipologia.getCodigo());
-
-            if(existsCodigo){
-                throw new ConstraintUniqueViolationException(TIPOLOGIA_EXISTENTE);
-            }
         }
 
         tipologiaRepository.save(tipologia);

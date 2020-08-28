@@ -8,7 +8,7 @@
 					span.align-baseline {{dadosPanel.title}}
 				
 				template(v-slot:actions)
-					v-btn#QA-btn-expand_cadastrar(@click="abrirPanel", v-if="dadosPanel.panel.length === 0", color="#84A98C")
+					v-btn#QA-btn-expand_cadastrar(@click="abrirPanel", v-if="dadosPanel.panel.length === 0", large, color="#84A98C")
 						v-icon(color="white") mdi-plus
 						span Cadastrar	
 					v-tooltip(bottom, v-if="dadosPanel.panel.length > 0")
@@ -67,20 +67,15 @@ export default {
 	padding: 0 20px;
 
 	.v-btn {
-		background-color: @green-primary !important;
-		color: @bg-text-field !important;
+		background-color: @green-primary;
+		color: white;
 		font-size: 16px;
-		padding: 20px !important;
-		text-transform: none !important;
+		text-transform: none;
 	}
 
 	.v-icon {
-		font-size: 20px !important;
+		font-size: 20px;
 	}
-}
-
-.v-label {
-	color: @text-color !important;
 }
 
 .v-text-field, .v-checkbox {
@@ -102,6 +97,10 @@ export default {
 		}
 	}
 
+	.v-label {
+		color: @text-color;
+	}
+
 	.v-btn {
 		font-size: 16px;
 		text-transform: none !important;
@@ -109,6 +108,10 @@ export default {
 
 	.v-icon {
 		font-size: 20px !important;
+	}
+
+	.label-btn-cadastrar {
+		color: white !important;
 	}
 }
 

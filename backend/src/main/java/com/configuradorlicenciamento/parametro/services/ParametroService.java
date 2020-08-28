@@ -42,7 +42,9 @@ public class ParametroService implements IParametroService {
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
-        if (parametroRepository.existsByCodigo(parametroDTO.getCodigo())) {
+        boolean existsByCodigo = parametroRepository.existsByCodigo(parametroDTO.getCodigo());
+
+        if (existsByCodigo) {
             throw new ConstraintUniqueViolationException(PARAMETRO_EXISTENTE);
         }
 
@@ -66,7 +68,9 @@ public class ParametroService implements IParametroService {
 
         String codigo = parametroDTO.getCodigo();
 
-        if(parametroRepository.existsByCodigo(codigo)) {
+        boolean existsCodigo = parametroRepository.existsByCodigo(codigo);
+
+        if(existsCodigo) {
 
             Parametro parametroExistente = parametroRepository.findByCodigo(codigo);
 
