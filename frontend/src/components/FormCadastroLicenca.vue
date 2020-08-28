@@ -31,7 +31,7 @@
 					)
 			v-row.flex-row.align-center.justify-start
 				v-col(cols="12", md="3")
-					label Finalidade
+					v-label Finalidade
 						v-select#QA-select-licenca-finalidade(
 							outlined,
 							dense,
@@ -49,7 +49,7 @@
 						)
 				v-col.d-flex.flex-column.justify-start.pl-0(cols="12", md="9")
 					v-col.pb-0(cols="12", md="12")
-						label Prazo de validade
+						v-label Prazo de validade
 					v-col.d-flex.flex-row.justify-start.pt-0(cols="12", md="12")
 						div.d-flex.flex-row
 							v-text-field#QA-input-licenca-validade(
@@ -161,10 +161,6 @@ export default {
 
 #QA-input-licenca-validade:disabled {
 	background-color: @bg-header;
-}
-
-.label-btn-cadastrar {
-	color: white !important;
 }
 
 </style>

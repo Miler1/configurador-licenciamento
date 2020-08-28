@@ -17,14 +17,14 @@
 					)
 				v-col(cols="12", md="4")
 					v-label Nome para exibição
-					v-tooltip(top, max-width=400)
+					v-tooltip(top, left, max-width=400)
 						template(v-slot:activator="{ on, attrs }")
-							v-icon.information.mb-1.mr-1.float-right(v-bind="attrs", v-on="on") mdi-information
-						p.text-center Este é o nome que será exibido para o usuário e técnico quando for realizado o upload deste documento.
+							v-icon.information.ml-1(v-bind="attrs", v-on="on") mdi-information
+						span Este é o nome que será exibido para o usuário e técnico quando for realizado o upload deste documento.
 					v-text-field#QA-input-documento-nome-exibicao(
 						outlined,
 						color="#E0E0E0",
-						:placeholder="placeholder"
+						:placeholder="placeholderNomeExibicao"
 						v-model="documento.prefixoNomeArquivo",
 						@click.native="resetErrorMessage",
 						:error-messages="errorMessage(documento.prefixoNomeArquivo)"
@@ -51,7 +51,8 @@ export default {
 
 	data: () => {
 		return {
-			placeholder: "Digite aqui..."
+			placeholder: "Digite aqui...",
+			placeholderNomeExibicao: "Informe uma abreviatura. Ex: cpf_prop",
 		};
 	},
 
@@ -87,10 +88,6 @@ export default {
 
 .information {
 	font-size: 16px !important;
-}
-
-.label-btn-cadastrar {
-	color: white !important;
 }
 
 </style>
