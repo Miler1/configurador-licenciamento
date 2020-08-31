@@ -62,13 +62,13 @@
 
 				v-tooltip(bottom)
 					template(v-slot:activator="{ on, attrs }")
-						v-icon.mr-2(small @click='editarItem(item)', v-on='on')
+						v-icon.mr-2(small @click='editarItem(item)', v-on='on', color='#9EBAA4')
 							| mdi-pencil
 					span Editar {{tituloAba}}
 
 				v-tooltip(bottom)
 					template(v-slot:activator="{ on, attrs }")
-						v-icon(small @click='ativarDesativarItem(item)', v-on='on')
+						v-icon(small @click='ativarDesativarItem(item)', v-on='on', :color= "item.ativo ? '#E6A23B' : '#67C239'")
 							| {{item.ativo ? 'mdi-minus-circle' : 'mdi-check-circle'}}
 					span {{item.ativo ? 'Desativar ' + tituloAba : 'Ativar ' + tituloAba }}
 
