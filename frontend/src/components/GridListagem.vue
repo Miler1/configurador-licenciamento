@@ -56,7 +56,7 @@
 			template(v-slot:item.actions='{ item }')
 				v-tooltip(bottom, v-if="tituloAba === ' taxa'")
 					template(v-slot:activator="{ on, attrs }")
-						v-icon.mr-2(small @click='visualizarTaxa(item)', v-on='on')
+						v-icon.mr-2(small @click='visualizarTaxa(item)', v-on='on', color='#9EBAA4')
 							| mdi-eye
 					span {{'Visualizar ' + tituloAba}}
 
