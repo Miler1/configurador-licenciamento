@@ -72,7 +72,9 @@
 							| {{item.ativo ? 'mdi-minus-circle' : 'mdi-check-circle'}}
 					span {{item.ativo ? 'Desativar ' + tituloAba : 'Ativar ' + tituloAba }}
 
-			template(v-slot:no-data)
+			template(v-slot:no-data, v-if="dadosListagem.nomeItem === 'tipologias' || dadosListagem.nomeItem === 'licenças'")
+				span Não existem {{dadosListagem.nomeItem}} a serem exibidas.
+			template(v-slot:no-data, v-else)
 				span Não existem {{dadosListagem.nomeItem}} a serem exibidos.
 
 			template(v-slot:footer, v-if="dadosListagem.numberOfElements > 0")

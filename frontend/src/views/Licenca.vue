@@ -69,7 +69,9 @@ export default {
 			placeholderPesquisa: "Pesquisar por tipo ou nomenclatura da licença",
 			labelBotaoCadastrarEditar: "Cadastrar",
 			iconBotaoCadastrarEditar: "mdi-plus",
-			dadosListagem: {},
+			dadosListagem: {
+				nomeItem: "licenças",
+			},
 			headerListagem: HEADER,
 			parametrosFiltro: {
 				pagina: 0,
