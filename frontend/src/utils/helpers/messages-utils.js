@@ -62,6 +62,14 @@ const ERROR_MESSAGES = {
 
 	taxa: {
 		listagem: ER_BASE + 'listar as taxas. ',
+	},
+
+	taxaAdministrativa: {
+		cadastro: ER_BASE + 'cadastrar a taxa administrativa. ',
+		editar: ER_BASE + 'editar a taxa administrativa. ',
+		listagem: ER_BASE + 'listar as taxas administrativas. ',
+		ativar: ER_BASE + 'ativar a taxa administrativa. ',
+		desativar: ER_BASE + 'desativar a taxa administrativa. ',
 	}
 
 };
