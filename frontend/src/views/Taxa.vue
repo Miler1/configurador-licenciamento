@@ -39,7 +39,9 @@ export default {
 			tituloListagem: 'Listagem de taxas cadastradas',
 			placeholderPesquisa: "Pesquisar pelo código ou descrição",
 			headerListagem: HEADER,
-			dadosListagem: {},
+			dadosListagem: {
+				nomeItem: "taxas",
+			},
 			labelBotaoCadastrarEditar: "Cadastrar",
 			iconBotaoCadastrarEditar: "mdi-plus",
 			errorMessageEmpty: true,
@@ -174,13 +176,18 @@ export default {
 			TaxaService.listar(taxasFiltro)
 
 				.then((response) => {
+
 					this.dadosListagem = response.data;
+					this.dadosListagem.nomeItem = 'taxas';
+
 				})
 				.catch(erro => {
+
 					console.error(erro);
 					this.$store.dispatch(SET_SNACKBAR,
 						{color: 'error', text: ERROR_MESSAGES.taxa.listagem + ': ' + erro.message, timeout: '6000'}
 					);
+
 				});
 
 		},

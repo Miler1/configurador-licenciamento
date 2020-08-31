@@ -106,7 +106,8 @@
 											) 
 												span Complementar
 									v-col.pa-0
-										span.v-messages.theme--light.error--text.v-messages__message.pl-3.mb-3 {{ errorMessage(grupoRequisito.obrigatorio, true) }}
+										span.v-messages.theme--light.error--text.v-messages__message.pl-3.mb-3 
+											| {{ errorMessage(grupoRequisito.obrigatorio, true) }}
 							v-row
 								v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
 									a#QA-limpar-dados-requisito-tecnico.d-flex.flex-row.align-center.justify-end(@click="clear")

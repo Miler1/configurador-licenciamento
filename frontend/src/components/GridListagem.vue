@@ -56,7 +56,7 @@
 			template(v-slot:item.actions='{ item }')
 				v-tooltip(bottom, v-if="tituloAba === ' taxa'")
 					template(v-slot:activator="{ on, attrs }")
-						v-icon.mr-2(small @click='visualizarTaxa(item)', v-on='on')
+						v-icon.mr-2(small @click='visualizarTaxa(item)', v-on='on', color='#9EBAA4')
 							| mdi-eye
 					span {{'Visualizar ' + tituloAba}}
 
@@ -72,7 +72,7 @@
 							| {{item.ativo ? 'mdi-minus-circle' : 'mdi-check-circle'}}
 					span {{item.ativo ? 'Desativar ' + tituloAba : 'Ativar ' + tituloAba }}
 
-			template(v-slot:no-data, v-if="dadosListagem.nomeItem === 'tipologias' || dadosListagem.nomeItem === 'licenças'")
+			template(v-slot:no-data, v-if="dadosListagem.nomeItem === 'tipologias' || dadosListagem.nomeItem === 'licenças' || dadosListagem.nomeItem === 'taxas'")
 				span Não existem {{dadosListagem.nomeItem}} a serem exibidas.
 			template(v-slot:no-data, v-else)
 				span Não existem {{dadosListagem.nomeItem}} a serem exibidos.
