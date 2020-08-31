@@ -21,7 +21,7 @@
 						return-object=true
 					)
 				v-col(cols="12", md="3")
-					v-label Tipos de licença
+					v-label Tipos de licenças
 					v-autocomplete#QA-select-requisito-administrativo-licenca(
 						outlined,
 						:disabled="!cadastro",
@@ -166,10 +166,6 @@ export default {
 <style lang="less">
 
 @import "../assets/css/variaveis.less";
-
-.label-btn-cadastrar {
-	color: white !important;
-}
 
 .theme--light.v-btn-toggle:not(.v-btn-toggle--group) .v-btn.v-btn.v-btn--active {
 	border-color: @green-primary !important;

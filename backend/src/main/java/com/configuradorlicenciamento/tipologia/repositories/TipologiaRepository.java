@@ -10,4 +10,6 @@ public interface TipologiaRepository extends JpaRepository<Tipologia, Integer>, 
 
     Boolean existsByCodigo(String codigo);
 
+    Tipologia findByCodigo(String codigo);
+
 }
