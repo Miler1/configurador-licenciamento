@@ -436,11 +436,34 @@ export default {
 
 		excluirItem(item) {
 
-			var list = [];
+			this.$fire({
+				title:'<p class="title-modal-confirm">Remover documento - ' + item.documento.nome + '</p>',
 
-			this.dadosListagem = this.dadosListagem.filter(
-				dado => dado.documento.nome != item.documento.nome || dado.licenca.sigla != item.licenca.sigla
-			);
+				html:`<p class="message-modal-confirm">Ao remover o documento, ele não estará mais vinculado nesse grupo.</p>
+						<p class="message-modal-confirm">
+						<b>Tem certeza que deseja remover o documento? Esta opção pode ser desfeita a qualquer momento ao adicioná-lo novamente.</b>
+					</p>`,
+				showCancelButton: true,
+				confirmButtonColor:'#EB2D30',
+				cancelButtonColor: '#FFF',
+				showCloseButton: true,
+				focusConfirm: false,
+				confirmButtonText: '<i class="fa fa-minus-circle"></i> Remover' ,
+				cancelButtonText: '<i class="fa fa-close"></i> Cancelar',
+				reverseButtons: true
+
+			}).then((result) => {
+
+				if(result.value) {	
+
+					var list = [];
+
+					this.dadosListagem = this.dadosListagem.filter(
+						dado => dado.documento.nome != item.documento.nome || dado.licenca.sigla != item.licenca.sigla
+					);
+				}
+
+			});		
 		},
 
 		preparaDadosParaEdicao(requisito) {
