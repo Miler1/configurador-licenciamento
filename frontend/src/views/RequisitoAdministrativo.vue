@@ -58,7 +58,7 @@ export default {
 		return {
 			tituloAba: "requisito administrativo",
 			tituloListagem: 'Listagem de requisitos administrativos cadastrados',
-			placeholderPesquisa: "Pesquisar pelo nome do documento ou tipo licença",
+			placeholderPesquisa: "Pesquisar pelo nome do documento ou tipo de licença",
 			dadosListagem: {},
 			labelBotaoCadastrarEditar: "Cadastrar",
 			iconBotaoCadastrarEditar: "mdi-plus",
