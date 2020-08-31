@@ -388,7 +388,7 @@ export default {
 
 		},
 
-		cancelar() {
+		cancelar(route) {
 
 			this.$fire({
 
@@ -415,7 +415,12 @@ export default {
 			}).then((result) => {
 
 				if (result.value) {
-					this.$router.push({name: 'RequisitosTecnicos'});
+
+					if(route){
+						route();
+					} else {
+						this.$router.push({name: 'RequisitosTecnicos'});
+					}
 				}
 				
 			}).catch((error) => {
@@ -513,9 +518,14 @@ export default {
 					);
 				});
 		}
+	},
+
+	beforeRouteLeave(to, from, next) {
+		this.cancelar(next);
 	}
 
 };
+
 </script>
 
 <style lang="less">
