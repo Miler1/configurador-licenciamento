@@ -58,7 +58,9 @@ export default {
 			tituloListagem: "Listagem de tipologias cadastradas",
 			placeholderPesquisa: "Pesquisar pelo nome da tipologia",
 			headerListagem: HEADER,
-			dadosListagem: {},
+			dadosListagem: {
+				nomeItem: "tipologias",
+			},
 			parametrosFiltro: {
 				pagina: 0,
 				itemsPorPagina: 10,

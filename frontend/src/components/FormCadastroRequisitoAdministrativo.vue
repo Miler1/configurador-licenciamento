@@ -14,7 +14,7 @@
 						v-model="requisitoAdministrativo.documento",
 						:items="documentos",
 						item-text="nome",
-						:error-messages="errorMessage( requisitoAdministrativo.documento )",
+						:error-messages="errorMessage(requisitoAdministrativo.documento)",
 						no-data-text="Nenhum documento encontrado",
 						@click.native="resetErrorMessage",
 						required,
@@ -27,7 +27,7 @@
 						:disabled="!cadastro",
 						dense,
 						color="#E0E0E0",
-						:placeholder="placeholderSelect",
+						:placeholder="placeholderSelectLicenca",
 						item-color="grey darken-3",
 						v-model="requisitoAdministrativo.licencas",
 						:items="licencas",
@@ -37,15 +37,15 @@
 						@click.native="resetErrorMessage",
 						required,
 						return-object=true,
-						multiple=true
+						multiple=true,
 						chips=true,
 						deletable-chips=true
 					)
 			v-row
-				v-col.d-flex.flex-column.mr-5(cols="12", md="4")
+				v-col.d-flex.flex-column(cols="12", md="4")
 					v-col.pa-0
 						v-label Pessoa
-					v-col.pa-0
+					v-col.pa-0.mb-1
 						v-btn-toggle#QA-btn-toggle-pessoa(
 								v-model="requisitoAdministrativo.tipoPessoa",
 								color="green lighten-4",
@@ -62,14 +62,14 @@
 								width="140px",
 							) 
 								span Jurídica
-
-					v-col.pa-0
-						span.v-messages.theme--light.error--text.v-messages__message {{ errorMessage(requisitoAdministrativo.tipoPessoa) }}
+					v-col.d-flex.pa-0
+						span.v-messages.theme--light.error--text.v-messages__message.pl-3.mb-3
+							| {{ errorMessage(requisitoAdministrativo.tipoPessoa) }}
 
 				v-col.d-flex.flex-column(cols="12", md="4")
 					v-col.pa-0
 						v-label Tipo do requisito
-					v-col.pa-0
+					v-col.pa-0.mb-1
 						v-btn-toggle#QA-btn-toggle-requisito-administrativo(
 								v-model="requisitoAdministrativo.obrigatorio",
 								color="green lighten-4", 
@@ -84,10 +84,12 @@
 								color="white",
 								value="false",
 								width="140px",
-							) 
+							)
 								span Complementar
-					v-col.pa-0
-						span.v-messages.theme--light.error--text.v-messages__message {{ errorMessage(requisitoAdministrativo.obrigatorio) }}
+					v-col.d-flex.pa-0
+						span.v-messages.theme--light.error--text.v-messages__message.pl-3.mb-3
+							| {{ errorMessage(requisitoAdministrativo.obrigatorio) }}
+
 			v-row
 				v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
 					a#QA-limpar-dados-requisito-administrativo.d-flex.flex-row.align-center.justify-end(@click="clear")
@@ -110,6 +112,7 @@ export default {
 	data: () => {
 		return {
 			placeholderSelect: "Selecione",
+			placeholderSelectLicenca: "Selecione um ou mais",
 			documentos: [],
 			licencas: []
 		};
@@ -179,6 +182,10 @@ export default {
 .theme--light.v-list-item .v-list-item__mask{
 	color:white;
 	background: #65afef;
+}
+
+.v-autocomplete:not(.v-input--is-focused).v-select--chips input {
+	max-height: 100% !important;
 }
 
 </style>
