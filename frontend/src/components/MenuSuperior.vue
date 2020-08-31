@@ -15,7 +15,7 @@ v-app-bar(app, outlined, color='white')
 						template(v-slot:activator="{ on, attrs }")
 							v-btn(icon, @click='logout', v-on="on")
 								v-icon mdi-logout
-						span Sair			
+						span Sair do sistema			
 				v-toolbar-title.text-caption.text-center
 					| Administrador
 
