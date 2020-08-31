@@ -70,7 +70,7 @@
 										outlined,
 										dense,
 										color="#E0E0E0",
-										:placeholder="placeholderSelect",
+										:placeholder="placeholderSelectLicenca",
 										item-color="grey darken-3",
 										v-model="grupoRequisito.licencas",
 										:items="licencas",
@@ -88,7 +88,7 @@
 								v-col.d-flex.flex-column(cols="12", md="5")
 									v-col.pa-0
 										v-label Tipo do requisito
-									v-col.pa-0
+									v-col.pa-0.mb-1
 										v-btn-toggle#QA-btn-toggle-requisito-tecnico(
 												v-model="grupoRequisito.obrigatorio",
 												color="green lighten-4", 
@@ -106,7 +106,7 @@
 											) 
 												span Complementar
 									v-col.pa-0
-										span.v-messages.theme--light.error--text.v-messages__message {{ errorMessage(grupoRequisito.obrigatorio, true) }}				
+										span.v-messages.theme--light.error--text.v-messages__message.pl-3.mb-3 {{ errorMessage(grupoRequisito.obrigatorio, true) }}
 							v-row
 								v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
 									a#QA-limpar-dados-requisito-tecnico.d-flex.flex-row.align-center.justify-end(@click="clear")
@@ -177,6 +177,7 @@ export default {
 			},
 			placeholder: "Digite aqui...",
 			placeholderSelect: "Selecione",
+			placeholderSelectLicenca: "Selecione um ou mais",
 			documentos: [],
 			licencas: [],
 			errorMessageEmpty: true,
@@ -592,6 +593,10 @@ export default {
 	.v-input__slot{
 		cursor: not-allowed !important;
 	}
+}
+
+.v-autocomplete:not(.v-input--is-focused).v-select--chips input {
+	max-height: 100% !important;
 }
 
 </style>
