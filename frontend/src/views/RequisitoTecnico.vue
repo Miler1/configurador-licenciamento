@@ -38,7 +38,7 @@ export default {
 
 	data: () => {
 		return {
-			tituloAba: "requisito técnico",
+			tituloAba: "grupo de requisito técnico",
 			tituloListagem: "Listagem de grupos de requisitos técnicos cadastrados",
 			placeholderPesquisa: "Pesquisar por código ou descrição do grupo de requisito",
 			headerListagem: HEADER,
