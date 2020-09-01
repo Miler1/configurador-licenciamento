@@ -38,7 +38,7 @@ import FormCadastroTipologia from '@/components/FormCadastroTipologia';
 import GridListagem from '@/components/GridListagem';
 import TipologiaService from '../services/tipologia.service';
 import RelatorioService from '../services/relatorio.service';
-import { SET_SNACKBAR } from '../store/actions.type';
+import snackbar from '@/services/snack.service';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 import { HEADER } from '@/utils/dadosHeader/ListagemTipologiaHeader';
 
@@ -170,9 +170,7 @@ export default {
 			let message = edicao ? ERROR_MESSAGES.tipologia.editar : ERROR_MESSAGES.tipologia.cadastro;
 			message += error.message;
 
-			this.$store.dispatch(SET_SNACKBAR,
-				{color: 'error', text: message, timeout: '6000'}
-			);
+			snackbar.alert(message);
 			
 		},
 
@@ -184,9 +182,7 @@ export default {
 			// 	message = ` A tipologia salva com o código: ${response.data.codigo}`;
 			// }
 
-			this.$store.dispatch(SET_SNACKBAR,
-				{color: 'success', text: message, timeout: '6000'}
-			);
+			snackbar.alert(message, snackbar.type.SUCCESS);
 
 			this.clear();
 			this.updatePagination();
@@ -211,10 +207,7 @@ export default {
 				.catch(erro => {
 
 					console.error(erro);
-
-					this.$store.dispatch(SET_SNACKBAR,
-						{color: 'error', text: ERROR_MESSAGES.tipologia.listagem + ': ' + erro.message, timeout: '6000'}
-					);
+					snackbar.alert(ERROR_MESSAGES.tipologia.listagem + erro.message);
 
 				});
 
@@ -268,17 +261,9 @@ export default {
 						.then(() => {
 							
 							if(!item.ativo) {
-								
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'success', text: SUCCESS_MESSAGES.tipologia.desativar, timeout: '6000'}
-								);
-							
+								snackbar.alert(SUCCESS_MESSAGES.tipologia.desativar, snackbar.type.SUCCESS);
 							} else {
-
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'success', text: SUCCESS_MESSAGES.tipologia.ativar, timeout: '6000'}
-								);
-
+								snackbar.alert(SUCCESS_MESSAGES.tipologia.ativar, snackbar.type.SUCCESS);
 							}
 
 							this.updatePagination();
@@ -289,17 +274,9 @@ export default {
 
 							console.error(erro);
 							if(!item.ativo) {
-								
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.tipologia.desativar, timeout: '6000'}
-								);
-							
+								snackbar.alert(ERROR_MESSAGES.tipologia.desativar);
 							} else {
-
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.tipologia.ativar, timeout: '6000'}
-								);
-
+								snackbar.alert(ERROR_MESSAGES.tipologia.ativar);
 							}
 
 							item.ativo = !item.ativo;
