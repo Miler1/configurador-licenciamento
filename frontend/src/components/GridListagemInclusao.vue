@@ -13,7 +13,7 @@
 			)
 
 			template(v-slot:item.obrigatorio='{ item }')
-				span {{item.obrigatorio ? 'Básico' : 'Complementar'}}
+				span {{item.obrigatorio == "true" ? 'Básico' : 'Complementar'}}
 
 			template(v-slot:item.actions='{ item }')
 				v-tooltip(bottom)

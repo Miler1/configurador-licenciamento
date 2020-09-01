@@ -483,6 +483,10 @@ export default {
 			this.dadosListagem = [];
 			this.dadosListagem = requisito.tipoLicencaGrupoDocumentoList;
 
+			this.dadosListagem.forEach(dado => {
+				dado.obrigatorio = dado.obrigatorio ? 'true' : 'false';
+			});
+
 		}
 	},
 
