@@ -391,12 +391,6 @@ export default {
 			});
 		}, 
 		
-	},
-
-	created () {
-
-		this.updatePagination();
-
 	}
 
 };
