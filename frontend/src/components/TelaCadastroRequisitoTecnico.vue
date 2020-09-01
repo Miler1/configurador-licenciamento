@@ -271,7 +271,7 @@ export default {
 
 				}
 
-				this.clear();
+				this.clearRequisito();
 
 			} else {
 				this.errorMessageEmptyInclusao = false;
