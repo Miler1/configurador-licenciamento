@@ -40,7 +40,7 @@ import LicencaService from '../services/licenca.service';
 import RelatorioService from '../services/relatorio.service';
 import GridListagem from '@/components/GridListagem';
 import mapFinalidadeEnum from '../utils/helpers/finalidade-helper';
-import { SET_SNACKBAR } from '../store/actions.type';
+import snackbar from '@/services/snack.service';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 import { HEADER } from '@/utils/dadosHeader/ListagemLicencaHeader';
 
@@ -208,9 +208,7 @@ export default {
 
 			let message = edicao ? SUCCESS_MESSAGES.editar : SUCCESS_MESSAGES.cadastro;
 
-			this.$store.dispatch(SET_SNACKBAR,
-				{color: 'success', text: message, timeout: '6000'}
-			);
+			snackbar.alert(message, snackbar.type.SUCCESS);
 
 			this.clear();
 			this.updatePagination();
@@ -223,9 +221,7 @@ export default {
 			let message = edicao ? ERROR_MESSAGES.licenca.editar : ERROR_MESSAGES.licenca.cadastro;
 			message += error.message;
 
-			this.$store.dispatch(SET_SNACKBAR,
-				{color: 'error', text: message, timeout: '6000'}
-			);
+			snackbar.alert(message);
 
 		},
 
@@ -295,10 +291,7 @@ export default {
 				.catch(error => {
 
 					console.error(error);
-
-					this.$store.dispatch(SET_SNACKBAR,
-						{color: 'error', text: ERROR_MESSAGES.licenca.listagem + error.message, timeout: '6000'}
-					);
+					snackbar.alert(ERROR_MESSAGES.licenca.listagem);
 					
 				});
 
@@ -370,17 +363,9 @@ export default {
 						.then(() => {
 							
 							if(!item.ativo) {
-								
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'success', text: SUCCESS_MESSAGES.licenca.desativar, timeout: '6000'}
-								);
-							
+								snackbar.alert(SUCCESS_MESSAGES.licenca.desativar, snackbar.type.SUCCESS);
 							} else {
-
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'success', text: SUCCESS_MESSAGES.licenca.ativar, timeout: '6000'}
-								);
-
+								snackbar.alert(SUCCESS_MESSAGES.licenca.ativar, snackbar.type.SUCCESS);
 							}
 
 							this.updatePagination();
@@ -390,18 +375,11 @@ export default {
 						.catch(error => {
 
 							console.error(error);
-							if(!item.ativo) {
-								
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.licenca.desativar + error.message, timeout: '6000'}
-								);
 							
+							if(!item.ativo) {
+								snackbar.alert(ERROR_MESSAGES.licenca.desativar);
 							} else {
-
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.licenca.ativar + error.message, timeout: '6000'}
-								);
-
+								snackbar.alert(ERROR_MESSAGES.licenca.ativar);
 							}
 
 							item.ativo = !item.ativo;
