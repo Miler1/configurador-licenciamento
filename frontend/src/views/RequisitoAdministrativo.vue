@@ -208,6 +208,11 @@ export default {
 		},
 
 		errorMessage(value) {
+
+			if (!this.isCadastro && Array.isArray(value)) {
+				return 'Este campo não permite ser editado';
+			}
+
 			return this.errorMessageEmpty || value ? '' : 'Obrigatório';
 		},
 
