@@ -3,6 +3,7 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 import { loading } from '@/utils/loading.js';
 import { ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
+import snackbar from '@/services/snack.service';
 
 var countRequest = 0;
 const ApiService = {
@@ -77,9 +78,7 @@ const ApiService = {
 		} catch (error) {
 			const result = { message: this.genericErrorHandling(error) };
 
-			if(result){
-				return Promise.reject(result);
-			}
+			return Promise.reject(result);
 		}
 	},
 
@@ -120,6 +119,7 @@ const ApiService = {
 			switch (error.response.status) {
 			case 401:
 				this.handling401(error.response.data);
+				message = '';
 				break;
 			case 404:
 				message = error.response.data.message;
@@ -134,19 +134,13 @@ const ApiService = {
 		}
 
 		console.log('genericErrorHandling', error.response);
-		if(error.response.status !== 401){
-			console.log(message);
-			return message;
-		}
+
+		return message;
 	},
 
 	handling401 () {
-
+		setTimeout(() => snackbar.alert(ERROR_MESSAGES.unauthorized), 500);
 		window.location.hash = '#/login';
-
-		store.dispatch(SET_SNACKBAR,
-			{color: 'error', text: "Deu pala capeta", timeout: '6000'}
-		);
 	},
 
 	handling500 () {
