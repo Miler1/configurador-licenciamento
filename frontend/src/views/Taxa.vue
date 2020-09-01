@@ -19,7 +19,7 @@
 <script>
 
 import GridListagem from '@/components/GridListagem';
-import { SET_SNACKBAR } from '@/store/actions.type';
+import snackbar from '@/services/snack.service';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 import { HEADER } from '@/utils/dadosHeader/ListagemTaxaHeader';
 import TaxaService from '../services/taxa.service';
@@ -116,9 +116,7 @@ export default {
 			let message = edicao ? ERROR_MESSAGES.documento.editar : ERROR_MESSAGES.documento.cadastro;
 			message += error.message;
 
-			this.$store.dispatch(SET_SNACKBAR,
-				{color: 'error', text: message, timeout: '9000'}
-			);
+			snackbar.alert(message);
 
 		},
 
@@ -126,9 +124,7 @@ export default {
 
 			let message = edicao ? SUCCESS_MESSAGES.editar : SUCCESS_MESSAGES.cadastro;
 
-			this.$store.dispatch(SET_SNACKBAR,
-				{color: 'success', text: message, timeout: '6000'}
-			);
+			snackbar.alert(message, snackbar.type.SUCCESS);
 
 			this.clear();
 			this.updatePagination();
@@ -184,9 +180,7 @@ export default {
 				.catch(erro => {
 
 					console.error(erro);
-					this.$store.dispatch(SET_SNACKBAR,
-						{color: 'error', text: ERROR_MESSAGES.taxa.listagem + ': ' + erro.message, timeout: '6000'}
-					);
+					snackbar.alert(ERROR_MESSAGES.taxa.listagem + erro.message);
 
 				});
 
