@@ -118,8 +118,8 @@
 										v-icon mdi-plus
 										span Adicionar
 								
-									v-btn#QA-btn-editar-requisito-tecnico.btn-cadastrar(@click="incluirDados", large, v-if="!isInclusao")
-										v-icon(color="white") mdi-pencil
+									v-btn#QA-btn-editar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="!isInclusao")
+										v-icon mdi-pencil
 										span Editar
 
 		GridListagemInclusao.px-7(
@@ -482,6 +482,10 @@ export default {
 			
 			this.dadosListagem = [];
 			this.dadosListagem = requisito.tipoLicencaGrupoDocumentoList;
+
+			this.dadosListagem.forEach(dado => {
+				dado.obrigatorio = dado.obrigatorio ? 'true' : 'false';
+			});
 
 		}
 	},

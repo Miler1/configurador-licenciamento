@@ -20,7 +20,7 @@ public class AutenticacaoController {
 	@Autowired
 	IAutenticacaoService autenticacaoService;
 
-	@RequestMapping(method = RequestMethod.GET, value="/entradaUnica/{sessionKey}")
+	@GetMapping(value="/entradaUnica/{sessionKey}")
 	public RedirectView entradaUnica(HttpServletRequest request, @PathVariable("sessionKey") String sessionKey) {
 
 		autenticacaoService.entradaUnica(request, sessionKey);
@@ -29,7 +29,7 @@ public class AutenticacaoController {
 
 	}
 
-	@RequestMapping(method = RequestMethod.POST, value="/login")
+	@PostMapping(value="/login")
 	public ResponseEntity<Void> login(HttpServletRequest request, @Valid @RequestBody AutenticacaoDTO autenticacao) {
 
 		autenticacaoService.login(request, autenticacao);
@@ -38,7 +38,7 @@ public class AutenticacaoController {
 
 	}
 
-	@RequestMapping(method = RequestMethod.GET, value="/usuario-logado")
+	@GetMapping(value="/usuario-logado")
 	public ResponseEntity<Principal> usuarioLogado(HttpServletRequest request) {
 
 		Principal principal = request.getUserPrincipal();
