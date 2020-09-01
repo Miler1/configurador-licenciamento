@@ -9,8 +9,9 @@ let types = {
 
 export default {
 
-	alert: (mensagem, tipo = types.ERROR, timeout = '6000') =>
-				store.dispatch(SET_SNACKBAR, {color: tipo, text: mensagem, timeout: timeout}),
+	alert: (mensagem, tipo = types.ERROR, timeout = '6000') => {
+		store.dispatch(SET_SNACKBAR, {color: tipo, text: mensagem, timeout: timeout});
+	},
 
 	type: types
 

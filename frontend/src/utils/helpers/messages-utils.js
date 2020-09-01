@@ -3,7 +3,7 @@ const ER_BASE = 'Erro! Não foi possível ';
 const ERROR_MESSAGES = {
 
 	logout: 'Erro ao realizar logout.',
-	unauthorizzed: 'Erro! Sua sessão expirou, faça login novamente.',
+	unauthorized: 'Erro! Sua sessão expirou, faça login novamente.',
 
 	cnae: {
 		cadastro: ER_BASE + 'cadastrar o CNAE. ',
