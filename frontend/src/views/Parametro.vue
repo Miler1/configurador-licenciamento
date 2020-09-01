@@ -39,7 +39,7 @@ import FormCadastroParametro from '@/components/FormCadastroParametro';
 import ParametroService from '@/services/parametro.service';
 import RelatorioService from '../services/relatorio.service';
 import GridListagem from '@/components/GridListagem';
-import { SET_SNACKBAR } from '@/store/actions.type';
+import snackbar from '@/services/snack.service';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 import { HEADER } from '@/utils/dadosHeader/ListagemParametroHeader';
 
@@ -228,9 +228,7 @@ export default {
 
 			let message = edicao ? SUCCESS_MESSAGES.editar : SUCCESS_MESSAGES.cadastro;
 
-			this.$store.dispatch(SET_SNACKBAR,
-				{color: 'success', text: message, timeout: '6000'}
-			);
+			snackbar.alert(message, snackbar.type.SUCCESS);
 
 			this.clear();
 			this.updatePagination();
@@ -245,9 +243,7 @@ export default {
 			let message = edicao ? ERROR_MESSAGES.parametro.editar : ERROR_MESSAGES.parametro.cadastro;
 			message += error.message;
 
-			this.$store.dispatch(SET_SNACKBAR,
-				{color: 'error', text: message, timeout: '6000'}
-			);
+			snackbar.alert(message);
 
 		},
 
@@ -303,17 +299,9 @@ export default {
 						.then(() => {
 							
 							if(!item.ativo) {
-								
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'success', text: SUCCESS_MESSAGES.parametro.desativar, timeout: '6000'}
-								);
-							
+								snackbar.alert(SUCCESS_MESSAGES.parametro.desativar, snackbar.type.SUCCESS);
 							} else {
-
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'success', text: SUCCESS_MESSAGES.parametro.ativar, timeout: '6000'}
-								);
-
+								snackbar.alert(SUCCESS_MESSAGES.parametro.ativar, snackbar.type.SUCCESS);
 							}
 
 							this.updatePagination();
@@ -323,18 +311,11 @@ export default {
 						.catch(error => {
 
 							console.error(error);
+
 							if(!item.ativo) {
-								
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.parametro.desativar + error.message, timeout: '6000'}
-								);
-							
+								snackbar.alert(ERROR_MESSAGES.parametro.desativar);
 							} else {
-
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.parametro.ativar + error.message, timeout: '6000'}
-								);
-
+								snackbar.alert(ERROR_MESSAGES.parametro.ativar);
 							}
 
 							item.ativo = !item.ativo;
@@ -362,10 +343,7 @@ export default {
 				.catch(error => {
 
 					console.error(error);
-
-					this.$store.dispatch(SET_SNACKBAR,
-						{color: 'error', text: ERROR_MESSAGES.parametro.listagem + ': ' + error.message, timeout: '6000'}
-					);
+					snackbar.alert(ERROR_MESSAGES.parametro.listagem + error.message);
 
 				});
 
