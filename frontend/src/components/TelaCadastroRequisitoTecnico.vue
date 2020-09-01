@@ -352,7 +352,7 @@ export default {
 
 			let message = edicao ? SUCCESS_MESSAGES.editar : SUCCESS_MESSAGES.cadastro;
 
-			snackbar.alert(message, snackbar.types.SUCCESS);
+			snackbar.alert(message, snackbar.type.SUCCESS);
 
 			this.clear();
 			this.redirectListagem();
