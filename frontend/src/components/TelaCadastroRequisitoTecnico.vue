@@ -409,7 +409,7 @@ export default {
 					</p>` :
 					`<p class="message-modal-confirm">Ao cancelar a edição, todas as informações alteradas serão perdidas.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja cancelar o cadastro? Esta opção não poderá ser desfeita e todas as informações serão perdidas.</b>
+						<b>Tem certeza que deseja cancelar a edição? Esta opção não poderá ser desfeita e todas as informações serão perdidas.</b>
 					</p>`,
 				showCancelButton: true,
 				confirmButtonColor: '#67C23A',
