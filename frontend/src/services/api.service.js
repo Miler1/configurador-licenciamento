@@ -2,6 +2,8 @@ import Vue from 'vue';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import { loading } from '@/utils/loading.js';
+import { ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
+
 var countRequest = 0;
 const ApiService = {
 	async init () {
@@ -60,9 +62,12 @@ const ApiService = {
 		try {
 			return await Vue.axios.get(`${resource}/${slug}`);
 		} catch (error) {
+
 			const result = { message: this.genericErrorHandling(error) };
 
-			return Promise.reject(result);
+			if(result){
+				return Promise.reject(result);
+			}
 		}
 	},
 
@@ -72,7 +77,9 @@ const ApiService = {
 		} catch (error) {
 			const result = { message: this.genericErrorHandling(error) };
 
-			return Promise.reject(result);
+			if(result){
+				return Promise.reject(result);
+			}
 		}
 	},
 
@@ -127,13 +134,19 @@ const ApiService = {
 		}
 
 		console.log('genericErrorHandling', error.response);
-
-		return message;
+		if(error.response.status !== 401){
+			console.log(message);
+			return message;
+		}
 	},
 
 	handling401 () {
-		//redireciona para página de login
+
 		window.location.hash = '#/login';
+
+		store.dispatch(SET_SNACKBAR,
+			{color: 'error', text: "Deu pala capeta", timeout: '6000'}
+		);
 	},
 
 	handling500 () {
