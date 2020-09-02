@@ -24,7 +24,7 @@
 import PanelCadastro from '@/components/PanelCadastro';
 import FormCadastroTaxaAdministrativa from '@/components/FormCadastroTaxaAdministrativa';
 import TaxaAdministrativaService from '@/services/taxaAdministrativa.service';
-import { SET_SNACKBAR } from '@/store/actions.type';
+import snackbar from '@/services/snack.service';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 
 export default {
@@ -158,10 +158,8 @@ export default {
 
 			let message = edicao ? SUCCESS_MESSAGES.editar : SUCCESS_MESSAGES.cadastro;
 
-			this.$store.dispatch(SET_SNACKBAR,
-				{color: 'success', text: message, timeout: '6000'}
-			);
-
+			snackbar.alert(message, snackbar.type.SUCCESS);
+			
 			this.clear();
 			// this.updatePagination();
 			// this.resetaDadosFiltragem();
@@ -175,9 +173,7 @@ export default {
 			let message = edicao ? ERROR_MESSAGES.parametro.editar : ERROR_MESSAGES.parametro.cadastro;
 			message += error.message;
 
-			this.$store.dispatch(SET_SNACKBAR,
-				{color: 'error', text: message, timeout: '6000'}
-			);
+			snackbar.alert(message);
 
 		},
 
