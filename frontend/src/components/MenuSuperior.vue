@@ -26,6 +26,7 @@ v-app-bar(app, outlined, color='white')
 import { USUARIO_LOGOUT } from '@/store/actions.type.js';
 import { mapGetters } from 'vuex';
 import { ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
+import snackbar from '@/services/snack.service';
 
 export default {
 
@@ -38,7 +39,7 @@ export default {
 					this.$router.push('/login');
 				}).catch((error) => {
 					console.error(error);
-					this.$store.dispatch(SET_SNACKBAR, {color: 'error', text: ERROR_MESSAGES.logout, timeout: '6000'});
+					snackbar.alert(ERROR_MESSAGES.logout);
 				});
 		}
 	},
