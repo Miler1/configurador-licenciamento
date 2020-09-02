@@ -201,7 +201,7 @@ export default {
 			}
 
 			if (!this.errorMessageEmpty && casasDecimais === null) {
-				return 'obrigatorio';
+				return 'Obrigatório';
 			} else if (casasDecimais === '' || (casasDecimais != null && !this.validarCasasDecimais())) {
 				return msgSomenteInteiros;
 			}

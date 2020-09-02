@@ -455,7 +455,7 @@ export default {
 				cancelButtonColor: '#FFF',
 				showCloseButton: true,
 				focusConfirm: false,
-				confirmButtonText: '<i class="fa fa-minus-circle"></i> Remover' ,
+				confirmButtonText: '<i class="mdi mdi-delete"></i> Remover' ,
 				cancelButtonText: '<i class="fa fa-close"></i> Cancelar',
 				reverseButtons: true
 

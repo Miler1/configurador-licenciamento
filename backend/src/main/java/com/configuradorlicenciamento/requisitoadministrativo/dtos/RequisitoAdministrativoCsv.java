@@ -45,7 +45,7 @@ public class RequisitoAdministrativoCsv {
 
         this.documento = requisitoAdministrativo.getDocumento().getNome();
         this.licenca = requisitoAdministrativo.getLicenca().getSigla();
-        this.tipoPessoa = requisitoAdministrativo.getTipoPessoa();
+        this.tipoPessoa = requisitoAdministrativo.getTipoPessoa().equals("PF") ? "Física" : "Jurídica";
         this.obrigatorio = requisitoAdministrativo.getObrigatorio() ? "Básico" : "Complementar";
         this.status = requisitoAdministrativo.getAtivo() ? "Ativo" : "Inativo";
         this.dataCadastro = requisitoAdministrativo.getDataCadastro() != null ?
