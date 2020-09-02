@@ -38,7 +38,7 @@ import PanelCadastro from '@/components/PanelCadastro';
 import FormCadastroCnae from '@/components/FormCadastroCnae';
 import GridListagem from '@/components/GridListagem';
 import AtividadeCnaeService from '@/services/atividadeCnae.service';
-import { SET_SNACKBAR } from '@/store/actions.type';
+import snackbar from '@/services/snack.service';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 import { HEADER } from '@/utils/dadosHeader/ListagemCnaeHeader';
 
@@ -128,9 +128,7 @@ export default {
 
 						.then(() => {
 
-							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'success', text: SUCCESS_MESSAGES.cadastro, timeout: '6000'}
-							);
+							snackbar.alert(SUCCESS_MESSAGES.cadastro, snackbar.type.SUCCESS);
 
 							this.clear();
 							this.updatePagination();
@@ -138,12 +136,7 @@ export default {
 
 						})
 						.catch(erro => {
-
-							console.error(erro);
-							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'error', text: ERROR_MESSAGES.cnae.cadastro + ': ' + erro.message, timeout: '6000'}
-							);
-
+							snackbar.alert(ERROR_MESSAGES.cnae.cadastro + erro.message);
 						});
 
 				} else {
@@ -151,9 +144,7 @@ export default {
 					AtividadeCnaeService.editar(this.atividadeCnae)
 						.then(() => {
 
-							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'success', text: SUCCESS_MESSAGES.editar, timeout: '6000'}
-							);
+							snackbar.alert(SUCCESS_MESSAGES.editar, snackbar.type.SUCCESS);
 
 							this.clear();
 							this.updatePagination();
@@ -165,9 +156,7 @@ export default {
 
 							console.error(erro);
 
-							this.$store.dispatch(SET_SNACKBAR,
-								{color: 'error', text: ERROR_MESSAGES.cnae.editar, timeout: '6000'}
-							);
+							snackbar.alert(ERROR_MESSAGES.cnae.editar);
 
 							this.resetaDadosCadastro();
 
@@ -214,10 +203,8 @@ export default {
 				.catch(erro => {
 
 					console.error(erro);
-					
-					this.$store.dispatch(SET_SNACKBAR,
-						{color: 'error', text: ERROR_MESSAGES.cnae.listagem + ': ' + erro.message, timeout: '6000'}
-					);
+
+					snackbar.alert(ERROR_MESSAGES.cnae.listagem);
 					
 				});
 
@@ -241,7 +228,7 @@ export default {
 			this.$fire({
 
 				title: item.ativo ? 
-					'<p class="title-modal-confirm">Desativar CNAE - ' + item.codigo+ '</p>' : 
+					'<p class="title-modal-confirm">Desativar CNAE - ' + item.codigo+ '</p>' :
 					'<p class="title-modal-confirm">Ativar CNAE - ' + item.codigo+ '</p>',
 
 				html: item.ativo ?
@@ -271,17 +258,9 @@ export default {
 						.then(() => {
 							
 							if(!item.ativo) {
-								
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'success', text: SUCCESS_MESSAGES.cnae.desativar, timeout: '6000'}
-								);
-							
+								snackbar.alert(SUCCESS_MESSAGES.cnae.desativar, snackbar.type.SUCCESS);
 							} else {
-
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'success', text: SUCCESS_MESSAGES.cnae.ativar, timeout: '6000'}
-								);
-
+								snackbar.alert(SUCCESS_MESSAGES.cnae.ativar, snackbar.type.SUCCESS);
 							}
 
 							this.updatePagination();
@@ -291,18 +270,11 @@ export default {
 						.catch(erro => {
 
 							console.error(erro);
+
 							if(!item.ativo) {
-								
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.cnae.desativar, timeout: '6000'}
-								);
-							
+								snackbar.alert(ERROR_MESSAGES.cnae.desativar);
 							} else {
-
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.cnae.ativar, timeout: '6000'}
-								);
-
+								snackbar.alert(ERROR_MESSAGES.cnae.ativar);
 							}
 
 							item.ativo = !item.ativo;
@@ -313,12 +285,6 @@ export default {
 				console.error(error);
 			});
 		},
-	},
-
-	created () {
-
-		this.updatePagination();
-
 	}
 
 };

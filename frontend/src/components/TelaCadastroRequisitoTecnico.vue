@@ -118,8 +118,8 @@
 										v-icon mdi-plus
 										span Adicionar
 								
-									v-btn#QA-btn-editar-requisito-tecnico.btn-cadastrar(@click="incluirDados", large, v-if="!isInclusao")
-										v-icon(color="white") mdi-pencil
+									v-btn#QA-btn-editar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="!isInclusao")
+										v-icon mdi-pencil
 										span Editar
 
 		GridListagemInclusao.px-7(
@@ -148,9 +148,9 @@ import DocumentoService from '@/services/documento.service';
 import LicencaService from '@/services/licenca.service';
 import RequisitoTecnicoService from '../services/requisitoTecnico.service';
 import GridListagemInclusao from '@/components/GridListagemInclusao';
+import snackbar from '@/services/snack.service';
 import { HEADER } from '@/utils/dadosHeader/ListagemRequisitoTecnicoInclusao';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
-import { SET_SNACKBAR } from '@/store/actions.type';
 
 export default {
 
@@ -190,7 +190,8 @@ export default {
 			iconBotaoCadastrarEditar: 'mdi-plus',
 			isCadastro: true,
 			isInclusao: true,
-			indexItemEdicao: null
+			indexItemEdicao: null,
+			allowRedirect: true,
 		};
 	},
 
@@ -271,7 +272,7 @@ export default {
 
 				}
 
-				this.clear();
+				this.clearRequisito();
 
 			} else {
 				this.errorMessageEmptyInclusao = false;
@@ -345,26 +346,25 @@ export default {
 			let message = edicao ? ERROR_MESSAGES.requisitoTecnico.editar : ERROR_MESSAGES.requisitoTecnico.cadastro;
 			message += error.message;
 
-			this.$store.dispatch(SET_SNACKBAR,
-				{color: 'error', text: message, timeout: '9000'}
-			);
+			snackbar.alert(message);
 		},
 
 		handleSuccess(edicao = false) {
 
 			let message = edicao ? SUCCESS_MESSAGES.editar : SUCCESS_MESSAGES.cadastro;
 
-			this.$store.dispatch(SET_SNACKBAR,
-				{color: 'success', text: message, timeout: '6000'}
-			);
+			snackbar.alert(message, snackbar.type.SUCCESS);
 
 			this.clear();
 			this.redirectListagem();
 
 		},
 
-		redirectListagem() {
+		redirectListagem(allowed = true) {
+
+			this.allowRedirect = allowed;
 			this.$router.push({name: 'RequisitosTecnicos'});
+
 		},
 
 		checkForm() {
@@ -388,7 +388,11 @@ export default {
 
 		},
 
-		cancelar(route) {
+		cancelar(){
+			this.redirectListagem(false);
+		},
+
+		confirmarCancelamento(next) {
 
 			this.$fire({
 
@@ -401,7 +405,7 @@ export default {
 					</p>` :
 					`<p class="message-modal-confirm">Ao cancelar a edição, todas as informações alteradas serão perdidas.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja cancelar o cadastro? Esta opção não poderá ser desfeita e todas as informações serão perdidas.</b>
+						<b>Tem certeza que deseja cancelar a edição? Esta opção não poderá ser desfeita e todas as informações serão perdidas.</b>
 					</p>`,
 				showCancelButton: true,
 				confirmButtonColor: '#67C23A',
@@ -415,12 +419,7 @@ export default {
 			}).then((result) => {
 
 				if (result.value) {
-
-					if(route){
-						route();
-					} else {
-						this.$router.push({name: 'RequisitosTecnicos'});
-					}
+					next();
 				}
 				
 			}).catch((error) => {
@@ -484,6 +483,10 @@ export default {
 			this.dadosListagem = [];
 			this.dadosListagem = requisito.tipoLicencaGrupoDocumentoList;
 
+			this.dadosListagem.forEach(dado => {
+				dado.obrigatorio = dado.obrigatorio ? 'true' : 'false';
+			});
+
 		}
 	},
 
@@ -513,15 +516,19 @@ export default {
 					this.preparaDadosParaEdicao(response.data);
 				})
 				.catch((error) => {
-					this.$store.dispatch(SET_SNACKBAR,
-						{color: 'error', text: error.message, timeout: '9000'}
-					);
+					snackbar.alert(error.message);
 				});
 		}
+
+		this.allowRedirect = false;
 	},
 
 	beforeRouteLeave(to, from, next) {
-		this.cancelar(next);
+		if(!this.allowRedirect){
+			this.confirmarCancelamento(next);
+		} else {
+			next();
+		}
 	}
 
 };

@@ -40,7 +40,7 @@ import RequisitoAdministrativoService from '@/services/requisitoAdministrativo.s
 import DocumentoService from '@/services/documento.service';
 import RelatorioService from '../services/relatorio.service';
 import GridListagem from '@/components/GridListagem';
-import { SET_SNACKBAR } from '@/store/actions.type';
+import snackbar from '@/services/snack.service';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 import { HEADER } from '@/utils/dadosHeader/ListagemRequisitoAdministrativoHeader';
 
@@ -58,7 +58,7 @@ export default {
 		return {
 			tituloAba: "requisito administrativo",
 			tituloListagem: 'Listagem de requisitos administrativos cadastrados',
-			placeholderPesquisa: "Pesquisar pelo nome do documento ou tipo licença",
+			placeholderPesquisa: "Pesquisar pelo nome do documento ou tipo de licença",
 			dadosListagem: {},
 			labelBotaoCadastrarEditar: "Cadastrar",
 			iconBotaoCadastrarEditar: "mdi-plus",
@@ -169,9 +169,7 @@ export default {
 			let message = edicao ? ERROR_MESSAGES.requisitoAdministrativo.editar : ERROR_MESSAGES.requisitoAdministrativo.cadastro;
 			message += error.message;
 
-			this.$store.dispatch(SET_SNACKBAR,
-				{color: 'error', text: message, timeout: '9000'}
-			);
+			snackbar.alert(message);
 
 		},
 
@@ -179,9 +177,7 @@ export default {
 
 			let message = edicao ? SUCCESS_MESSAGES.requisitoAdministrativo.editar : SUCCESS_MESSAGES.cadastro;
 
-			this.$store.dispatch(SET_SNACKBAR,
-				{color: 'success', text: message, timeout: '6000'}
-			);
+			snackbar.alert(message, snackbar.type.SUCCESS);
 
 			if(edicao) this.dadosPanel.panel = [];
 
@@ -208,6 +204,11 @@ export default {
 		},
 
 		errorMessage(value) {
+
+			if (!this.isCadastro && Array.isArray(value)) {
+				return 'Este campo não permite ser editado';
+			}
+
 			return this.errorMessageEmpty || value ? '' : 'Obrigatório';
 		},
 
@@ -235,17 +236,17 @@ export default {
 			this.$fire({
 
 				title: item.ativo ?
-					'<p class="title-modal-confirm">Desativar Requisito Administrativo - ' + item.documento.nome + '</p>' :
-					'<p class="title-modal-confirm">Ativar Requisito Administrativo - ' + item.documento.nome + '</p>',
+					'<p class="title-modal-confirm">Desativar requisito administrativo - ' + item.documento.nome + '</p>' :
+					'<p class="title-modal-confirm">Ativar requisito administrativo - ' + item.documento.nome + '</p>',
 
 				html: item.ativo ?
-					`<p class="message-modal-confirm">Ao desativar o requisito, ele não estará mais disponível no sistema.</p>
+					`<p class="message-modal-confirm">Ao desativar o requisito administrativo, ele não estará mais disponível no sistema.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja desativar o requisito? Esta opção pode ser desfeita a qualquer momento ao ativá-lo novamente.</b>
+						<b>Tem certeza que deseja desativar o requisito administrativo? Esta opção pode ser desfeita a qualquer momento ao ativá-lo novamente.</b>
 					</p>` :
-					`<p class="message-modal-confirm">Ao ativar o requisito, ele ficará disponível no sistema.</p>
+					`<p class="message-modal-confirm">Ao ativar o requisito administrativo, ele ficará disponível no sistema.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja ativar o requisito? Esta opção pode ser desfeita a qualquer momento ao desativá-lo novamente.</b>
+						<b>Tem certeza que deseja ativar o requisito administrativo? Esta opção pode ser desfeita a qualquer momento ao desativá-lo novamente.</b>
 					</p>`,
 				showCancelButton: true,
 				confirmButtonColor: item.ativo ? '#E6A23C' : '#67C23A',
@@ -293,20 +294,11 @@ export default {
 				.catch(error => {
 
 					console.error(error);
-
-					this.$store.dispatch(SET_SNACKBAR,
-						{color: 'error', text: ERROR_MESSAGES.requisitoAdministrativo.listagem + erro.message, timeout: '6000'}
-					);
+					snackbar.alert(ERROR_MESSAGES.requisitoAdministrativo.listagem);
 
 				});
 
 		},
-
-	},
-
-	created () {
-
-		this.updatePagination();
 
 	}
 

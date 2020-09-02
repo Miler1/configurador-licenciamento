@@ -36,7 +36,7 @@ import PanelCadastro from '@/components/PanelCadastro';
 import FormCadastroDocumento from '@/components/FormCadastroDocumento';
 import GridListagem from '@/components/GridListagem';
 import DocumentoService from '@/services/documento.service';
-import { SET_SNACKBAR } from '@/store/actions.type';
+import snackbar from '@/services/snack.service';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 import RelatorioService from '../services/relatorio.service';
 import { HEADER } from '@/utils/dadosHeader/ListagemDocumentoHeader';
@@ -159,9 +159,7 @@ export default {
 			let message = edicao ? ERROR_MESSAGES.documento.editar : ERROR_MESSAGES.documento.cadastro;
 			message += error.message;
 
-			this.$store.dispatch(SET_SNACKBAR,
-				{color: 'error', text: message, timeout: '9000'}
-			);
+			snackbar.alert(message);
 
 		},
 
@@ -169,9 +167,7 @@ export default {
 
 			let message = edicao ? SUCCESS_MESSAGES.editar : SUCCESS_MESSAGES.cadastro;
 
-			this.$store.dispatch(SET_SNACKBAR,
-				{color: 'success', text: message, timeout: '6000'}
-			);
+			snackbar.alert(message, snackbar.type.SUCCESS);
 
 			this.clear();
 			this.updatePagination();
@@ -220,17 +216,17 @@ export default {
 			this.$fire({
 
 				title: item.ativo ? 
-					'<p class="title-modal-confirm">Desativar Documento - ' + item.nome+ '</p>' :
-					'<p class="title-modal-confirm">Ativar Documento - ' + item.nome+ '</p>',
+					'<p class="title-modal-confirm">Desativar documento - ' + item.nome+ '</p>' :
+					'<p class="title-modal-confirm">Ativar documento - ' + item.nome+ '</p>',
 
 				html: item.ativo ?
-					`<p class="message-modal-confirm">Ao desativar o Documento, ele não estará mais disponível no sistema.</p>
+					`<p class="message-modal-confirm">Ao desativar o documento, ele não estará mais disponível no sistema.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja desativar o Documento? Esta opção pode ser desfeita a qualquer momento ao ativá-lo novamente.</b>
+						<b>Tem certeza que deseja desativar o documento? Esta opção pode ser desfeita a qualquer momento ao ativá-lo novamente.</b>
 					</p>` :
-					`<p class="message-modal-confirm">Ao ativar o Documento, ele ficará disponível no sistema.</p>
+					`<p class="message-modal-confirm">Ao ativar o documento, ele ficará disponível no sistema.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja ativar o Documento? Esta opção pode ser desfeita a qualquer momento ao desativá-lo novamente.</b>
+						<b>Tem certeza que deseja ativar o documento? Esta opção pode ser desfeita a qualquer momento ao desativá-lo novamente.</b>
 					</p>`,
 				showCancelButton: true,
 				confirmButtonColor: item.ativo ? '#E6A23C' : '#67C23A',
@@ -250,17 +246,9 @@ export default {
 						.then(() => {
 							
 							if(!item.ativo) {
-								
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'success', text: SUCCESS_MESSAGES.documento.desativar, timeout: '6000'}
-								);
-							
+								snackbar.alert(SUCCESS_MESSAGES.documento.desativar, snackbar.type.SUCCESS);
 							} else {
-
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'success', text: SUCCESS_MESSAGES.documento.ativar, timeout: '6000'}
-								);
-
+								snackbar.alert(SUCCESS_MESSAGES.documento.ativar, snackbar.type.SUCCESS);
 							}
 
 							this.updatePagination();
@@ -271,17 +259,9 @@ export default {
 
 							console.error(erro);
 							if(!item.ativo) {
-								
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.documento.desativar + erro.message, timeout: '6000'}
-								);
-							
+								snackbar.alert(ERROR_MESSAGES.documento.desativar);
 							} else {
-
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.documento.ativar + erro.message, timeout: '6000'}
-								);
-
+								snackbar.alert(ERROR_MESSAGES.documento.ativar);
 							}
 
 							item.ativo = !item.ativo;
@@ -305,18 +285,10 @@ export default {
 				})
 				.catch(erro => {
 					console.error(erro);
-					this.$store.dispatch(SET_SNACKBAR,
-						{color: 'error', text: ERROR_MESSAGES.documento.listagem + ': ' + erro.message, timeout: '6000'}
-					);
+					snackbar.alert(ERROR_MESSAGES.documento.listagem + erro.message);
 				});
 
 		},
-
-	},
-
-	created () {
-
-		this.updatePagination();
 
 	}
 

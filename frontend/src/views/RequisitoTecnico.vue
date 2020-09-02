@@ -24,8 +24,8 @@
 import GridListagem from '@/components/GridListagem';
 import RelatorioService from '../services/relatorio.service';
 import RequisitoTecnicoService from '../services/requisitoTecnico.service';
+import snackbar from '@/services/snack.service';
 import { HEADER } from '@/utils/dadosHeader/ListagemRequisitoTecnicoHeader';
-import { SET_SNACKBAR } from '@/store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 
 export default {
@@ -38,9 +38,9 @@ export default {
 
 	data: () => {
 		return {
-			tituloAba: "requisito técnico",
+			tituloAba: "grupo de requisito técnico",
 			tituloListagem: "Listagem de grupos de requisitos técnicos cadastrados",
-			placeholderPesquisa: "Pesquisar por código ou descrição do grupo de requisito",
+			placeholderPesquisa: "Pesquisar por código ou descrição do grupo de requisito técnico",
 			headerListagem: HEADER,
 			dadosListagem: {},
 			parametrosFiltro: {
@@ -72,10 +72,7 @@ export default {
 				.catch(erro => {
 
 					console.error(erro);
-					
-					this.$store.dispatch(SET_SNACKBAR,
-						{color: 'error', text: ERROR_MESSAGES.requisitoTecnico.listagem + ': ' + erro.message, timeout: '6000'}
-					);
+					snackbar.alert(ERROR_MESSAGES.requisitoTecnico.listagem + erro.message);
 					
 				});
 
@@ -107,17 +104,17 @@ export default {
 			this.$fire({
 
 				title: item.ativo ? 
-					'<p class="title-modal-confirm">Desativar Grupo de Requisito Técnico - ' + item.codigo+ '</p>' :
-					'<p class="title-modal-confirm">Ativar Grupo de Requisito Técnico - ' + item.codigo+ '</p>',
+					'<p class="title-modal-confirm">Desativar grupo de requisito técnico - ' + item.codigo+ '</p>' :
+					'<p class="title-modal-confirm">Ativar grupo de requisito técnico - ' + item.codigo+ '</p>',
 
 				html: item.ativo ?
-					`<p class="message-modal-confirm">Ao desativar o Grupo de Requisito Técnico, ele não estará mais disponível no sistema.</p>
+					`<p class="message-modal-confirm">Ao desativar o grupo de requisito técnico, ele não estará mais disponível no sistema.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja desativar o Grupo de Requisito Técnico? Esta opção pode ser desfeita a qualquer momento ao ativá-lo novamente.</b>
+						<b>Tem certeza que deseja desativar o grupo de requisito técnico? Esta opção pode ser desfeita a qualquer momento ao ativá-lo novamente.</b>
 					</p>` :
-					`<p class="message-modal-confirm">Ao ativar o Grupo de Requisito Técnico, ele ficará disponível no sistema.</p>
+					`<p class="message-modal-confirm">Ao ativar o grupo de requisito técnico, ele ficará disponível no sistema.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja ativar o Grupo de Requisito Técnico? Esta opção pode ser desfeita a qualquer momento ao desativá-lo novamente.</b>
+						<b>Tem certeza que deseja ativar o grupo de requisito técnico? Esta opção pode ser desfeita a qualquer momento ao desativá-lo novamente.</b>
 					</p>`,
 				showCancelButton: true,
 				confirmButtonColor: item.ativo ? '#E6A23C' : '#67C23A',
@@ -136,17 +133,9 @@ export default {
 						.then(() => {
 							
 							if(item.ativo) {
-								
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'success', text: SUCCESS_MESSAGES.requisitoTecnico.desativar, timeout: '6000'}
-								);
-							
+								snackbar.alert(SUCCESS_MESSAGES.requisitoTecnico.desativar, snackbar.type.SUCCESS);
 							} else {
-
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'success', text: SUCCESS_MESSAGES.requisitoTecnico.ativar, timeout: '6000'}
-								);
-
+								snackbar.alert(SUCCESS_MESSAGES.requisitoTecnico.ativar, snackbar.type.SUCCESS);
 							}
 
 							this.updatePagination();
@@ -157,17 +146,9 @@ export default {
 
 							console.error(error);
 							if(!item.ativo) {
-								
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.requisitoTecnico.desativar + error.message, timeout: '6000'}
-								);
-							
+								snackbar.alert(ERROR_MESSAGES.requisitoTecnico.desativar);
 							} else {
-
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.requisitoTecnico.ativar + error.message, timeout: '6000'}
-								);
-
+								snackbar.alert(ERROR_MESSAGES.requisitoTecnico.ativar);
 							}
 
 						});
