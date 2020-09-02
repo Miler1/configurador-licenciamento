@@ -66,8 +66,8 @@ export default {
 			requisitoAdministrativo: {
 				documento: null,
 				licencas: null,
-				obrigatorio:null,
-				tipoPessoa:null,
+				obrigatorio: null,
+				tipoPessoa: null,
 				ativo: true
 			},
 			headerListagem: HEADER,

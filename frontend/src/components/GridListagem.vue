@@ -44,6 +44,9 @@
 			template#text-align-center(v-slot:item.validadeEmAnos='{ item }')
 				span {{item.validadeEmAnos ? item.validadeEmAnos : ' ‒'}}
 
+			template(v-slot:item.tipoPessoa='{ item }')
+				span {{item.tipoPessoa === 'PF' ? 'Física' : 'Jurídica'}}
+
 			template(v-slot:item.finalidade='{ item }')
 				span {{item.finalidade}}
 
