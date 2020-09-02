@@ -80,7 +80,7 @@ export default {
 				items: 1,
 				panel: [],
 				readonly: true,
-				title: "Cadastro de parâmetros",
+				title: "Cadastro de parâmetro",
 				iconName:'fa fa-sliders',
 				tipo: "cadastro"
 			},
@@ -102,7 +102,7 @@ export default {
 
 		resetaDadosCadastro() {
 
-			this.dadosPanel.title = "Cadastro de parâmetros";
+			this.dadosPanel.title = "Cadastro de parâmetro";
 			this.dadosPanel.iconName = "fa fa-sliders";
 			this.dadosPanel.tipo = "cadastro";
 			this.labelBotaoCadastrarEditar = "Cadastrar";
