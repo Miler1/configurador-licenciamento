@@ -107,7 +107,7 @@ const SUCCESS_MESSAGES = {
 	requisitoTecnico: {
 		ativar: 'Sucesso! O grupo de requisito técnico foi ativado.',
 		desativar: 'Sucesso! O grupo de requisito técnico foi desativado.',
-	}
+	},
 	
 };
 

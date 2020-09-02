@@ -17,25 +17,22 @@
 						@click.native="resetErrorMessage",
 						required,
 					)
-				v-col(cols="12", md="3")
+				v-col.mr-9(cols="12", md="2")
 					v-label Valor
-					v-col.d-flex.flex-row.justify-start.pa-0(cols="12", md="12")
-						v-col.d-flex.flex-row.pa-0(width="100%")
-							div.d-flex.justify-center.align-center#div-valor
-								span R$
-							money
-								v-money#QA-input-taxa-administrativa-valor(
-									outlined,
-									dense,
-									color="#E0E0E0",
-									width="140px",
-									placeholder="Informe o valor da taxa",
-									v-model="taxaAdministrativa.valor",
-									:money,
-									:error-messages="errorMessage(taxaAdministrativa.valor)",
-									@click.native="resetErrorMessage",
-									required
-								)
+					div.div-money
+						money#QA-input-taxa-administrativa-valor.pl-2.pt-2(
+							v-bind="money",
+							v-model="taxaAdministrativa.valor",
+							:error-messages="errorMessage(taxaAdministrativa.valor)",
+							@click.native="resetErrorMessage",
+						)
+				v-col(cols="12", md="7")
+					v-label Opções para cobrança
+						i &nbsp (opcional)
+					v-col.d-flex.flex-row.pa-0
+						v-checkbox(v-model="taxaAdministrativa.atividadeDispensavel", label="Atividades dispensáveis", color="#84A98C")
+						v-checkbox.ml-5(v-model="taxaAdministrativa.atividadeLicenciavel", label="Atividades licenciáveis", color="#84A98C")
+
 			v-row
 				v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
 					a#QA-limpar-dados-taxa-administrativa.d-flex.flex-row.align-center.justify-end(@click="clear")
@@ -49,24 +46,25 @@
 
 <script>
 
-import {Money} from 'v-money'
+import {Money} from 'v-money';
 
 export default {
 	
 	name: 'FormCadastroTaxaAdministrativa',
 
+	components: {Money},
+
 	data: () => {
 		return {
 			placeholder: "Selecione o ano",
-			anos: getYear(),
-			 money: {
+			anos: [],
+			money: {
 				decimal: ',',
 				thousands: '.',
 				prefix: 'R$ ',
-				suffix: ' #',
 				precision: 2,
 				masked: false
-       		}
+			}
 		};
 	},
 
@@ -94,19 +92,18 @@ export default {
 		}
 	},
 
-	methods: {
+	created() {
 
-		getYear(){
-			var currentYear = new Date().getFullYear();
-			let years = [];
-			var startYear = 1980;
-			for(var i=startYear; i<= currentYear; i++){
-				years.push(startYear++);
-			}
-
-			return years;
+		let anoAtual = new Date().getFullYear();
+		let anos = [];
+		for (let i = anoAtual; i<= 2060; i++) {
+			anos.push(anoAtual++);
 		}
+
+		this.anos = anos;
+
 	}
+
 };
 </script>
 
@@ -114,7 +111,7 @@ export default {
 
 @import "../assets/css/variaveis.less";
 
-#div-valor {
+.div-valor {
 	background-color: @bg-header;
 	border: none;
 	border-radius: 0 4px 4px 0;
@@ -123,6 +120,17 @@ export default {
 	display: flex;
 	height: 40px;
 	width: 50px;
+}
+
+.div-money {
+	border: 1px solid @border-components;
+	height: 40px;
+
+
+}
+
+.v-input--selection-controls {
+	margin-top: 4px !important;
 }
 
 </style>

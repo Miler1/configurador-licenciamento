@@ -24,7 +24,6 @@
 import PanelCadastro from '@/components/PanelCadastro';
 import FormCadastroTaxaAdministrativa from '@/components/FormCadastroTaxaAdministrativa';
 import TaxaAdministrativaService from '@/services/taxaAdministrativa.service';
-import RelatorioService from '../services/relatorio.service';
 import { SET_SNACKBAR } from '@/store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 
@@ -49,7 +48,9 @@ export default {
 			iconBotaoCadastrarEditar: "mdi-plus",
 			taxaAdministrativa: {
 				ano: null,
-				valor: null,
+				valor: 0,
+				atividadeDispensavel: false,
+				atividadeLicenciavel: false,
 				ativo: true
 			},
 			// dadosListagem: {},
@@ -76,7 +77,9 @@ export default {
 		clear() {
 
 			this.taxaAdministrativa.ano = null;
-			this.taxaAdministrativa.valor = null;
+			this.taxaAdministrativa.valor = 0;
+			this.taxaAdministrativa.atividadeDispensavel = false;
+			this.taxaAdministrativa.atividadeLicenciavel = false;
 			this.taxaAdministrativa.ativo = true;
 			this.errorMessageEmpty = true;
 			this.resetaDadosCadastro();
@@ -91,11 +94,6 @@ export default {
 			this.labelBotaoCadastrarEditar = "Cadastrar";
 			this.iconBotaoCadastrarEditar = "mdi-plus";
 			this.isCadastro = true;
-
-		},
-
-		resetaDadosFiltragem() {
-
 
 		},
 		
@@ -119,14 +117,10 @@ export default {
 
 			TaxaAdministrativaService.salvar(this.taxaAdministrativa)
 				.then(() => {
-
 					this.handlerSuccess(false);
-
 				})
 				.catch(error => {
-
 					this.handlerError(error, false);
-
 				});
 
 		},
@@ -149,9 +143,7 @@ export default {
 		},
 
 		checkForm() {
-
-			return this.taxaAdministrativa.ano != null && this.taxaAdministrativa.valor != null;
-				
+			return this.taxaAdministrativa.ano != null;
 		},
 
 		resetErrorMessage() {
@@ -195,7 +187,6 @@ export default {
 
 		editarItem(item) {
 
-		
 		},
 
 		ativarDesativarItem(item) {
@@ -203,7 +194,6 @@ export default {
 		},
 
 		updatePagination(parametrosFiltro) {
-
 
 		},
 
