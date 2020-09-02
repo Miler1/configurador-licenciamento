@@ -190,7 +190,8 @@ export default {
 			iconBotaoCadastrarEditar: 'mdi-plus',
 			isCadastro: true,
 			isInclusao: true,
-			indexItemEdicao: null
+			indexItemEdicao: null,
+			allowRedirect: true,
 		};
 	},
 
@@ -271,7 +272,7 @@ export default {
 
 				}
 
-				this.clear();
+				this.clearRequisito();
 
 			} else {
 				this.errorMessageEmptyInclusao = false;
@@ -363,8 +364,11 @@ export default {
 
 		},
 
-		redirectListagem() {
+		redirectListagem(allowed = true) {
+
+			this.allowRedirect = allowed;
 			this.$router.push({name: 'RequisitosTecnicos'});
+
 		},
 
 		checkForm() {
@@ -389,7 +393,7 @@ export default {
 		},
 
 		cancelar(){
-			this.$router.push({name: 'RequisitosTecnicos'});
+			this.redirectListagem(false);
 		},
 
 		confirmarCancelamento(next) {
@@ -521,10 +525,16 @@ export default {
 					);
 				});
 		}
+
+		this.allowRedirect = false;
 	},
 
 	beforeRouteLeave(to, from, next) {
-		this.confirmarCancelamento(next);
+		if(!this.allowRedirect){
+			this.confirmarCancelamento(next);
+		} else {
+			next();
+		}
 	}
 
 };

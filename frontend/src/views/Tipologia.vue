@@ -238,17 +238,17 @@ export default {
 			this.$fire({
 
 				title: item.ativo ?
-					'<p class="title-modal-confirm">Desativar Tipologia - ' + item.nome+ '</p>' :
-					'<p class="title-modal-confirm">Ativar Tipologia - ' + item.nome+ '</p>',
+					'<p class="title-modal-confirm">Desativar tipologia - ' + item.nome+ '</p>' :
+					'<p class="title-modal-confirm">Ativar tipologia - ' + item.nome+ '</p>',
 
 				html: item.ativo ?
-					`<p class="message-modal-confirm">Ao desativar a Tipologia, ela não estará mais disponível no sistema.</p>
+					`<p class="message-modal-confirm">Ao desativar a tipologia, ela não estará mais disponível no sistema.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja desativar a Tipologia? Esta opção pode ser desfeita a qualquer momento ao ativá-la novamente.</b>
+						<b>Tem certeza que deseja desativar a tipologia? Esta opção pode ser desfeita a qualquer momento ao ativá-la novamente.</b>
 					</p>` :
-					`<p class="message-modal-confirm">Ao ativar a Tipologia, ela ficará disponível no sistema.</p>
+					`<p class="message-modal-confirm">Ao ativar a tipologia, ela ficará disponível no sistema.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja ativar a Tipologia? Esta opção pode ser desfeita a qualquer momento ao desativá-la novamente.</b>
+						<b>Tem certeza que deseja ativar a tipologia? Esta opção pode ser desfeita a qualquer momento ao desativá-la novamente.</b>
 					</p>`,
 				showCancelButton: true,
 				confirmButtonColor: item.ativo ? '#E6A23C' : '#67C23A',

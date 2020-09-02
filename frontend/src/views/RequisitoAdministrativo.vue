@@ -240,17 +240,17 @@ export default {
 			this.$fire({
 
 				title: item.ativo ?
-					'<p class="title-modal-confirm">Desativar Requisito Administrativo - ' + item.documento.nome + '</p>' :
-					'<p class="title-modal-confirm">Ativar Requisito Administrativo - ' + item.documento.nome + '</p>',
+					'<p class="title-modal-confirm">Desativar requisito administrativo - ' + item.documento.nome + '</p>' :
+					'<p class="title-modal-confirm">Ativar requisito administrativo - ' + item.documento.nome + '</p>',
 
 				html: item.ativo ?
-					`<p class="message-modal-confirm">Ao desativar o requisito, ele não estará mais disponível no sistema.</p>
+					`<p class="message-modal-confirm">Ao desativar o requisito administrativo, ele não estará mais disponível no sistema.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja desativar o requisito? Esta opção pode ser desfeita a qualquer momento ao ativá-lo novamente.</b>
+						<b>Tem certeza que deseja desativar o requisito administrativo? Esta opção pode ser desfeita a qualquer momento ao ativá-lo novamente.</b>
 					</p>` :
-					`<p class="message-modal-confirm">Ao ativar o requisito, ele ficará disponível no sistema.</p>
+					`<p class="message-modal-confirm">Ao ativar o requisito administrativo, ele ficará disponível no sistema.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja ativar o requisito? Esta opção pode ser desfeita a qualquer momento ao desativá-lo novamente.</b>
+						<b>Tem certeza que deseja ativar o requisito administrativo? Esta opção pode ser desfeita a qualquer momento ao desativá-lo novamente.</b>
 					</p>`,
 				showCancelButton: true,
 				confirmButtonColor: item.ativo ? '#E6A23C' : '#67C23A',
