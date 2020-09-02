@@ -125,8 +125,6 @@ export default {
 .div-money {
 	border: 1px solid @border-components;
 	height: 40px;
-
-
 }
 
 .v-input--selection-controls {
