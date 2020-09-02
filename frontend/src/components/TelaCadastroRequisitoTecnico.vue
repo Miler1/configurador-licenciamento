@@ -148,9 +148,9 @@ import DocumentoService from '@/services/documento.service';
 import LicencaService from '@/services/licenca.service';
 import RequisitoTecnicoService from '../services/requisitoTecnico.service';
 import GridListagemInclusao from '@/components/GridListagemInclusao';
+import snackbar from '@/services/snack.service';
 import { HEADER } from '@/utils/dadosHeader/ListagemRequisitoTecnicoInclusao';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
-import { SET_SNACKBAR } from '@/store/actions.type';
 
 export default {
 
@@ -346,18 +346,14 @@ export default {
 			let message = edicao ? ERROR_MESSAGES.requisitoTecnico.editar : ERROR_MESSAGES.requisitoTecnico.cadastro;
 			message += error.message;
 
-			this.$store.dispatch(SET_SNACKBAR,
-				{color: 'error', text: message, timeout: '9000'}
-			);
+			snackbar.alert(message);
 		},
 
 		handleSuccess(edicao = false) {
 
 			let message = edicao ? SUCCESS_MESSAGES.editar : SUCCESS_MESSAGES.cadastro;
 
-			this.$store.dispatch(SET_SNACKBAR,
-				{color: 'success', text: message, timeout: '6000'}
-			);
+			snackbar.alert(message, snackbar.type.SUCCESS);
 
 			this.clear();
 			this.redirectListagem();
@@ -520,9 +516,7 @@ export default {
 					this.preparaDadosParaEdicao(response.data);
 				})
 				.catch((error) => {
-					this.$store.dispatch(SET_SNACKBAR,
-						{color: 'error', text: error.message, timeout: '9000'}
-					);
+					snackbar.alert(error.message);
 				});
 		}
 
