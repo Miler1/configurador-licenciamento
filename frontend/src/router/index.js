@@ -64,6 +64,11 @@ const routes = [
 				name: 'Documentos',
 				component: () => import('../views/Documento.vue')
 			},
+			{	
+				path: 'taxa-administrativa',
+				name: 'TaxaAdministrativa',
+				component: () => import('../views/TaxaAdministrativa.vue')
+			},
 			{
 				path: 'requisitos-administrativos',
 				name: 'requisitos-administrativos',
@@ -73,10 +78,6 @@ const routes = [
 				path: 'requisitos-tecnicos',
 				name: 'RequisitosTecnicos',
 				component: () => import('../views/RequisitoTecnico.vue')
-			},
-			{	path: 'taxa',
-				name: 'Taxa',
-				component: () => import('../views/Taxa.vue')
 			},
 			{
 				path: 'requisitos-tecnicos/cadastrar',
