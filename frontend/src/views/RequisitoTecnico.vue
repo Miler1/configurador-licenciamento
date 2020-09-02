@@ -24,8 +24,8 @@
 import GridListagem from '@/components/GridListagem';
 import RelatorioService from '../services/relatorio.service';
 import RequisitoTecnicoService from '../services/requisitoTecnico.service';
+import snackbar from '@/services/snack.service';
 import { HEADER } from '@/utils/dadosHeader/ListagemRequisitoTecnicoHeader';
-import { SET_SNACKBAR } from '@/store/actions.type';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 
 export default {
@@ -72,10 +72,7 @@ export default {
 				.catch(erro => {
 
 					console.error(erro);
-					
-					this.$store.dispatch(SET_SNACKBAR,
-						{color: 'error', text: ERROR_MESSAGES.requisitoTecnico.listagem + ': ' + erro.message, timeout: '6000'}
-					);
+					snackbar.alert(ERROR_MESSAGES.requisitoTecnico.listagem + erro.message);
 					
 				});
 
@@ -136,17 +133,9 @@ export default {
 						.then(() => {
 							
 							if(item.ativo) {
-								
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'success', text: SUCCESS_MESSAGES.requisitoTecnico.desativar, timeout: '6000'}
-								);
-							
+								snackbar.alert(SUCCESS_MESSAGES.requisitoTecnico.desativar, snackbar.type.SUCCESS);
 							} else {
-
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'success', text: SUCCESS_MESSAGES.requisitoTecnico.ativar, timeout: '6000'}
-								);
-
+								snackbar.alert(SUCCESS_MESSAGES.requisitoTecnico.ativar, snackbar.type.SUCCESS);
 							}
 
 							this.updatePagination();
@@ -157,17 +146,9 @@ export default {
 
 							console.error(error);
 							if(!item.ativo) {
-								
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.requisitoTecnico.desativar + error.message, timeout: '6000'}
-								);
-							
+								snackbar.alert(ERROR_MESSAGES.requisitoTecnico.desativar);
 							} else {
-
-								this.$store.dispatch(SET_SNACKBAR,
-									{color: 'error', text: ERROR_MESSAGES.requisitoTecnico.ativar + error.message, timeout: '6000'}
-								);
-
+								snackbar.alert(ERROR_MESSAGES.requisitoTecnico.ativar);
 							}
 
 						});
