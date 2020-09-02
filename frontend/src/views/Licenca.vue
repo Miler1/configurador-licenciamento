@@ -332,17 +332,17 @@ export default {
 			this.$fire({
 
 				title: item.ativo ? 
-					'<p class="title-modal-confirm">Desativar Licença - ' + item.sigla+ '</p>' :
-					'<p class="title-modal-confirm">Ativar Licença - ' + item.sigla+ '</p>',
+					'<p class="title-modal-confirm">Desativar licença - ' + item.sigla+ '</p>' :
+					'<p class="title-modal-confirm">Ativar licença - ' + item.sigla+ '</p>',
 
 				html: item.ativo ?
-					`<p class="message-modal-confirm">Ao desativar a Licença, ela não estará mais disponível no sistema.</p>
+					`<p class="message-modal-confirm">Ao desativar a licença, ela não estará mais disponível no sistema.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja desativar a Licença? Esta opção pode ser desfeita a qualquer momento ao ativá-la novamente.</b>
+						<b>Tem certeza que deseja desativar a licença? Esta opção pode ser desfeita a qualquer momento ao ativá-la novamente.</b>
 					</p>` :
-					`<p class="message-modal-confirm">Ao ativar a Licença, ela ficará disponível no sistema.</p>
+					`<p class="message-modal-confirm">Ao ativar a licença, ela ficará disponível no sistema.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja ativar a Licença? Esta opção pode ser desfeita a qualquer momento ao desativá-la novamente.</b>
+						<b>Tem certeza que deseja ativar a licença? Esta opção pode ser desfeita a qualquer momento ao desativá-la novamente.</b>
 					</p>`,
 				showCancelButton: true,
 				confirmButtonColor: item.ativo ? '#E6A23C' : '#67C23A',

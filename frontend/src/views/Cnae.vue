@@ -228,7 +228,7 @@ export default {
 			this.$fire({
 
 				title: item.ativo ? 
-					'<p class="title-modal-confirm">Desativar CNAE - ' + item.codigo+ '</p>' : 
+					'<p class="title-modal-confirm">Desativar CNAE - ' + item.codigo+ '</p>' :
 					'<p class="title-modal-confirm">Ativar CNAE - ' + item.codigo+ '</p>',
 
 				html: item.ativo ?

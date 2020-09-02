@@ -118,8 +118,8 @@
 										v-icon mdi-plus
 										span Adicionar
 								
-									v-btn#QA-btn-editar-requisito-tecnico.btn-cadastrar(@click="incluirDados", large, v-if="!isInclusao")
-										v-icon(color="white") mdi-pencil
+									v-btn#QA-btn-editar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="!isInclusao")
+										v-icon mdi-pencil
 										span Editar
 
 		GridListagemInclusao.px-7(
@@ -190,7 +190,8 @@ export default {
 			iconBotaoCadastrarEditar: 'mdi-plus',
 			isCadastro: true,
 			isInclusao: true,
-			indexItemEdicao: null
+			indexItemEdicao: null,
+			allowRedirect: true,
 		};
 	},
 
@@ -271,7 +272,7 @@ export default {
 
 				}
 
-				this.clear();
+				this.clearRequisito();
 
 			} else {
 				this.errorMessageEmptyInclusao = false;
@@ -359,8 +360,11 @@ export default {
 
 		},
 
-		redirectListagem() {
+		redirectListagem(allowed = true) {
+
+			this.allowRedirect = allowed;
 			this.$router.push({name: 'RequisitosTecnicos'});
+
 		},
 
 		checkForm() {
@@ -385,7 +389,7 @@ export default {
 		},
 
 		cancelar(){
-			this.$router.push({name: 'RequisitosTecnicos'});
+			this.redirectListagem(false);
 		},
 
 		confirmarCancelamento(next) {
@@ -401,7 +405,7 @@ export default {
 					</p>` :
 					`<p class="message-modal-confirm">Ao cancelar a edição, todas as informações alteradas serão perdidas.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja cancelar o cadastro? Esta opção não poderá ser desfeita e todas as informações serão perdidas.</b>
+						<b>Tem certeza que deseja cancelar a edição? Esta opção não poderá ser desfeita e todas as informações serão perdidas.</b>
 					</p>`,
 				showCancelButton: true,
 				confirmButtonColor: '#67C23A',
@@ -479,6 +483,10 @@ export default {
 			this.dadosListagem = [];
 			this.dadosListagem = requisito.tipoLicencaGrupoDocumentoList;
 
+			this.dadosListagem.forEach(dado => {
+				dado.obrigatorio = dado.obrigatorio ? 'true' : 'false';
+			});
+
 		}
 	},
 
@@ -511,10 +519,16 @@ export default {
 					snackbar.alert(error.message);
 				});
 		}
+
+		this.allowRedirect = false;
 	},
 
 	beforeRouteLeave(to, from, next) {
-		this.confirmarCancelamento(next);
+		if(!this.allowRedirect){
+			this.confirmarCancelamento(next);
+		} else {
+			next();
+		}
 	}
 
 };

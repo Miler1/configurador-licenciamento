@@ -72,7 +72,7 @@ public class ParametroController extends DefaultController {
 
     }
 
-    @GetMapping("/relatorio")
+    @GetMapping(value = "/relatorio")
     public void relatorioCSV(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);

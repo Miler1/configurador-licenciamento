@@ -216,17 +216,17 @@ export default {
 			this.$fire({
 
 				title: item.ativo ? 
-					'<p class="title-modal-confirm">Desativar Documento - ' + item.nome+ '</p>' :
-					'<p class="title-modal-confirm">Ativar Documento - ' + item.nome+ '</p>',
+					'<p class="title-modal-confirm">Desativar documento - ' + item.nome+ '</p>' :
+					'<p class="title-modal-confirm">Ativar documento - ' + item.nome+ '</p>',
 
 				html: item.ativo ?
-					`<p class="message-modal-confirm">Ao desativar o Documento, ele não estará mais disponível no sistema.</p>
+					`<p class="message-modal-confirm">Ao desativar o documento, ele não estará mais disponível no sistema.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja desativar o Documento? Esta opção pode ser desfeita a qualquer momento ao ativá-lo novamente.</b>
+						<b>Tem certeza que deseja desativar o documento? Esta opção pode ser desfeita a qualquer momento ao ativá-lo novamente.</b>
 					</p>` :
-					`<p class="message-modal-confirm">Ao ativar o Documento, ele ficará disponível no sistema.</p>
+					`<p class="message-modal-confirm">Ao ativar o documento, ele ficará disponível no sistema.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja ativar o Documento? Esta opção pode ser desfeita a qualquer momento ao desativá-lo novamente.</b>
+						<b>Tem certeza que deseja ativar o documento? Esta opção pode ser desfeita a qualquer momento ao desativá-lo novamente.</b>
 					</p>`,
 				showCancelButton: true,
 				confirmButtonColor: item.ativo ? '#E6A23C' : '#67C23A',
