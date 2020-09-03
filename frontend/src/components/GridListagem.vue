@@ -32,7 +32,7 @@
 				v-icon mdi-download
 				span Gerar relatório
 			
-	v-row
+	template
 		v-data-table.elevation-1(
 				:headers="headers",
 				:items='dadosListagem.content',
