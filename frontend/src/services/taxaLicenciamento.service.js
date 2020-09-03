@@ -6,7 +6,7 @@ export default {
 		
 		if (parametrosFiltro) {
 
-			return ApiService.post(`taxa/listar/?
+			return ApiService.post(`codigoTaxalicenciamento/listar/?
 						page=${parametrosFiltro.pagina > 0 ? parametrosFiltro.pagina : 0}
 						&size=${parametrosFiltro.itemsPorPagina > 0 ? parametrosFiltro.itemsPorPagina : 10}
 						&sort=${parametrosFiltro.tipoOrdenacao ? parametrosFiltro.tipoOrdenacao : 'dataCadastro,desc'}`,
@@ -15,7 +15,7 @@ export default {
 			);
 
 		} else {
-			return ApiService.post('taxa/listar/?page=0&size=10&sort=dataCadastro,desc', {});
+			return ApiService.post('codigoTaxalicenciamento/listar/?page=0&size=10&sort=dataCadastro,desc', {});
 		}
 
 	}
