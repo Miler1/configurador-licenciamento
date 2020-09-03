@@ -71,7 +71,7 @@ const routes = [
 			},
 			{	path: 'taxa-licenciamento',
 				name: 'TaxaLicenciamento',
-				component: () => import('../views/TaxaLicenciamento.vue')
+				component: () => import('../views/taxa/TaxaLicenciamento.vue')
 			},
 			{
 				path: 'requisitos-administrativos',
