@@ -143,7 +143,8 @@ export default {
 		},
 
 		checkForm() {
-			return this.taxaAdministrativa.ano != null;
+			return this.taxaAdministrativa.ano
+				&& this.taxaAdministrativa !== "";
 		},
 
 		resetErrorMessage() {
