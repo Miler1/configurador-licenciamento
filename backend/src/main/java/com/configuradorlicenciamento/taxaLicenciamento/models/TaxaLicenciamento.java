@@ -3,7 +3,8 @@ package com.configuradorlicenciamento.taxaLicenciamento.models;
 
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.licenca.models.Licenca;
-import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
+import com.configuradorlicenciamento.porteEmpreendimento.models.PorteEmpreendimento;
+import com.configuradorlicenciamento.potencialPoluidor.models.PotencialPoluidor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +12,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Date;
 
 @Getter
 @Setter

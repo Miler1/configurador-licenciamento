@@ -1,39 +1,39 @@
 <template lang="pug">
-
-#tela-cadastro-requisito-tecnico
+  
+#tela-cadastro-taxa-licenciamento
 	v-container
 		v-expansion-panels.pa-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
 			v-expansion-panel
 				v-expansion-panel-header
 					div.d-flex.flex-row.align-center.justify-start
-						span.align-baseline Grupo de requisito técnico
+						span.align-baseline Tabela de taxa de licenciamento
 					template(v-slot:actions)
 						v-icon
 				v-expansion-panel-content
-					v-form(ref="requisito")
+					v-form(ref="taxaLicenciamento")
 						v-container.pa-0
 							v-row
 								v-col(cols="12", md="3")
 									v-label Código
-									v-text-field#QA-input-requisito-tecnico-codigo(
+									v-text-field#QA-input-taxa-licenciamento-codigo(
 										outlined,
 										color="#E0E0E0",
 										:placeholder="placeholder",
-										v-model="requisitoTecnico.codigo",
+										v-model="taxaLicenciamento.codigo",
 										@click.native="resetErrorMessage",
-										:error-messages="errorMessage( requisitoTecnico.codigo, false )",
+										:error-messages="errorMessage( taxaLicenciamento.codigo, false )",
 										required,
 										dense
 									)
 								v-col(cols="12", md="9")
 									v-label Descrição
-									v-text-field#QA-input-requisito-tecnico-descricao(
+									v-text-field#QA-input-taxa-licenciamento-descricao(
 										outlined,
 										color="#E0E0E0",
 										:placeholder="placeholder",
-										v-model="requisitoTecnico.descricao",
+										v-model="taxaLicenciamento.descricao",
 										@click.native="resetErrorMessage",
-										:error-messages="errorMessage( requisitoTecnico.descricao, false )",
+										:error-messages="errorMessage( taxaLicenciamento.descricao, false )",
 										required,
 										dense
 									)
@@ -41,41 +41,57 @@
 			v-expansion-panel
 				v-expansion-panel-header
 					div.d-flex.flex-row.align-center.justify-start
-						span.align-baseline Requisito técnico para solicitação de licenciamento
+						span.align-baseline Valores
 					template(v-slot:actions)
 						v-icon
 				v-expansion-panel-content
-					v-form(ref="requisitolist")
+					v-form(ref="taxaLicenciamentolist")
 						v-container.pa-0
 							v-row
-								v-col(cols="12", md="9")
-									v-label Documento
-									v-autocomplete#QA-select-requisito-tecnico-documento(
+								v-col(cols="12", md="4")
+									v-label Porte do empreendimento
+									v-autocomplete#QA-select-taxa-licenciamento-porte-mpreendimento(
 										outlined,
 										dense,
 										color="#E0E0E0",
 										:placeholder="placeholderSelect",
 										item-color="grey darken-3",
-										v-model="grupoRequisito.documento",
-										:items="documentos",
+										v-model="valor.porteEmpreendimento",
+										:items="portesEmpreendimento",
 										item-text="nome",
-										:error-messages="errorMessage( grupoRequisito.documento, true )",
+										:error-messages="errorMessage( valor.porteEmpreendimento, true )",
 										@click.native="resetErrorMessage",
 										required,
 										return-object=true
 									)
-								v-col(cols="12", md="3")
+								v-col(cols="12", md="4")
+									v-label PPD
+									v-autocomplete#QA-select-taxa-licenciamento-potencial-poluidor(
+										outlined,
+										dense,
+										color="#E0E0E0",
+										:placeholder="placeholderSelect",
+										item-color="grey darken-3",
+										v-model="valor.potencialPoluidor",
+										:items="potenciaispoluidores",
+										item-text="nome",
+										:error-messages="errorMessage( valor.potencialPoluidor, true )",
+										@click.native="resetErrorMessage",
+										required,
+										return-object=true
+									)
+								v-col(cols="12", md="4")
 									v-label Tipos de licenças
-									v-autocomplete#QA-select-requisito-tecnico-licenca(
+									v-autocomplete#QA-select-taxa-licenciamento-licenca(
 										outlined,
 										dense,
 										color="#E0E0E0",
 										:placeholder="placeholderSelectLicenca",
 										item-color="grey darken-3",
-										v-model="grupoRequisito.licencas",
+										v-model="valor.licencas",
 										:items="licencas",
 										item-text="sigla",
-										:error-messages="errorMessage( grupoRequisito.licencas, true )",
+										:error-messages="errorMessage( valor.licencas, true )",
 										@click.native="resetErrorMessage",
 										required,
 										return-object=true,
@@ -87,38 +103,44 @@
 							v-row
 								v-col.d-flex.flex-column(cols="12", md="5")
 									v-col.pa-0
-										v-label Tipo do requisito
+										v-label Tipo de taxa
 									v-col.pa-0.mb-1
-										v-btn-toggle#QA-btn-toggle-requisito-tecnico(
-												v-model="grupoRequisito.obrigatorio",
+										v-btn-toggle#QA-btn-toggle-taxa-licenciamento(
+												v-model="tipoTaxa",
 												color="green lighten-4", 
 											)
-											v-btn#QA-btn-requisito-tecnico-basico(
+											v-btn#QA-btn-taxa-licenciamento-fixo(
 												color="white",
-												value="true",
+												value="fixo",
 												width="140px",
 											) 
-												span Básico
-											v-btn#QA-btn-requisito-tecnico-complementar(
+												span Valor fixo
+											v-btn#QA-btn-taxa-licenciamento-formula(
 												color="white",
-												value="false",
+												value="formula",
 												width="140px",
 											) 
-												span Complementar
+												span Fórmula
+											v-btn#QA-btn-taxa-licenciamento-isento(
+												color="white",
+												value="isento",
+												width="140px",
+											) 
+												span Isento
 									v-col.d-flex.pa-0
 										span.v-messages.theme--light.error--text.v-messages__message.pl-3.mb-3 
-											| {{ errorMessage(grupoRequisito.obrigatorio, true) }}
+											| {{ errorMessage(tipoTaxa, true) }}
 							v-row
 								v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
-									a#QA-limpar-dados-requisito-tecnico.d-flex.flex-row.align-center.justify-end(@click="clearRequisito")
+									a#QA-limpar-dados-taxa-licenciamento.d-flex.flex-row.align-center.justify-end(@click="clearRequisito")
 										v-icon mdi-delete
 										span Limpar dados
 								
-									v-btn#QA-btn-adicionar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
+									v-btn#QA-btn-adicionar-taxa-licenciamento(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
 										v-icon mdi-plus
 										span Adicionar
 								
-									v-btn#QA-btn-editar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="!isInclusao")
+									v-btn#QA-btn-editar-taxa-licenciamento(@click="incluirDados", large, outlined, color="#84A98C", v-if="!isInclusao")
 										v-icon mdi-pencil
 										span Editar
 
@@ -134,11 +156,11 @@
 
 		v-row.pt-6.px-7
 			v-col#form-actions.d-flex.justify-space-between(cols="12", md="12")
-				v-btn#QA-btn-cancelar-requisito-tecnico(@click="cancelar", outlined, large, color="#84A98C")
+				v-btn#QA-btn-cancelar-taxa-licenciamento(@click="cancelar", outlined, large, color="#84A98C")
 					v-icon mdi-close
 					span Cancelar
 
-				v-btn#QA-btn-cadastrar-requisito-tecnico.btn-cadastrar(@click="submit", large)
+				v-btn#QA-btn-cadastrar-taxa-licenciamento.btn-cadastrar(@click="submit", large)
 					v-icon(color="white") {{iconBotaoCadastrarEditar}}
 					span {{labelBotaoCadastrarEditar}}
 
@@ -146,17 +168,16 @@
 
 <script>
 
-import DocumentoService from '@/services/documento.service';
-import LicencaService from '@/services/licenca.service';
-import RequisitoTecnicoService from '../services/requisitoTecnico.service';
 import GridListagemInclusao from '@/components/GridListagemInclusao';
 import snackbar from '@/services/snack.service';
 import { HEADER } from '@/utils/dadosHeader/ListagemRequisitoTecnicoInclusao';
-import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
+import LicencaService from '@/services/licenca.service';
+import porteEmpreendimentoService from '@/services/porteEmpreendimento.service';
+import potencialPoluidorService from '@/services/potencialPoluidor.service';
 
 export default {
 
-	name:'TelaCadastroRequisitoTecnico',
+	name:'TelaCadastroTaxaLicenciamento',
 
 	components: {
 		GridListagemInclusao
@@ -168,24 +189,25 @@ export default {
 				panel: [0, 1],
 				readonly: true,
 			},
-			requisitoTecnico: {
+			taxaLicenciamento: {
 				codigo: null,
 				descricao: null,
 				ativo: true
 			},
-			grupoRequisito: {
-				documento: null,
-				licencas: null,
-				obrigatorio: null
+			valor: {
+				porteEmpreendimento: null,
+				potencialPoluidor: null,
+				licenca: null,
 			},
 			placeholder: "Digite aqui...",
 			placeholderSelect: "Selecione",
 			placeholderSelectLicenca: "Selecione um ou mais",
-			documentos: [],
+			portesEmpreendimento: [],
+			potenciaispoluidores: [],
 			licencas: [],
 			errorMessageEmpty: true,
 			errorMessageEmptyInclusao: true,
-			tituloListagem: "Listagem de documentos adicionados para este grupo",
+			tituloListagem: "Listagem de taxas adicionados para esta tabela",
 			headerListagem: HEADER,
 			dadosListagem: [],
 			labelBotaoCadastrarEditar: 'Cadastrar',
@@ -194,8 +216,9 @@ export default {
 			isInclusao: true,
 			indexItemEdicao: null,
 			allowRedirect: true,
-			labelNoData: 'Não existem documentos adicionados.',
-			placeholderPesquisa: "Pesquisar pelo nome do documento ou tipo de licença"
+			tipoTaxa: null,
+			labelNoData: 'Não existem taxas adicionados.',
+			placeholderPesquisa: "Pesquisar pelo PPD, porte ou tipo de licença"
 		};
 	},
 
@@ -227,9 +250,9 @@ export default {
 
 		clear() {
 
-			this.requisitoTecnico.codigo = null;
-			this.requisitoTecnico.descricao = null;
-			this.requisitoTecnico.ativo = true;
+			this.taxaLicenciamento.codigo = null;
+			this.taxaLicenciamento.descricao = null;
+			this.taxaLicenciamento.ativo = true;
 
 			this.clearRequisito();
 
@@ -237,9 +260,9 @@ export default {
 
 		clearRequisito() {
 
-			this.grupoRequisito.licencas = null;
-			this.grupoRequisito.documento = null;
-			this.grupoRequisito.obrigatorio = null;
+			this.valor.porteEmpreendimento = null;
+			this.valor.potencialPoluidor = null;
+			this.valor.licenca = null;
 			this.isInclusao = true;
 			this.resetErrorMessage();
 		},
@@ -252,11 +275,11 @@ export default {
 
 				if(this.isInclusao) {
 
-					this.grupoRequisito.licencas.forEach(licenca => {
+					this.valor.licencas.forEach(licenca => {
 
-						dadoListagem.documento = this.grupoRequisito.documento;
+						dadoListagem.documento = this.valor.documento;
 						dadoListagem.licenca = licenca;
-						dadoListagem.obrigatorio = this.grupoRequisito.obrigatorio;
+						dadoListagem.obrigatorio = this.valor.obrigatorio;
 
 						this.dadosListagem.push(dadoListagem);
 						dadoListagem = {};
@@ -265,9 +288,9 @@ export default {
 
 				} else {
 
-					dadoListagem.documento = this.grupoRequisito.documento;
-					dadoListagem.licenca = this.grupoRequisito.licencas[0];
-					dadoListagem.obrigatorio = this.grupoRequisito.obrigatorio;
+					dadoListagem.documento = this.valor.documento;
+					dadoListagem.licenca = this.valor.licencas[0];
+					dadoListagem.obrigatorio = this.valor.obrigatorio;
 
 					this.dadosListagem.splice(this.indexItemEdicao, 1, dadoListagem);
 					dadoListagem = {};
@@ -302,7 +325,7 @@ export default {
 
 		cadastrar() {
 
-			RequisitoTecnicoService.cadastrar(this.preparaPraSalvar())
+			TaxaLicenciamentoService.cadastrar(this.preparaPraSalvar())
 
 				.then(() => {
 					this.handleSuccess();
@@ -315,7 +338,7 @@ export default {
 
 		editar() {
 
-			RequisitoTecnicoService.editar(this.preparaPraSalvar())
+			TaxaLicenciamentoService.editar(this.preparaPraSalvar())
 
 				.then(() => {
 					this.handleSuccess(true);
@@ -328,7 +351,7 @@ export default {
 
 		preparaPraSalvar() {
 			
-			this.requisitoTecnico.listRequisitos = [];
+			this.taxaLicenciamento.listRequisitos = [];
 			var dadoListagem = {};
 
 			this.dadosListagem.forEach(dado => {
@@ -337,17 +360,17 @@ export default {
 				dadoListagem.idTipoLicenca = dado.licenca.id;
 				dadoListagem.obrigatorio = dado.obrigatorio == 'true' ? true : false;
 
-				this.requisitoTecnico.listRequisitos.push(dadoListagem);
+				this.taxaLicenciamento.listRequisitos.push(dadoListagem);
 				dadoListagem = {};
 
 			});
 
-			return this.requisitoTecnico;
+			return this.taxaLicenciamento;
 		},
 
 		handleError(error, edicao = false) {
 
-			let message = edicao ? ERROR_MESSAGES.requisitoTecnico.editar : ERROR_MESSAGES.requisitoTecnico.cadastro;
+			let message = edicao ? ERROR_MESSAGES.taxaLicenciamento.editar : ERROR_MESSAGES.taxaLicenciamento.cadastro;
 			message += error.message;
 
 			snackbar.alert(message);
@@ -373,10 +396,10 @@ export default {
 
 		checkForm() {
 
-			return this.requisitoTecnico.codigo
-				&& this.requisitoTecnico.codigo != ''
-				&& this.requisitoTecnico.descricao
-				&& this.requisitoTecnico.descricao != ''
+			return this.taxaLicenciamento.codigo
+				&& this.taxaLicenciamento.codigo != ''
+				&& this.taxaLicenciamento.descricao
+				&& this.taxaLicenciamento.descricao != ''
 				&& this.dadosListagem
 				&& this.dadosListagem.length > 0;
 
@@ -384,11 +407,11 @@ export default {
 
 		checkFormVinculacao() {
 
-			return this.grupoRequisito.documento
-				&& this.grupoRequisito.documento != ''
-				&& this.grupoRequisito.licencas
-				&& this.grupoRequisito.licencas.length > 0
-				&& this.grupoRequisito.obrigatorio != null;
+			return this.valor.documento
+				&& this.valor.documento != ''
+				&& this.valor.licencas
+				&& this.valor.licencas.length > 0
+				&& this.valor.obrigatorio != null;
 
 		},
 
@@ -434,14 +457,14 @@ export default {
 
 		editarItem(item) {
 
-			window.scrollTo(0,0);
-			this.grupoRequisito.documento = item.documento;
-			this.grupoRequisito.licencas = [];
-			this.grupoRequisito.licencas.push(item.licenca);
-			this.grupoRequisito.obrigatorio = item.obrigatorio;
+			// window.scrollTo(0,0);
+			// this.valor.documento = item.documento;
+			// this.valor.licencas = [];
+			// this.valor.licencas.push(item.licenca);
+			// this.valor.obrigatorio = item.obrigatorio;
 
-			this.indexItemEdicao = this.dadosListagem.indexOf(item);
-			this.isInclusao = false;
+			// this.indexItemEdicao = this.dadosListagem.indexOf(item);
+			// this.isInclusao = false;
 
 		},
 
@@ -479,26 +502,31 @@ export default {
 
 		preparaDadosParaEdicao(requisito) {
 
-			this.requisitoTecnico.codigo = requisito.codigo;
-			this.requisitoTecnico.descricao = requisito.descricao;
-			this.requisitoTecnico.ativo = requisito.ativo;
-			this.requisitoTecnico.id = this.$route.params.idRequisito;
+			// this.taxaLicenciamento.codigo = requisito.codigo;
+			// this.taxaLicenciamento.descricao = requisito.descricao;
+			// this.taxaLicenciamento.ativo = requisito.ativo;
+			// this.taxaLicenciamento.id = this.$route.params.idRequisito;
 			
-			this.dadosListagem = [];
-			this.dadosListagem = requisito.tipoLicencaGrupoDocumentoList;
+			// this.dadosListagem = [];
+			// this.dadosListagem = requisito.tipoLicencaGrupoDocumentoList;
 
-			this.dadosListagem.forEach(dado => {
-				dado.obrigatorio = dado.obrigatorio ? 'true' : 'false';
-			});
+			// this.dadosListagem.forEach(dado => {
+			// 	dado.obrigatorio = dado.obrigatorio ? 'true' : 'false';
+			// });
 
 		}
 	},
 
 	created(){
 
-		DocumentoService.findAll()
+		porteEmpreendimentoService.findAll()
 			.then((response) => {
-				this.documentos = response.data;
+				this.portesEmpreendimento = response.data;
+			});
+		
+		potencialPoluidorService.findAll()
+			.then((response) => {
+				this.potenciaispoluidores = response.data;
 			});
 
 		LicencaService.findAll()
@@ -510,19 +538,19 @@ export default {
 
 	mounted() {
 
-		if(this.$route.params.idRequisito) {
-			this.labelBotaoCadastrarEditar = "Editar";
-			this.iconBotaoCadastrarEditar = "mdi-pencil";
-			this.isCadastro = false;
+		// if(this.$route.params.idRequisito) {
+		// 	this.labelBotaoCadastrarEditar = "Editar";
+		// 	this.iconBotaoCadastrarEditar = "mdi-pencil";
+		// 	this.isCadastro = false;
 
-			RequisitoTecnicoService.findById(this.$route.params.idRequisito)
-				.then((response) => {
-					this.preparaDadosParaEdicao(response.data);
-				})
-				.catch((error) => {
-					snackbar.alert(error.message);
-				});
-		}
+		// 	TaxaLicenciamentoService.findById(this.$route.params.idRequisito)
+		// 		.then((response) => {
+		// 			this.preparaDadosParaEdicao(response.data);
+		// 		})
+		// 		.catch((error) => {
+		// 			snackbar.alert(error.message);
+		// 		});
+		// }
 
 		this.allowRedirect = false;
 	},
@@ -541,7 +569,7 @@ export default {
 
 <style lang="less">
 
-@import "../assets/css/variaveis.less";
+@import "../../assets/css/variaveis.less";
 
 .v-expansion-panel-header {
 	background-color: @bg-header;
