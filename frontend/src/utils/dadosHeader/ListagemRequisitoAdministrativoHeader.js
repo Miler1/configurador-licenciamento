@@ -1,6 +1,6 @@
 const HEADER = [
 	{ text: 'Documento', value: 'documento.nome' },
-	{ text: 'Tipo de licença', value: 'licenca.sigla', width: '125px'},
+	{ text: 'Tipo de licença', value: 'licenca.sigla', width: '140px'},
 	{ text: 'Pessoa', value: 'tipoPessoa', width: '100px'},
 	{ text: 'Tipo do requisito', value: 'obrigatorio', width: '145px'}, //Basico é obrigatorio
 	{ text: 'Status', value: 'ativo', width: '100px'},
