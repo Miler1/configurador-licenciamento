@@ -42,27 +42,27 @@ const routes = [
 			{
 				path: 'cnae',
 				name: 'Cnae',
-				component: () => import('../views/Cnae.vue')
+				component: () => import('../views/cnae/Cnae.vue')
 			},
 			{
 				path: 'licenca',
 				name: 'Licenca',
-				component: () => import('../views/Licenca.vue')
+				component: () => import('../views/licenca/Licenca.vue')
 			},
 			{
 				path: 'tipologia',
 				name: 'Tipologia',
-				component: () => import('../views/Tipologia.vue')
+				component: () => import('../views/tipologia/Tipologia.vue')
 			},
 			{
 				path: 'parametro',
 				name: 'Parametro',
-				component: () => import('../views/Parametro.vue')
+				component: () => import('../views/parametro/Parametro.vue')
 			},
 			{
 				path: 'documentos',
 				name: 'Documentos',
-				component: () => import('../views/Documento.vue')
+				component: () => import('../views/documento/Documento.vue')
 			},
 			{	
 				path: 'taxa-administrativa',
@@ -76,7 +76,7 @@ const routes = [
 			{
 				path: 'requisitos-administrativos',
 				name: 'requisitos-administrativos',
-				component: () => import('../views/RequisitoAdministrativo.vue')
+				component: () => import('../views/requisito/RequisitoAdministrativo.vue')
 			},	
 			{
 				path: 'requisitos-tecnicos',
@@ -103,7 +103,7 @@ const routes = [
 	{
 		path: '/login',
 		name: 'Login',
-		component: () => import('../views/Login.vue'),
+		component: () => import('../views/login/Login.vue'),
 
 		meta: {
 			title: 'Login | Configurador do Licenciamento Ambiental'

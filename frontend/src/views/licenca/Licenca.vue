@@ -35,11 +35,11 @@
 <script>
 
 import PanelCadastro from '@/components/PanelCadastro';
-import FormCadastroLicenca from '@/components/FormCadastroLicenca';
-import LicencaService from '../services/licenca.service';
-import RelatorioService from '../services/relatorio.service';
+import FormCadastroLicenca from '@/views/licenca/FormCadastroLicenca';
+import LicencaService from '@/services/licenca.service';
+import RelatorioService from '@/services/relatorio.service';
 import GridListagem from '@/components/GridListagem';
-import mapFinalidadeEnum from '../utils/helpers/finalidade-helper';
+import mapFinalidadeEnum from '@/utils/helpers/finalidade-helper';
 import snackbar from '@/services/snack.service';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 import { HEADER } from '@/utils/dadosHeader/ListagemLicencaHeader';

@@ -168,7 +168,7 @@ export default {
 
 <style lang="less">
 
-@import "../assets/css/variaveis.less";
+@import "../../assets/css/variaveis.less";
 
 .theme--light.v-btn-toggle:not(.v-btn-toggle--group) .v-btn.v-btn.v-btn--active {
 	border-color: @green-primary !important;

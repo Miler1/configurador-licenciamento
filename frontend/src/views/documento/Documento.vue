@@ -33,12 +33,12 @@
 <script>
 
 import PanelCadastro from '@/components/PanelCadastro';
-import FormCadastroDocumento from '@/components/FormCadastroDocumento';
+import FormCadastroDocumento from '@/views/documento/FormCadastroDocumento';
 import GridListagem from '@/components/GridListagem';
 import DocumentoService from '@/services/documento.service';
 import snackbar from '@/services/snack.service';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
-import RelatorioService from '../services/relatorio.service';
+import RelatorioService from '@/services/relatorio.service';
 import { HEADER } from '@/utils/dadosHeader/ListagemDocumentoHeader';
 
 export default {

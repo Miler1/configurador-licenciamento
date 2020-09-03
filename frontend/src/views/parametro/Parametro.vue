@@ -35,9 +35,9 @@
 <script>
 
 import PanelCadastro from '@/components/PanelCadastro';
-import FormCadastroParametro from '@/components/FormCadastroParametro';
+import FormCadastroParametro from '@/views/parametro/FormCadastroParametro';
 import ParametroService from '@/services/parametro.service';
-import RelatorioService from '../services/relatorio.service';
+import RelatorioService from '@/services/relatorio.service';
 import GridListagem from '@/components/GridListagem';
 import snackbar from '@/services/snack.service';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';

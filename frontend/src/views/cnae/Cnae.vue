@@ -33,9 +33,9 @@
 
 <script>
 
-import RelatorioService from '../services/relatorio.service';
+import RelatorioService from '@/services/relatorio.service';
 import PanelCadastro from '@/components/PanelCadastro';
-import FormCadastroCnae from '@/components/FormCadastroCnae';
+import FormCadastroCnae from '@/views/cnae/FormCadastroCnae';
 import GridListagem from '@/components/GridListagem';
 import AtividadeCnaeService from '@/services/atividadeCnae.service';
 import snackbar from '@/services/snack.service';
