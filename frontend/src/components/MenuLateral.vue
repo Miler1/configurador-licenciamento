@@ -46,13 +46,18 @@ export default {
 			{ title: 'Licença', icon: {vuetify: true, value: 'mdi-card-account-details'}, path: '/home/licenca'},
 			/*{ title: 'Municípios capacitados', icon: {vuetify: true, value: 'mdi-city'}, path: 'municipios-capacitados'},*/
 			{ title: 'Tipologia', icon: {vuetify: true, value: 'mdi-format-list-bulleted-square'}, path: '/home/tipologia'},
-			{ title: 'Parâmetros', icon: {vuetify: false, value: 'fa fa-sliders'}, path: '/home/parametro'},
-			{ title: 'Taxa', icon: {vuetify: true, value: 'mdi-cash-usd-outline'}, path: '/home/taxa'},
+			{ title: 'Parâmetro', icon: {vuetify: false, value: 'fa fa-sliders'}, path: '/home/parametro'},
+			{ title: 'Taxas', icon: {vuetify: true, value: 'mdi-cash-usd-outline'}, model: true,
+				children: [
+					{title: 'Taxa administrativa', path: '/home/taxa-administrativa'},
+					{title: 'Taxa de licenciamento', path: '/home/taxa-licenciamento'}
+				],
+			},
 			{ title: 'Requisitos', icon: {vuetify: true, value: 'mdi-clipboard-list'}, model: true,
 				children: [
-					{ title: 'Documentos', path: '/home/documentos'},
-					{ title: 'Requisitos administrativos', path: '/home/requisitos-administrativos'},
-					{ title: 'Requisitos técnicos', path: '/home/requisitos-tecnicos' }
+					{ title: 'Documento', path: '/home/documentos'},
+					{ title: 'Requisito administrativo', path: '/home/requisitos-administrativos'},
+					{ title: 'Requisito técnico', path: '/home/requisitos-tecnicos' }
 				],
 			},
 			{ title: 'Atividades licenciáveis', icon: {vuetify: true, value: 'mdi-account-multiple-plus'}, path: '/home/atividades-licenciaveis'},

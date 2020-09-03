@@ -69,11 +69,6 @@ export default {
 		};
 	},
 
-	directives: {
-
-
-	},
-
 	props: {
 		parametro: {
 			type: [Object]

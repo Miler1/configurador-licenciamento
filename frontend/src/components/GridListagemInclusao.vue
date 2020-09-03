@@ -23,8 +23,8 @@
 					span Editar	documento	
 				v-tooltip(bottom)
 					template(v-slot:activator="{ on, attrs }")
-						v-icon(small @click='excluirItem(item)', v-on='on', color='#EB2D30')
-							| mdi-close-circle
+						v-icon(small @click='excluirItem(item)', v-on='on', color='#F56C6C')
+							|  mdi-delete
 					span Remover documento	
 
 			template(v-slot:no-data)
