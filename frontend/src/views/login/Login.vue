@@ -7,7 +7,7 @@
 
 <script>
 
-import CardLogin from "@/components/CardLogin";
+import CardLogin from "@/views/login/CardLogin";
 
 export default {
 
@@ -26,7 +26,7 @@ export default {
 
 	#container-login {
 		align-content: center;
-		background: url("../assets/img/bg_login.jpeg") no-repeat center fixed;
+		background: url("../../assets/img/bg_login.jpeg") no-repeat center fixed;
 		background-size: cover;
 		justify-content: center;
 		max-width: 100% !important;

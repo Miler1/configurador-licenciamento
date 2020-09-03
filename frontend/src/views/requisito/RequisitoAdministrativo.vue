@@ -35,10 +35,10 @@
 <script>
 
 import PanelCadastro from '@/components/PanelCadastro';
-import FormCadastroRequisitoAdministrativo from '@/components/FormCadastroRequisitoAdministrativo';
+import FormCadastroRequisitoAdministrativo from '@/views/requisito/FormCadastroRequisitoAdministrativo';
 import RequisitoAdministrativoService from '@/services/requisitoAdministrativo.service';
 import DocumentoService from '@/services/documento.service';
-import RelatorioService from '../services/relatorio.service';
+import RelatorioService from '@/services/relatorio.service';
 import GridListagem from '@/components/GridListagem';
 import snackbar from '@/services/snack.service';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';

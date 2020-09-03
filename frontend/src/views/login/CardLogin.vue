@@ -53,7 +53,7 @@
 
 <script>
 
-import LoginService from '../services/login.service';
+import LoginService from '@/services/login.service';
 
 export default {
 
@@ -167,7 +167,7 @@ export default {
 
 <style lang="less" scoped>
 
-@import "../assets/css/variaveis.less";
+@import "../../assets/css/variaveis.less";
 
 	#card-login{
 		background-color: rgba(255, 255, 255, 0.91);

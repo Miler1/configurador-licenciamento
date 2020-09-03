@@ -80,7 +80,7 @@
 
 <script>
 
-import FinalidadeEnum from '../utils/enums/finalidadeEnum';
+import FinalidadeEnum from '@/utils/enums/finalidadeEnum';
 
 export default {
 
@@ -142,7 +142,7 @@ export default {
 
 <style lang="less">
 
-@import "../assets/css/variaveis.less";
+@import "../../assets/css/variaveis.less";
 
 #div-meses {
 	background-color: @bg-header;

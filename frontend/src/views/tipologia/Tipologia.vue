@@ -34,10 +34,10 @@
 <script>
 
 import PanelCadastro from '@/components/PanelCadastro';
-import FormCadastroTipologia from '@/components/FormCadastroTipologia';
+import FormCadastroTipologia from '@/views/tipologia/FormCadastroTipologia';
 import GridListagem from '@/components/GridListagem';
-import TipologiaService from '../services/tipologia.service';
-import RelatorioService from '../services/relatorio.service';
+import TipologiaService from '@/services/tipologia.service';
+import RelatorioService from '@/services/relatorio.service';
 import snackbar from '@/services/snack.service';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 import { HEADER } from '@/utils/dadosHeader/ListagemTipologiaHeader';
