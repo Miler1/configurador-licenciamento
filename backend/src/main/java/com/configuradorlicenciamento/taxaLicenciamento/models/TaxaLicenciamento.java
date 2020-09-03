@@ -1,4 +1,4 @@
-package com.configuradorlicenciamento.taxa.models;
+package com.configuradorlicenciamento.taxaLicenciamento.models;
 
 
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
@@ -18,7 +18,7 @@ import java.util.Date;
 @Entity
 @NoArgsConstructor
 @Table(schema = GlobalReferences.ESQUEMA, name = "taxa_licenciamento")
-public class Taxa implements Serializable {
+public class TaxaLicenciamento implements Serializable {
 
     @Id
     @SuppressWarnings("unused")
@@ -46,15 +46,4 @@ public class Taxa implements Serializable {
     public CodigoTaxaLicenciamento codigo;
 
     public String valor;
-
-    @NotNull(message = "{validacao.notnull}")
-    private Date dataCadastro;
-
-    @NotNull(message = "{validacao.notnull}")
-    private Boolean ativo;
-
-    @NotNull(message = "{validacao.notnull}")
-    @ManyToOne
-    @JoinColumn(name = "id_usuario_licenciamento", referencedColumnName = "id")
-    private UsuarioLicenciamento usuarioLicenciamento;
 }

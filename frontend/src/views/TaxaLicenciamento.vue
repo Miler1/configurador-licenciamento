@@ -21,8 +21,8 @@
 import GridListagem from '@/components/GridListagem';
 import snackbar from '@/services/snack.service';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
-import { HEADER } from '@/utils/dadosHeader/ListagemTaxaHeader';
-import TaxaService from '../services/taxa.service';
+import { HEADER } from '@/utils/dadosHeader/ListagemTaxaLicenciamentoHeader';
+import TaxaService from '../services/taxaLicenciamento.service';
 
 export default {
 

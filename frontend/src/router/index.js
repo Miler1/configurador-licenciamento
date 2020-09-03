@@ -69,6 +69,10 @@ const routes = [
 				name: 'TaxaAdministrativa',
 				component: () => import('../views/TaxaAdministrativa.vue')
 			},
+			{	path: 'taxa-licenciamento',
+				name: 'TaxaLicenciamento',
+				component: () => import('../views/TaxaLicenciamento.vue')
+			},
 			{
 				path: 'requisitos-administrativos',
 				name: 'requisitos-administrativos',

@@ -57,19 +57,13 @@
 				span {{item.ativo ? 'Ativo' : 'Inativo'}}
 
 			template(v-slot:item.actions='{ item }')
-				v-tooltip(bottom, v-if="tituloAba === 'taxa'")
-					template(v-slot:activator="{ on, attrs }")
-						v-icon.mr-2(small @click='visualizarTaxa(item)', v-on='on', color='#9EBAA4')
-							| mdi-eye
-					span {{'Visualizar ' + tituloAba}}
-
 				v-tooltip(bottom)
 					template(v-slot:activator="{ on, attrs }")
 						v-icon.mr-2(small @click='editarItem(item)', v-on='on', color='#9EBAA4')
 							| mdi-pencil
 					span Editar {{tituloAba}}
 
-				v-tooltip(bottom)
+				v-tooltip(bottom, open-on-click = false)
 					template(v-slot:activator="{ on, attrs }")
 						v-icon(small @click='ativarDesativarItem(item)', v-on='on', :color= "item.ativo ? '#E6A23B' : '#67C239'")
 							| {{item.ativo ? 'mdi-minus-circle' : 'mdi-check-circle'}}
