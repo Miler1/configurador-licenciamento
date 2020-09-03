@@ -192,10 +192,14 @@ export default {
 
 		checkForm() {
 
-			return this.requisitoAdministrativo.documento !== null
-				&& this.requisitoAdministrativo.licencas !== null
-				&& this.requisitoAdministrativo.obrigatorio !== null
-				&& this.requisitoAdministrativo.tipoPessoa !== null;
+			return this.requisitoAdministrativo.documento
+				&& this.requisitoAdministrativo.documento !== ""
+				&& this.requisitoAdministrativo.licencas
+				&& this.requisitoAdministrativo.licencas !== ""
+				&& this.requisitoAdministrativo.obrigatorio
+				&& this.requisitoAdministrativo.obrigatorio !== ""
+				&& this.requisitoAdministrativo.tipoPessoa
+				&& this.requisitoAdministrativo.tipoPessoa !== "";
 
 		},
 
