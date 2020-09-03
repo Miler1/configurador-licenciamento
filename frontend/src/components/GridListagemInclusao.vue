@@ -1,19 +1,32 @@
 <template lang="pug">
 
 #grid-listagem
-	b.titulo-listagem {{ tituloListagem }}
 
 	template
+
+		v-col(cols='12' md='6')
+			b.titulo-listagem {{ tituloListagem }}
+
+			v-text-field#QA-input-inclusao-pesquisar(
+				outlined,
+				v-model='stringPesquisa'
+				placeholder="Pesquisa",
+				prepend-inner-icon="mdi-magnify",
+				color="#E0E0E0",
+				dense
+			)
+
 		v-data-table.elevation-1(
 				:headers="headers",
 				:items='dadosListagem',
-				hide-default-footer,
-				@update:options="sortBy"
+				:search='stringPesquisa'
 				:items-per-page="itemsPerPage"
+				:footer-props='footerProps'
 			)
 
 			template(v-slot:item.obrigatorio='{ item }')
 				span {{item.obrigatorio == "true" ? 'Básico' : 'Complementar'}}
+
 
 			template(v-slot:item.actions='{ item }')
 				v-tooltip(bottom)
@@ -27,6 +40,9 @@
 							|  mdi-delete
 					span Remover documento	
 
+			template(#footer.page-text="props")
+				span Exibindo {{props.pageStart}}-{{props.pageStop}} de {{props.itemsLength}} registros
+
 			template(v-slot:no-data)
 				span Não existem documentos adicionados.
 
@@ -38,7 +54,13 @@ export default {
 
 	data: () => ({
 
-		itemsPerPage: 200
+		stringPesquisa: null,
+		itemsPerPage: 10,
+		footerProps: {
+
+			itemsPerPageText: 'Resultados por página',
+			itemsPerPageOptions: [10, 20, 30, 50, 100]
+		},
 
 	}),
 
@@ -92,6 +114,10 @@ tbody tr:nth-of-type(odd) {
 .v-pagination__item {
 	font-size: 13px;
 }
+
+.v-list-item__title {
+		font-size: 13px;
+	}
 
 .w-80{
 	width: 80px;
