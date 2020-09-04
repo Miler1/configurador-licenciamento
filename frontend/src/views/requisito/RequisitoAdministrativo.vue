@@ -157,7 +157,7 @@ export default {
 			RequisitoAdministrativoService.editar(this.requisitoAdministrativo)
 
 				.then(() => {
-					this.handleSuccess();
+					this.handleSuccess(true);
 				})
 				.catch(error => {
 					this.handleError(error, true);
@@ -175,7 +175,7 @@ export default {
 
 		handleSuccess(edicao = false) {
 
-			let message = edicao ? SUCCESS_MESSAGES.requisitoAdministrativo.editar : SUCCESS_MESSAGES.cadastro;
+			let message = edicao ? SUCCESS_MESSAGES.editar : SUCCESS_MESSAGES.cadastro;
 
 			snackbar.alert(message, snackbar.type.SUCCESS);
 
@@ -266,16 +266,30 @@ export default {
 				if(result.value) {
 
 					item.ativo = !item.ativo;
-
 					RequisitoAdministrativoService.editar(item)
 						.then(() => {
 							
-							this.handleSuccess();
+							if(!item.ativo) {
+								snackbar.alert(SUCCESS_MESSAGES.requisitoAdministrativo.desativar, snackbar.type.SUCCESS);
+							} else {
+								snackbar.alert(SUCCESS_MESSAGES.requisitoAdministrativo.ativar, snackbar.type.SUCCESS);
+							}
+
+							this.updatePagination();
+							this.resetaDadosFiltragem();
 
 						})
 						.catch(error => {
 
-							this.handleError(error, true);
+							console.error(error);
+
+							if(!item.ativo) {
+								snackbar.alert(ERROR_MESSAGES.requisitoAdministrativo.desativar);
+							} else {
+								snackbar.alert(ERROR_MESSAGES.requisitoAdministrativo.ativar);
+							}
+
+							item.ativo = !item.ativo;
 
 						});
 				}
