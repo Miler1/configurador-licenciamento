@@ -118,9 +118,9 @@ export default {
 		};
 	},
 
-	created(){
+	created() {
 
-		DocumentoService.findAll()
+		DocumentoService.buscarDocumentosAtivos()
 			.then((response) => {
 				this.documentos = response.data;
 			});
