@@ -182,7 +182,7 @@ export default {
 
 			console.error(error);
 
-			let message = edicao ? ERROR_MESSAGES.parametro.editar : ERROR_MESSAGES.parametro.cadastro;
+			let message = edicao ? ERROR_MESSAGES.taxaAdministrativa.editar : ERROR_MESSAGES.taxaAdministrativa.cadastro;
 			message += error.message;
 
 			snackbar.alert(message);
