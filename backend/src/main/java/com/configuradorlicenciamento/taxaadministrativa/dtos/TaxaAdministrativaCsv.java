@@ -20,7 +20,7 @@ public class TaxaAdministrativaCsv implements Serializable {
     @CsvBindByPosition(position = 0)
     private Integer ano;
 
-    @CsvBindByName(column = "Valor")
+    @CsvBindByName(column = "Valor (R$)")
     @CsvBindByPosition(position = 1)
     private Float valor;
 
