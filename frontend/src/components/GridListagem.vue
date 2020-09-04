@@ -40,8 +40,7 @@
 				:items-per-page="itensPerPage",
 				@update:options="sortBy"
 			)
-
-			template#text-align-center(v-slot:item.validadeEmAnos='{ item }')
+			template(v-slot:item.validadeEmAnos='{ item }')
 				span {{item.validadeEmAnos ? item.validadeEmAnos : ' ‒'}}
 
 			template(v-slot:item.tipoPessoa='{ item }')
@@ -56,20 +55,23 @@
 			template(v-slot:item.ativo='{ item }')
 				span {{item.ativo ? 'Ativo' : 'Inativo'}}
 
-			template(v-slot:item.actions='{ item }')
-				v-tooltip(bottom, v-if="tituloAba === 'taxa'")
-					template(v-slot:activator="{ on, attrs }")
-						v-icon.mr-2(small @click='visualizarTaxa(item)', v-on='on', color='#9EBAA4')
-							| mdi-eye
-					span {{'Visualizar ' + tituloAba}}
+			template(v-slot:item.atividadeDispensavel='{ item }')
+				span {{item.atividadeDispensavel ? 'Sim' : 'Não'}}
 
+			template(v-slot:item.atividadeLicenciavel='{ item }')
+				span {{item.atividadeLicenciavel ? 'Sim' : 'Não'}}
+
+			template(v-slot:item.valor='{ item }')
+				span {{ Number(item.valor).toLocaleString() }}
+
+			template(v-slot:item.actions='{ item }')
 				v-tooltip(bottom)
 					template(v-slot:activator="{ on, attrs }")
 						v-icon.mr-2(small @click='editarItem(item)', v-on='on', color='#9EBAA4')
 							| mdi-pencil
 					span Editar {{tituloAba}}
 
-				v-tooltip(bottom)
+				v-tooltip(bottom, open-on-click = false)
 					template(v-slot:activator="{ on, attrs }")
 						v-icon(small @click='ativarDesativarItem(item)', v-on='on', :color= "item.ativo ? '#E6A23B' : '#67C239'")
 							| {{item.ativo ? 'mdi-minus-circle' : 'mdi-check-circle'}}
@@ -222,7 +224,7 @@ export default {
 		checkNomeItem() {
 			return this.dadosListagem.nomeItem === 'tipologias' 
 				|| this.dadosListagem.nomeItem === 'licenças' 
-				|| this.dadosListagem.nomeItem === 'taxas'
+				|| this.dadosListagem.nomeItem === 'tabelas de taxas de licenciamento'
 				|| this.dadosListagem.nomeItem === 'taxas administrativas';
 		}
 
@@ -238,10 +240,6 @@ export default {
 
 tbody tr:nth-of-type(odd) {
 	background-color: rgba(0, 0, 0, .05);
-}
-
-#text-align-center {
-	text-align: center;
 }
 
 .titulo-listagem{

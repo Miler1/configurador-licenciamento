@@ -21,6 +21,7 @@
 										:placeholder="placeholder",
 										v-model="requisitoTecnico.codigo",
 										@click.native="resetErrorMessage",
+										@input="v => {requisitoTecnico.codigo = v.toUpperCase()}",
 										:error-messages="errorMessage( requisitoTecnico.codigo, false )",
 										required,
 										dense
@@ -451,7 +452,7 @@ export default {
 						<b>Tem certeza que deseja remover o documento? Esta opção pode ser desfeita a qualquer momento ao adicioná-lo novamente.</b>
 					</p>`,
 				showCancelButton: true,
-				confirmButtonColor:'#EB2D30',
+				confirmButtonColor:'#F56C6C',
 				cancelButtonColor: '#FFF',
 				showCloseButton: true,
 				focusConfirm: false,
