@@ -59,7 +59,7 @@ export default {
 			isCadastro: true,
 			tituloAba: "taxa administrativa",
 			tituloListagem: "Listagem de taxas administrativas",
-			placeholderPesquisa: "Pesquise pelo ano",
+			placeholderPesquisa: "Pesquisar pelo ano",
 			labelBotaoCadastrarEditar: "Cadastrar",
 			iconBotaoCadastrarEditar: "mdi-plus",
 			taxaAdministrativa: {
@@ -74,7 +74,7 @@ export default {
 			parametrosFiltro: {
 				pagina: 0,
 				itemsPorPagina: 10,
-				tipoOrdenacao: 'dataCadastro,desc',
+				tipoOrdenacao: 'ano,desc',
 				stringPesquisa: ''
 			},
 			dadosPanel: {
@@ -206,7 +206,7 @@ export default {
 		},
 
 		updatePagination(parametrosFiltro) {
-			console.log(parametrosFiltro);
+			
 			TaxaAdministrativaService.listar(parametrosFiltro)
 				
 				.then((response) => {

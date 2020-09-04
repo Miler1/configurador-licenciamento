@@ -69,7 +69,8 @@ public class TaxaAdministrativaService implements ITaxaAdministrativaService {
         Specification<TaxaAdministrativa> specification = Specification.where(TaxaAdministrativaSpecification.padrao());
 
         if(filtro.getStringPesquisa() != null && !filtro.getStringPesquisa().isEmpty()) {
-            specification = specification.and(TaxaAdministrativaSpecification.ano(filtro.getStringPesquisa()));
+            Integer ano = Integer.parseInt(filtro.getStringPesquisa());
+            specification = specification.and(TaxaAdministrativaSpecification.ano(ano));
         }
 
         return specification;
