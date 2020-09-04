@@ -41,7 +41,7 @@
 				@update:options="sortBy"
 			)
 
-			template#text-align-center(v-slot:item.validadeEmAnos='{ item }')
+			template(v-slot:item.validadeEmAnos='{ item }')
 				span {{item.validadeEmAnos ? item.validadeEmAnos : ' ‒'}}
 
 			template(v-slot:item.tipoPessoa='{ item }')
@@ -232,10 +232,6 @@ export default {
 
 tbody tr:nth-of-type(odd) {
 	background-color: rgba(0, 0, 0, .05);
-}
-
-#text-align-center {
-	text-align: center;
 }
 
 .titulo-listagem{
