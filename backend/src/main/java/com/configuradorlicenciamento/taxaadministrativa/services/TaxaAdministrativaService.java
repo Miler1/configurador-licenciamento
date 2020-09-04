@@ -1,17 +1,25 @@
 package com.configuradorlicenciamento.taxaadministrativa.services;
 
 import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
+import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
+import com.configuradorlicenciamento.taxa.models.Taxa;
+import com.configuradorlicenciamento.taxa.specifications.TaxaSpecification;
 import com.configuradorlicenciamento.taxaadministrativa.dtos.TaxaAdministrativaDTO;
 import com.configuradorlicenciamento.taxaadministrativa.interfaces.ITaxaAdministrativaService;
 import com.configuradorlicenciamento.taxaadministrativa.models.TaxaAdministrativa;
 import com.configuradorlicenciamento.taxaadministrativa.repositories.TaxaAdministrativaRepository;
+import com.configuradorlicenciamento.taxaadministrativa.specifications.TaxaAdministrativaSpecification;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLicenciamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class TaxaAdministrativaService implements ITaxaAdministrativaService {
@@ -45,6 +53,27 @@ public class TaxaAdministrativaService implements ITaxaAdministrativaService {
         taxaAdministrativaRepository.save(taxaAdministrativa);
 
         return taxaAdministrativa;
+
+    }
+
+    @Override
+    public Page<TaxaAdministrativa> listar(Pageable pageable, FiltroPesquisa filtro) {
+
+        Specification<TaxaAdministrativa> specification = preparaFiltro(filtro);
+
+        return taxaAdministrativaRepository.findAll(specification, pageable);
+    }
+
+    private Specification<TaxaAdministrativa> preparaFiltro(FiltroPesquisa filtro) {
+
+        Specification<TaxaAdministrativa> specification = Specification.where(TaxaAdministrativaSpecification.padrao());
+
+        if(filtro.getStringPesquisa() != null && !filtro.getStringPesquisa().isEmpty()) {
+            Integer ano = Integer.parseInt(filtro.getStringPesquisa());
+            specification = specification.and(TaxaAdministrativaSpecification.ano(ano));
+        }
+
+        return specification;
 
     }
 
