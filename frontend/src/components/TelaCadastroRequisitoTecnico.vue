@@ -21,6 +21,7 @@
 										:placeholder="placeholder",
 										v-model="requisitoTecnico.codigo",
 										@click.native="resetErrorMessage",
+										@input="v => {requisitoTecnico.codigo = v.toUpperCase()}",
 										:error-messages="errorMessage( requisitoTecnico.codigo, false )",
 										required,
 										dense
