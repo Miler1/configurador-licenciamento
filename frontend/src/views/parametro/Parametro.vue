@@ -297,7 +297,7 @@ export default {
 					item.ativo = !item.ativo;
 					ParametroService.editar(item)
 						.then(() => {
-							
+
 							if(!item.ativo) {
 								snackbar.alert(SUCCESS_MESSAGES.parametro.desativar, snackbar.type.SUCCESS);
 							} else {

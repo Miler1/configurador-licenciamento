@@ -20,7 +20,7 @@ import java.util.List;
 @Service
 public class TaxaAdministrativaService implements ITaxaAdministrativaService {
 
-    private static final String TAXA_EXISTENTE = "Já existe uma taxa administrativa com o mesmo ano";
+    private static final String TAXA_EXISTENTE = "Já existe uma taxa administrativa com o mesmo ano.";
 
     @Autowired
     TaxaAdministrativaRepository taxaAdministrativaRepository;
