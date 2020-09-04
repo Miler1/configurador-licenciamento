@@ -1,12 +1,7 @@
 package com.configuradorlicenciamento.taxaadministrativa.specifications;
 
-import com.configuradorlicenciamento.configuracao.utils.StringUtil;
-import com.configuradorlicenciamento.parametro.models.Parametro;
-import com.configuradorlicenciamento.taxa.models.Taxa;
 import com.configuradorlicenciamento.taxaadministrativa.models.TaxaAdministrativa;
 import org.springframework.data.jpa.domain.Specification;
-
-import javax.persistence.criteria.JoinType;
 
 public class TaxaAdministrativaSpecification {
 

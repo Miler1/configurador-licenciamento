@@ -37,6 +37,7 @@
 import PanelCadastro from '@/components/PanelCadastro';
 import FormCadastroTaxaAdministrativa from '@/components/FormCadastroTaxaAdministrativa';
 import GridListagem from '@/components/GridListagem';
+import RelatorioService from '../services/relatorio.service';
 import TaxaAdministrativaService from '@/services/taxaAdministrativa.service';
 import snackbar from '@/services/snack.service';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
@@ -112,6 +113,15 @@ export default {
 			this.isCadastro = true;
 
 		},
+
+		resetaDadosFiltragem() {
+
+			this.parametrosFiltro.pagina = 0;
+			this.parametrosFiltro.itemsPorPagina = 10;
+			this.parametrosFiltro.tipoOrdenacao = 'ano,desc';
+			this.parametrosFiltro.stringPesquisa = '';
+
+		},
 		
 		submit() {
 
@@ -159,7 +169,8 @@ export default {
 		},
 
 		checkForm() {
-			return this.taxaAdministrativa.ano != null;
+			return this.taxaAdministrativa.ano
+				&& this.taxaAdministrativa !== "";
 		},
 
 		resetErrorMessage() {
@@ -177,8 +188,8 @@ export default {
 			snackbar.alert(message, snackbar.type.SUCCESS);
 			
 			this.clear();
-			// this.updatePagination();
-			// this.resetaDadosFiltragem();
+			this.updatePagination();
+			this.resetaDadosFiltragem();
 
 		},
 
@@ -186,7 +197,7 @@ export default {
 
 			console.error(error);
 
-			let message = edicao ? ERROR_MESSAGES.parametro.editar : ERROR_MESSAGES.parametro.cadastro;
+			let message = edicao ? ERROR_MESSAGES.taxaAdministrativa.editar : ERROR_MESSAGES.taxaAdministrativa.cadastro;
 			message += error.message;
 
 			snackbar.alert(message);

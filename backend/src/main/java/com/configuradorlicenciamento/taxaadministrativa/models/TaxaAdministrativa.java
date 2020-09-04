@@ -1,6 +1,7 @@
 package com.configuradorlicenciamento.taxaadministrativa.models;
 
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
+import com.configuradorlicenciamento.taxaadministrativa.dtos.TaxaAdministrativaCsv;
 import com.configuradorlicenciamento.taxaadministrativa.dtos.TaxaAdministrativaDTO;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import lombok.Getter;
@@ -38,10 +39,10 @@ public class TaxaAdministrativa implements Serializable {
     private Boolean atividadeLicenciavel;
 
     @NotNull(message = "{validacao.notnull}")
-    private Boolean ativo;
+    private String linkTaxasLicenciamento;
 
     @NotNull(message = "{validacao.notnull}")
-    private String linkTaxasLicenciamento;
+    private Boolean ativo;
 
     @NotNull(message = "{validacao.notnull}")
     private Date dataCadastro;
@@ -71,6 +72,7 @@ public class TaxaAdministrativa implements Serializable {
         private final Boolean atividadeDispensavel;
         private final Boolean atividadeLicenciavel;
         private final Boolean ativo;
+
         private Date dataCadastro;
         private UsuarioLicenciamento usuarioLicenciamento;
 
@@ -94,5 +96,9 @@ public class TaxaAdministrativa implements Serializable {
 
         public TaxaAdministrativa build() { return new TaxaAdministrativa(this); }
 
+    }
+
+    public TaxaAdministrativaCsv prepararParaCsv() {
+        return new TaxaAdministrativaCsv(this);
     }
 }
