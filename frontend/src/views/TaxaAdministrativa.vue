@@ -16,6 +16,19 @@
 				:labelBotaoCadastrarEditar="labelBotaoCadastrarEditar",
 				:iconBotaoCadastrarEditar="iconBotaoCadastrarEditar",
 			)
+
+		GridListagem.pa-7(
+			:tituloAba="tituloAba",
+			:tituloListagem="tituloListagem",
+			:placeholderPesquisa="placeholderPesquisa",
+			:gerarRelatorio="gerarRelatorio",
+			:headers="headerListagem",
+			:dadosListagem="dadosListagem",
+			:updatePagination="updatePagination",
+			:editarItem="editarItem",
+			:ativarDesativarItem="ativarDesativarItem",
+			:parametrosFiltro="parametrosFiltro"
+		)
   
 </template>
 
@@ -23,9 +36,11 @@
 
 import PanelCadastro from '@/components/PanelCadastro';
 import FormCadastroTaxaAdministrativa from '@/components/FormCadastroTaxaAdministrativa';
+import GridListagem from '@/components/GridListagem';
 import TaxaAdministrativaService from '@/services/taxaAdministrativa.service';
 import snackbar from '@/services/snack.service';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
+import { HEADER } from '@/utils/dadosHeader/ListagemTaxaAdministrativoHeader';
 
 export default {
 
@@ -35,6 +50,7 @@ export default {
 
 		PanelCadastro,
 		FormCadastroTaxaAdministrativa,
+		GridListagem
 	},
 
 	data: () => {
@@ -43,7 +59,7 @@ export default {
 			isCadastro: true,
 			tituloAba: "taxa administrativa",
 			tituloListagem: "Listagem de taxas administrativas",
-			placeholderPesquisa: "Pesquisar por código ou descrição da taxa administrativa",
+			placeholderPesquisa: "Pesquise pelo ano",
 			labelBotaoCadastrarEditar: "Cadastrar",
 			iconBotaoCadastrarEditar: "mdi-plus",
 			taxaAdministrativa: {
@@ -53,8 +69,8 @@ export default {
 				atividadeLicenciavel: false,
 				ativo: true
 			},
-			// dadosListagem: {},
-			// headerListagem: HEADER,
+			dadosListagem: {},
+			headerListagem: HEADER,
 			parametrosFiltro: {
 				pagina: 0,
 				itemsPorPagina: 10,
@@ -190,6 +206,22 @@ export default {
 		},
 
 		updatePagination(parametrosFiltro) {
+			console.log(parametrosFiltro);
+			TaxaAdministrativaService.listar(parametrosFiltro)
+				
+				.then((response) => {
+					
+					this.dadosListagem = response.data;
+					this.dadosListagem.nomeItem = "taxas administrativas";
+
+				})
+				.catch(error => {
+
+					console.error(error);
+
+					snackbar.alert(ERROR_MESSAGES.taxaAdministrativa.listagem);
+					
+				});
 
 		},
 
