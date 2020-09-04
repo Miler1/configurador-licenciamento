@@ -24,15 +24,15 @@ public class TaxaAdministrativaCsv implements Serializable {
     @CsvBindByPosition(position = 1)
     private Float valor;
 
-    @CsvBindByName(column = "Atividade Dispensável")
+    @CsvBindByName(column = "Atividades dispensáveis")
     @CsvBindByPosition(position = 2)
     private String atividadeDispensavel;
 
-    @CsvBindByName(column = "Atividade Licenciável")
+    @CsvBindByName(column = "Atividades licenciáveis")
     @CsvBindByPosition(position = 3)
     private String atividadeLicenciavel;
 
-    @CsvBindByName(column = "Ativo")
+    @CsvBindByName(column = "Status")
     @CsvBindByPosition(position = 4)
     private String ativo;
 
