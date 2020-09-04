@@ -46,7 +46,7 @@ public class TaxaAdministrativaController extends DefaultController {
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
         String data = DateUtil.formataBrHoraMinuto(new Date());
-        String nome = "Relatorio_taxa_administrativa_" + data + ".csv";
+        String nome = "Relatorio_Taxa_Administrativa_" + data + ".csv";
 
         CustomMappingStrategy<TaxaAdministrativaCsv> mappingStrategy = new CustomMappingStrategy<>();
         mappingStrategy.setType(TaxaAdministrativaCsv.class);
