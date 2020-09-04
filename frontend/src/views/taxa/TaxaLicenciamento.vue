@@ -40,7 +40,7 @@ export default {
 			placeholderPesquisa: "Pesquisar pelo código ou descrição da tabela de taxa de licenciamento",
 			headerListagem: HEADER,
 			dadosListagem: {
-				nomeItem: "taxas",
+				nomeItem: "tabelas de taxas de licenciamento",
 			},
 			labelBotaoCadastrarEditar: "Cadastrar",
 			iconBotaoCadastrarEditar: "mdi-plus",
@@ -174,7 +174,7 @@ export default {
 				.then((response) => {
 
 					this.dadosListagem = response.data;
-					this.dadosListagem.nomeItem = 'taxas';
+					this.dadosListagem.nomeItem = 'tabelas de taxas de licenciamento';
 
 				})
 				.catch(erro => {

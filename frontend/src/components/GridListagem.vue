@@ -216,7 +216,7 @@ export default {
 		checkNomeItem() {
 			return this.dadosListagem.nomeItem === 'tipologias' 
 				|| this.dadosListagem.nomeItem === 'licenças' 
-				|| this.dadosListagem.nomeItem === 'taxas'
+				|| this.dadosListagem.nomeItem === 'tabelas de taxas de licenciamento'
 				|| this.dadosListagem.nomeItem === 'taxas administrativas';
 		}
 
