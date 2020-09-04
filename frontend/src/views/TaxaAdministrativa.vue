@@ -16,13 +16,24 @@
 				:labelBotaoCadastrarEditar="labelBotaoCadastrarEditar",
 				:iconBotaoCadastrarEditar="iconBotaoCadastrarEditar",
 			)
-  
+
+		v-row.justify-center
+			v-btn(
+				@click="gerarRelatorio",
+				large,
+				outlined,
+				color="#84A98C"
+			)
+				v-icon mdi-download
+				span Gerar relatório
+
 </template>
 
 <script>
 
 import PanelCadastro from '@/components/PanelCadastro';
 import FormCadastroTaxaAdministrativa from '@/components/FormCadastroTaxaAdministrativa';
+import RelatorioService from '../services/relatorio.service';
 import TaxaAdministrativaService from '@/services/taxaAdministrativa.service';
 import snackbar from '@/services/snack.service';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
@@ -143,7 +154,8 @@ export default {
 		},
 
 		checkForm() {
-			return this.taxaAdministrativa.ano != null;
+			return this.taxaAdministrativa.ano
+				&& this.taxaAdministrativa !== "";
 		},
 
 		resetErrorMessage() {
