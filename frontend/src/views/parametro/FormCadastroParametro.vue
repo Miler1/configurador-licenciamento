@@ -65,7 +65,7 @@ export default {
 	data: () => {
 		return {
 			placeholder: "Digite aqui...",
-			placeholderDescricao: "Informe o nome e a unidade de medida do parâmetro, se necessário. Ex: Área útil (ha)"
+			placeholderDescricao: "Informe o nome e a unidade de medida do parâmetro, se necessário. Ex.: Área útil (ha)"
 		};
 	},
 
