@@ -20,4 +20,6 @@ public interface ITaxaAdministrativaService {
 
     List<TaxaAdministrativaCsv> listarTaxaAdministrativaParaCsv();
 
+    TaxaAdministrativa editar(HttpServletRequest request, TaxaAdministrativaDTO taxaAdministrativaDTO);
+
 }
