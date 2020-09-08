@@ -21,7 +21,13 @@
 						v-label Opções de respostas:
 					div(v-for="item in pergunta.respostas" :key="item.texto")
 						b.mr-3 {{item.texto}}
-						v-checkbox.mt-0.d-inline-flex(v-model="item.permiteLicenciamento", label="Esta opção permite prosseguir", color="#84A98C")
+						v-checkbox.mt-0.d-inline-flex(
+							v-model="item.permiteLicenciamento",
+							label="Esta opção permite prosseguir",
+							color="#84A98C",
+							@click="resetErrorMessage",
+							:error-messages="errorMessage(item.permiteLicenciamento)"
+						)
 			v-row
 				v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
 					a#QA-limpar-dados-cnae.d-flex.flex-row.align-center.justify-end(@click="clear")

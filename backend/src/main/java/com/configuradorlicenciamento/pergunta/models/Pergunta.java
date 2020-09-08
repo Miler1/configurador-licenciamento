@@ -65,6 +65,7 @@ public class Pergunta implements Serializable {
         this.codigo = builder.codigo;
         this.ativo = builder.ativo;
         this.tipoPergunta = "SIM_NAO";
+        this.ordem = 1;
         this.dataCadastro = builder.dataCadastro;
         this.usuarioLicenciamento = builder.usuarioLicenciamento;
     }
@@ -74,7 +75,6 @@ public class Pergunta implements Serializable {
         private final String texto;
         private final String codigo;
         private final Boolean ativo;
-        private List<Resposta> respostas;
         private Date dataCadastro;
         private UsuarioLicenciamento usuarioLicenciamento;
 

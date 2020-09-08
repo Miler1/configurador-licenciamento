@@ -167,7 +167,18 @@ export default {
 
 		checkForm() {
 
-			return true;
+			let perguntasValidas = false;
+
+			this.pergunta.respostas.forEach((item) => {
+
+				if(item.permiteLicenciamento)
+					perguntasValidas = true;
+
+			});
+
+			return this.pergunta.texto != null
+				&& this.pergunta.texto != ''
+				&& perguntasValidas;
 
 		},
 
