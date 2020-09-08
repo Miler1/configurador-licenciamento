@@ -59,8 +59,8 @@ export default {
 			errorMessageEmpty: true,
 			isCadastro: true,
 			tituloAba: "taxa administrativa",
-			tituloListagem: "Listagem de taxas administrativas",
-			placeholderPesquisa: "Pesquisar pelo ano",
+			tituloListagem: "Listagem de taxas administrativas cadastradas",
+			placeholderPesquisa: "Pesquisar pelo ano da taxa administrativa",
 			labelBotaoCadastrarEditar: "Cadastrar",
 			iconBotaoCadastrarEditar: "mdi-plus",
 			taxaAdministrativa: {
