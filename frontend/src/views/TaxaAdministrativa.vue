@@ -17,26 +17,31 @@
 				:iconBotaoCadastrarEditar="iconBotaoCadastrarEditar",
 			)
 
-		v-row.justify-center
-			v-btn(
-				@click="gerarRelatorio",
-				large,
-				outlined,
-				color="#84A98C"
-			)
-				v-icon mdi-download
-				span Gerar relatório
-
+		GridListagem.pa-7(
+			:tituloAba="tituloAba",
+			:tituloListagem="tituloListagem",
+			:placeholderPesquisa="placeholderPesquisa",
+			:gerarRelatorio="gerarRelatorio",
+			:headers="headerListagem",
+			:dadosListagem="dadosListagem",
+			:updatePagination="updatePagination",
+			:editarItem="editarItem",
+			:ativarDesativarItem="ativarDesativarItem",
+			:parametrosFiltro="parametrosFiltro"
+		)
+  
 </template>
 
 <script>
 
 import PanelCadastro from '@/components/PanelCadastro';
 import FormCadastroTaxaAdministrativa from '@/components/FormCadastroTaxaAdministrativa';
+import GridListagem from '@/components/GridListagem';
 import RelatorioService from '../services/relatorio.service';
 import TaxaAdministrativaService from '@/services/taxaAdministrativa.service';
 import snackbar from '@/services/snack.service';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
+import { HEADER } from '@/utils/dadosHeader/ListagemTaxaAdministrativoHeader';
 
 export default {
 
@@ -46,6 +51,7 @@ export default {
 
 		PanelCadastro,
 		FormCadastroTaxaAdministrativa,
+		GridListagem
 	},
 
 	data: () => {
@@ -54,7 +60,7 @@ export default {
 			isCadastro: true,
 			tituloAba: "taxa administrativa",
 			tituloListagem: "Listagem de taxas administrativas",
-			placeholderPesquisa: "Pesquisar por código ou descrição da taxa administrativa",
+			placeholderPesquisa: "Pesquisar pelo ano",
 			labelBotaoCadastrarEditar: "Cadastrar",
 			iconBotaoCadastrarEditar: "mdi-plus",
 			taxaAdministrativa: {
@@ -64,12 +70,12 @@ export default {
 				atividadeLicenciavel: false,
 				ativo: true
 			},
-			// dadosListagem: {},
-			// headerListagem: HEADER,
+			dadosListagem: {},
+			headerListagem: HEADER,
 			parametrosFiltro: {
 				pagina: 0,
 				itemsPorPagina: 10,
-				tipoOrdenacao: 'dataCadastro,desc',
+				tipoOrdenacao: 'ano,desc',
 				stringPesquisa: ''
 			},
 			dadosPanel: {
@@ -105,6 +111,15 @@ export default {
 			this.labelBotaoCadastrarEditar = "Cadastrar";
 			this.iconBotaoCadastrarEditar = "mdi-plus";
 			this.isCadastro = true;
+
+		},
+
+		resetaDadosFiltragem() {
+
+			this.parametrosFiltro.pagina = 0;
+			this.parametrosFiltro.itemsPorPagina = 10;
+			this.parametrosFiltro.tipoOrdenacao = 'ano,desc';
+			this.parametrosFiltro.stringPesquisa = '';
 
 		},
 		
@@ -173,8 +188,8 @@ export default {
 			snackbar.alert(message, snackbar.type.SUCCESS);
 			
 			this.clear();
-			// this.updatePagination();
-			// this.resetaDadosFiltragem();
+			this.updatePagination();
+			this.resetaDadosFiltragem();
 
 		},
 
@@ -202,6 +217,22 @@ export default {
 		},
 
 		updatePagination(parametrosFiltro) {
+			
+			TaxaAdministrativaService.listar(parametrosFiltro)
+				
+				.then((response) => {
+					
+					this.dadosListagem = response.data;
+					this.dadosListagem.nomeItem = "taxas administrativas";
+
+				})
+				.catch(error => {
+
+					console.error(error);
+
+					snackbar.alert(ERROR_MESSAGES.taxaAdministrativa.listagem);
+					
+				});
 
 		},
 

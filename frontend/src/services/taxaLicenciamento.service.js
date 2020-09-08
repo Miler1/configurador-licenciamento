@@ -3,7 +3,7 @@ import ApiService from './api.service';
 export default {
 
 	listar: async (parametrosFiltro) => {
-		
+
 		if (parametrosFiltro) {
 
 			return ApiService.post(`codigoTaxalicenciamento/listar/?

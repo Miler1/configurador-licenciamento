@@ -3,6 +3,7 @@ package com.configuradorlicenciamento.taxaadministrativa.controllers;
 import com.configuradorlicenciamento.configuracao.components.VariaveisAmbientes;
 import com.configuradorlicenciamento.configuracao.controllers.DefaultController;
 import com.configuradorlicenciamento.configuracao.enums.Acao;
+import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.configuracao.utils.DateUtil;
 import com.configuradorlicenciamento.configuracao.utils.csv.CustomMappingStrategy;
 import com.configuradorlicenciamento.taxaadministrativa.dtos.TaxaAdministrativaCsv;
@@ -10,6 +11,9 @@ import com.configuradorlicenciamento.taxaadministrativa.dtos.TaxaAdministrativaD
 import com.configuradorlicenciamento.taxaadministrativa.interfaces.ITaxaAdministrativaService;
 import com.configuradorlicenciamento.taxaadministrativa.models.TaxaAdministrativa;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +42,20 @@ public class TaxaAdministrativaController extends DefaultController {
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
                 .body(taxaAdministrativa);
 
+    }
+
+    @PostMapping(value = "/listar")
+    public ResponseEntity<Page<TaxaAdministrativa>> listar(HttpServletRequest request,
+                                                           @PageableDefault(size = 20) Pageable pageable,
+                                                           @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        Page<TaxaAdministrativa> taxaAdministrativas = taxaAdministrativaService.listar(pageable, filtroPesquisa);
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(taxaAdministrativas);
     }
 
     @GetMapping(value = "/relatorio")

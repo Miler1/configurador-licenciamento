@@ -19,6 +19,6 @@ export default {
 		}
 	},
 
-	findAll: async () => ApiService.get(`documento/findAll`)
+	buscarDocumentosAtivos: async () => ApiService.get(`documento/buscarDocumentosAtivos`)
 
 };

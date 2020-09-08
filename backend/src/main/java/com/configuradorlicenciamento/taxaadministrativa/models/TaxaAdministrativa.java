@@ -67,11 +67,12 @@ public class TaxaAdministrativa implements Serializable {
 
     public static class TaxaAdministrativaBuilder {
 
-        private Integer ano;
-        private Float valor;
-        private Boolean atividadeDispensavel;
-        private Boolean atividadeLicenciavel;
-        private Boolean ativo;
+        private final Integer ano;
+        private final Float valor;
+        private final Boolean atividadeDispensavel;
+        private final Boolean atividadeLicenciavel;
+        private final Boolean ativo;
+
         private Date dataCadastro;
         private UsuarioLicenciamento usuarioLicenciamento;
 

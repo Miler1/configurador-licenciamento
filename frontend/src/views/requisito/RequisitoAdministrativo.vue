@@ -269,7 +269,7 @@ export default {
 					item.ativo = !item.ativo;
 					RequisitoAdministrativoService.editar(item)
 						.then(() => {
-							
+
 							if(!item.ativo) {
 								snackbar.alert(SUCCESS_MESSAGES.requisitoAdministrativo.desativar, snackbar.type.SUCCESS);
 							} else {

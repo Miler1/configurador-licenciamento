@@ -1,7 +1,7 @@
 <template lang="pug">
 
 	v-container
-        
+
 		GridListagem.pa-7(
 			:tituloAba="tituloAba"
 			:tituloListagem="tituloListagem",
@@ -152,7 +152,7 @@ export default {
 		},
 
 		gerarRelatorio() {
-			
+
 		},
 
 		editarItem(item) {

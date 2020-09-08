@@ -171,7 +171,7 @@ export default {
 			message += error.message;
 
 			snackbar.alert(message);
-			
+
 		},
 
 		handleSuccess(response, edicao = false) {
@@ -214,7 +214,7 @@ export default {
 		},
 
 		editarItem(item) {
-			
+
 			this.dadosPanel.panel = [0];
 			this.dadosPanel.title = "Editar tipologia";
 			this.dadosPanel.tipo = "edição";
@@ -227,7 +227,7 @@ export default {
 		},
 
 		ativarDesativarItem(item) {
-			
+
 			this.$fire({
 
 				title: item.ativo ?
@@ -259,7 +259,7 @@ export default {
 					item.ativo = !item.ativo;
 					TipologiaService.editar(item)
 						.then(() => {
-							
+
 							if(!item.ativo) {
 								snackbar.alert(SUCCESS_MESSAGES.tipologia.desativar, snackbar.type.SUCCESS);
 							} else {
