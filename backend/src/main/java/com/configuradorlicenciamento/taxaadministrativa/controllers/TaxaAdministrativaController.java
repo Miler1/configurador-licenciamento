@@ -44,6 +44,19 @@ public class TaxaAdministrativaController extends DefaultController {
 
     }
 
+    @PostMapping(value = "/editar")
+    public ResponseEntity<TaxaAdministrativa> editar(HttpServletRequest request, @Valid @RequestBody TaxaAdministrativaDTO taxaAdministrativaDTO) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        TaxaAdministrativa taxaAdministrativa = taxaAdministrativaService.editar(request, taxaAdministrativaDTO);
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(taxaAdministrativa);
+
+    }
+
     @PostMapping(value = "/listar")
     public ResponseEntity<Page<TaxaAdministrativa>> listar(HttpServletRequest request,
                                                            @PageableDefault(size = 20) Pageable pageable,
@@ -56,6 +69,7 @@ public class TaxaAdministrativaController extends DefaultController {
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
                 .body(taxaAdministrativas);
+
     }
 
     @GetMapping(value = "/relatorio")
