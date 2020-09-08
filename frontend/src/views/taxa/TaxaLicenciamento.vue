@@ -12,6 +12,8 @@
 			:updatePagination="updatePagination",
 			:editarItem="editarItem",
 			:parametrosFiltro="parametrosFiltro"
+			:buttonCadastrar="buttonCadastrar",
+			:abrirTelaCadastro="abrirTelaCadastro"
 		)
 
 </template>
@@ -23,6 +25,7 @@ import snackbar from '@/services/snack.service';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 import { HEADER } from '@/utils/dadosHeader/ListagemTaxaLicenciamentoHeader';
 import TaxaService from '@/services/taxaLicenciamento.service';
+import RelatorioService from '@/services/relatorio.service';
 
 export default {
 
@@ -60,6 +63,7 @@ export default {
 				stringPesquisa: ''
 			},
 			isCadastro: true,
+			buttonCadastrar: true
 
 		};
 	},
@@ -152,7 +156,7 @@ export default {
 		},
 
 		gerarRelatorio() {
-
+			RelatorioService.baixarRelatorio("/codigoTaxalicenciamento/relatorio");
 		},
 
 		editarItem(item) {
@@ -183,6 +187,12 @@ export default {
 					snackbar.alert(ERROR_MESSAGES.taxa.listagem + erro.message);
 
 				});
+
+		},
+
+		abrirTelaCadastro() {
+
+			this.$router.push({name: 'CadastrarTaxaLicenciamento'});
 
 		},
 

@@ -128,7 +128,9 @@
 			:headers="headerListagem",
 			:dadosListagem="dadosListagem",
 			:editarItem="editarItem",
-			:excluirItem="excluirItem"
+			:excluirItem="excluirItem",
+			:labelNoData="labelNoData",
+			:placeholderPesquisa="placeholderPesquisa"
 		)
 
 		v-row.pt-6.px-7
@@ -193,6 +195,8 @@ export default {
 			isInclusao: true,
 			indexItemEdicao: null,
 			allowRedirect: true,
+			labelNoData: 'Não existem documentos adicionados.',
+			placeholderPesquisa: "Pesquisar pelo nome do documento ou tipo de licença"
 		};
 	},
 
