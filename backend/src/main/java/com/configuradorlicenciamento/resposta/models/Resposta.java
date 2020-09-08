@@ -1,14 +1,12 @@
-package resposta.models;
+package com.configuradorlicenciamento.resposta.models;
 
-import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeCsv;
-import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeDTO;
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.pergunta.models.Pergunta;
+import com.configuradorlicenciamento.resposta.dtos.RespostaDTO;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import resposta.dtos.RespostaDTO;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -38,10 +36,12 @@ public class Resposta implements Serializable {
     private String codigo;
 
     @NotNull(message = "{validacao.notnull}")
-    private Boolean ativo;
+    private Date dataCadastro;
 
     @NotNull(message = "{validacao.notnull}")
-    private Date dataCadastro;
+    @ManyToOne
+    @JoinColumn(name = "id_pergunta", referencedColumnName = "id")
+    private Pergunta pergunta;
 
     @NotNull(message = "{validacao.notnull}")
     @ManyToOne
@@ -52,8 +52,8 @@ public class Resposta implements Serializable {
 
         this.texto = builder.texto;
         this.permiteLicenciamento = builder.permiteLicenciamento;
-        this.ativo = builder.ativo;
         this.tipoValidacao = null;
+        this.pergunta = builder.pergunta;
         this.codigo = "";
         this.dataCadastro = builder.dataCadastro;
         this.usuarioLicenciamento = builder.usuarioLicenciamento;
@@ -62,15 +62,19 @@ public class Resposta implements Serializable {
     public static class RespostaBuilder {
 
         private final String texto;
-        private final Boolean ativo;
         private final Boolean permiteLicenciamento;
+        private Pergunta pergunta;
         private Date dataCadastro;
         private UsuarioLicenciamento usuarioLicenciamento;
 
         public RespostaBuilder(RespostaDTO respostaDTO) {
             this.texto = respostaDTO.getTexto();
-            this.ativo = respostaDTO.getAtivo();
             this.permiteLicenciamento = respostaDTO.getPermiteLicenciamento();
+        }
+
+        public RespostaBuilder setPergunta(Pergunta pergunta) {
+            this.pergunta = pergunta;
+            return this;
         }
 
         public RespostaBuilder setDataCadastro(Date dataCadastro) {

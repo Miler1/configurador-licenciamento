@@ -1,18 +1,20 @@
 package com.configuradorlicenciamento.pergunta.models;
 
-import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeCsv;
-import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeDTO;
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.pergunta.dtos.PerguntaDTO;
+import com.configuradorlicenciamento.pergunta.repositories.PerguntaRepository;
+import com.configuradorlicenciamento.resposta.dtos.RespostaDTO;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import resposta.models.Resposta;
+import com.configuradorlicenciamento.resposta.models.Resposta;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,7 +36,7 @@ public class Pergunta implements Serializable {
     @NotNull(message = "{validacao.notnull}")
     private String codigo;
 
-    private String ordem;
+    private Integer ordem;
 
     @NotNull(message = "{validacao.notnull}")
     private Boolean ativo;
@@ -62,6 +64,7 @@ public class Pergunta implements Serializable {
         this.texto = builder.texto;
         this.codigo = builder.codigo;
         this.ativo = builder.ativo;
+        this.tipoPergunta = "SIM_NAO";
         this.dataCadastro = builder.dataCadastro;
         this.usuarioLicenciamento = builder.usuarioLicenciamento;
     }
@@ -71,6 +74,7 @@ public class Pergunta implements Serializable {
         private final String texto;
         private final String codigo;
         private final Boolean ativo;
+        private List<Resposta> respostas;
         private Date dataCadastro;
         private UsuarioLicenciamento usuarioLicenciamento;
 

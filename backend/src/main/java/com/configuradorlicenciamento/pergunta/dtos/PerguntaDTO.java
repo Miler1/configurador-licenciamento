@@ -3,10 +3,8 @@ package com.configuradorlicenciamento.pergunta.dtos;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
-import resposta.dtos.RespostaDTO;
+import com.configuradorlicenciamento.resposta.dtos.RespostaDTO;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -27,7 +25,7 @@ public class PerguntaDTO implements Serializable {
     @NotBlank(message = "{validacao.notBlank}")
     private String codigo;
 
-    private String ordem;
+    private Integer ordem;
 
     private Integer tipoLocalizacaoEmpreendimento;
 

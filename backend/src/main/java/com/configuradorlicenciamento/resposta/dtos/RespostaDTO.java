@@ -1,4 +1,4 @@
-package resposta.dtos;
+package com.configuradorlicenciamento.resposta.dtos;
 
 import com.configuradorlicenciamento.pergunta.dtos.PerguntaDTO;
 import com.configuradorlicenciamento.pergunta.models.Pergunta;
