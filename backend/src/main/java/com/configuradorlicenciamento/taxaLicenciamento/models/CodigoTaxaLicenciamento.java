@@ -1,6 +1,8 @@
 package com.configuradorlicenciamento.taxaLicenciamento.models;
 
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
+import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoCsv;
+import com.configuradorlicenciamento.taxaadministrativa.dtos.TaxaAdministrativaCsv;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,5 +39,9 @@ public class CodigoTaxaLicenciamento implements Serializable {
     @ManyToOne
     @JoinColumn(name = "id_usuario_licenciamento", referencedColumnName = "id")
     private UsuarioLicenciamento usuarioLicenciamento;
+
+    public CodigoTaxaLicenciamentoCsv prepararParaCsv() {
+        return new CodigoTaxaLicenciamentoCsv(this);
+    }
 
 }

@@ -1,6 +1,7 @@
 package com.configuradorlicenciamento.taxaLicenciamento.services;
 
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
+import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoCsv;
 import com.configuradorlicenciamento.taxaLicenciamento.interfaces.ICodigoTaxaLicenciamentoService;
 import com.configuradorlicenciamento.taxaLicenciamento.models.CodigoTaxaLicenciamento;
 import com.configuradorlicenciamento.taxaLicenciamento.repositories.CodigoTaxaLicenciamentoRepository;
@@ -9,8 +10,12 @@ import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLi
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoService {
@@ -27,6 +32,24 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
         Specification<CodigoTaxaLicenciamento> specification = preparaFiltro(filtro);
 
         return codigoTaxaLicenciamentoRepository.findAll(specification, pageable);
+    }
+
+    @Override
+    public List<CodigoTaxaLicenciamento> listarCodigoTaxaLicenciamento() {
+        return codigoTaxaLicenciamentoRepository.findAll(Sort.by("dataCadastro"));
+    }
+
+    @Override
+    public List<CodigoTaxaLicenciamentoCsv> listarCodigoTaxaLicenciamentoParaCsv() {
+
+        List<CodigoTaxaLicenciamento> licenciamentos = listarCodigoTaxaLicenciamento();
+        List<CodigoTaxaLicenciamentoCsv> dtos = new ArrayList<>();
+
+        for (CodigoTaxaLicenciamento codigoTaxaLicenciamento : licenciamentos) {
+            dtos.add(codigoTaxaLicenciamento.prepararParaCsv());
+        }
+
+        return dtos;
     }
 
     private Specification<CodigoTaxaLicenciamento> preparaFiltro(FiltroPesquisa filtro) {
