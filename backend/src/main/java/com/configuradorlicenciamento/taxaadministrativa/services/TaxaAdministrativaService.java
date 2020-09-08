@@ -85,7 +85,6 @@ public class TaxaAdministrativaService implements ITaxaAdministrativaService {
                     taxaAdministrativa.setValor(taxaAdministrativaDTO.getValor());
                     taxaAdministrativa.setAtividadeDispensavel(taxaAdministrativaDTO.getAtividadeDispensavel());
                     taxaAdministrativa.setAtividadeLicenciavel(taxaAdministrativaDTO.getAtividadeLicenciavel());
-                    taxaAdministrativa.setLinkTaxasLicenciamento("");
                     taxaAdministrativa.setAtivo(taxaAdministrativaDTO.getAtivo());
                     taxaAdministrativa.setUsuarioLicenciamento(usuarioLicenciamento);
                     taxaAdministrativa.setDataCadastro(new Date());
