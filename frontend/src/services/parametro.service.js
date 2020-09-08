@@ -22,6 +22,8 @@ export default {
 			return ApiService.post('parametro/listar/?page=0&size=10&sort=dataCadastro,asc', {});
 		}
 
-	}
+	},
+
+	findAll: async () => ApiService.get(`parametro/findAll`)
 
 };

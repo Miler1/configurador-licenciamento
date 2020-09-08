@@ -107,7 +107,8 @@
 									v-col.pa-0.mb-1
 										v-btn-toggle#QA-btn-toggle-taxa-licenciamento(
 												v-model="tipoTaxa",
-												color="green lighten-4", 
+												color="green lighten-4",
+												@change="alterarTipoTaxa()"
 											)
 											v-btn#QA-btn-taxa-licenciamento-fixo(
 												color="white",
@@ -130,9 +131,92 @@
 									v-col.d-flex.pa-0
 										span.v-messages.theme--light.error--text.v-messages__message.pl-3.mb-3 
 											| {{ errorMessage(tipoTaxa, true) }}
+							
+							v-row(v-if="tipoTaxa === 'fixo'")
+								v-col(cols="12", md="3")
+									v-label Valor
+									v-text-field#QA-input-taxa-licenciamento-valor-fixo(
+										v-money="money"
+										outlined,
+										color="#E0E0E0",
+										:placeholder="placeholder",
+										v-model="valor.valor",
+										@click.native="resetErrorMessage",
+										:error-messages="errorMessage( valor.valor, true )",
+										required,
+										dense
+									)
+
+							v-row(v-if="tipoTaxa === 'formula'")
+								v-col(cols="12", md="3")
+									v-label Equação da fórmula
+									v-text-field#QA-input-taxa-licenciamento-valor-formula(
+										outlined,
+										color="#E0E0E0",
+										placeholder="Ex.: 1252.58 + ( 0.4 * AU )",
+										v-model="valor.formula",
+										@click.native="resetErrorMessage",
+										:error-messages="errorMessage( valor.formula, true )",
+										required,
+										dense,
+										ref="formula"
+									)
+								v-col(cols="12", md="3")
+									v-label Parâmetro
+									v-autocomplete#QA-select-taxa-licenciamento-licenca(
+										outlined,
+										dense,
+										color="#E0E0E0",
+										:placeholder="placeholderSelect",
+										item-color="grey darken-3",
+										:items="parametros",
+										item-text="codigo",
+										v-model="searchResult",
+										:search-input.sync="searchInput"
+										@change="adicionarParamentro"
+									)
+								v-col(cols="12", md="6")
+									v-label Operadores
+									div
+										v-tooltip(bottom)
+											template(v-slot:activator="{ on, attrs }")
+												v-btn.mr-2(outlined, fab, small, v-on='on', @click="AdicionaOperadorFormula('+')")
+													v-icon mdi-plus
+											span Adicionar [+]
+
+										v-tooltip(bottom)
+											template(v-slot:activator="{ on, attrs }")
+												v-btn.mr-2(outlined, fab, small, v-on='on', @click="AdicionaOperadorFormula('-')")
+													v-icon mdi-minus
+											span Subtrair [-]
+
+										v-tooltip(bottom)
+											template(v-slot:activator="{ on, attrs }")
+												v-btn.mr-2(outlined, fab, small, v-on='on', @click="AdicionaOperadorFormula('*')")
+													v-icon mdi-close
+											span Multiplicar [*]
+
+										v-tooltip(bottom)
+											template(v-slot:activator="{ on, attrs }")
+												v-btn.mr-2(outlined, fab, small, v-on='on', @click="AdicionaOperadorFormula('/')")
+													v-icon mdi-division
+											span Dividir [/]
+
+										v-tooltip(bottom)
+											template(v-slot:activator="{ on, attrs }")
+												v-btn.mr-2(outlined, fab, small, v-on='on', @click="AdicionaOperadorFormula('(')")
+													h3 (
+											span Início do grupo [(]
+
+										v-tooltip(bottom)
+											template(v-slot:activator="{ on, attrs }")
+												v-btn(outlined, fab, small, v-on='on', @click="AdicionaOperadorFormula(')')")
+													h3 )
+											span Fim do grupo [)]
+
 							v-row
 								v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
-									a#QA-limpar-dados-taxa-licenciamento.d-flex.flex-row.align-center.justify-end(@click="clearRequisito")
+									a#QA-limpar-dados-taxa-licenciamento.d-flex.flex-row.align-center.justify-end(@click="clearTaxaLicenciamento")
 										v-icon mdi-delete
 										span Limpar dados
 								
@@ -170,10 +254,14 @@
 
 import GridListagemInclusao from '@/components/GridListagemInclusao';
 import snackbar from '@/services/snack.service';
-import { HEADER } from '@/utils/dadosHeader/ListagemRequisitoTecnicoInclusao';
+import { HEADER } from '@/utils/dadosHeader/ListagemTaxaLicenciamentoInclusao';
+import { VMoney } from 'v-money';
 import LicencaService from '@/services/licenca.service';
-import porteEmpreendimentoService from '@/services/porteEmpreendimento.service';
-import potencialPoluidorService from '@/services/potencialPoluidor.service';
+import PorteEmpreendimentoService from '@/services/porteEmpreendimento.service';
+import PotencialPoluidorService from '@/services/potencialPoluidor.service';
+import ParametroService from '@/services/parametro.service';
+import TaxaLicenciamentoService from '@/services/taxaLicenciamento.service.js';
+import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 
 export default {
 
@@ -182,6 +270,8 @@ export default {
 	components: {
 		GridListagemInclusao
 	},
+
+	directives: {money: VMoney},
 	
 	data: () => {
 		return {
@@ -197,7 +287,16 @@ export default {
 			valor: {
 				porteEmpreendimento: null,
 				potencialPoluidor: null,
-				licenca: null,
+				licencas: null,
+				valor: null,
+				formula: null
+			},
+			money: {
+				decimal: ',',
+				thousands: '.',
+				prefix: 'R$ ',
+				precision: 2,
+				masked: false
 			},
 			placeholder: "Digite aqui...",
 			placeholderSelect: "Selecione",
@@ -205,6 +304,7 @@ export default {
 			portesEmpreendimento: [],
 			potenciaispoluidores: [],
 			licencas: [],
+			parametros: [],
 			errorMessageEmpty: true,
 			errorMessageEmptyInclusao: true,
 			tituloListagem: "Listagem de taxas adicionados para esta tabela",
@@ -218,7 +318,9 @@ export default {
 			allowRedirect: true,
 			tipoTaxa: null,
 			labelNoData: 'Não existem taxas adicionados.',
-			placeholderPesquisa: "Pesquisar pelo PPD, porte ou tipo de licença"
+			placeholderPesquisa: "Pesquisar pelo PPD, porte ou tipo de licença",
+			searchResult: null,
+			searchInput: ''
 		};
 	},
 
@@ -232,6 +334,10 @@ export default {
 		errorMessage(value, isVinculacao) {
 
 			if(isVinculacao) {
+
+				if((!this.errorMessageEmpty || !this.errorMessageEmptyInclusao) && value === 'R$ 0,00') {
+					return 'Obrigatório';
+				}
 
 				if (!this.isInclusao && Array.isArray(value)) {
 					return 'Este campo não permite ser editado';
@@ -254,15 +360,16 @@ export default {
 			this.taxaLicenciamento.descricao = null;
 			this.taxaLicenciamento.ativo = true;
 
-			this.clearRequisito();
+			this.clearTaxaLicenciamento();
 
 		},
 
-		clearRequisito() {
+		clearTaxaLicenciamento() {
 
 			this.valor.porteEmpreendimento = null;
 			this.valor.potencialPoluidor = null;
-			this.valor.licenca = null;
+			this.valor.licencas = null;
+			this.tipoTaxa = null;
 			this.isInclusao = true;
 			this.resetErrorMessage();
 		},
@@ -277,9 +384,7 @@ export default {
 
 					this.valor.licencas.forEach(licenca => {
 
-						dadoListagem.documento = this.valor.documento;
-						dadoListagem.licenca = licenca;
-						dadoListagem.obrigatorio = this.valor.obrigatorio;
+						dadoListagem = this.getDadosItem(licenca);
 
 						this.dadosListagem.push(dadoListagem);
 						dadoListagem = {};
@@ -288,9 +393,7 @@ export default {
 
 				} else {
 
-					dadoListagem.documento = this.valor.documento;
-					dadoListagem.licenca = this.valor.licencas[0];
-					dadoListagem.obrigatorio = this.valor.obrigatorio;
+					dadoListagem = this.getDadosItem(this.valor.licencas[0]);
 
 					this.dadosListagem.splice(this.indexItemEdicao, 1, dadoListagem);
 					dadoListagem = {};
@@ -299,11 +402,37 @@ export default {
 
 				}
 
-				this.clearRequisito();
+				this.clearTaxaLicenciamento();
 
 			} else {
 				this.errorMessageEmptyInclusao = false;
 			}
+
+		},
+
+		getDadosItem(licenca) {
+
+			var dadoListagem = {};
+
+			dadoListagem.porteEmpreendimento = this.valor.porteEmpreendimento;
+			dadoListagem.potencialPoluidor = this.valor.potencialPoluidor;
+			dadoListagem.licenca = licenca;
+
+			if(this.tipoTaxa === 'fixo') {
+
+				dadoListagem.valor = this.valor.valor.replace(/R\$\s|\./g, '').replace(',', '.');
+
+			} else if(this.tipoTaxa === 'formula') {
+
+				dadoListagem.valor = this.valor.formula;
+
+			} else {
+
+				dadoListagem.valor = '0.0';
+
+			}
+
+			return dadoListagem;
 
 		},
 
@@ -351,16 +480,17 @@ export default {
 
 		preparaPraSalvar() {
 			
-			this.taxaLicenciamento.listRequisitos = [];
+			this.taxaLicenciamento.listTaxasLicenciamento = [];
 			var dadoListagem = {};
 
 			this.dadosListagem.forEach(dado => {
 
-				dadoListagem.idTipoDocumento = dado.documento.id;
+				dadoListagem.idPorteEmpreendimento = dado.porteEmpreendimento.id;
+				dadoListagem.idPotencialPoluidor = dado.potencialPoluidor.id;
 				dadoListagem.idTipoLicenca = dado.licenca.id;
-				dadoListagem.obrigatorio = dado.obrigatorio == 'true' ? true : false;
+				dadoListagem.valor = dado.valor;
 
-				this.taxaLicenciamento.listRequisitos.push(dadoListagem);
+				this.taxaLicenciamento.listTaxasLicenciamento.push(dadoListagem);
 				dadoListagem = {};
 
 			});
@@ -390,7 +520,7 @@ export default {
 		redirectListagem(allowed = true) {
 
 			this.allowRedirect = allowed;
-			this.$router.push({name: 'RequisitosTecnicos'});
+			this.$router.push({name: 'TaxaLicenciamento'});
 
 		},
 
@@ -407,12 +537,19 @@ export default {
 
 		checkFormVinculacao() {
 
-			return this.valor.documento
-				&& this.valor.documento != ''
-				&& this.valor.licencas
-				&& this.valor.licencas.length > 0
-				&& this.valor.obrigatorio != null;
+			if(this.tipoTaxa) {
 
+				var tipoTaxaValido = this.tipoTaxa === 'formula' ? (this.valor.formula && this.valor.formula != '') : (this.valor.valor && this.valor.valor != 'R$ 0,00');
+
+				return this.valor.porteEmpreendimento
+					&& this.valor.potencialPoluidor
+					&& this.valor.licencas
+					&& this.valor.licencas.length > 0
+					&& tipoTaxaValido;
+
+			}
+
+			return false;
 		},
 
 		cancelar(){
@@ -457,14 +594,32 @@ export default {
 
 		editarItem(item) {
 
-			// window.scrollTo(0,0);
-			// this.valor.documento = item.documento;
-			// this.valor.licencas = [];
-			// this.valor.licencas.push(item.licenca);
-			// this.valor.obrigatorio = item.obrigatorio;
+			window.scrollTo(0,0);
+			this.valor.porteEmpreendimento = item.porteEmpreendimento;
+			this.valor.potencialPoluidor = item.potencialPoluidor;
+			this.valor.licencas = [];
+			this.valor.licencas.push(item.licenca);
 
-			// this.indexItemEdicao = this.dadosListagem.indexOf(item);
-			// this.isInclusao = false;
+			const regex = /[^0-9\.]/;
+
+			if( regex.test(item.valor)) {
+
+				this.tipoTaxa = 'formula';
+				this.valor.formula = item.valor;
+
+			} else if (item.valor === '0.0') {
+
+				this.tipoTaxa = 'isento';
+				this.valor.valor = '0.0';
+
+			} else {
+
+				this.tipoTaxa = 'fixo';
+				this.valor.valor = item.valor;
+			}
+
+			this.indexItemEdicao = this.dadosListagem.indexOf(item);
+			this.isInclusao = false;
 
 		},
 
@@ -514,17 +669,48 @@ export default {
 			// 	dado.obrigatorio = dado.obrigatorio ? 'true' : 'false';
 			// });
 
+		},
+
+		alterarTipoTaxa() {
+			this.valor.valor = null;
+			this.valor.formula = null;
+			this.parametroSelecionado = null;
+
+			if(this.tipoTaxa === 'isento') {
+				this.valor.valor = '0.0';
+			}
+		},
+
+		adicionarParamentro(value) {
+
+			this.valor.formula = this.valor.formula ? this.valor.formula + value : value;
+
+			this.$nextTick(() => {
+				this.searchInput = '';
+				this.searchResult = null;
+				this.$refs.formula.focus();
+			});
+
+		},
+
+		AdicionaOperadorFormula(operador){
+
+			this.valor.formula = this.valor.formula ? this.valor.formula + operador : operador;
+
+			this.$nextTick(() => {
+				this.$refs.formula.focus();
+			});
 		}
 	},
 
 	created(){
 
-		porteEmpreendimentoService.findAll()
+		PorteEmpreendimentoService.findAll()
 			.then((response) => {
 				this.portesEmpreendimento = response.data;
 			});
 		
-		potencialPoluidorService.findAll()
+		PotencialPoluidorService.findAll()
 			.then((response) => {
 				this.potenciaispoluidores = response.data;
 			});
@@ -532,6 +718,11 @@ export default {
 		LicencaService.findAll()
 			.then((response) => {
 				this.licencas = response.data;
+			});
+
+		ParametroService.findAll()
+			.then((response) => {
+				this.parametros = response.data;
 			});
 
 	},
@@ -648,6 +839,12 @@ export default {
 
 .v-autocomplete:not(.v-input--is-focused).v-select--chips input {
 	max-height: 100% !important;
+}
+
+
+.div-money {
+	border: 1px solid @border-components;
+	height: 40px;
 }
 
 </style>

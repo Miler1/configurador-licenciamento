@@ -19,13 +19,16 @@
 					)
 				v-col.mr-9(cols="12", md="2")
 					v-label Valor
-					div.div-money
-						money#QA-input-taxa-administrativa-valor.pl-2.pt-2(
-							v-bind="money",
-							v-model="taxaAdministrativa.valor",
-							:error-messages="errorMessage(taxaAdministrativa.valor)",
-							@click.native="resetErrorMessage",
-						)
+					v-text-field#QA-input-taxa-licenciamento-valor(
+						v-money="money"
+						outlined,
+						color="#E0E0E0",
+						v-model="taxaAdministrativa.valor",
+						@click.native="resetErrorMessage",
+						:error-messages="errorMessage( taxaAdministrativa.valor, false )",
+						required,
+						dense
+					)
 				v-col(cols="12", md="7")
 					v-label Opções para cobrança
 						i &nbsp (opcional)
@@ -46,13 +49,13 @@
 
 <script>
 
-import {Money} from 'v-money';
+import { VMoney } from 'v-money';
 
 export default {
 	
 	name: 'FormCadastroTaxaAdministrativa',
 
-	components: {Money},
+	directives: {money: VMoney},
 
 	data: () => {
 		return {
