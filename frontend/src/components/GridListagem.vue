@@ -62,7 +62,7 @@
 				span {{item.atividadeLicenciavel ? 'Sim' : 'Não'}}
 
 			template(v-slot:item.valor='{ item }')
-				span {{ Number(item.valor).toLocaleString() }}
+				span {{ item.valor !== 0 ? item.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2}) : ' ‒' }}
 
 			template(v-slot:item.actions='{ item }')
 				v-tooltip(bottom)

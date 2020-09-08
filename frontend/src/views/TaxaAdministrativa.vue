@@ -59,8 +59,8 @@ export default {
 			errorMessageEmpty: true,
 			isCadastro: true,
 			tituloAba: "taxa administrativa",
-			tituloListagem: "Listagem de taxas administrativas",
-			placeholderPesquisa: "Pesquisar pelo ano",
+			tituloListagem: "Listagem de taxas administrativas cadastradas",
+			placeholderPesquisa: "Pesquisar pelo ano da taxa administrativa",
 			labelBotaoCadastrarEditar: "Cadastrar",
 			iconBotaoCadastrarEditar: "mdi-plus",
 			taxaAdministrativa: {
@@ -99,11 +99,11 @@ export default {
 			this.taxaAdministrativa.atividadeLicenciavel = false;
 			this.taxaAdministrativa.ativo = true;
 			this.errorMessageEmpty = true;
-			this.resetaDadosCadastro();
+			this.resetarDadosCadastro();
 
 		},
 
-		resetaDadosCadastro() {
+		resetarDadosCadastro() {
 
 			this.dadosPanel.title = "Cadastro de taxa administrativa";
 			this.dadosPanel.iconName = "mdi-cash-usd-outline";
@@ -114,7 +114,7 @@ export default {
 
 		},
 
-		resetaDadosFiltragem() {
+		resetarDadosFiltragem() {
 
 			this.parametrosFiltro.pagina = 0;
 			this.parametrosFiltro.itemsPorPagina = 10;
@@ -153,7 +153,7 @@ export default {
 
 		editar() {
 
-			ParametroService.editar(this.parametro)
+			TaxaAdministrativaService.editar(this.taxaAdministrativa)
 				.then(() => {
 
 					this.handlerSuccess(true);
@@ -189,7 +189,7 @@ export default {
 			
 			this.clear();
 			this.updatePagination();
-			this.resetaDadosFiltragem();
+			this.resetarDadosFiltragem();
 
 		},
 
@@ -210,9 +210,80 @@ export default {
 
 		editarItem(item) {
 
+			this.dadosPanel.panel = [0];
+			this.dadosPanel.title = "Editar taxa administrativa";
+			this.dadosPanel.tipo = "edição";
+			this.labelBotaoCadastrarEditar = "Editar";
+			this.iconBotaoCadastrarEditar = "mdi-pencil";
+			this.taxaAdministrativa = { ... item};
+			this.isCadastro = false;
+			window.scrollTo(0,0);
+
 		},
 
 		ativarDesativarItem(item) {
+
+			this.$fire({
+
+				title: item.ativo ?
+					'<p class="title-modal-confirm">Desativar taxa administrativa - ' + item.ano+ '</p>' :
+					'<p class="title-modal-confirm">Ativar taxa administrativa - ' + item.ano+ '</p>',
+
+				html: item.ativo ?
+					`<p class="message-modal-confirm">Ao desativar a taxa administrativa, ela não estará mais disponível no sistema.</p>
+					<p class="message-modal-confirm">
+						<b>Tem certeza que deseja desativar a taxa administrativa? Esta opção pode ser desfeita a qualquer momento ao ativá-lo novamente.</b>
+					</p>` :
+					`<p class="message-modal-confirm">Ao ativar a taxa administrativa, ele ficará disponível no sistema.</p>
+					<p class="message-modal-confirm">
+						<b>Tem certeza que deseja ativar a taxa administrativa? Esta opção pode ser desfeita a qualquer momento ao desativá-lo novamente.</b>
+					</p>`,
+				showCancelButton: true,
+				confirmButtonColor: item.ativo ? '#E6A23C' : '#67C23A',
+				cancelButtonColor: '#FFF',
+				showCloseButton: true,
+				focusConfirm: false,
+				confirmButtonText: item.ativo ? '<i class="fa fa-minus-circle"></i> Desativar' : '<i class="fa fa-check-circle"></i> Ativar',
+				cancelButtonText: '<i class="fa fa-close"></i> Cancelar',
+				reverseButtons: true
+
+			}).then((result) => {
+
+				if(result.value) {
+
+					item.ativo = !item.ativo;
+					TaxaAdministrativaService.editar(item)
+						.then(() => {
+
+							if(!item.ativo) {
+								snackbar.alert(SUCCESS_MESSAGES.taxaAdministrativa.desativar, snackbar.type.SUCCESS);
+							} else {
+								snackbar.alert(SUCCESS_MESSAGES.taxaAdministrativa.ativar, snackbar.type.SUCCESS);
+							}
+
+							this.updatePagination();
+							this.resetarDadosFiltragem();
+
+						})
+						.catch(error => {
+
+							console.error(error);
+
+							if(!item.ativo) {
+								snackbar.alert(ERROR_MESSAGES.taxaAdministrativa.desativar);
+							} else {
+								snackbar.alert(ERROR_MESSAGES.taxaAdministrativa.ativar);
+							}
+
+							item.ativo = !item.ativo;
+
+						});
+
+				}
+
+			}).catch((error) => {
+				console.error(error);
+			});
 
 		},
 
