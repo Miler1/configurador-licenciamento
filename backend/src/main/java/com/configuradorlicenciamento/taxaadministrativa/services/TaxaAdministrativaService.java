@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TaxaAdministrativaService implements ITaxaAdministrativaService {
@@ -58,6 +59,46 @@ public class TaxaAdministrativaService implements ITaxaAdministrativaService {
     }
 
     @Override
+    public TaxaAdministrativa editar(HttpServletRequest request, TaxaAdministrativaDTO taxaAdministrativaDTO) {
+
+        Integer ano = taxaAdministrativaDTO.getAno();
+
+        boolean existsCodigo = taxaAdministrativaRepository.existsByAno(ano);
+
+        if (existsCodigo) {
+
+            TaxaAdministrativa taxaExistente = taxaAdministrativaRepository.findByAno(ano);
+
+            if (taxaExistente != null && !taxaAdministrativaDTO.getId().equals(taxaExistente.getId())) {
+                throw new ConstraintUniqueViolationException(TAXA_EXISTENTE);
+            }
+
+        }
+
+        Object login = request.getSession().getAttribute("login");
+
+        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
+
+        Optional<TaxaAdministrativa> taxaAdministrativaSalva = taxaAdministrativaRepository.findById(taxaAdministrativaDTO.getId())
+                .map(taxaAdministrativa -> {
+                    taxaAdministrativa.setAno(taxaAdministrativaDTO.getAno());
+                    taxaAdministrativa.setValor(taxaAdministrativaDTO.getValor());
+                    taxaAdministrativa.setAtividadeDispensavel(taxaAdministrativaDTO.getAtividadeDispensavel());
+                    taxaAdministrativa.setAtividadeLicenciavel(taxaAdministrativaDTO.getAtividadeLicenciavel());
+                    taxaAdministrativa.setLinkTaxasLicenciamento("");
+                    taxaAdministrativa.setAtivo(taxaAdministrativaDTO.getAtivo());
+                    taxaAdministrativa.setUsuarioLicenciamento(usuarioLicenciamento);
+                    taxaAdministrativa.setDataCadastro(new Date());
+                    return taxaAdministrativa;
+                });
+
+        taxaAdministrativaRepository.save(taxaAdministrativaSalva.get());
+
+        return taxaAdministrativaSalva.get();
+
+    }
+
+    @Override
     public Page<TaxaAdministrativa> listar(Pageable pageable, FiltroPesquisa filtro) {
 
         Specification<TaxaAdministrativa> specification = preparaFiltro(filtro);
@@ -75,6 +116,7 @@ public class TaxaAdministrativaService implements ITaxaAdministrativaService {
         }
 
         return specification;
+
     }
 
     @Override
@@ -93,6 +135,7 @@ public class TaxaAdministrativaService implements ITaxaAdministrativaService {
         }
 
         return dtos;
+
     }
 
 }

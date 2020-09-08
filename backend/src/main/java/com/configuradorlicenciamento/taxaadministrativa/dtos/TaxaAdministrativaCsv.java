@@ -15,7 +15,6 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TaxaAdministrativaCsv implements Serializable {
 
-
     @CsvBindByName(column = "Ano")
     @CsvBindByPosition(position = 0)
     private Integer ano;
@@ -45,6 +44,7 @@ public class TaxaAdministrativaCsv implements Serializable {
     private String usuarioLicenciamento;
 
     public TaxaAdministrativaCsv(TaxaAdministrativa taxaAdministrativa) {
+
         this.ano = taxaAdministrativa.getAno();
         this.valor = taxaAdministrativa.getValor();
         this.atividadeDispensavel = taxaAdministrativa.getAtividadeDispensavel() ? "Sim" : "Não";
@@ -52,6 +52,7 @@ public class TaxaAdministrativaCsv implements Serializable {
         this.ativo = taxaAdministrativa.getAtivo() ? "Ativo" : "Inativo";
         this.dataCadastro = taxaAdministrativa.getDataCadastro() != null ? DateUtil.formataBrSimples(taxaAdministrativa.getDataCadastro()) : "-";
         this.usuarioLicenciamento = taxaAdministrativa.getUsuarioLicenciamento() != null ? getNomeUsuario(taxaAdministrativa.getUsuarioLicenciamento()) : "-";
+
     }
 
     private String getNomeUsuario(UsuarioLicenciamento usuario){
