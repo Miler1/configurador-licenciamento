@@ -2,11 +2,13 @@ import ApiService from './api.service';
 
 export default {
 
+	cadastrar: async (taxaLicenciamento) => ApiService.post('/codigoTaxaLicenciamento/salvar', taxaLicenciamento ),
+
 	listar: async (parametrosFiltro) => {
 
 		if (parametrosFiltro) {
 
-			return ApiService.post(`codigoTaxalicenciamento/listar/?
+			return ApiService.post(`codigoTaxaLicenciamento/listar/?
 						page=${parametrosFiltro.pagina > 0 ? parametrosFiltro.pagina : 0}
 						&size=${parametrosFiltro.itemsPorPagina > 0 ? parametrosFiltro.itemsPorPagina : 10}
 						&sort=${parametrosFiltro.tipoOrdenacao ? parametrosFiltro.tipoOrdenacao : 'dataCadastro,desc'}`,
