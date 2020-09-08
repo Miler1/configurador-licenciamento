@@ -21,6 +21,7 @@
 										:placeholder="placeholder",
 										v-model="requisitoTecnico.codigo",
 										@click.native="resetErrorMessage",
+										@input="v => {requisitoTecnico.codigo = v.toUpperCase()}",
 										:error-messages="errorMessage( requisitoTecnico.codigo, false )",
 										required,
 										dense
@@ -496,7 +497,7 @@ export default {
 
 	created(){
 
-		DocumentoService.findAll()
+		DocumentoService.buscarDocumentosAtivos()
 			.then((response) => {
 				this.documentos = response.data;
 			});

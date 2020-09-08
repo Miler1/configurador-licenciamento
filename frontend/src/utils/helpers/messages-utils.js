@@ -107,10 +107,20 @@ const SUCCESS_MESSAGES = {
 		desativar: 'Sucesso! O documento foi desativado.',
 	},
 
+	requisitoAdministrativo: {
+		ativar: 'Sucesso! O requisito administrativo foi ativado.',
+		desativar: 'Sucesso! O requisito administrativo foi desativado.',
+	},
+
 	requisitoTecnico: {
 		ativar: 'Sucesso! O grupo de requisito técnico foi ativado.',
 		desativar: 'Sucesso! O grupo de requisito técnico foi desativado.',
 	},
+
+	taxaAdministrativa: {
+		ativar: 'Sucesso! A taxa administrativa foi ativada.',
+		desativar: 'Sucesso! A taxa administrativa foi desativida.',
+	}
 	
 };
 

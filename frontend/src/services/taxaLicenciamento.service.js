@@ -5,7 +5,7 @@ export default {
 	cadastrar: async (taxaLicenciamento) => ApiService.post('/codigoTaxaLicenciamento/salvar', taxaLicenciamento ),
 
 	listar: async (parametrosFiltro) => {
-		
+
 		if (parametrosFiltro) {
 
 			return ApiService.post(`codigoTaxaLicenciamento/listar/?

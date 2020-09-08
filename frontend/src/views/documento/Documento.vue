@@ -215,7 +215,7 @@ export default {
 
 			this.$fire({
 
-				title: item.ativo ? 
+				title: item.ativo ?
 					'<p class="title-modal-confirm">Desativar documento - ' + item.nome+ '</p>' :
 					'<p class="title-modal-confirm">Ativar documento - ' + item.nome+ '</p>',
 
@@ -244,7 +244,7 @@ export default {
 					item.ativo = !item.ativo;
 					DocumentoService.editar(item)
 						.then(() => {
-							
+
 							if(!item.ativo) {
 								snackbar.alert(SUCCESS_MESSAGES.documento.desativar, snackbar.type.SUCCESS);
 							} else {
@@ -270,7 +270,7 @@ export default {
 				}
 			}).catch((error) => {
 				console.error(error);
-			});		
+			});
 		},
 
 		updatePagination(documentosFiltro) {

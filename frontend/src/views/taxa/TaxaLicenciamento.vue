@@ -1,7 +1,7 @@
 <template lang="pug">
 
 	v-container
-        
+
 		GridListagem.pa-7(
 			:tituloAba="tituloAba"
 			:tituloListagem="tituloListagem",
@@ -38,11 +38,11 @@ export default {
 	data: () => {
 		return {
 			tituloAba:' taxa',
-			tituloListagem: 'Listagem de taxas cadastradas',
-			placeholderPesquisa: "Pesquisar pelo código ou descrição",
+			tituloListagem: 'Listagem de tabelas de taxas de licenciamento cadastradas',
+			placeholderPesquisa: "Pesquisar pelo código ou descrição da tabela de taxa de licenciamento",
 			headerListagem: HEADER,
 			dadosListagem: {
-				nomeItem: "taxas",
+				nomeItem: "tabelas de taxas de licenciamento",
 			},
 			labelBotaoCadastrarEditar: "Cadastrar",
 			iconBotaoCadastrarEditar: "mdi-plus",
@@ -155,7 +155,7 @@ export default {
 		},
 
 		gerarRelatorio() {
-			
+
 		},
 
 		editarItem(item) {
@@ -177,7 +177,7 @@ export default {
 				.then((response) => {
 
 					this.dadosListagem = response.data;
-					this.dadosListagem.nomeItem = 'taxas';
+					this.dadosListagem.nomeItem = 'tabelas de taxas de licenciamento';
 
 				})
 				.catch(erro => {

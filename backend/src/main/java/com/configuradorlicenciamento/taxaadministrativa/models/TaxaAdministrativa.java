@@ -1,6 +1,7 @@
 package com.configuradorlicenciamento.taxaadministrativa.models;
 
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
+import com.configuradorlicenciamento.taxaadministrativa.dtos.TaxaAdministrativaCsv;
 import com.configuradorlicenciamento.taxaadministrativa.dtos.TaxaAdministrativaDTO;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import lombok.Getter;
@@ -41,6 +42,9 @@ public class TaxaAdministrativa implements Serializable {
     private String linkTaxasLicenciamento;
 
     @NotNull(message = "{validacao.notnull}")
+    private Boolean ativo;
+
+    @NotNull(message = "{validacao.notnull}")
     private Date dataCadastro;
 
     @NotNull(message = "{validacao.notnull}")
@@ -55,6 +59,7 @@ public class TaxaAdministrativa implements Serializable {
         this.atividadeDispensavel = taxaAdministrativaBuilder.atividadeDispensavel;
         this.atividadeLicenciavel = taxaAdministrativaBuilder.atividadeLicenciavel;
         this.linkTaxasLicenciamento = "";
+        this.ativo = taxaAdministrativaBuilder.ativo;
         this.dataCadastro = taxaAdministrativaBuilder.dataCadastro;
         this.usuarioLicenciamento = taxaAdministrativaBuilder.usuarioLicenciamento;
 
@@ -62,18 +67,22 @@ public class TaxaAdministrativa implements Serializable {
 
     public static class TaxaAdministrativaBuilder {
 
-        private Integer ano;
-        private Float valor;
-        private Boolean atividadeDispensavel;
-        private Boolean atividadeLicenciavel;
+        private final Integer ano;
+        private final Float valor;
+        private final Boolean atividadeDispensavel;
+        private final Boolean atividadeLicenciavel;
+        private final Boolean ativo;
         private Date dataCadastro;
         private UsuarioLicenciamento usuarioLicenciamento;
 
         public TaxaAdministrativaBuilder(TaxaAdministrativaDTO taxaAdministrativaDTO) {
+
             this.ano = taxaAdministrativaDTO.getAno();
             this.valor = taxaAdministrativaDTO.getValor();
             this.atividadeDispensavel = taxaAdministrativaDTO.getAtividadeDispensavel();
             this.atividadeLicenciavel = taxaAdministrativaDTO.getAtividadeLicenciavel();
+            this.ativo = taxaAdministrativaDTO.getAtivo();
+
         }
 
         public TaxaAdministrativa.TaxaAdministrativaBuilder setDataCadastro(Date dataCadastro) {
@@ -88,5 +97,9 @@ public class TaxaAdministrativa implements Serializable {
 
         public TaxaAdministrativa build() { return new TaxaAdministrativa(this); }
 
+    }
+
+    public TaxaAdministrativaCsv prepararParaCsv() {
+        return new TaxaAdministrativaCsv(this);
     }
 }
