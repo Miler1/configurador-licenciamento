@@ -72,16 +72,17 @@ public class TaxaAdministrativa implements Serializable {
         private final Boolean atividadeDispensavel;
         private final Boolean atividadeLicenciavel;
         private final Boolean ativo;
-
         private Date dataCadastro;
         private UsuarioLicenciamento usuarioLicenciamento;
 
         public TaxaAdministrativaBuilder(TaxaAdministrativaDTO taxaAdministrativaDTO) {
+
             this.ano = taxaAdministrativaDTO.getAno();
             this.valor = taxaAdministrativaDTO.getValor();
             this.atividadeDispensavel = taxaAdministrativaDTO.getAtividadeDispensavel();
             this.atividadeLicenciavel = taxaAdministrativaDTO.getAtividadeLicenciavel();
             this.ativo = taxaAdministrativaDTO.getAtivo();
+
         }
 
         public TaxaAdministrativa.TaxaAdministrativaBuilder setDataCadastro(Date dataCadastro) {
