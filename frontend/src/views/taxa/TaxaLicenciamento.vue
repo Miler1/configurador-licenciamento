@@ -12,6 +12,8 @@
 			:updatePagination="updatePagination",
 			:editarItem="editarItem",
 			:parametrosFiltro="parametrosFiltro"
+			:buttonCadastrar="buttonCadastrar",
+			:abrirTelaCadastro="abrirTelaCadastro"
 		)
 
 </template>
@@ -61,6 +63,7 @@ export default {
 				stringPesquisa: ''
 			},
 			isCadastro: true,
+			buttonCadastrar: true
 
 		};
 	},
@@ -184,6 +187,12 @@ export default {
 					snackbar.alert(ERROR_MESSAGES.taxa.listagem + erro.message);
 
 				});
+
+		},
+
+		abrirTelaCadastro() {
+
+			this.$router.push({name: 'CadastrarTaxaLicenciamento'});
 
 		},
 

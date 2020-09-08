@@ -1,4 +1,4 @@
-package com.configuradorlicenciamento.taxaLicenciamento.models;
+package com.configuradorlicenciamento.porteEmpreendimento.models;
 
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import lombok.Getter;
