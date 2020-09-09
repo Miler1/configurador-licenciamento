@@ -1,8 +1,8 @@
-package com.configuradorlicenciamento.requisioTecnico.interfaces;
+package com.configuradorlicenciamento.requisitoTecnico.interfaces;
 
-import com.configuradorlicenciamento.requisioTecnico.dtos.TipoLicencaGrupoDocumentoDTO;
-import com.configuradorlicenciamento.requisioTecnico.models.RequisitoTecnico;
-import com.configuradorlicenciamento.requisioTecnico.models.TipoLicencaGrupoDocumento;
+import com.configuradorlicenciamento.requisitoTecnico.dtos.TipoLicencaGrupoDocumentoDTO;
+import com.configuradorlicenciamento.requisitoTecnico.models.RequisitoTecnico;
+import com.configuradorlicenciamento.requisitoTecnico.models.TipoLicencaGrupoDocumento;
 
 import java.util.List;
 

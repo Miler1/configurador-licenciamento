@@ -1,9 +1,9 @@
-package com.configuradorlicenciamento.requisioTecnico.models;
+package com.configuradorlicenciamento.requisitoTecnico.models;
 
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.documento.models.Documento;
 import com.configuradorlicenciamento.licenca.models.Licenca;
-import com.configuradorlicenciamento.requisioTecnico.dtos.TipoLicencaGrupoDocumentoDTO;
+import com.configuradorlicenciamento.requisitoTecnico.dtos.TipoLicencaGrupoDocumentoDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -1,14 +1,14 @@
-package com.configuradorlicenciamento.requisioTecnico.services;
+package com.configuradorlicenciamento.requisitoTecnico.services;
 
 import com.configuradorlicenciamento.documento.models.Documento;
 import com.configuradorlicenciamento.documento.repositories.DocumentoRepository;
 import com.configuradorlicenciamento.licenca.models.Licenca;
 import com.configuradorlicenciamento.licenca.repositories.LicencaRepository;
-import com.configuradorlicenciamento.requisioTecnico.dtos.TipoLicencaGrupoDocumentoDTO;
-import com.configuradorlicenciamento.requisioTecnico.interfaces.ITipoLicencaGrupoDocumentoService;
-import com.configuradorlicenciamento.requisioTecnico.models.RequisitoTecnico;
-import com.configuradorlicenciamento.requisioTecnico.models.TipoLicencaGrupoDocumento;
-import com.configuradorlicenciamento.requisioTecnico.repositories.TipoLicencaGrupoDocumentoRepository;
+import com.configuradorlicenciamento.requisitoTecnico.dtos.TipoLicencaGrupoDocumentoDTO;
+import com.configuradorlicenciamento.requisitoTecnico.interfaces.ITipoLicencaGrupoDocumentoService;
+import com.configuradorlicenciamento.requisitoTecnico.models.RequisitoTecnico;
+import com.configuradorlicenciamento.requisitoTecnico.models.TipoLicencaGrupoDocumento;
+import com.configuradorlicenciamento.requisitoTecnico.repositories.TipoLicencaGrupoDocumentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

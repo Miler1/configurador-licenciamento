@@ -129,7 +129,7 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
     public CodigoTaxaLicenciamentoEdicaoDTO findById(Integer idTaxaLicenciamento) {
 
         CodigoTaxaLicenciamento codigoTaxaLicenciamento = codigoTaxaLicenciamentoRepository.findById(idTaxaLicenciamento).orElseThrow(() ->
-                new ConfiguradorNotFoundException("Não foi encontrado requisito com o Id " + idTaxaLicenciamento));
+                new ConfiguradorNotFoundException("Não foi encontrada taxa de licenciamento com o Id " + idTaxaLicenciamento));
 
         List<TaxaLicenciamento> taxasLicencas = taxaLicenciamentoService.findByCodigo(codigoTaxaLicenciamento);
 

@@ -1,8 +1,8 @@
-package com.configuradorlicenciamento.requisioTecnico.dtos;
+package com.configuradorlicenciamento.requisitoTecnico.dtos;
 
 import com.configuradorlicenciamento.configuracao.utils.DateUtil;
 import com.configuradorlicenciamento.entradaUnica.services.EntradaUnicaWS;
-import com.configuradorlicenciamento.requisioTecnico.models.RequisitoTecnico;
+import com.configuradorlicenciamento.requisitoTecnico.models.RequisitoTecnico;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.opencsv.bean.CsvBindByName;

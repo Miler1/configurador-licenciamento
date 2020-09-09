@@ -13,5 +13,4 @@ public interface TaxaLicenciamentoRepository extends JpaRepository<TaxaLicenciam
 
     List<TaxaLicenciamento> findByCodigo(CodigoTaxaLicenciamento codigoTaxaLicenciamento);
 
-
 }

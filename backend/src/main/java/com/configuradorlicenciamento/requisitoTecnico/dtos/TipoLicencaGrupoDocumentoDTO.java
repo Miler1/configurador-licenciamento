@@ -1,4 +1,4 @@
-package com.configuradorlicenciamento.requisioTecnico.dtos;
+package com.configuradorlicenciamento.requisitoTecnico.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;

@@ -1,7 +1,7 @@
-package com.configuradorlicenciamento.requisioTecnico.specifications;
+package com.configuradorlicenciamento.requisitoTecnico.specifications;
 
 import com.configuradorlicenciamento.configuracao.utils.StringUtil;
-import com.configuradorlicenciamento.requisioTecnico.models.RequisitoTecnico;
+import com.configuradorlicenciamento.requisitoTecnico.models.RequisitoTecnico;
 import org.springframework.data.jpa.domain.Specification;
 
 public class RequisitoTecnicoSpecification {
