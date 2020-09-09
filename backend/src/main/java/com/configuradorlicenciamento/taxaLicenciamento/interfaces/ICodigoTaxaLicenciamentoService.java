@@ -16,6 +16,10 @@ public interface ICodigoTaxaLicenciamentoService {
 
     CodigoTaxaLicenciamento salvar(HttpServletRequest request, CodigoTaxaLicenciamentoDTO codigoTaxaLicenciamentoDTO);
 
+    CodigoTaxaLicenciamento editar(HttpServletRequest request, CodigoTaxaLicenciamentoDTO codigoTaxaLicenciamentoDTO);
+
+    CodigoTaxaLicenciamento ativarDesativar(Integer idTaxaLicenciamento);
+
     Page<CodigoTaxaLicenciamento> listar(Pageable pageable, FiltroPesquisa filtro);
 
     List<CodigoTaxaLicenciamento> listarCodigoTaxaLicenciamento();

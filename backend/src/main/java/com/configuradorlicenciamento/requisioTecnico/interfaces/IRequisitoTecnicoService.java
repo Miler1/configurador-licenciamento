@@ -22,7 +22,7 @@ public interface IRequisitoTecnicoService {
 
     Page<RequisitoTecnico> listar(Pageable pageable, FiltroPesquisa filtro);
 
-    List<RequisitoTecnicoCsv> listarDocumentoParaCsv() throws Exception;
+    List<RequisitoTecnicoCsv> listarDocumentoParaCsv();
 
     RequisitoTecnicoEdicaoDTO findById(Integer idRequisito);
 }

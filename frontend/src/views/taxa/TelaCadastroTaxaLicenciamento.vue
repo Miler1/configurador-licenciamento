@@ -21,6 +21,7 @@
 										:placeholder="placeholder",
 										v-model="taxaLicenciamento.codigo",
 										@click.native="resetErrorMessage",
+										@input="v => {taxaLicenciamento.codigo = v.toUpperCase()}",
 										:error-messages="errorMessage( taxaLicenciamento.codigo, false )",
 										required,
 										dense
@@ -727,29 +728,34 @@ export default {
 	mounted() {
 
 		if(this.$route.params.idTaxaLicenciamento) {
+
 			this.labelBotaoCadastrarEditar = "Editar";
 			this.iconBotaoCadastrarEditar = "mdi-pencil";
 			this.isCadastro = false;
 
 			TaxaLicenciamentoService.findById(this.$route.params.idTaxaLicenciamento)
+
 				.then((response) => {
-					console.log(response.data);
 					this.prepararDadosParaEdicao(response.data);
 				})
 				.catch((error) => {
 					snackbar.alert(error.message);
 				});
+
 		}
 
 		this.allowRedirect = false;
+
 	},
 
 	beforeRouteLeave(to, from, next) {
+
 		if(!this.allowRedirect){
 			this.confirmarCancelamento(next);
 		} else {
 			next();
 		}
+
 	}
 
 };

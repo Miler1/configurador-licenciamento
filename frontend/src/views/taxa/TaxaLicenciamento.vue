@@ -128,6 +128,8 @@ export default {
 
 				if(result.value) {
 
+					item.ativo = !item.ativo;
+
 					TaxaLicenciamentoService.ativarDesativar(item.id)
 						.then(() => {
 							
@@ -149,6 +151,8 @@ export default {
 							} else {
 								snackbar.alert(ERROR_MESSAGES.taxaLicenciamento.ativar);
 							}
+
+							item.ativo = !item.ativo;
 
 						});
 

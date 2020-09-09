@@ -58,6 +58,46 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
     }
 
     @Override
+    public CodigoTaxaLicenciamento editar(HttpServletRequest request, CodigoTaxaLicenciamentoDTO codigoTaxaLicenciamentoDTO) {
+
+        Object login = request.getSession().getAttribute("login");
+
+        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
+
+        CodigoTaxaLicenciamento codigoTaxaLicenciamentoSalvo = codigoTaxaLicenciamentoRepository.findById(codigoTaxaLicenciamentoDTO.getId())
+                .map(codigoTaxaLicenciamento -> {
+                    codigoTaxaLicenciamento.setCodigo(codigoTaxaLicenciamentoDTO.getCodigo());
+                    codigoTaxaLicenciamento.setDescricao(codigoTaxaLicenciamentoDTO.getDescricao());
+                    codigoTaxaLicenciamento.setUsuarioLicenciamento(usuarioLicenciamento);
+                    codigoTaxaLicenciamento.setDataCadastro(new Date());
+                    codigoTaxaLicenciamento.setAtivo(codigoTaxaLicenciamentoDTO.getAtivo());
+                    return codigoTaxaLicenciamento;
+                })
+                .orElseThrow(() -> new ConfiguradorNotFoundException("Não Foi possível editar a taxa de licenciamento"));
+
+        codigoTaxaLicenciamentoRepository.save(codigoTaxaLicenciamentoSalvo);
+
+        taxaLicenciamentoService.editar(codigoTaxaLicenciamentoDTO.getListTaxasLicenciamento(), codigoTaxaLicenciamentoSalvo);
+
+        return codigoTaxaLicenciamentoSalvo;
+
+    }
+
+    @Override
+    public CodigoTaxaLicenciamento ativarDesativar(Integer idTaxaLicenciamento) {
+
+        CodigoTaxaLicenciamento codigoTaxaLicenciamento = codigoTaxaLicenciamentoRepository.findById(idTaxaLicenciamento).orElseThrow(() ->
+                new ConfiguradorNotFoundException("Não Foi possível Ativar/Desativar a taxa de licenciamento"));
+
+        codigoTaxaLicenciamento.setAtivo(!codigoTaxaLicenciamento.getAtivo());
+
+        codigoTaxaLicenciamentoRepository.save(codigoTaxaLicenciamento);
+
+        return codigoTaxaLicenciamento;
+
+    }
+
+    @Override
     public Page<CodigoTaxaLicenciamento> listar(Pageable pageable, FiltroPesquisa filtro) {
 
         Specification<CodigoTaxaLicenciamento> specification = preparaFiltro(filtro);
@@ -91,17 +131,18 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
         CodigoTaxaLicenciamento codigoTaxaLicenciamento = codigoTaxaLicenciamentoRepository.findById(idTaxaLicenciamento).orElseThrow(() ->
                 new ConfiguradorNotFoundException("Não foi encontrado requisito com o Id " + idTaxaLicenciamento));
 
-        List<TaxaLicenciamento> taxasLicencas= taxaLicenciamentoService.findByCodigo(codigoTaxaLicenciamento);
+        List<TaxaLicenciamento> taxasLicencas = taxaLicenciamentoService.findByCodigo(codigoTaxaLicenciamento);
 
         return new CodigoTaxaLicenciamentoEdicaoDTO(codigoTaxaLicenciamento, taxasLicencas);
 
     }
 
+
     private Specification<CodigoTaxaLicenciamento> preparaFiltro(FiltroPesquisa filtro) {
 
         Specification<CodigoTaxaLicenciamento> specification = Specification.where(CodigoTaxaLicenciamentoSpecification.padrao());
 
-        if(filtro.getStringPesquisa() != null) {
+        if (filtro.getStringPesquisa() != null) {
             specification = specification.and(CodigoTaxaLicenciamentoSpecification.codigo(filtro.getStringPesquisa())
                     .or(CodigoTaxaLicenciamentoSpecification.descricao(filtro.getStringPesquisa())));
         }

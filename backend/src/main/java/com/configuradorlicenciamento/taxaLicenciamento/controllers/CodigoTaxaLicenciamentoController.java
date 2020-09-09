@@ -61,6 +61,32 @@ public class CodigoTaxaLicenciamentoController extends DefaultController {
 
     }
 
+    @PostMapping(value = "/editar")
+    public ResponseEntity<CodigoTaxaLicenciamento> editar(HttpServletRequest request, @Valid @RequestBody CodigoTaxaLicenciamentoDTO codigoTaxaLicenciamentoDTO) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        CodigoTaxaLicenciamento codigoTaxaLicenciamento = codigoTaxaLicenciamentoService.editar(request, codigoTaxaLicenciamentoDTO);
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(codigoTaxaLicenciamento);
+
+    }
+
+    @PostMapping(value = "/ativarDesativar/{idTaxaLicenciamento}")
+    public ResponseEntity<CodigoTaxaLicenciamento> ativarDesativar(HttpServletRequest request, @PathVariable("idTaxaLicenciamento") Integer idTaxaLicenciamento) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        CodigoTaxaLicenciamento codigoTaxaLicenciamento = codigoTaxaLicenciamentoService.ativarDesativar(idTaxaLicenciamento);
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(codigoTaxaLicenciamento);
+
+    }
+
     @GetMapping(value = "/relatorio")
     public void relatorioCSV(HttpServletRequest request, HttpServletResponse response) throws Exception {
 

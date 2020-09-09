@@ -252,6 +252,7 @@ export default {
 				if(result.value) {
 
 					item.ativo = !item.ativo;
+
 					TaxaAdministrativaService.editar(item)
 						.then(() => {
 

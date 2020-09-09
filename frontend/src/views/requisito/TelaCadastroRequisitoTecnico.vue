@@ -517,15 +517,18 @@ export default {
 			this.isCadastro = false;
 
 			RequisitoTecnicoService.findById(this.$route.params.idRequisito)
+
 				.then((response) => {
 					this.preparaDadosParaEdicao(response.data);
 				})
 				.catch((error) => {
 					snackbar.alert(error.message);
 				});
+
 		}
 
 		this.allowRedirect = false;
+
 	},
 
 	beforeRouteLeave(to, from, next) {

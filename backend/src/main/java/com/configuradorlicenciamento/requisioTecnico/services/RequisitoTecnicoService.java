@@ -118,7 +118,7 @@ public class RequisitoTecnicoService implements IRequisitoTecnicoService {
     }
 
     @Override
-    public List<RequisitoTecnicoCsv> listarDocumentoParaCsv() throws Exception {
+    public List<RequisitoTecnicoCsv> listarDocumentoParaCsv() {
 
         List<RequisitoTecnico> requisitoTecnicoList = requisitoTecnicoRepository.findAll(Sort.by("codigo"));
         List<RequisitoTecnicoCsv> dtos = new ArrayList<>();
