@@ -21,6 +21,7 @@
 										:placeholder="placeholder",
 										v-model="requisitoTecnico.codigo",
 										@click.native="resetErrorMessage",
+										@input="v => {requisitoTecnico.codigo = v.toUpperCase()}",
 										:error-messages="errorMessage( requisitoTecnico.codigo, false )",
 										required,
 										dense
@@ -127,7 +128,9 @@
 			:headers="headerListagem",
 			:dadosListagem="dadosListagem",
 			:editarItem="editarItem",
-			:excluirItem="excluirItem"
+			:excluirItem="excluirItem",
+			:labelNoData="labelNoData",
+			:placeholderPesquisa="placeholderPesquisa"
 		)
 
 		v-row.pt-6.px-7
@@ -192,6 +195,8 @@ export default {
 			isInclusao: true,
 			indexItemEdicao: null,
 			allowRedirect: true,
+			labelNoData: 'Não existem documentos adicionados.',
+			placeholderPesquisa: "Pesquisar pelo nome do documento ou tipo de licença"
 		};
 	},
 
@@ -492,7 +497,7 @@ export default {
 
 	created(){
 
-		DocumentoService.findAll()
+		DocumentoService.buscarDocumentosAtivos()
 			.then((response) => {
 				this.documentos = response.data;
 			});

@@ -36,7 +36,7 @@
 					a#QA-limpar-dados-documento.d-flex.flex-row.align-center.justify-end(@click="clear")
 						v-icon mdi-delete
 						span Limpar dados
-				
+
 					v-btn#QA-btn-cadastrar-documento(@click="submit", large, color="#84A98C")
 						v-icon(color="white") {{iconBotaoCadastrarEditar}}
 						span.label-btn-cadastrar {{labelBotaoCadastrarEditar}}

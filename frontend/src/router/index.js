@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import { GET_USUARIO } from '../store/actions.type';
+import { GET_USUARIO } from '@/store/actions.type';
 import Index from '@/store/index.js';
 
 Vue.use(VueRouter);
@@ -30,7 +30,7 @@ const routes = [
 			title: 'Configurador do Licenciamento Ambiental'
 		},
 
-		component: () => import('../views/MainWrapper.vue'),
+		component: () => import('@/views/MainWrapper.vue'),
 
 		children: [
 			{
@@ -42,56 +42,61 @@ const routes = [
 			{
 				path: 'cnae',
 				name: 'Cnae',
-				component: () => import('../views/cnae/Cnae.vue')
+				component: () => import('@/views/cnae/Cnae.vue')
 			},
 			{
 				path: 'licenca',
 				name: 'Licenca',
-				component: () => import('../views/licenca/Licenca.vue')
+				component: () => import('@/views/licenca/Licenca.vue')
 			},
 			{
 				path: 'tipologia',
 				name: 'Tipologia',
-				component: () => import('../views/tipologia/Tipologia.vue')
+				component: () => import('@/views/tipologia/Tipologia.vue')
 			},
 			{
 				path: 'parametro',
 				name: 'Parametro',
-				component: () => import('../views/parametro/Parametro.vue')
+				component: () => import('@/views/parametro/Parametro.vue')
 			},
 			{
 				path: 'documentos',
 				name: 'Documentos',
-				component: () => import('../views/documento/Documento.vue')
+				component: () => import('@/views/documento/Documento.vue')
 			},
 			{	
 				path: 'taxa-administrativa',
 				name: 'TaxaAdministrativa',
-				component: () => import('../views/TaxaAdministrativa.vue')
+				component: () => import('@/views/TaxaAdministrativa.vue')
 			},
 			{	path: 'taxa-licenciamento',
 				name: 'TaxaLicenciamento',
-				component: () => import('../views/taxa/TaxaLicenciamento.vue')
+				component: () => import('@/views/taxa/TaxaLicenciamento.vue')
+			},
+			{
+				path: 'taxa-licenciamento/cadastrar',
+				name: 'CadastrarTaxaLicenciamento',
+				component: () => import('@/views/taxa/TelaCadastroTaxaLicenciamento.vue')
 			},
 			{
 				path: 'requisitos-administrativos',
 				name: 'requisitos-administrativos',
-				component: () => import('../views/requisito/RequisitoAdministrativo.vue')
+				component: () => import('@/views/requisito/RequisitoAdministrativo.vue')
 			},	
 			{
 				path: 'requisitos-tecnicos',
 				name: 'RequisitosTecnicos',
-				component: () => import('../views/RequisitoTecnico.vue')
+				component: () => import('@/views/RequisitoTecnico.vue')
 			},
 			{
 				path: 'requisitos-tecnicos/cadastrar',
 				name: 'CadastrarRequisitosTecnicos',
-				component: () => import('../components/TelaCadastroRequisitoTecnico.vue')
+				component: () => import('@/components/TelaCadastroRequisitoTecnico.vue')
 			},
 			{
 				path: 'requisitos-tecnicos/editar/:idRequisito',
 				name: 'EditarRequisitosTecnicos',
-				component: () => import('../components/TelaCadastroRequisitoTecnico.vue')
+				component: () => import('@/components/TelaCadastroRequisitoTecnico.vue')
 			},
 			{
 				path: 'perguntas',
@@ -100,7 +105,7 @@ const routes = [
 			},
 			{ 
 				path: '*', 
-				component: () => import('../views/UnderConstruction.vue') 
+				component: () => import('@/views/UnderConstruction.vue') 
 			}
 		]
 	},
@@ -108,7 +113,7 @@ const routes = [
 	{
 		path: '/login',
 		name: 'Login',
-		component: () => import('../views/login/Login.vue'),
+		component: () => import('@/views/login/Login.vue'),
 
 		meta: {
 			title: 'Login | Configurador do Licenciamento Ambiental'

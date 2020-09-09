@@ -158,12 +158,12 @@ export default {
 				});
 
 		},
-		
+
 		editar() {
 
 			LicencaService.editar(this.licenca)
 				.then(() => {
-					
+
 					this.handlerSuccess(true);
 					this.dadosPanel.panel = [];
 
@@ -182,24 +182,24 @@ export default {
 
 			if (this.licenca.finalidade === 'CADASTRO') {
 
-				return this.licenca.sigla 
-					&& this.licenca.sigla != ''	
-					&& this.licenca.nome 
-					&& this.licenca.nome != '' 
-					&& this.licenca.finalidade 
+				return this.licenca.sigla
+					&& this.licenca.sigla != ''
+					&& this.licenca.nome
+					&& this.licenca.nome != ''
+					&& this.licenca.finalidade
 					&& this.licenca.finalidade != '';
 
 			} else {
 
-				return this.licenca.sigla 
-					&& this.licenca.sigla != ''	
-					&& this.licenca.nome 
-					&& this.licenca.nome != '' 
+				return this.licenca.sigla
+					&& this.licenca.sigla != ''
+					&& this.licenca.nome
+					&& this.licenca.nome != ''
 					&& this.licenca.finalidade
-					&& this.licenca.finalidade != '' 
+					&& this.licenca.finalidade != ''
 					&& this.licenca.validadeEmAnos !== null
 					&& this.validarPrazo();
-					
+
 			}
 
 		},
@@ -250,7 +250,7 @@ export default {
 			}else if (validade === '' || (validade != null && !this.validarPrazo())) {
 				return msgSomenteInteiros;
 			}
-			
+
 		},
 
 		validarPrazo() {
@@ -272,7 +272,7 @@ export default {
 		errorMessage(value) {
 			return this.errorMessageEmpty || value ? [] : 'Obrigatório';
 		},
-		
+
 		gerarRelatorio() {
 			RelatorioService.baixarRelatorio("/licenca/relatorio");
 		},
@@ -292,7 +292,7 @@ export default {
 
 					console.error(error);
 					snackbar.alert(ERROR_MESSAGES.licenca.listagem);
-					
+
 				});
 
 		},
@@ -304,7 +304,7 @@ export default {
 			this.dadosListagem.content.forEach(licenca => {
 				licenca.finalidade = finalidadeMap.get(licenca.finalidade);
 			});
-			
+
 		},
 
 		prepararDadosEditar(finalidade) {
@@ -328,10 +328,10 @@ export default {
 		},
 
 		ativarDesativarItem(item) {
-			
+
 			this.$fire({
 
-				title: item.ativo ? 
+				title: item.ativo ?
 					'<p class="title-modal-confirm">Desativar licença - ' + item.sigla+ '</p>' :
 					'<p class="title-modal-confirm">Ativar licença - ' + item.sigla+ '</p>',
 
@@ -361,7 +361,7 @@ export default {
 					item.finalidade = this.prepararDadosEditar(item.finalidade);
 					LicencaService.editar(item)
 						.then(() => {
-							
+
 							if(!item.ativo) {
 								snackbar.alert(SUCCESS_MESSAGES.licenca.desativar, snackbar.type.SUCCESS);
 							} else {
@@ -375,7 +375,7 @@ export default {
 						.catch(error => {
 
 							console.error(error);
-							
+
 							if(!item.ativo) {
 								snackbar.alert(ERROR_MESSAGES.licenca.desativar);
 							} else {
@@ -389,8 +389,8 @@ export default {
 			}).catch((error) => {
 				console.error(error);
 			});
-		}, 
-		
+		},
+
 	}
 
 };

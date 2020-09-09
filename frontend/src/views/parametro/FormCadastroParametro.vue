@@ -14,7 +14,7 @@
 						:error-messages="errorMessage(parametro.codigo)",
 						@input="v => {parametro.codigo = v.toUpperCase()}",
 						@click.native="resetErrorMessage",
-						required						
+						required
 					)
 				v-col(cols="12", md="8")
 					v-label Descrição
@@ -53,7 +53,7 @@
 					v-btn#QA-btn-cadastrar-parametro(@click="submit", large, color="#84A98C")
 						v-icon(color="white") {{iconBotaoCadastrarEditar}}
 						span.label-btn-cadastrar {{labelBotaoCadastrarEditar}}
-  
+
 </template>
 
 <script>
@@ -65,7 +65,7 @@ export default {
 	data: () => {
 		return {
 			placeholder: "Digite aqui...",
-			placeholderDescricao: "Informe o nome e a unidade de medida do parâmetro, se necessário. Ex: Área útil (ha)"
+			placeholderDescricao: "Informe o nome e a unidade de medida do parâmetro, se necessário. Ex.: Área útil (ha)"
 		};
 	},
 

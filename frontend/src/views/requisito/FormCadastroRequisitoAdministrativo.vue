@@ -54,13 +54,13 @@
 								color="white",
 								value="PF",
 								width="140px",
-							) 
+							)
 								span Física
 							v-btn#QA-btn-requisito-administrativo-pessoa-juridica(
 								color="white",
 								value="PJ",
 								width="140px",
-							) 
+							)
 								span Jurídica
 					v-col.d-flex.pa-0
 						span.v-messages.theme--light.error--text.v-messages__message.pl-3.mb-3
@@ -72,13 +72,13 @@
 					v-col.pa-0.mb-1
 						v-btn-toggle#QA-btn-toggle-requisito-administrativo(
 								v-model="requisitoAdministrativo.obrigatorio",
-								color="green lighten-4", 
+								color="green lighten-4",
 							)
 							v-btn#QA-btn-requisito-administrativo-basico(
 								color="white",
 								value="true",
 								width="140px",
-							) 
+							)
 								span Básico
 							v-btn#QA-btn-requisito-administrativo-complementar(
 								color="white",
@@ -118,9 +118,9 @@ export default {
 		};
 	},
 
-	created(){
+	created() {
 
-		DocumentoService.findAll()
+		DocumentoService.buscarDocumentosAtivos()
 			.then((response) => {
 				this.documentos = response.data;
 			});

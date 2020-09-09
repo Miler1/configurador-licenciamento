@@ -1,7 +1,7 @@
 <template lang="pug">
 
 	v-container
-        
+
 		GridListagem.pa-7(
 			:tituloAba="tituloAba"
 			:tituloListagem="tituloListagem",
@@ -12,6 +12,8 @@
 			:updatePagination="updatePagination",
 			:editarItem="editarItem",
 			:parametrosFiltro="parametrosFiltro"
+			:buttonCadastrar="buttonCadastrar",
+			:abrirTelaCadastro="abrirTelaCadastro"
 		)
 
 </template>
@@ -23,6 +25,7 @@ import snackbar from '@/services/snack.service';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 import { HEADER } from '@/utils/dadosHeader/ListagemTaxaLicenciamentoHeader';
 import TaxaService from '@/services/taxaLicenciamento.service';
+import RelatorioService from '@/services/relatorio.service';
 
 export default {
 
@@ -36,11 +39,11 @@ export default {
 	data: () => {
 		return {
 			tituloAba:' taxa',
-			tituloListagem: 'Listagem de taxas cadastradas',
-			placeholderPesquisa: "Pesquisar pelo código ou descrição",
+			tituloListagem: 'Listagem de tabelas de taxas de licenciamento cadastradas',
+			placeholderPesquisa: "Pesquisar pelo código ou descrição da tabela de taxa de licenciamento",
 			headerListagem: HEADER,
 			dadosListagem: {
-				nomeItem: "taxas",
+				nomeItem: "tabelas de taxas de licenciamento",
 			},
 			labelBotaoCadastrarEditar: "Cadastrar",
 			iconBotaoCadastrarEditar: "mdi-plus",
@@ -60,6 +63,7 @@ export default {
 				stringPesquisa: ''
 			},
 			isCadastro: true,
+			buttonCadastrar: true
 
 		};
 	},
@@ -152,7 +156,7 @@ export default {
 		},
 
 		gerarRelatorio() {
-			
+			RelatorioService.baixarRelatorio("/codigoTaxalicenciamento/relatorio");
 		},
 
 		editarItem(item) {
@@ -174,7 +178,7 @@ export default {
 				.then((response) => {
 
 					this.dadosListagem = response.data;
-					this.dadosListagem.nomeItem = 'taxas';
+					this.dadosListagem.nomeItem = 'tabelas de taxas de licenciamento';
 
 				})
 				.catch(erro => {
@@ -183,6 +187,12 @@ export default {
 					snackbar.alert(ERROR_MESSAGES.taxa.listagem + erro.message);
 
 				});
+
+		},
+
+		abrirTelaCadastro() {
+
+			this.$router.push({name: 'CadastrarTaxaLicenciamento'});
 
 		},
 

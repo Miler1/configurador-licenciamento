@@ -40,8 +40,7 @@
 				:items-per-page="itensPerPage",
 				@update:options="sortBy"
 			)
-
-			template#text-align-center(v-slot:item.validadeEmAnos='{ item }')
+			template(v-slot:item.validadeEmAnos='{ item }')
 				span {{item.validadeEmAnos ? item.validadeEmAnos : ' ‒'}}
 
 			template(v-slot:item.tipoPessoa='{ item }')
@@ -55,6 +54,15 @@
 
 			template(v-slot:item.ativo='{ item }')
 				span {{item.ativo ? 'Ativo' : 'Inativo'}}
+
+			template(v-slot:item.atividadeDispensavel='{ item }')
+				span {{item.atividadeDispensavel ? 'Sim' : 'Não'}}
+
+			template(v-slot:item.atividadeLicenciavel='{ item }')
+				span {{item.atividadeLicenciavel ? 'Sim' : 'Não'}}
+
+			template(v-slot:item.valor='{ item }')
+				span {{ item.valor !== 0 ? item.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2}) : ' ‒' }}
 
 			template(v-slot:item.actions='{ item }')
 				v-tooltip(bottom)
@@ -216,7 +224,7 @@ export default {
 		checkNomeItem() {
 			return this.dadosListagem.nomeItem === 'tipologias' 
 				|| this.dadosListagem.nomeItem === 'licenças' 
-				|| this.dadosListagem.nomeItem === 'taxas'
+				|| this.dadosListagem.nomeItem === 'tabelas de taxas de licenciamento'
 				|| this.dadosListagem.nomeItem === 'taxas administrativas';
 		}
 
@@ -232,10 +240,6 @@ export default {
 
 tbody tr:nth-of-type(odd) {
 	background-color: rgba(0, 0, 0, .05);
-}
-
-#text-align-center {
-	text-align: center;
 }
 
 .titulo-listagem{

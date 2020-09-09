@@ -15,7 +15,7 @@
 				:labelBotaoCadastrarEditar="labelBotaoCadastrarEditar",
 				:iconBotaoCadastrarEditar="iconBotaoCadastrarEditar"
 			)
-		
+
 		GridListagem.pa-7(
 			:tituloAba="tituloAba",
 			:tituloListagem="tituloListagem",
@@ -81,7 +81,6 @@ export default {
 				title: "Cadastro de CNAE",
 				tipo: "cadastro",
 				iconName:'fa fa-industry',
-				
 			}
 		};
 	},
@@ -162,7 +161,7 @@ export default {
 
 						});
 				}
-				
+
 			} else {
 				this.errorMessageEmpty = false;
 			}
@@ -205,13 +204,13 @@ export default {
 					console.error(erro);
 
 					snackbar.alert(ERROR_MESSAGES.cnae.listagem);
-					
+
 				});
 
 		},
 
 		editarItem(item) {
-			
+
 			this.dadosPanel.panel = [0];
 			this.dadosPanel.title = "Editar CNAE";
 			this.dadosPanel.tipo = "edição";
@@ -224,10 +223,10 @@ export default {
 		},
 
 		ativarDesativarItem(item) {
-			
+
 			this.$fire({
 
-				title: item.ativo ? 
+				title: item.ativo ?
 					'<p class="title-modal-confirm">Desativar CNAE - ' + item.codigo+ '</p>' :
 					'<p class="title-modal-confirm">Ativar CNAE - ' + item.codigo+ '</p>',
 
@@ -256,7 +255,7 @@ export default {
 					item.ativo = !item.ativo;
 					AtividadeCnaeService.editar(item)
 						.then(() => {
-							
+
 							if(!item.ativo) {
 								snackbar.alert(SUCCESS_MESSAGES.cnae.desativar, snackbar.type.SUCCESS);
 							} else {

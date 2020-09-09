@@ -4,13 +4,13 @@
 
 	template
 
-		v-col(cols='12' md='6')
+		v-col(cols='12' md='6').pa-0
 			b.titulo-listagem {{ tituloListagem }}
 
 			v-text-field#QA-input-inclusao-pesquisar(
 				outlined,
 				v-model='stringPesquisa'
-				placeholder="Pesquisa",
+				:placeholder='placeholderPesquisa',
 				prepend-inner-icon="mdi-magnify",
 				color="#E0E0E0",
 				dense
@@ -44,7 +44,7 @@
 				span Exibindo {{props.pageStart}}-{{props.pageStop}} de {{props.itemsLength}} registros
 
 			template(v-slot:no-data)
-				span Não existem documentos adicionados.
+				span {{labelNoData}}
 
 </template>
 
@@ -82,7 +82,13 @@ export default {
 		},
 		excluirItem: {
 			type: [Function]
-		}
+		},
+		labelNoData: {
+			type: [String]
+		},
+		placeholderPesquisa: {
+			type: [String]
+		},
 
 	}
 

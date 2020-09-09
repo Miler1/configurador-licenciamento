@@ -1,7 +1,7 @@
 <template lang="pug">
-	
+
 	v-container
-	
+
 		PanelCadastro.pa-7(
 			:clear="clear",
 			:dadosPanel="dadosPanel",
@@ -16,7 +16,7 @@
 				:labelBotaoCadastrarEditar="labelBotaoCadastrarEditar",
 				:iconBotaoCadastrarEditar="iconBotaoCadastrarEditar",
 			)
-		
+
 		GridListagem.pa-7(
 			:tituloAba="tituloAba",
 			:tituloListagem="tituloListagem",
@@ -86,7 +86,7 @@ export default {
 			},
 		};
 	},
-	
+
 	methods: {
 
 		clear() {
@@ -119,7 +119,7 @@ export default {
 			this.parametrosFiltro.stringPesquisa = '';
 
 		},
-		
+
 		submit() {
 
 			if (this.checkForm()) {
@@ -164,7 +164,7 @@ export default {
 				.catch(error => {
 
 					this.handlerError(error, true);
-					
+
 				});
 
 		},
@@ -177,7 +177,7 @@ export default {
 				&& this.parametro.nome != ''
 				&& this.parametro.casasDecimais !== null
 				&& this.validarCasasDecimais();
-				
+
 		},
 
 		resetErrorMessage() {
@@ -189,9 +189,9 @@ export default {
 		},
 
 		codigoErrorMessage(casasDecimais) {
-			
+
 			let msgSomenteInteiros = 'Este campo permite apenas números inteiros e maiores ou iguais a 0';
-		
+
 			if (this.errorMessageEmpty && casasDecimais && casasDecimais != '') {
 
 				if (!this.validarCasasDecimais()) {
@@ -221,7 +221,7 @@ export default {
 			}
 
 			return false;
-			
+
 		},
 
 		handlerSuccess(edicao = false) {
@@ -268,7 +268,7 @@ export default {
 
 			this.$fire({
 
-				title: item.ativo ? 
+				title: item.ativo ?
 					'<p class="title-modal-confirm">Desativar parâmetro - ' + item.codigo+ '</p>' :
 					'<p class="title-modal-confirm">Ativar parâmetro - ' + item.codigo+ '</p>',
 
@@ -297,7 +297,7 @@ export default {
 					item.ativo = !item.ativo;
 					ParametroService.editar(item)
 						.then(() => {
-							
+
 							if(!item.ativo) {
 								snackbar.alert(SUCCESS_MESSAGES.parametro.desativar, snackbar.type.SUCCESS);
 							} else {

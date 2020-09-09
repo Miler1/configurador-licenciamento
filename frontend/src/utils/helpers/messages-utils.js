@@ -69,8 +69,10 @@ const ERROR_MESSAGES = {
 		desativar: ER_BASE + 'desativar o requisito técnico. ',
 	},
 
-	taxa: {
-		listagem: ER_BASE + 'listar as taxas. ',
+	taxaLicenciamento: {
+		cadastro: ER_BASE + 'cadastrar a taxa de Licenciamento. ',
+		editar: ER_BASE + 'editar a taxa de Licenciamento. ',
+		listagem: ER_BASE + 'listar as taxas de Licenciamento. ',
 	},
 
 	taxaAdministrativa: {
@@ -113,9 +115,19 @@ const SUCCESS_MESSAGES = {
 		desativar: 'Sucesso! O documento foi desativado.',
 	},
 
+	requisitoAdministrativo: {
+		ativar: 'Sucesso! O requisito administrativo foi ativado.',
+		desativar: 'Sucesso! O requisito administrativo foi desativado.',
+	},
+
 	requisitoTecnico: {
 		ativar: 'Sucesso! O grupo de requisito técnico foi ativado.',
 		desativar: 'Sucesso! O grupo de requisito técnico foi desativado.',
+	},
+
+	taxaAdministrativa: {
+		ativar: 'Sucesso! A taxa administrativa foi ativada.',
+		desativar: 'Sucesso! A taxa administrativa foi desativida.',
 	}
 	
 };

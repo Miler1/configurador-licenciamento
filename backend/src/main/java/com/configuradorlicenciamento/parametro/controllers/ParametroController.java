@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/parametro")
@@ -84,6 +85,19 @@ public class ParametroController extends DefaultController {
         mappingStrategy.setType(ParametroCsv.class);
 
         downloadCsv(parametroService.listarParametrosParaCsv(), nome, mappingStrategy, response);
+
+    }
+
+    @GetMapping(value = "/findAll")
+    public ResponseEntity<List<Parametro>> findAll(HttpServletRequest request) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        List<Parametro> parametros = parametroService.listarParametros();
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(parametros);
 
     }
 
