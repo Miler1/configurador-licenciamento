@@ -470,7 +470,7 @@ export default {
 
 				if(result.value) {	
 
-					var list = [];
+					let list = [];
 
 					this.dadosListagem = this.dadosListagem.filter(
 						dado => dado.documento.nome != item.documento.nome || dado.licenca.sigla != item.licenca.sigla
