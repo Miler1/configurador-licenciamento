@@ -307,7 +307,7 @@ export default {
 			parametros: [],
 			errorMessageEmpty: true,
 			errorMessageEmptyInclusao: true,
-			tituloListagem: "Listagem de taxas adicionados para esta tabela",
+			tituloListagem: "Listagem de taxas adicionadas para esta tabela",
 			headerListagem: HEADER,
 			dadosListagem: [],
 			labelBotaoCadastrarEditar: 'Cadastrar',
@@ -317,8 +317,8 @@ export default {
 			indexItemEdicao: null,
 			allowRedirect: true,
 			tipoTaxa: null,
-			labelNoData: 'Não existem taxas adicionados.',
-			placeholderPesquisa: "Pesquisar pelo PPD, porte ou tipo de licença",
+			labelNoData: 'Não existem taxas adicionadas.',
+			placeholderPesquisa: "Pesquisar pelo porte, PPD ou tipo de licença",
 			searchResult: null,
 			searchInput: ''
 		};
@@ -626,11 +626,11 @@ export default {
 		excluirItem(item) {
 
 			this.$fire({
-				title:'<p class="title-modal-confirm">Remover documento - ' + item.documento.nome + '</p>',
+				title:'<p class="title-modal-confirm">Remover taxa - ' + item.documento.nome + '</p>',
 
-				html:`<p class="message-modal-confirm">Ao remover o documento, ele não estará mais vinculado nesse grupo.</p>
+				html:`<p class="message-modal-confirm">Ao remover a taxa, ela não estará mais vinculada nessa tabela.</p>
 						<p class="message-modal-confirm">
-						<b>Tem certeza que deseja remover o documento? Esta opção pode ser desfeita a qualquer momento ao adicioná-lo novamente.</b>
+						<b>Tem certeza que deseja remover a taxa? Esta opção pode ser desfeita a qualquer momento ao adicioná-la novamente.</b>
 					</p>`,
 				showCancelButton: true,
 				confirmButtonColor:'#F56C6C',
