@@ -98,6 +98,11 @@ const routes = [
 				name: 'EditarRequisitosTecnicos',
 				component: () => import('@/components/TelaCadastroRequisitoTecnico.vue')
 			},
+			{
+				path: 'perguntas',
+				name: 'Pergunta',
+				component: () => import('../views/pergunta/Pergunta.vue')
+			},
 			{ 
 				path: '*', 
 				component: () => import('@/views/UnderConstruction.vue') 

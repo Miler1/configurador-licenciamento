@@ -37,6 +37,14 @@ const ERROR_MESSAGES = {
 		desativar: ER_BASE + 'desativar o parâmetro. ',
 	},
 
+	pergunta: {
+		cadastro: ER_BASE + 'cadastrar a pergunta. ',
+		listagem: ER_BASE + 'listar as perguntas. ',
+		editar: ER_BASE + 'editar a pergunta. ',
+		ativar: ER_BASE + 'ativar a pergunta. ',
+		desativar: ER_BASE + 'desativar a pergunta. '
+	},
+
 	documento: {
 		cadastro: ER_BASE + 'cadastrar o documento. ',
 		listagem: ER_BASE + 'listar os documentos. ',
