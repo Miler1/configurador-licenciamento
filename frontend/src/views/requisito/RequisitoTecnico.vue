@@ -22,8 +22,8 @@
 <script>
 
 import GridListagem from '@/components/GridListagem';
-import RelatorioService from '../services/relatorio.service';
-import RequisitoTecnicoService from '../services/requisitoTecnico.service';
+import RelatorioService from '@/services/relatorio.service';
+import RequisitoTecnicoService from '@/services/requisitoTecnico.service';
 import snackbar from '@/services/snack.service';
 import { HEADER } from '@/utils/dadosHeader/ListagemRequisitoTecnicoHeader';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';

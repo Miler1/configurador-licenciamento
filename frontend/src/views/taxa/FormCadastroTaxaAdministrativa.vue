@@ -112,7 +112,7 @@ export default {
 
 <style lang='less'>
 
-@import "../assets/css/variaveis.less";
+@import "../../assets/css/variaveis.less";
 
 .div-valor {
 	background-color: @bg-header;

@@ -149,7 +149,7 @@
 
 import DocumentoService from '@/services/documento.service';
 import LicencaService from '@/services/licenca.service';
-import RequisitoTecnicoService from '../services/requisitoTecnico.service';
+import RequisitoTecnicoService from '@/services/requisitoTecnico.service';
 import GridListagemInclusao from '@/components/GridListagemInclusao';
 import snackbar from '@/services/snack.service';
 import { HEADER } from '@/utils/dadosHeader/ListagemRequisitoTecnicoInclusao';
@@ -542,7 +542,7 @@ export default {
 
 <style lang="less">
 
-@import "../assets/css/variaveis.less";
+@import "../../assets/css/variaveis.less";
 
 .v-expansion-panel-header {
 	background-color: @bg-header;

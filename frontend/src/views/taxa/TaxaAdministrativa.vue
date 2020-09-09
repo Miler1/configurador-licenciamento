@@ -35,9 +35,9 @@
 <script>
 
 import PanelCadastro from '@/components/PanelCadastro';
-import FormCadastroTaxaAdministrativa from '@/components/FormCadastroTaxaAdministrativa';
+import FormCadastroTaxaAdministrativa from '@/views/taxa/FormCadastroTaxaAdministrativa';
 import GridListagem from '@/components/GridListagem';
-import RelatorioService from '../services/relatorio.service';
+import RelatorioService from '@/services/relatorio.service';
 import TaxaAdministrativaService from '@/services/taxaAdministrativa.service';
 import snackbar from '@/services/snack.service';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
