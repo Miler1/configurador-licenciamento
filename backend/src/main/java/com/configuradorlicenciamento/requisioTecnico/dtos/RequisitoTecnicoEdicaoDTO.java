@@ -21,7 +21,7 @@ public class RequisitoTecnicoEdicaoDTO {
 
     private final List<TipoLicencaGrupoDocumento> tipoLicencaGrupoDocumentoList;
 
-    public RequisitoTecnicoEdicaoDTO (RequisitoTecnico requisitoTecnico, List<TipoLicencaGrupoDocumento> tipoLicencaGrupoDocumentoList) {
+    public RequisitoTecnicoEdicaoDTO(RequisitoTecnico requisitoTecnico, List<TipoLicencaGrupoDocumento> tipoLicencaGrupoDocumentoList) {
 
         this.codigo = requisitoTecnico.getCodigo();
         this.descricao = requisitoTecnico.getDescricao();

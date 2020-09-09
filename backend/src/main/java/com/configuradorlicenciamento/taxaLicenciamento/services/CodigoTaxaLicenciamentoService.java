@@ -1,11 +1,14 @@
 package com.configuradorlicenciamento.taxaLicenciamento.services;
 
+import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoCsv;
 import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoDTO;
+import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoEdicaoDTO;
 import com.configuradorlicenciamento.taxaLicenciamento.interfaces.ICodigoTaxaLicenciamentoService;
 import com.configuradorlicenciamento.taxaLicenciamento.interfaces.ITaxaLicenciamentoService;
 import com.configuradorlicenciamento.taxaLicenciamento.models.CodigoTaxaLicenciamento;
+import com.configuradorlicenciamento.taxaLicenciamento.models.TaxaLicenciamento;
 import com.configuradorlicenciamento.taxaLicenciamento.repositories.CodigoTaxaLicenciamentoRepository;
 import com.configuradorlicenciamento.taxaLicenciamento.specifications.CodigoTaxaLicenciamentoSpecification;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
@@ -79,6 +82,19 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
         }
 
         return dtos;
+
+    }
+
+    @Override
+    public CodigoTaxaLicenciamentoEdicaoDTO findById(Integer idTaxaLicenciamento) {
+
+        CodigoTaxaLicenciamento codigoTaxaLicenciamento = codigoTaxaLicenciamentoRepository.findById(idTaxaLicenciamento).orElseThrow(() ->
+                new ConfiguradorNotFoundException("Não foi encontrado requisito com o Id " + idTaxaLicenciamento));
+
+        List<TaxaLicenciamento> taxasLicencas= taxaLicenciamentoService.findByCodigo(codigoTaxaLicenciamento);
+
+        return new CodigoTaxaLicenciamentoEdicaoDTO(codigoTaxaLicenciamento, taxasLicencas);
+
     }
 
     private Specification<CodigoTaxaLicenciamento> preparaFiltro(FiltroPesquisa filtro) {
@@ -93,4 +109,5 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
         return specification;
 
     }
+
 }

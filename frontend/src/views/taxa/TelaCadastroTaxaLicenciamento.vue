@@ -655,22 +655,6 @@ export default {
 			});		
 		},
 
-		preparaDadosParaEdicao(requisito) {
-
-			this.taxaLicenciamento.codigo = requisito.codigo;
-			this.taxaLicenciamento.descricao = requisito.descricao;
-			this.taxaLicenciamento.ativo = requisito.ativo;
-			this.taxaLicenciamento.id = this.$route.params.idRequisito;
-			
-			this.dadosListagem = [];
-			this.dadosListagem = requisito.tipoLicencaGrupoDocumentoList;
-
-			this.dadosListagem.forEach(dado => {
-				dado.obrigatorio = dado.obrigatorio ? 'true' : 'false';
-			});
-
-		},
-
 		alterarTipoTaxa() {
 			this.valor.valor = null;
 			this.valor.formula = null;
@@ -700,7 +684,20 @@ export default {
 			this.$nextTick(() => {
 				this.$refs.formula.focus();
 			});
-		}
+		},
+
+		prepararDadosParaEdicao(requisito) {
+
+			this.taxaLicenciamento.codigo = requisito.codigo;
+			this.taxaLicenciamento.descricao = requisito.descricao;
+			this.taxaLicenciamento.ativo = requisito.ativo;
+			this.taxaLicenciamento.id = this.$route.params.idTaxaLicenciamento;
+			
+			this.dadosListagem = [];
+			this.dadosListagem = requisito.taxasLicenciamento;
+
+		},
+
 	},
 
 	created(){
@@ -734,9 +731,10 @@ export default {
 			this.iconBotaoCadastrarEditar = "mdi-pencil";
 			this.isCadastro = false;
 
-			TaxaService.findById(this.$route.params.idTaxaLicenciamento)
+			TaxaLicenciamentoService.findById(this.$route.params.idTaxaLicenciamento)
 				.then((response) => {
-					this.preparaDadosParaEdicao(response.data);
+					console.log(response.data);
+					this.prepararDadosParaEdicao(response.data);
 				})
 				.catch((error) => {
 					snackbar.alert(error.message);

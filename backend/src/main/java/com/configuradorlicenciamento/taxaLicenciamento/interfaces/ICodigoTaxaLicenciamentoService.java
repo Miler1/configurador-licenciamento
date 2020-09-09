@@ -3,6 +3,7 @@ package com.configuradorlicenciamento.taxaLicenciamento.interfaces;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoCsv;
 import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoDTO;
+import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoEdicaoDTO;
 import com.configuradorlicenciamento.taxaLicenciamento.models.CodigoTaxaLicenciamento;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,5 +21,7 @@ public interface ICodigoTaxaLicenciamentoService {
     List<CodigoTaxaLicenciamento> listarCodigoTaxaLicenciamento();
 
     List<CodigoTaxaLicenciamentoCsv> listarCodigoTaxaLicenciamentoParaCsv();
+
+    CodigoTaxaLicenciamentoEdicaoDTO findById(Integer codigoTaxaLicenciamento);
 
 }

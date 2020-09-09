@@ -25,12 +25,12 @@ import GridListagem from '@/components/GridListagem';
 import snackbar from '@/services/snack.service';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 import { HEADER } from '@/utils/dadosHeader/ListagemTaxaLicenciamentoHeader';
-import TaxaService from '@/services/taxaLicenciamento.service';
+import TaxaLicenciamentoService from '@/services/taxaLicenciamento.service';
 import RelatorioService from '@/services/relatorio.service';
 
 export default {
 
-	name: "Taxa",
+	name: "TaxaLicenciamento",
 
 	components: {
 
@@ -46,24 +46,12 @@ export default {
 			dadosListagem: {
 				nomeItem: "tabelas de taxas de licenciamento",
 			},
-			labelBotaoCadastrarEditar: "Cadastrar",
-			iconBotaoCadastrarEditar: "mdi-plus",
-			errorMessageEmpty: true,
-			taxa: {
-				porteEmpreendimento: '',
-				potencialPoluidor: '',
-				licenca: '',
-				codigo: '',
-				valor: '',
-				ativo: true
-			},
 			parametrosFiltro: {
 				pagina: 0,
 				itemsPorPagina: 10,
 				tipoOrdenacao: 'dataCadastro,desc',
 				stringPesquisa: ''
 			},
-			isCadastro: true,
 			buttonCadastrar: true,
 		};
 	},
@@ -71,7 +59,7 @@ export default {
 	methods: {
 
 		resetaDadosFiltragem() {
-
+			
 			this.parametrosFiltro.pagina = 0;
 			this.parametrosFiltro.itemsPorPagina = 10;
 			this.parametrosFiltro.tipoOrdenacao = 'dataCadastro,desc';
@@ -93,7 +81,7 @@ export default {
 
 		updatePagination(taxasFiltro) {
 
-			TaxaService.listar(taxasFiltro)
+			TaxaLicenciamentoService.listar(taxasFiltro)
 
 				.then((response) => {
 
@@ -114,7 +102,7 @@ export default {
 
 			this.$fire({
 
-				title: item.ativo ?
+				title: item.ativo ? 
 					'<p class="title-modal-confirm">Desativar taxa de licenciamento - ' + item.codigo+ '</p>' :
 					'<p class="title-modal-confirm">Ativar taxa de licenciamento - ' + item.codigo+ '</p>',
 
@@ -140,9 +128,9 @@ export default {
 
 				if(result.value) {
 
-					TaxaService.ativarDesativar(item.id)
+					TaxaLicenciamentoService.ativarDesativar(item.id)
 						.then(() => {
-
+							
 							if(item.ativo) {
 								snackbar.alert(SUCCESS_MESSAGES.taxaLicenciamento.desativar, snackbar.type.SUCCESS);
 							} else {
