@@ -14,6 +14,7 @@
 				:errorMessage="errorMessage",
 				:labelBotaoCadastrarEditar="labelBotaoCadastrarEditar",
 				:iconBotaoCadastrarEditar="iconBotaoCadastrarEditar"
+				:validarRespostas="validarRespostas"
 			)
 
 </template>
@@ -167,19 +168,31 @@ export default {
 
 		checkForm() {
 
-			let perguntasValidas = false;
+			return this.pergunta.texto != null
+				&& this.pergunta.texto != '';
 
-			this.pergunta.respostas.forEach((item) => {
+		},
+
+		validarRespostas(respostas, index) {
+
+			let respostasValidas = false;
+
+			respostas.forEach((item) => {
 
 				if(item.permiteLicenciamento)
-					perguntasValidas = true;
+					respostasValidas = true;
 
 			});
 
-			return this.pergunta.texto != null
-				&& this.pergunta.texto != ''
-				&& perguntasValidas;
+			if(!respostasValidas && !this.errorMessageEmpty){
 
+				if(index === respostas.length - 1) {
+					return "Obrigatório";
+				}
+
+			}
+
+			return [];
 		},
 
 		resetErrorMessage() {

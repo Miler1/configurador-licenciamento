@@ -17,16 +17,18 @@
 					)
 			v-row
 				v-col(cols="12", md="12")
-					div.mb-5
+					div.mb-2
 						v-label Opções de respostas:
-					div(v-for="item in pergunta.respostas" :key="item.texto")
-						b.mr-3 {{item.texto}}
+					div.d-flex(v-for="(item, index) in pergunta.respostas" :key="item.texto")
+						div.mt-1.mr-3.answer
+							b {{item.texto}}
 						v-checkbox.mt-0.d-inline-flex(
 							v-model="item.permiteLicenciamento",
 							label="Esta opção permite prosseguir",
 							color="#84A98C",
 							@click="resetErrorMessage",
-							:error-messages="errorMessage(item.permiteLicenciamento)"
+							:error-messages="validarRespostas(pergunta.respostas, index)",
+							:hide-details="setDetails(pergunta.respostas, index)"
 						)
 			v-row
 				v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
@@ -52,6 +54,14 @@ export default {
 		};
 	},
 
+	methods: {
+
+		setDetails(lista, index){
+			return lista.length-1 !== index;
+		}
+
+	},
+
 	props: {
 		pergunta: {
 			type: [Object]
@@ -73,9 +83,20 @@ export default {
 		},
 		iconBotaoCadastrarEditar: {
 			type: [String]
+		},
+		validarRespostas: {
+			type: [Function]
 		}
 	}
 
 };
 
 </script>
+
+<style lang="less">
+
+.answer {
+	width: 2em;
+}
+
+</style>
