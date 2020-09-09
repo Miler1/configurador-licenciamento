@@ -28,7 +28,7 @@
 						dense,
 						color="#E0E0E0",
 						:placeholder="placeholderSelectLicenca",
-						item-color="#84a98c",
+						item-color="#84A98C",
 						v-model="requisitoAdministrativo.licencas",
 						:items="licencas",
 						item-text="sigla",
