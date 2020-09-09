@@ -27,18 +27,20 @@
 			template(v-slot:item.obrigatorio='{ item }')
 				span {{item.obrigatorio == "true" ? 'Básico' : 'Complementar'}}
 
+			template(v-slot:item.valor='{ item }')
+				span {{parseFloat(item.valor) !== 0 ? parseFloat(item.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2}) : 'isento'}}
 
 			template(v-slot:item.actions='{ item }')
 				v-tooltip(bottom)
 					template(v-slot:activator="{ on, attrs }")
 						v-icon.mr-2(small @click='editarItem(item)', v-on='on', color='#9EBAA4')
 							| mdi-pencil
-					span Editar	documento	
+					span Editar {{tituloTooltip}}
 				v-tooltip(bottom)
 					template(v-slot:activator="{ on, attrs }")
 						v-icon(small @click='excluirItem(item)', v-on='on', color='#F56C6C')
 							|  mdi-delete
-					span Remover documento	
+					span Remover {{tituloTooltip}}
 
 			template(#footer.page-text="props")
 				span Exibindo {{props.pageStart}}-{{props.pageStop}} de {{props.itemsLength}} registros
@@ -87,6 +89,9 @@ export default {
 			type: [String]
 		},
 		placeholderPesquisa: {
+			type: [String]
+		},
+		tituloTooltip: {
 			type: [String]
 		},
 

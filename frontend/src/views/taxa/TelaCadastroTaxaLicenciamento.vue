@@ -236,7 +236,8 @@
 			:editarItem="editarItem",
 			:excluirItem="excluirItem",
 			:labelNoData="labelNoData",
-			:placeholderPesquisa="placeholderPesquisa"
+			:placeholderPesquisa="placeholderPesquisa",
+			:tituloTooltip="tituloTooltip",
 		)
 
 		v-row.pt-6.px-7
@@ -299,6 +300,7 @@ export default {
 				precision: 2,
 				masked: false
 			},
+			tituloTooltip: "taxa",
 			placeholder: "Digite aqui...",
 			placeholderSelect: "Selecione",
 			placeholderSelectLicenca: "Selecione um ou mais",
@@ -482,7 +484,7 @@ export default {
 		preparaPraSalvar() {
 			
 			this.taxaLicenciamento.listTaxasLicenciamento = [];
-			var dadoListagem = {};
+			let dadoListagem = {};
 
 			this.dadosListagem.forEach(dado => {
 
