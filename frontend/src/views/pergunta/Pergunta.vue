@@ -168,31 +168,27 @@ export default {
 
 		checkForm() {
 
+			let respostasValidas = this.validarRespostas();
+
 			return this.pergunta.texto != null
-				&& this.pergunta.texto != '';
+				&& this.pergunta.texto != ''
+				&& respostasValidas;
 
 		},
 
-		validarRespostas(respostas, index) {
+		validarRespostas(){
 
 			let respostasValidas = false;
 
-			respostas.forEach((item) => {
+			this.pergunta.respostas.forEach((item) => {
 
 				if(item.permiteLicenciamento)
 					respostasValidas = true;
 
 			});
 
-			if(!respostasValidas && !this.errorMessageEmpty){
+			return respostasValidas;
 
-				if(index === respostas.length - 1) {
-					return "Obrigatório";
-				}
-
-			}
-
-			return [];
 		},
 
 		resetErrorMessage() {

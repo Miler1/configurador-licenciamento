@@ -27,7 +27,7 @@
 							label="Esta opção permite prosseguir",
 							color="#84A98C",
 							@click="resetErrorMessage",
-							:error-messages="validarRespostas(pergunta.respostas, index)",
+							:error-messages="errorMessage(validarRespostas())",
 							:hide-details="setDetails(pergunta.respostas, index)"
 						)
 			v-row
