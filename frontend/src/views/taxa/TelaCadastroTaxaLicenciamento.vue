@@ -657,17 +657,17 @@ export default {
 
 		preparaDadosParaEdicao(requisito) {
 
-			// this.taxaLicenciamento.codigo = requisito.codigo;
-			// this.taxaLicenciamento.descricao = requisito.descricao;
-			// this.taxaLicenciamento.ativo = requisito.ativo;
-			// this.taxaLicenciamento.id = this.$route.params.idRequisito;
+			this.taxaLicenciamento.codigo = requisito.codigo;
+			this.taxaLicenciamento.descricao = requisito.descricao;
+			this.taxaLicenciamento.ativo = requisito.ativo;
+			this.taxaLicenciamento.id = this.$route.params.idRequisito;
 			
-			// this.dadosListagem = [];
-			// this.dadosListagem = requisito.tipoLicencaGrupoDocumentoList;
+			this.dadosListagem = [];
+			this.dadosListagem = requisito.tipoLicencaGrupoDocumentoList;
 
-			// this.dadosListagem.forEach(dado => {
-			// 	dado.obrigatorio = dado.obrigatorio ? 'true' : 'false';
-			// });
+			this.dadosListagem.forEach(dado => {
+				dado.obrigatorio = dado.obrigatorio ? 'true' : 'false';
+			});
 
 		},
 
@@ -729,19 +729,19 @@ export default {
 
 	mounted() {
 
-		// if(this.$route.params.idRequisito) {
-		// 	this.labelBotaoCadastrarEditar = "Editar";
-		// 	this.iconBotaoCadastrarEditar = "mdi-pencil";
-		// 	this.isCadastro = false;
+		if(this.$route.params.idTaxaLicenciamento) {
+			this.labelBotaoCadastrarEditar = "Editar";
+			this.iconBotaoCadastrarEditar = "mdi-pencil";
+			this.isCadastro = false;
 
-		// 	TaxaLicenciamentoService.findById(this.$route.params.idRequisito)
-		// 		.then((response) => {
-		// 			this.preparaDadosParaEdicao(response.data);
-		// 		})
-		// 		.catch((error) => {
-		// 			snackbar.alert(error.message);
-		// 		});
-		// }
+			TaxaService.findById(this.$route.params.idTaxaLicenciamento)
+				.then((response) => {
+					this.preparaDadosParaEdicao(response.data);
+				})
+				.catch((error) => {
+					snackbar.alert(error.message);
+				});
+		}
 
 		this.allowRedirect = false;
 	},

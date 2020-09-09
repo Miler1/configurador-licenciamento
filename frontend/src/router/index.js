@@ -79,6 +79,11 @@ const routes = [
 				component: () => import('@/views/taxa/TelaCadastroTaxaLicenciamento.vue')
 			},
 			{
+				path: 'taxa-licenciamento/editar/:idTaxaLicenciamento',
+				name: 'EditarTaxaLicenciamento',
+				component: () => import('@/views/taxa/TelaCadastroTaxaLicenciamento.vue')
+			},
+			{
 				path: 'requisitos-administrativos',
 				name: 'requisitos-administrativos',
 				component: () => import('@/views/requisito/RequisitoAdministrativo.vue')

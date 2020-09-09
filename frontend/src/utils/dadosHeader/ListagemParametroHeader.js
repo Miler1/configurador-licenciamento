@@ -4,7 +4,6 @@ const HEADER = [
 	{ text: 'Descrição', value: 'nome' },
 	{ text: 'Casas decimais', value: 'casasDecimais', width: '145px'},
 	{ text: 'Status', value: 'ativo', width: '145px'},
-	
 	{ text: 'Ações', value: 'actions', sortable: false, align: 'center', width: '100px'},
 ];
 

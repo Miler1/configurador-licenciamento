@@ -234,7 +234,7 @@ export default {
 					<p class="message-modal-confirm">
 						<b>Tem certeza que deseja desativar a taxa administrativa? Esta opção pode ser desfeita a qualquer momento ao ativá-lo novamente.</b>
 					</p>` :
-					`<p class="message-modal-confirm">Ao ativar a taxa administrativa, ele ficará disponível no sistema.</p>
+					`<p class="message-modal-confirm">Ao ativar a taxa administrativa, ela ficará disponível no sistema.</p>
 					<p class="message-modal-confirm">
 						<b>Tem certeza que deseja ativar a taxa administrativa? Esta opção pode ser desfeita a qualquer momento ao desativá-lo novamente.</b>
 					</p>`,

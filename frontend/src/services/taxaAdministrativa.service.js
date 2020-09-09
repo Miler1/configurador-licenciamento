@@ -15,9 +15,8 @@ export default {
 						&size=${parametrosFiltro.itemsPorPagina > 0 ? parametrosFiltro.itemsPorPagina : 10}
 						&sort=${parametrosFiltro.tipoOrdenacao ? parametrosFiltro.tipoOrdenacao : 'ano,desc'}`,
 
-						parametrosFiltro
-
-						);
+			parametrosFiltro
+			);
 
 		} else {
 			return ApiService.post('taxaAdministrativa/listar/?page=0&size=10&sort=ano,desc', {});
