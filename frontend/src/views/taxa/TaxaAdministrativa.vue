@@ -304,7 +304,7 @@ export default {
 			TaxaAdministrativaService.listar(parametrosFiltro)
 				
 				.then((response) => {
-					
+
 					this.dadosListagem = response.data;
 					this.dadosListagem.nomeItem = "taxas administrativas";
 
