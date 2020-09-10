@@ -2,7 +2,6 @@ package com.configuradorlicenciamento.pergunta.models;
 
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.pergunta.dtos.PerguntaDTO;
-import com.configuradorlicenciamento.pergunta.repositories.PerguntaRepository;
 import com.configuradorlicenciamento.resposta.dtos.RespostaDTO;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import lombok.Getter;
@@ -10,8 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import com.configuradorlicenciamento.resposta.models.Resposta;
 import lombok.ToString;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -79,7 +76,6 @@ public class Pergunta implements Serializable {
     }
 
     public Pergunta(PerguntaBuilder builder) {
-
         this.texto = builder.texto;
         this.codigo = builder.codigo;
         this.ativo = builder.ativo;
@@ -87,6 +83,7 @@ public class Pergunta implements Serializable {
         this.ordem = 1;
         this.dataCadastro = builder.dataCadastro;
         this.usuarioLicenciamento = builder.usuarioLicenciamento;
+        this.respostas = new ArrayList<>();
     }
 
     public static class PerguntaBuilder {
