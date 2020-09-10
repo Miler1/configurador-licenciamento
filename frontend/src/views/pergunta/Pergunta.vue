@@ -128,14 +128,14 @@ export default {
 
 		},
 
-		/*resetaDadosFiltragem() {
+		resetaDadosFiltragem() {
 
 			this.parametrosFiltro.pagina = 0;
 			this.parametrosFiltro.itemsPorPagina = 10;
 			this.parametrosFiltro.tipoOrdenacao = 'dataCadastro,desc';
 			this.parametrosFiltro.stringPesquisa = '';
 
-		},*/
+		},
 
 		submit() {
 
@@ -150,8 +150,8 @@ export default {
 							snackbar.alert(SUCCESS_MESSAGES.cadastro, snackbar.type.SUCCESS);
 
 							this.clear();
-							//this.updatePagination();
-							//this.resetaDadosFiltragem();
+							this.updatePagination();
+							this.resetaDadosFiltragem();
 
 						})
 						.catch(erro => {
@@ -166,8 +166,8 @@ export default {
 							snackbar.alert(SUCCESS_MESSAGES.editar, snackbar.type.SUCCESS);
 
 							this.clear();
-							//this.updatePagination();
-							//this.resetaDadosFiltragem();
+							this.updatePagination();
+							this.resetaDadosFiltragem();
 							this.dadosPanel.panel = [];
 
 						})
@@ -222,7 +222,6 @@ export default {
 			PerguntaService.listar(parametrosFiltro)
 
 				.then((response) => {
-					console.log(response);
 					this.dadosListagem = response.data;
 					this.dadosListagem.nomeItem = "perguntas";
 
@@ -290,8 +289,8 @@ export default {
 								snackbar.alert(SUCCESS_MESSAGES.pergunta.ativar, snackbar.type.SUCCESS);
 							}
 
-							//this.updatePagination();
-							//this.resetaDadosFiltragem();
+							this.updatePagination();
+							this.resetaDadosFiltragem();
 
 						})
 						.catch(erro => {
