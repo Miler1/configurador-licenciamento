@@ -32,7 +32,7 @@
 						v-model="requisitoAdministrativo.licencas",
 						:items="licencas",
 						item-text="sigla",
-						:error-messages="errorMessage(requisitoAdministrativo.licencas)",
+						:error-messages="errorMessage(validarArray(requisitoAdministrativo.licencas))",
 						no-data-text="Nenhum tipo de licença encontrado",
 						@click.native="resetErrorMessage",
 						required,
@@ -129,6 +129,14 @@ export default {
 			.then((response) => {
 				this.licencas = response.data;
 			});
+
+	},
+
+	methods: {
+
+		validarArray(array) {
+			return Array.isArray(array) && array.length > 0;
+		}
 
 	},
 

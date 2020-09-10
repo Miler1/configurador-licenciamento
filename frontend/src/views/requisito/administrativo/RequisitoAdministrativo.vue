@@ -196,7 +196,7 @@ export default {
 			return this.requisitoAdministrativo.documento
 				&& this.requisitoAdministrativo.documento !== ""
 				&& this.requisitoAdministrativo.licencas
-				&& this.requisitoAdministrativo.licencas !== ""
+				&& this.requisitoAdministrativo.licencas.length > 0
 				&& this.requisitoAdministrativo.obrigatorio
 				&& this.requisitoAdministrativo.obrigatorio !== ""
 				&& this.requisitoAdministrativo.tipoPessoa
