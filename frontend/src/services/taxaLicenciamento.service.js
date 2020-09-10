@@ -23,7 +23,7 @@ export default {
 			);
 
 		} else {
-			return ApiService.post('codigoTaxalicenciamento/listar/?page=0&size=10&sort=dataCadastro,desc', {});
+			return ApiService.post('codigoTaxaLicenciamento/listar/?page=0&size=10&sort=dataCadastro,desc', {});
 		}
 
 	}
