@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import com.configuradorlicenciamento.resposta.models.Resposta;
+import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
@@ -54,10 +55,28 @@ public class Pergunta implements Serializable {
     @JoinColumn(name = "id_usuario_licenciamento", referencedColumnName = "id")
     private UsuarioLicenciamento usuarioLicenciamento;
 
+    @ToString.Exclude
     @NotNull(message = "{validacao.notnull}")
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "id_pergunta")
     private List<Resposta> respostas;
+
+    public void setRespostas(List<RespostaDTO> respostas){
+
+        if(this.respostas == null) {
+            this.respostas = new ArrayList<>();
+        }
+
+        for (RespostaDTO resposta : respostas){
+
+            Resposta entidade = new Resposta.RespostaBuilder(resposta)
+                    .setDataCadastro(this.dataCadastro)
+                    .setUsuarioLicencimento(this.usuarioLicenciamento)
+                    .build();
+
+            this.respostas.add(entidade);
+        }
+    }
 
     public Pergunta(PerguntaBuilder builder) {
 

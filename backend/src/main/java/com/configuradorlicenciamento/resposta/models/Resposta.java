@@ -7,6 +7,7 @@ import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicencia
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -40,11 +41,6 @@ public class Resposta implements Serializable {
 
     @NotNull(message = "{validacao.notnull}")
     @ManyToOne
-    @JoinColumn(name = "id_pergunta", referencedColumnName = "id")
-    private Pergunta pergunta;
-
-    @NotNull(message = "{validacao.notnull}")
-    @ManyToOne
     @JoinColumn(name = "id_usuario_licenciamento", referencedColumnName = "id")
     private UsuarioLicenciamento usuarioLicenciamento;
 
@@ -53,7 +49,6 @@ public class Resposta implements Serializable {
         this.texto = builder.texto;
         this.permiteLicenciamento = builder.permiteLicenciamento;
         this.tipoValidacao = null;
-        this.pergunta = builder.pergunta;
         this.codigo = "";
         this.dataCadastro = builder.dataCadastro;
         this.usuarioLicenciamento = builder.usuarioLicenciamento;
@@ -63,18 +58,12 @@ public class Resposta implements Serializable {
 
         private final String texto;
         private final Boolean permiteLicenciamento;
-        private Pergunta pergunta;
         private Date dataCadastro;
         private UsuarioLicenciamento usuarioLicenciamento;
 
         public RespostaBuilder(RespostaDTO respostaDTO) {
             this.texto = respostaDTO.getTexto();
             this.permiteLicenciamento = respostaDTO.getPermiteLicenciamento();
-        }
-
-        public RespostaBuilder setPergunta(Pergunta pergunta) {
-            this.pergunta = pergunta;
-            return this;
         }
 
         public RespostaBuilder setDataCadastro(Date dataCadastro) {
