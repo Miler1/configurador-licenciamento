@@ -35,7 +35,7 @@
 <script>
 
 import PanelCadastro from '@/components/PanelCadastro';
-import FormCadastroRequisitoAdministrativo from '@/views/requisito/FormCadastroRequisitoAdministrativo';
+import FormCadastroRequisitoAdministrativo from '@/views/requisito/administrativo/FormCadastroRequisitoAdministrativo';
 import RequisitoAdministrativoService from '@/services/requisitoAdministrativo.service';
 import DocumentoService from '@/services/documento.service';
 import RelatorioService from '@/services/relatorio.service';
@@ -196,7 +196,7 @@ export default {
 			return this.requisitoAdministrativo.documento
 				&& this.requisitoAdministrativo.documento !== ""
 				&& this.requisitoAdministrativo.licencas
-				&& this.requisitoAdministrativo.licencas !== ""
+				&& this.requisitoAdministrativo.licencas.length > 0
 				&& this.requisitoAdministrativo.obrigatorio
 				&& this.requisitoAdministrativo.obrigatorio !== ""
 				&& this.requisitoAdministrativo.tipoPessoa

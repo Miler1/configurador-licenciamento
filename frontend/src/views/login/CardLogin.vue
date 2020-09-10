@@ -213,7 +213,7 @@ export default {
 
 				#link-esqueci-senha {
 					color: @info;
-					font-size: 13px;
+					font-size: 14px !important;
 				}
 			}
 		}
