@@ -14,7 +14,8 @@ public class PerguntaSpecification {
 
     public static Specification<Pergunta> titulo(String titulo) {
         return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(
-                criteriaBuilder.lower(root.get("texto")), "%" + titulo.toLowerCase() + "%");
+                criteriaBuilder.function("unaccent", String.class, criteriaBuilder.lower(root.get("texto"))),
+                                        "%" + StringUtil.removeAccents(titulo.toLowerCase()) + "%");
     }
 
     public static Specification<Pergunta> matchTitulo (String titulo) {
