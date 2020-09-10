@@ -547,7 +547,7 @@ export default {
 
 <style lang="less">
 
-@import "../../assets/css/variaveis.less";
+@import "../../../assets/css/variaveis.less";
 
 .v-expansion-panel-header {
 	background-color: @bg-header;
