@@ -135,6 +135,10 @@ export default {
 	methods: {
 
 		validarArray(array) {
+
+			if(!this.cadastro)
+				return array;
+
 			return Array.isArray(array) && array.length > 0;
 		}
 
