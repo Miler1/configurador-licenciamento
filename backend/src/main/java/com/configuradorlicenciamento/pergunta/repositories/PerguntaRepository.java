@@ -1,6 +1,5 @@
 package com.configuradorlicenciamento.pergunta.repositories;
 
-import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.pergunta.models.Pergunta;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
