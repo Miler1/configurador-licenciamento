@@ -4,6 +4,7 @@ import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicencia
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import com.configuradorlicenciamento.resposta.dtos.RespostaDTO;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -12,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 @Getter
+@Setter
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PerguntaDTO implements Serializable {
 
