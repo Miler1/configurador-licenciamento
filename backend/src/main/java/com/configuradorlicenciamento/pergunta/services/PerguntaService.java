@@ -1,5 +1,6 @@
 package com.configuradorlicenciamento.pergunta.services;
 
+import com.configuradorlicenciamento.pergunta.dtos.PerguntaCsv;
 import com.configuradorlicenciamento.pergunta.dtos.PerguntaDTO;
 import com.configuradorlicenciamento.pergunta.interfaces.IPerguntaService;
 import com.configuradorlicenciamento.pergunta.models.Pergunta;
@@ -7,9 +8,12 @@ import com.configuradorlicenciamento.pergunta.repositories.PerguntaRepository;
 import com.configuradorlicenciamento.resposta.dtos.RespostaDTO;
 import com.configuradorlicenciamento.resposta.models.Resposta;
 import com.configuradorlicenciamento.resposta.repositories.RespostaRepository;
+import com.configuradorlicenciamento.tipologia.dtos.TipologiaCsv;
+import com.configuradorlicenciamento.tipologia.models.Tipologia;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLicenciamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -49,6 +53,22 @@ public class PerguntaService implements IPerguntaService {
 
         return pergunta;
 
+    }
+
+    public List<Pergunta> listarPerguntas() {
+        return perguntaRepository.findAll(Sort.by("texto"));
+    }
+
+    public List<PerguntaCsv> listarPerguntaParaCsv() {
+
+        List<Pergunta> perguntas = listarPerguntas();
+        List<PerguntaCsv> dtos = new ArrayList<>();
+
+        for (Pergunta pergunta : perguntas) {
+            dtos.add(pergunta.preparaParaCsv());
+        }
+
+        return dtos;
     }
 
     private void setRespostas(Pergunta pergunta, List<RespostaDTO> respostas) {

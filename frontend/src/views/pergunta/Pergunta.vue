@@ -16,7 +16,9 @@
 				:iconBotaoCadastrarEditar="iconBotaoCadastrarEditar"
 				:validarRespostas="validarRespostas"
 			)
-
+		
+		v-btn(@click="gerarRelatorio")
+			span Pela força do além, eu gero relatórios!
 </template>
 
 <script>
