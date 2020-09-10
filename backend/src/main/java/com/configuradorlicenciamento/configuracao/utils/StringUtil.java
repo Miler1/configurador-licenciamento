@@ -1,17 +1,18 @@
 package com.configuradorlicenciamento.configuracao.utils;
 
+import java.text.DecimalFormat;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class StringUtil {
 
+    private StringUtil(){}
+
     public static Boolean vaziaOuNula(String valor) {
 
-        if(valor == null || valor.isEmpty() || valor.isBlank()) {
-            return true;
-        }
-
-        return false;
+        return valor == null || valor.isEmpty() || valor.isBlank();
 
     }
 
@@ -19,7 +20,7 @@ public class StringUtil {
 
         cep = removeCaracteresEspeciais(cep);
 
-        if(cep != null && !cep.isBlank()) {
+        if (cep != null && !cep.isBlank()) {
             return cep.replaceFirst("(\\d{2})(\\d{3})(\\d+)", "$1.$2-$3");
         }
 
@@ -29,7 +30,7 @@ public class StringUtil {
 
     public static String removeCaracteresEspeciais(String valor) {
 
-        if(valor != null && !valor.isBlank()) {
+        if (valor != null && !valor.isBlank()) {
             valor = valor.replaceAll("[^a-zA-Z0-9\\s+]", "");
         }
 
@@ -39,7 +40,7 @@ public class StringUtil {
 
     public static String apenasNumeros(String valor) {
 
-        if(valor != null && !valor.isBlank()) {
+        if (valor != null && !valor.isBlank()) {
 
             valor = removeCaracteresEspeciais(valor);
             valor = valor.replaceAll("[a-zA-Z]+", "");
@@ -59,16 +60,15 @@ public class StringUtil {
 
     }
 
-    public static ArrayList<String> preposicoes() {
+    public static List<String> preposicoes() {
 
         String[] array = {" da ", " de ", " do ", " a ", " e ", " o ", " para "};
         ArrayList<String> preposicoes = new ArrayList<>();
 
-        for (String item : array){
-            preposicoes.add(item);
-        }
+        Collections.addAll(preposicoes, array);
 
         return preposicoes;
+
     }
 
     /**
@@ -78,33 +78,51 @@ public class StringUtil {
      * @param string A string a ser tratada
      * @return A string tratada sem os espaços desnecessários
      */
-    public static String tratarEspacos(String string){
+    public static String tratarEspacos(String string) {
 
         String referencia = string;
         String tratada = string;
 
         boolean complete = false;
 
-        while(!complete){
+        while (!complete) {
 
             tratada = tratada.replace("  ", " ");
 
-            if(tratada.equals(referencia)){
+            if (tratada.equals(referencia)) {
                 complete = true;
             } else {
                 referencia = tratada;
             }
         }
 
-        if(tratada.charAt(tratada.length() - 1) == ' '){
+        if (tratada.charAt(tratada.length() - 1) == ' ') {
             tratada = tratada.substring(0, tratada.length() - 1);
         }
 
-        if(tratada.charAt(0) == ' '){
+        if (tratada.charAt(0) == ' ') {
             tratada = tratada.substring(1, tratada.length());
         }
 
         return tratada;
+
+    }
+
+    public static String formatarDecimal(Float valor) {
+
+        String valorFormatado = "-";
+
+        if (valor != 0) {
+
+            DecimalFormat formatter = new DecimalFormat();
+            formatter.setMinimumFractionDigits(2);
+
+            valorFormatado = formatter.format(valor);
+
+        }
+
+        return valorFormatado;
+
     }
 
 }

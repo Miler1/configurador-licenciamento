@@ -23,7 +23,7 @@
 						v-money="money"
 						outlined,
 						color="#E0E0E0",
-						v-model="taxaAdministrativa.valor",
+						v-model.lazy="taxaAdministrativa.valor",
 						@click.native="resetErrorMessage",
 						:error-messages="errorMessage( taxaAdministrativa.valor, false )",
 						required,
@@ -108,27 +108,10 @@ export default {
 	}
 
 };
+
 </script>
 
 <style lang='less'>
-
-@import "../../assets/css/variaveis.less";
-
-.div-valor {
-	background-color: @bg-header;
-	border: none;
-	border-radius: 0 4px 4px 0;
-	color: @icon-color;
-	cursor: default;
-	display: flex;
-	height: 40px;
-	width: 50px;
-}
-
-.div-money {
-	border: 1px solid @border-components;
-	height: 40px;
-}
 
 .v-input--selection-controls {
 	margin-top: 4px !important;
