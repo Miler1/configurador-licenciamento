@@ -1,5 +1,7 @@
 package com.configuradorlicenciamento.pergunta.services;
 
+import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
+import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.pergunta.dtos.PerguntaCsv;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.pergunta.dtos.PerguntaDTO;
@@ -41,6 +43,15 @@ public class PerguntaService implements IPerguntaService {
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
+        tratarPergunta(perguntaDTO);
+
+        Specification<Pergunta> specification = Specification.where(PerguntaSpecification.padrao());
+        specification = specification.and(PerguntaSpecification.matchTitulo(perguntaDTO.getTexto()));
+
+        if(!perguntaRepository.findAll(specification).isEmpty()){
+            throw new ConstraintUniqueViolationException("Já existe uma pergunta com o mesmo título.");
+        }
+
         Pergunta pergunta = new Pergunta.PerguntaBuilder(perguntaDTO)
                 .setDataCadastro(new Date())
                 .setUsuarioLicencimento(usuarioLicenciamento)
@@ -54,6 +65,17 @@ public class PerguntaService implements IPerguntaService {
 
         return pergunta;
 
+    }
+
+    public void tratarPergunta(PerguntaDTO pergunta) {
+
+        String textoPergunta = StringUtil.tratarEspacos(pergunta.getTexto());
+
+        if(!textoPergunta.endsWith("?")){
+            textoPergunta = textoPergunta + "?";
+        }
+
+        pergunta.setTexto(textoPergunta);
     }
 
     public List<Pergunta> listarPerguntas() {
