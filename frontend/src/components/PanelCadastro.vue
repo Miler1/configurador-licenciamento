@@ -2,7 +2,7 @@
 
 	v-expansion-panels(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
 		v-expansion-panel(v-for="(item, i) in dadosPanel.items", :key="i")
-			v-expansion-panel-header
+			v-expansion-panel-header.expansion-header
 				div.d-flex.flex-row.align-center.justify-start
 					v-icon.pr-3(color="#84A98C") {{dadosPanel.iconName}}
 					span.align-baseline {{dadosPanel.title}}
@@ -58,7 +58,7 @@ export default {
 
 @import "../assets/css/variaveis.less";
 
-.v-expansion-panel-header {
+.expansion-header {
 	background-color: @bg-header;
 	color: @text-color;
 	cursor: default;
