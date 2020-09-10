@@ -68,7 +68,7 @@ export default {
 		},
 
 		gerarRelatorio() {
-			RelatorioService.baixarRelatorio("/codigoTaxalicenciamento/relatorio");
+			RelatorioService.baixarRelatorio("/codigoTaxaLicenciamento/relatorio");
 		},
 
 		abrirTelaCadastro() {
