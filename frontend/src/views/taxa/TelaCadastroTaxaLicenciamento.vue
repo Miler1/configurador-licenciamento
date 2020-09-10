@@ -88,7 +88,7 @@
 										dense,
 										color="#E0E0E0",
 										:placeholder="placeholderSelectLicenca",
-										item-color="grey darken-3",
+										item-color="#84A98C",
 										v-model="valor.licencas",
 										:items="licencas",
 										item-text="sigla",
@@ -310,7 +310,7 @@ export default {
 			parametros: [],
 			errorMessageEmpty: true,
 			errorMessageEmptyInclusao: true,
-			tituloListagem: "Listagem de taxas adicionados para esta tabela",
+			tituloListagem: "Listagem de taxas adicionadas para esta tabela",
 			headerListagem: HEADER,
 			dadosListagem: [],
 			labelBotaoCadastrarEditar: 'Cadastrar',
@@ -320,8 +320,8 @@ export default {
 			indexItemEdicao: null,
 			allowRedirect: true,
 			tipoTaxa: null,
-			labelNoData: 'Não existem taxas adicionados.',
-			placeholderPesquisa: "Pesquisar pelo PPD, porte ou tipo de licença",
+			labelNoData: 'Não existem taxas adicionadas.',
+			placeholderPesquisa: "Pesquisar pelo porte, PPD ou tipo de licença",
 			searchResult: null,
 			searchInput: ''
 		};

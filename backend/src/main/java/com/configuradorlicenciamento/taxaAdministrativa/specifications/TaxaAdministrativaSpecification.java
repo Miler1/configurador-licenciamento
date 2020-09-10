@@ -11,7 +11,7 @@ public class TaxaAdministrativaSpecification {
         return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.isNotNull(root.get("id"));
     }
 
-    public static Specification<TaxaAdministrativa> ano(Integer ano) {
-        return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("ano"), ano);
+    public static Specification<TaxaAdministrativa> ano(String ano) {
+        return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(root.get("ano").as(String.class), "%" + ano + "%");
     }
 }

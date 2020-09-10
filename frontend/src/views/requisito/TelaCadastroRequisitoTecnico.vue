@@ -72,7 +72,7 @@
 										dense,
 										color="#E0E0E0",
 										:placeholder="placeholderSelectLicenca",
-										item-color="grey darken-3",
+										item-color="#84A98C",
 										v-model="grupoRequisito.licencas",
 										:items="licencas",
 										item-text="sigla",
