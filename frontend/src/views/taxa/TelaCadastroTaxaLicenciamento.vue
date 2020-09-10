@@ -766,7 +766,7 @@ export default {
 	background-color: @bg-header;
 	color: @text-color;
 	cursor: default;
-	font-size: 21px;
+	font-size: 18px !important;
 	height: 70px;
 	padding: 0 20px;
 
