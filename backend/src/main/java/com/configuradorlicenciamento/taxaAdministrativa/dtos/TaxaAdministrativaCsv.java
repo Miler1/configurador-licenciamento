@@ -1,6 +1,7 @@
 package com.configuradorlicenciamento.taxaAdministrativa.dtos;
 
 import com.configuradorlicenciamento.configuracao.utils.DateUtil;
+import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.entradaUnica.services.EntradaUnicaWS;
 import com.configuradorlicenciamento.taxaAdministrativa.models.TaxaAdministrativa;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
@@ -10,7 +11,6 @@ import com.opencsv.bean.CsvBindByPosition;
 import lombok.Getter;
 
 import java.io.Serializable;
-import java.text.DecimalFormat;
 
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -47,7 +47,7 @@ public class TaxaAdministrativaCsv implements Serializable {
     public TaxaAdministrativaCsv(TaxaAdministrativa taxaAdministrativa) {
 
         this.ano = taxaAdministrativa.getAno();
-        this.valor = formatarDecimal(taxaAdministrativa.getValor());
+        this.valor = StringUtil.formatarDecimal(taxaAdministrativa.getValor());
         this.atividadeDispensavel = taxaAdministrativa.getAtividadeDispensavel() ? "Sim" : "Não";
         this.atividadeLicenciavel = taxaAdministrativa.getAtividadeLicenciavel() ? "Sim" : "Não";
         this.ativo = taxaAdministrativa.getAtivo() ? "Ativo" : "Inativo";
@@ -58,21 +58,6 @@ public class TaxaAdministrativaCsv implements Serializable {
 
     private String getNomeUsuario(UsuarioLicenciamento usuario){
         return EntradaUnicaWS.ws.buscarPessoaFisicaPeloCpf(usuario.getLogin()).nome;
-    }
-
-    private String formatarDecimal(Float valor) {
-
-        String valorFormatado = "-";
-
-        if (valor != 0) {
-
-            DecimalFormat formatter = new DecimalFormat("#.00");
-            valorFormatado = formatter.format(valor);
-
-        }
-
-        return valorFormatado;
-        
     }
 
 }
