@@ -67,7 +67,7 @@ const routes = [
 			{	
 				path: 'taxa-administrativa',
 				name: 'TaxaAdministrativa',
-				component: () => import('@/views/TaxaAdministrativa.vue')
+				component: () => import('@/views/taxa/TaxaAdministrativa.vue')
 			},
 			{	path: 'taxa-licenciamento',
 				name: 'TaxaLicenciamento',
@@ -79,6 +79,11 @@ const routes = [
 				component: () => import('@/views/taxa/TelaCadastroTaxaLicenciamento.vue')
 			},
 			{
+				path: 'taxa-licenciamento/editar/:idTaxaLicenciamento',
+				name: 'EditarTaxaLicenciamento',
+				component: () => import('@/views/taxa/TelaCadastroTaxaLicenciamento.vue')
+			},
+			{
 				path: 'requisitos-administrativos',
 				name: 'requisitos-administrativos',
 				component: () => import('@/views/requisito/RequisitoAdministrativo.vue')
@@ -86,17 +91,17 @@ const routes = [
 			{
 				path: 'requisitos-tecnicos',
 				name: 'RequisitosTecnicos',
-				component: () => import('@/views/RequisitoTecnico.vue')
+				component: () => import('@/views/requisito/RequisitoTecnico.vue')
 			},
 			{
 				path: 'requisitos-tecnicos/cadastrar',
 				name: 'CadastrarRequisitosTecnicos',
-				component: () => import('@/components/TelaCadastroRequisitoTecnico.vue')
+				component: () => import('@/views/requisito/TelaCadastroRequisitoTecnico.vue')
 			},
 			{
 				path: 'requisitos-tecnicos/editar/:idRequisito',
 				name: 'EditarRequisitosTecnicos',
-				component: () => import('@/components/TelaCadastroRequisitoTecnico.vue')
+				component: () => import('@/views/requisito/TelaCadastroRequisitoTecnico.vue')
 			},
 			{ 
 				path: '*', 

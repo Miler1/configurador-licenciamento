@@ -37,6 +37,27 @@ public class TaxaLicenciamentoService implements ITaxaLicenciamentoService {
         listTaxasLicenciamento.forEach(taxaLicenciamentoDTO ->
                 taxaLicenciamentoRepository.save(montaObjetoParaSalvar(taxaLicenciamentoDTO, codigoTaxaLicenciamento))
         );
+
+    }
+
+    @Override
+    public void editar(List<TaxaLicenciamentoDTO> taxasLicenciamentoDTO, CodigoTaxaLicenciamento codigoTaxaLicenciamento) {
+
+        List<TaxaLicenciamento> taxasLicenciamento = taxaLicenciamentoRepository.findByCodigo(codigoTaxaLicenciamento);
+
+        taxasLicenciamento.forEach(taxaLicenciamento ->
+            taxaLicenciamentoRepository.delete( taxaLicenciamento )
+        );
+
+        taxasLicenciamentoDTO.forEach(tipoLicencaGrupoDocumentoDTO ->
+                taxaLicenciamentoRepository.save(montaObjetoParaSalvar(tipoLicencaGrupoDocumentoDTO, codigoTaxaLicenciamento))
+        );
+
+    }
+
+    @Override
+    public List<TaxaLicenciamento> findByCodigo(CodigoTaxaLicenciamento codigoTaxaLicenciamento) {
+        return taxaLicenciamentoRepository.findByCodigo(codigoTaxaLicenciamento);
     }
 
     public TaxaLicenciamento montaObjetoParaSalvar(TaxaLicenciamentoDTO tDTO, CodigoTaxaLicenciamento codigoTaxaLicenciamento) {
@@ -53,6 +74,7 @@ public class TaxaLicenciamentoService implements ITaxaLicenciamentoService {
                 .setPorteEmpreendimento(porteEmpreendimento)
                 .setPotencialPoluidor(potencialPoluidor)
                 .build();
+
     }
 
 }

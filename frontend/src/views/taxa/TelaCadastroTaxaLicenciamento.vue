@@ -21,6 +21,7 @@
 										:placeholder="placeholder",
 										v-model="taxaLicenciamento.codigo",
 										@click.native="resetErrorMessage",
+										@input="v => {taxaLicenciamento.codigo = v.toUpperCase()}",
 										:error-messages="errorMessage( taxaLicenciamento.codigo, false )",
 										required,
 										dense
@@ -235,7 +236,8 @@
 			:editarItem="editarItem",
 			:excluirItem="excluirItem",
 			:labelNoData="labelNoData",
-			:placeholderPesquisa="placeholderPesquisa"
+			:placeholderPesquisa="placeholderPesquisa",
+			:tituloTooltip="tituloTooltip",
 		)
 
 		v-row.pt-6.px-7
@@ -298,6 +300,7 @@ export default {
 				precision: 2,
 				masked: false
 			},
+			tituloTooltip: "taxa",
 			placeholder: "Digite aqui...",
 			placeholderSelect: "Selecione",
 			placeholderSelectLicenca: "Selecione um ou mais",
@@ -481,7 +484,7 @@ export default {
 		preparaPraSalvar() {
 			
 			this.taxaLicenciamento.listTaxasLicenciamento = [];
-			var dadoListagem = {};
+			let dadoListagem = {};
 
 			this.dadosListagem.forEach(dado => {
 
@@ -626,11 +629,11 @@ export default {
 		excluirItem(item) {
 
 			this.$fire({
-				title:'<p class="title-modal-confirm">Remover documento - ' + item.documento.nome + '</p>',
+				title:'<p class="title-modal-confirm">Remover taxa de licenciamento - ' + item.codigo + '</p>',
 
-				html:`<p class="message-modal-confirm">Ao remover o documento, ele não estará mais vinculado nesse grupo.</p>
+				html:`<p class="message-modal-confirm">Ao remover a taxa adicionada para tabela, ela não estará mais vinculada a taxa de licenciamento.</p>
 						<p class="message-modal-confirm">
-						<b>Tem certeza que deseja remover o documento? Esta opção pode ser desfeita a qualquer momento ao adicioná-lo novamente.</b>
+						<b>Tem certeza que deseja remover a taxa? Esta opção pode ser desfeita a qualquer momento ao adicioná-la novamente.</b>
 					</p>`,
 				showCancelButton: true,
 				confirmButtonColor:'#F56C6C',
@@ -645,30 +648,12 @@ export default {
 
 				if(result.value) {	
 
-					var list = [];
+					let list = [];
 
-					this.dadosListagem = this.dadosListagem.filter(
-						dado => dado.documento.nome != item.documento.nome || dado.licenca.sigla != item.licenca.sigla
-					);
+					this.dadosListagem = this.dadosListagem.filter(dado => dado.codigo != item.codigo);
 				}
 
 			});		
-		},
-
-		preparaDadosParaEdicao(requisito) {
-
-			// this.taxaLicenciamento.codigo = requisito.codigo;
-			// this.taxaLicenciamento.descricao = requisito.descricao;
-			// this.taxaLicenciamento.ativo = requisito.ativo;
-			// this.taxaLicenciamento.id = this.$route.params.idRequisito;
-			
-			// this.dadosListagem = [];
-			// this.dadosListagem = requisito.tipoLicencaGrupoDocumentoList;
-
-			// this.dadosListagem.forEach(dado => {
-			// 	dado.obrigatorio = dado.obrigatorio ? 'true' : 'false';
-			// });
-
 		},
 
 		alterarTipoTaxa() {
@@ -700,7 +685,20 @@ export default {
 			this.$nextTick(() => {
 				this.$refs.formula.focus();
 			});
-		}
+		},
+
+		prepararDadosParaEdicao(requisito) {
+
+			this.taxaLicenciamento.codigo = requisito.codigo;
+			this.taxaLicenciamento.descricao = requisito.descricao;
+			this.taxaLicenciamento.ativo = requisito.ativo;
+			this.taxaLicenciamento.id = this.$route.params.idTaxaLicenciamento;
+			
+			this.dadosListagem = [];
+			this.dadosListagem = requisito.taxasLicenciamento;
+
+		},
+
 	},
 
 	created(){
@@ -729,29 +727,35 @@ export default {
 
 	mounted() {
 
-		// if(this.$route.params.idRequisito) {
-		// 	this.labelBotaoCadastrarEditar = "Editar";
-		// 	this.iconBotaoCadastrarEditar = "mdi-pencil";
-		// 	this.isCadastro = false;
+		if(this.$route.params.idTaxaLicenciamento) {
 
-		// 	TaxaLicenciamentoService.findById(this.$route.params.idRequisito)
-		// 		.then((response) => {
-		// 			this.preparaDadosParaEdicao(response.data);
-		// 		})
-		// 		.catch((error) => {
-		// 			snackbar.alert(error.message);
-		// 		});
-		// }
+			this.labelBotaoCadastrarEditar = "Editar";
+			this.iconBotaoCadastrarEditar = "mdi-pencil";
+			this.isCadastro = false;
+
+			TaxaLicenciamentoService.findById(this.$route.params.idTaxaLicenciamento)
+
+				.then((response) => {
+					this.prepararDadosParaEdicao(response.data);
+				})
+				.catch((error) => {
+					snackbar.alert(error.message);
+				});
+
+		}
 
 		this.allowRedirect = false;
+
 	},
 
 	beforeRouteLeave(to, from, next) {
+
 		if(!this.allowRedirect){
 			this.confirmarCancelamento(next);
 		} else {
 			next();
 		}
+
 	}
 
 };
