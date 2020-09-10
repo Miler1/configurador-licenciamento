@@ -19,7 +19,7 @@
 				v-col(cols="12", md="12")
 					div.mb-2
 						v-label Opções de respostas:
-					div.d-flex(v-for="(item, index) in pergunta.respostas" :key="item.texto")
+					div.pl-3.d-flex(v-for="(item, index) in pergunta.respostas" :key="item.texto")
 						div.mt-1.mr-3.answer
 							b {{item.texto}}
 						v-checkbox.mt-0.d-inline-flex(
