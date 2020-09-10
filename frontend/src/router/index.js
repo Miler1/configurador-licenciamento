@@ -86,22 +86,22 @@ const routes = [
 			{
 				path: 'requisitos-administrativos',
 				name: 'requisitos-administrativos',
-				component: () => import('@/views/requisito/RequisitoAdministrativo.vue')
+				component: () => import('@/views/requisito/administrativo/RequisitoAdministrativo.vue')
 			},	
 			{
 				path: 'requisitos-tecnicos',
 				name: 'RequisitosTecnicos',
-				component: () => import('@/views/requisito/RequisitoTecnico.vue')
+				component: () => import('@/views/requisito/tecnico/RequisitoTecnico.vue')
 			},
 			{
 				path: 'requisitos-tecnicos/cadastrar',
 				name: 'CadastrarRequisitosTecnicos',
-				component: () => import('@/views/requisito/TelaCadastroRequisitoTecnico.vue')
+				component: () => import('@/views/requisito/tecnico/TelaCadastroRequisitoTecnico.vue')
 			},
 			{
 				path: 'requisitos-tecnicos/editar/:idRequisito',
 				name: 'EditarRequisitosTecnicos',
-				component: () => import('@/views/requisito/TelaCadastroRequisitoTecnico.vue')
+				component: () => import('@/views/requisito/tecnico/TelaCadastroRequisitoTecnico.vue')
 			},
 			{
 				path: 'perguntas',

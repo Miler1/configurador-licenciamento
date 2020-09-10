@@ -32,7 +32,7 @@
 						v-model="requisitoAdministrativo.licencas",
 						:items="licencas",
 						item-text="sigla",
-						:error-messages="errorMessage(requisitoAdministrativo.licencas)",
+						:error-messages="errorMessage(validarArray(requisitoAdministrativo.licencas))",
 						no-data-text="Nenhum tipo de licença encontrado",
 						@click.native="resetErrorMessage",
 						required,
@@ -132,6 +132,18 @@ export default {
 
 	},
 
+	methods: {
+
+		validarArray(array) {
+
+			if(!this.cadastro)
+				return array;
+
+			return Array.isArray(array) && array.length > 0;
+		}
+
+	},
+
 	props: {
 		requisitoAdministrativo: {
 			type: [Object]
@@ -168,7 +180,7 @@ export default {
 
 <style lang="less">
 
-@import "../../assets/css/variaveis.less";
+@import "../../../assets/css/variaveis.less";
 
 .theme--light.v-btn-toggle:not(.v-btn-toggle--group) .v-btn.v-btn.v-btn--active {
 	border-color: @green-primary !important;

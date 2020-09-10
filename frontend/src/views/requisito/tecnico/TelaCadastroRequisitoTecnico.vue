@@ -76,7 +76,7 @@
 										v-model="grupoRequisito.licencas",
 										:items="licencas",
 										item-text="sigla",
-										:error-messages="errorMessage( grupoRequisito.licencas, true )",
+										:error-messages="errorMessage(validarArray(grupoRequisito.licencas), true )",
 										@click.native="resetErrorMessage",
 										required,
 										return-object=true,
@@ -226,6 +226,14 @@ export default {
 
 			return this.errorMessageEmpty || value ? '' : 'Obrigatório';
 
+		},
+
+		validarArray(array){
+
+			if(!this.isInclusao)
+				return array;
+
+			return Array.isArray(array) && array.length > 0;
 		},
 
 		clear() {
@@ -547,7 +555,7 @@ export default {
 
 <style lang="less">
 
-@import "../../assets/css/variaveis.less";
+@import "../../../assets/css/variaveis.less";
 
 .v-expansion-panel-header {
 	background-color: @bg-header;

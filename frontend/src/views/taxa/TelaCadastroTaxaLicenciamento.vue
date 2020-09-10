@@ -343,8 +343,13 @@ export default {
 					return 'Obrigatório';
 				}
 
-				if (!this.isInclusao && Array.isArray(value)) {
-					return 'Este campo não permite ser editado';
+				if(Array.isArray(value)){
+
+					if (!this.isInclusao) {
+						return 'Este campo não permite ser editado';
+					} else if (!this.errorMessageEmptyInclusao && value.length === 0) {
+						return 'Obrigatório';
+					}
 				}
 
 				else if(!this.errorMessageEmptyInclusao && !value) {
