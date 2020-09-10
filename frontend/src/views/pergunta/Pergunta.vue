@@ -16,9 +16,19 @@
 				:iconBotaoCadastrarEditar="iconBotaoCadastrarEditar"
 				:validarRespostas="validarRespostas"
 			)
-		
-		v-btn(@click="gerarRelatorio")
-			span Pela força do além, eu gero relatórios!
+
+		GridListagem.pa-7(
+			:tituloAba="tituloAba"
+			:tituloListagem="tituloListagem",
+			:placeholderPesquisa="placeholderPesquisa",
+			:gerarRelatorio="gerarRelatorio",
+			:headers="headerListagem",
+			:dadosListagem="dadosListagem",
+			:updatePagination="updatePagination",
+			:editarItem="editarItem",
+			:parametrosFiltro="parametrosFiltro"
+		)
+
 </template>
 
 <script>
@@ -30,6 +40,7 @@ import GridListagem from '@/components/GridListagem';
 import PerguntaService from '@/services/pergunta.service';
 import snackbar from '@/services/snack.service';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
+import { HEADER } from '@/utils/dadosHeader/ListagemPerguntaHeader';
 
 export default {
 
@@ -44,6 +55,10 @@ export default {
 	data: () => {
 		return {
 			tituloAba: "Pergunta",
+			tituloListagem: 'Listagem de tabelas de perguntas',
+			placeholderPesquisa: "Pesquisar pelo título",
+			headerListagem: HEADER,
+			dadosListagem: {},
 			labelBotaoCadastrarEditar: "Cadastrar",
 			iconBotaoCadastrarEditar: "mdi-plus",
 			errorMessageEmpty: true,
@@ -70,7 +85,13 @@ export default {
 				title: "Cadastro de pergunta",
 				tipo: "cadastro",
 				iconName:'mdi-lock-question',
-			}
+			},
+			parametrosFiltro: {
+				pagina: 0,
+				itemsPorPagina: 10,
+				tipoOrdenacao: 'dataCadastro,desc',
+				stringPesquisa: ''
+			},
 		};
 	},
 
@@ -108,14 +129,14 @@ export default {
 
 		},
 
-		/*resetaDadosFiltragem() {
+		resetaDadosFiltragem() {
 
 			this.parametrosFiltro.pagina = 0;
 			this.parametrosFiltro.itemsPorPagina = 10;
 			this.parametrosFiltro.tipoOrdenacao = 'dataCadastro,desc';
 			this.parametrosFiltro.stringPesquisa = '';
 
-		},*/
+		},
 
 		submit() {
 
@@ -130,8 +151,8 @@ export default {
 							snackbar.alert(SUCCESS_MESSAGES.cadastro, snackbar.type.SUCCESS);
 
 							this.clear();
-							//this.updatePagination();
-							//this.resetaDadosFiltragem();
+							this.updatePagination();
+							this.resetaDadosFiltragem();
 
 						})
 						.catch(erro => {
@@ -146,8 +167,8 @@ export default {
 							snackbar.alert(SUCCESS_MESSAGES.editar, snackbar.type.SUCCESS);
 
 							this.clear();
-							//this.updatePagination();
-							//this.resetaDadosFiltragem();
+							this.updatePagination();
+							this.resetaDadosFiltragem();
 							this.dadosPanel.panel = [];
 
 						})
@@ -205,14 +226,14 @@ export default {
 			RelatorioService.baixarRelatorio("/pergunta/relatorio");
 		},
 
-		/*updatePagination(parametrosFiltro) {
+		updatePagination(parametrosFiltro) {
 
-			perguntaService.listar(parametrosFiltro)
+			PerguntaService.listar(parametrosFiltro)
 
 				.then((response) => {
 
 					this.dadosListagem = response.data;
-					this.dadosListagem.nomeItem = "CNAEs";
+					this.dadosListagem.nomeItem = "perguntas";
 
 				})
 				.catch(erro => {
@@ -223,7 +244,7 @@ export default {
 					
 				});
 
-		},*/
+		},
 
 		editarItem(item) {
 			
@@ -278,8 +299,8 @@ export default {
 								snackbar.alert(SUCCESS_MESSAGES.pergunta.ativar, snackbar.type.SUCCESS);
 							}
 
-							//this.updatePagination();
-							//this.resetaDadosFiltragem();
+							this.updatePagination();
+							this.resetaDadosFiltragem();
 
 						})
 						.catch(erro => {

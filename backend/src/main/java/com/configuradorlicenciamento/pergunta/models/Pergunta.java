@@ -3,7 +3,6 @@ package com.configuradorlicenciamento.pergunta.models;
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.pergunta.dtos.PerguntaCsv;
 import com.configuradorlicenciamento.pergunta.dtos.PerguntaDTO;
-import com.configuradorlicenciamento.pergunta.repositories.PerguntaRepository;
 import com.configuradorlicenciamento.resposta.dtos.RespostaDTO;
 import com.configuradorlicenciamento.tipologia.dtos.TipologiaCsv;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
@@ -11,8 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import com.configuradorlicenciamento.resposta.models.Resposta;
-import org.springframework.beans.factory.annotation.Autowired;
-
+import lombok.ToString;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -56,13 +54,30 @@ public class Pergunta implements Serializable {
     @JoinColumn(name = "id_usuario_licenciamento", referencedColumnName = "id")
     private UsuarioLicenciamento usuarioLicenciamento;
 
+    @ToString.Exclude
     @NotNull(message = "{validacao.notnull}")
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "id_pergunta")
     private List<Resposta> respostas;
 
-    public Pergunta(PerguntaBuilder builder) {
+    public void setRespostas(List<RespostaDTO> respostas){
 
+        if(this.respostas == null) {
+            this.respostas = new ArrayList<>();
+        }
+
+        for (RespostaDTO resposta : respostas){
+
+            Resposta entidade = new Resposta.RespostaBuilder(resposta)
+                    .setDataCadastro(this.dataCadastro)
+                    .setUsuarioLicencimento(this.usuarioLicenciamento)
+                    .build();
+
+            this.respostas.add(entidade);
+        }
+    }
+
+    public Pergunta(PerguntaBuilder builder) {
         this.texto = builder.texto;
         this.codigo = builder.codigo;
         this.ativo = builder.ativo;
@@ -70,6 +85,7 @@ public class Pergunta implements Serializable {
         this.ordem = 1;
         this.dataCadastro = builder.dataCadastro;
         this.usuarioLicenciamento = builder.usuarioLicenciamento;
+        this.respostas = new ArrayList<>();
     }
 
     public static class PerguntaBuilder {

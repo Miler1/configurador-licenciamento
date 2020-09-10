@@ -1,12 +1,12 @@
 package com.configuradorlicenciamento.pergunta.services;
 
 import com.configuradorlicenciamento.pergunta.dtos.PerguntaCsv;
+import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.pergunta.dtos.PerguntaDTO;
 import com.configuradorlicenciamento.pergunta.interfaces.IPerguntaService;
 import com.configuradorlicenciamento.pergunta.models.Pergunta;
 import com.configuradorlicenciamento.pergunta.repositories.PerguntaRepository;
-import com.configuradorlicenciamento.resposta.dtos.RespostaDTO;
-import com.configuradorlicenciamento.resposta.models.Resposta;
+import com.configuradorlicenciamento.pergunta.specifications.PerguntaSpecification;
 import com.configuradorlicenciamento.resposta.repositories.RespostaRepository;
 import com.configuradorlicenciamento.tipologia.dtos.TipologiaCsv;
 import com.configuradorlicenciamento.tipologia.models.Tipologia;
@@ -14,12 +14,13 @@ import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicencia
 import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLicenciamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Service
 public class PerguntaService implements IPerguntaService {
@@ -47,7 +48,7 @@ public class PerguntaService implements IPerguntaService {
 
         perguntaRepository.save(pergunta);
 
-        setRespostas(pergunta, perguntaDTO.getRespostas());
+        pergunta.setRespostas(perguntaDTO.getRespostas());
 
         perguntaRepository.save(pergunta);
 
@@ -72,26 +73,25 @@ public class PerguntaService implements IPerguntaService {
     }
 
     private void setRespostas(Pergunta pergunta, List<RespostaDTO> respostas) {
+    @Override
+    public Page<Pergunta> listar(Pageable pageable, FiltroPesquisa filtro) {
 
-        if(pergunta.getRespostas() != null)
-            pergunta.getRespostas().clear();
+        Specification<Pergunta> specification = preparaFiltro(filtro);
 
-        List<Resposta> entidades = new ArrayList<>();
+        return perguntaRepository.findAll(specification, pageable);
 
-        for (RespostaDTO resposta : respostas){
+    }
 
-            Resposta entidade = new Resposta.RespostaBuilder(resposta)
-                    .setPergunta(pergunta)
-                    .setDataCadastro(pergunta.getDataCadastro())
-                    .setUsuarioLicencimento(pergunta.getUsuarioLicenciamento())
-                    .build();
+    private Specification<Pergunta> preparaFiltro(FiltroPesquisa filtro) {
 
-            entidades.add(entidade);
+        Specification<Pergunta> specification = Specification.where(PerguntaSpecification.padrao());
 
-            respostaRepository.save(entidade);
+        if (filtro.getStringPesquisa() != null && !filtro.getStringPesquisa().isEmpty()) {
+            specification = specification.and(PerguntaSpecification.titulo(filtro.getStringPesquisa()));
         }
 
-        pergunta.setRespostas(entidades);
+        return specification;
+
     }
 
 }
