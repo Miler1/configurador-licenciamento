@@ -17,7 +17,7 @@ export default {
 			);
 
 		} else {
-			return ApiService.post('pergunta/listar/?page=0&size=10', {});
+			return ApiService.post('pergunta/listar/?page=0&size=10&sort=dataCadastro,desc', {});
 		}
 
 	},
