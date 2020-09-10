@@ -70,9 +70,11 @@ const ERROR_MESSAGES = {
 	},
 
 	taxaLicenciamento: {
-		cadastro: ER_BASE + 'cadastrar a taxa de Licenciamento. ',
-		editar: ER_BASE + 'editar a taxa de Licenciamento. ',
-		listagem: ER_BASE + 'listar as taxas de Licenciamento. ',
+		cadastro: ER_BASE + 'cadastrar a taxa de licenciamento. ',
+		editar: ER_BASE + 'editar a taxa de licenciamento. ',
+		listagem: ER_BASE + 'listar as taxas de licenciamento. ',
+		ativar: ER_BASE + 'ativar a taxa de licenciamento. ',
+		desativar: ER_BASE + 'desativar a taxa de licencimaneto. ',
 	},
 
 	taxaAdministrativa: {
@@ -128,6 +130,11 @@ const SUCCESS_MESSAGES = {
 	taxaAdministrativa: {
 		ativar: 'Sucesso! A taxa administrativa foi ativada.',
 		desativar: 'Sucesso! A taxa administrativa foi desativida.',
+	},
+
+	taxaLicenciamento: {
+		ativar: 'Sucesso! A taxa de licenciamento foi ativada.',
+		desativar: 'Sucesso! A taxa de licenciamento foi desativada.',
 	}
 	
 };

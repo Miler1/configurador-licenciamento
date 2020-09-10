@@ -4,6 +4,12 @@ export default {
 
 	cadastrar: async (taxaLicenciamento) => ApiService.post('/codigoTaxaLicenciamento/salvar', taxaLicenciamento ),
 
+	editar: async (taxaLicenciamento) => ApiService.post('/codigoTaxaLicenciamento/editar', taxaLicenciamento ),
+
+	ativarDesativar: async (idTaxaLicenciamento) => ApiService.post('/codigoTaxaLicenciamento/ativarDesativar/' + idTaxaLicenciamento ),
+
+	findById: async (idTaxaLicenciamento) => ApiService.get('codigoTaxaLicenciamento/findById/' + idTaxaLicenciamento ),
+
 	listar: async (parametrosFiltro) => {
 
 		if (parametrosFiltro) {
