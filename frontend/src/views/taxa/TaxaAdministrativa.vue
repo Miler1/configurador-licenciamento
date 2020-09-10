@@ -94,7 +94,8 @@ export default {
 		clear() {
 
 			this.taxaAdministrativa.ano = null;
-			this.taxaAdministrativa.valor = 0;
+			delete this.taxaAdministrativa.valor;
+			this.taxaAdministrativa.valor = 'R$ 0,00';
 			this.taxaAdministrativa.atividadeDispensavel = false;
 			this.taxaAdministrativa.atividadeLicenciavel = false;
 			this.taxaAdministrativa.ativo = true;
@@ -141,7 +142,7 @@ export default {
 
 		cadastrar() {
 
-			TaxaAdministrativaService.salvar(this.taxaAdministrativa)
+			TaxaAdministrativaService.salvar(this.preparaPraSalvar())
 				.then(() => {
 					this.handlerSuccess(false);
 				})
@@ -153,7 +154,7 @@ export default {
 
 		editar() {
 
-			TaxaAdministrativaService.editar(this.taxaAdministrativa)
+			TaxaAdministrativaService.editar(this.preparaPraSalvar())
 				.then(() => {
 
 					this.handlerSuccess(true);
@@ -165,6 +166,16 @@ export default {
 					this.handlerError(error, true);
 					
 				});
+
+		},
+
+		preparaPraSalvar() {
+
+			let TaxaAdm = {... this.taxaAdministrativa};
+
+			TaxaAdm.valor = parseFloat(TaxaAdm.valor.replace(/R\$\s|\./g, '').replace(',', '.'));
+
+			return TaxaAdm;
 
 		},
 
