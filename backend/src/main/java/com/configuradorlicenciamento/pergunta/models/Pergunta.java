@@ -1,9 +1,11 @@
 package com.configuradorlicenciamento.pergunta.models;
 
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
+import com.configuradorlicenciamento.pergunta.dtos.PerguntaCsv;
 import com.configuradorlicenciamento.pergunta.dtos.PerguntaDTO;
 import com.configuradorlicenciamento.pergunta.repositories.PerguntaRepository;
 import com.configuradorlicenciamento.resposta.dtos.RespostaDTO;
+import com.configuradorlicenciamento.tipologia.dtos.TipologiaCsv;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -96,5 +98,10 @@ public class Pergunta implements Serializable {
 
         public Pergunta build() { return new Pergunta(this); }
 
+    }
+
+    public PerguntaCsv preparaParaCsv() {
+
+        return new PerguntaCsv(this);
     }
 }

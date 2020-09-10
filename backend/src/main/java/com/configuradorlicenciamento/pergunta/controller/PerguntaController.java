@@ -10,9 +10,11 @@ import com.configuradorlicenciamento.configuracao.enums.Acao;
 import com.configuradorlicenciamento.configuracao.utils.DateUtil;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.configuracao.utils.csv.CustomMappingStrategy;
+import com.configuradorlicenciamento.pergunta.dtos.PerguntaCsv;
 import com.configuradorlicenciamento.pergunta.dtos.PerguntaDTO;
 import com.configuradorlicenciamento.pergunta.interfaces.IPerguntaService;
 import com.configuradorlicenciamento.pergunta.models.Pergunta;
+import com.configuradorlicenciamento.tipologia.dtos.TipologiaCsv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -45,6 +47,20 @@ public class PerguntaController extends DefaultController {
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
                 .body(pergunta);
 
+    }
+
+    @GetMapping(value = "/relatorio")
+    public void relatorioCSV (HttpServletRequest request, HttpServletResponse response) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        String data = DateUtil.formataBrHoraMinuto(new Date());
+        String nome = "Relatorio_Perguntas_" + data + ".csv";
+
+        CustomMappingStrategy<PerguntaCsv> mappingStrategy = new CustomMappingStrategy<>();
+        mappingStrategy.setType(PerguntaCsv.class);
+
+        downloadCsv(perguntaService.listarPerguntaParaCsv(), nome, mappingStrategy, response);
     }
 
 }
