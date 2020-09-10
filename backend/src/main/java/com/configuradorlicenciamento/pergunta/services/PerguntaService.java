@@ -8,8 +8,6 @@ import com.configuradorlicenciamento.pergunta.models.Pergunta;
 import com.configuradorlicenciamento.pergunta.repositories.PerguntaRepository;
 import com.configuradorlicenciamento.pergunta.specifications.PerguntaSpecification;
 import com.configuradorlicenciamento.resposta.repositories.RespostaRepository;
-import com.configuradorlicenciamento.tipologia.dtos.TipologiaCsv;
-import com.configuradorlicenciamento.tipologia.models.Tipologia;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLicenciamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +18,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class PerguntaService implements IPerguntaService {
@@ -72,8 +72,6 @@ public class PerguntaService implements IPerguntaService {
         return dtos;
     }
 
-    private void setRespostas(Pergunta pergunta, List<RespostaDTO> respostas) {
-    @Override
     public Page<Pergunta> listar(Pageable pageable, FiltroPesquisa filtro) {
 
         Specification<Pergunta> specification = preparaFiltro(filtro);
