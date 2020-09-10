@@ -541,7 +541,7 @@ export default {
 
 		checkFormVinculacao() {
 
-			if(this.tipoTaxa) {
+			if (this.tipoTaxa) {
 
 				var tipoTaxaValido = this.tipoTaxa === 'formula' ? (this.valor.formula && this.valor.formula != '') : (this.valor.valor && this.valor.valor != 'R$ 0,00');
 
@@ -556,7 +556,7 @@ export default {
 			return false;
 		},
 
-		cancelar(){
+		cancelar() {
 			this.redirectListagem(false);
 		},
 
@@ -629,10 +629,13 @@ export default {
 
 		excluirItem(item) {
 
-			this.$fire({
-				title:'<p class="title-modal-confirm">Remover taxa de licenciamento - ' + item.codigo + '</p>',
+			let valor = parseFloat(item.valor) !== 0 ? parseFloat(item.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2}) : 'Isento';
 
-				html:`<p class="message-modal-confirm">Ao remover a taxa adicionada para tabela, ela não estará mais vinculada a taxa de licenciamento.</p>
+			this.$fire({
+
+				title:'<p class="title-modal-confirm">Remover taxa de licenciamento - ' + valor + '</p>',
+
+				html:`<p class="message-modal-confirm">Ao remover a taxa, ela não estará mais vinculada nessa tabela.</p>
 						<p class="message-modal-confirm">
 						<b>Tem certeza que deseja remover a taxa? Esta opção pode ser desfeita a qualquer momento ao adicioná-la novamente.</b>
 					</p>`,
@@ -648,10 +651,7 @@ export default {
 			}).then((result) => {
 
 				if(result.value) {	
-
-					let list = [];
-
-					this.dadosListagem = this.dadosListagem.filter(dado => dado.codigo != item.codigo);
+					this.dadosListagem = this.dadosListagem.filter(dado => dado.licenca != item.licenca);
 				}
 
 			});		
@@ -679,7 +679,7 @@ export default {
 
 		},
 
-		AdicionaOperadorFormula(operador){
+		AdicionaOperadorFormula(operador) {
 
 			this.valor.formula = this.valor.formula ? this.valor.formula + operador : operador;
 
@@ -702,7 +702,7 @@ export default {
 
 	},
 
-	created(){
+	created() {
 
 		PorteEmpreendimentoService.findAll()
 			.then((response) => {
@@ -751,7 +751,7 @@ export default {
 
 	beforeRouteLeave(to, from, next) {
 
-		if(!this.allowRedirect){
+		if (!this.allowRedirect) {
 			this.confirmarCancelamento(next);
 		} else {
 			next();
