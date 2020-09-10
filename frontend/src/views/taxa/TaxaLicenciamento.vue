@@ -38,7 +38,7 @@ export default {
 
 	data: () => {
 		return {
-			tituloAba:' tabela de taxa',
+			tituloAba:'tabela de taxa de licenciamento',
 			tituloListagem: 'Listagem de tabelas de taxas de licenciamento cadastradas',
 			placeholderPesquisa: "Pesquisar pelo código ou descrição da tabela de taxa de licenciamento",
 			headerListagem: HEADER,
