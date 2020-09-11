@@ -133,8 +133,8 @@ const SUCCESS_MESSAGES = {
 	},
 
 	taxaLicenciamento: {
-		ativar: 'Sucesso! A taxa de licenciamento foi ativada.',
-		desativar: 'Sucesso! A taxa de licenciamento foi desativada.',
+		ativar: 'Sucesso! A tabela de taxa de licenciamento foi ativada.',
+		desativar: 'Sucesso! A tabela de taxa de licenciamento foi desativada.',
 	}
 	
 };
