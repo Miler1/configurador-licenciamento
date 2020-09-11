@@ -12,7 +12,7 @@
 						:timeout='snackbar.timeout'
 						:color='snackbar.color',
 						top,
-						:style='`padding-top: ${(index * 60) + 8}px`')
+						:style='`padding-top: ${(index * 60) + 8}px;`')
 				
 				| {{snackbar.text}}
 				template(v-slot:action=	'{ attrs }')
@@ -93,6 +93,10 @@ html{
 		//Não foi achado uma maneira de trocar para cursor default no input de sanha do card login
 		.mdi-key {
 			cursor: default !important;
+		}
+
+		.v-snack__wrapper {
+			max-width: 80%;
 		}
 	
 	}
