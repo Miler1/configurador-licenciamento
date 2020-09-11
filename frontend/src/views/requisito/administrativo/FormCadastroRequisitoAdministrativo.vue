@@ -187,17 +187,6 @@ export default {
 
 <style lang="less">
 
-@import "../../../assets/css/variaveis.less";
-
-.theme--light.v-btn-toggle:not(.v-btn-toggle--group) .v-btn.v-btn.v-btn--active {
-	border-color: @green-primary !important;
-	border-left-width: 1px !important;
-
-	span {
-		color: @green-primary !important;
-	}
-}
-
 .theme--light.v-list-item .v-list-item__mask{
 	color:white;
 	background: #65afef;
