@@ -3,7 +3,7 @@
 	v-form(ref="taxaAdministrativa")
 		v-container.pa-0
 			v-row
-				v-col(cols="12", md="2")
+				v-col(cols="12", xl="2", lg="2", md="6")
 					v-label Ano
 					v-select#QA-select-taxa-administrativa-ano(
 						outlined,
@@ -18,7 +18,7 @@
 						required,
 					)
 
-				v-col(cols="12", md="2")
+				v-col.min-width-215(cols="12", xl="2", lg="2", md="6")
 
 					ToggleOptions(
 						ref="toggleOptionsIsento",
@@ -29,7 +29,7 @@
 						@changeOption="taxaAdministrativa.isento = $event"
 					)
 
-				v-col.mr-9(cols="12", md="2", v-if="taxaAdministrativa.isento == 'false'")
+				v-col(cols="12", xl="3", lg="3", md="4", v-if="taxaAdministrativa.isento == 'false'")
 					v-label Valor
 					v-text-field#QA-input-taxa-licenciamento-valor(
 						v-money="money"
@@ -42,7 +42,7 @@
 						dense
 					)
 				
-				v-col(cols="12", md="2", v-if="taxaAdministrativa.isento == 'false'")
+				v-col.min-width-215(cols="12", xl="2", lg="2", md="4", v-if="taxaAdministrativa.isento == 'false'")
 					ToggleOptions(
 						ref="toggleAtividadeDispensavel",
 						labelOption="Atividades dispensáveis",
@@ -52,7 +52,7 @@
 						@changeOption="taxaAdministrativa.atividadeDispensavel = $event"
 					)
 				
-				v-col(cols="12", md="2", v-if="taxaAdministrativa.isento == 'false'")
+				v-col.min-width-215(cols="12", xl="2", lg="2", md="4", v-if="taxaAdministrativa.isento == 'false'")
 					ToggleOptions(
 						ref="toggleAtividadeLicenciavel",
 						labelOption="Atividades licenciáveis",
@@ -182,6 +182,10 @@ export default {
 
 .v-input--selection-controls {
 	margin-top: 4px !important;
+}
+
+.min-width-215 {
+	min-width: 215px;
 }
 
 </style>
