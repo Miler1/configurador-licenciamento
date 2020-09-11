@@ -104,35 +104,15 @@
 
 							v-row
 								v-col.d-flex.flex-column(cols="12", md="5")
-									v-col.pa-0
-										v-label Tipo de taxa
-									v-col.pa-0.mb-1
-										v-btn-toggle#QA-btn-toggle-taxa-licenciamento(
-												v-model="tipoTaxa",
-												color="green lighten-4",
-												@change="alterarTipoTaxa()"
-											)
-											v-btn#QA-btn-taxa-licenciamento-fixo(
-												color="white",
-												value="fixo",
-												width="140px",
-											) 
-												span Valor fixo
-											v-btn#QA-btn-taxa-licenciamento-formula(
-												color="white",
-												value="formula",
-												width="140px",
-											) 
-												span Fórmula
-											v-btn#QA-btn-taxa-licenciamento-isento(
-												color="white",
-												value="isento",
-												width="140px",
-											) 
-												span Isento
-									v-col.d-flex.pa-0
-										span.v-messages.theme--light.error--text.v-messages__message.pl-3.mb-3 
-											| {{ errorMessage(tipoTaxa, true) }}
+
+									ToggleOptions(
+										ref="toggleOptionsTipoTaxa",
+										labelOption="Tipo de taxa",
+										idToggle="QA-btn-toggle-taxa-licenciamento",
+										:errorMessage="errorMessage",
+										:options="optionsTipoTaxa",
+										@changeOption="tipoTaxa = $event"
+									)
 							
 							v-row(v-if="tipoTaxa === 'fixo'")
 								v-col(cols="12", md="3")
@@ -265,13 +245,15 @@ import PotencialPoluidorService from '@/services/potencialPoluidor.service';
 import ParametroService from '@/services/parametro.service';
 import TaxaLicenciamentoService from '@/services/taxaLicenciamento.service.js';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
+import ToggleOptions from "@/components/ToggleOptions";
 
 export default {
 
 	name:'TelaCadastroTaxaLicenciamento',
 
 	components: {
-		GridListagemInclusao
+		GridListagemInclusao,
+		ToggleOptions
 	},
 
 	directives: {money: VMoney},
@@ -324,7 +306,27 @@ export default {
 			labelNoData: 'Não existem taxas adicionadas.',
 			placeholderPesquisa: "Pesquisar pelo porte, PPD ou tipo de licença",
 			searchResult: null,
-			searchInput: ''
+			searchInput: '',
+			optionsTipoTaxa:[
+				{
+					idOption: "QA-btn-taxa-licenciamento-fixo",
+					value: "fixo",
+					label: "Valor fixo",
+					width: "140px"
+				},
+				{
+					idOption: "QA-btn-taxa-licenciamento-formula",
+					value: "formula",
+					label: "Fórmula",
+					width: "140px"
+				},
+				{
+					idOption: "QA-btn-taxa-licenciamento-isento",
+					value: "isento",
+					label: "Isento",
+					width: "140px"
+				}
+			]
 		};
 	},
 
@@ -628,6 +630,14 @@ export default {
 			this.indexItemEdicao = this.dadosListagem.indexOf(item);
 			this.isInclusao = false;
 
+			var that = this;
+
+			setTimeout(function() {
+
+				that.$refs.toggleOptionsTipoTaxa.setModel(that.tipoTaxa);
+
+			}, 100);
+
 		},
 
 		excluirItem(item) {
@@ -848,15 +858,6 @@ export default {
 		color: @bg-text-field !important;
 	}
 
-}
-
-.theme--light.v-btn-toggle:not(.v-btn-toggle--group) .v-btn.v-btn.v-btn--active {
-	border-color: @green-primary !important;
-	border-left-width: 1px !important;
-
-	span {
-		color: @green-primary !important;
-	}
 }
 
 .v-input--is-disabled{

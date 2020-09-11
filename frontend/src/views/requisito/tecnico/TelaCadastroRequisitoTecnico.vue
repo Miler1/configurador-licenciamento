@@ -627,15 +627,6 @@ export default {
 
 }
 
-.theme--light.v-btn-toggle:not(.v-btn-toggle--group) .v-btn.v-btn.v-btn--active {
-	border-color: @green-primary !important;
-	border-left-width: 1px !important;
-
-	span {
-		color: @green-primary !important;
-	}
-}
-
 .v-input--is-disabled{
 	pointer-events: auto !important;
 
