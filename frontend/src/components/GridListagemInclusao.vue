@@ -28,7 +28,10 @@
 				span {{item.obrigatorio == "true" ? 'Básico' : 'Complementar'}}
 
 			template(v-slot:item.valor='{ item }')
-				span {{parseFloat(item.valor) !== 0 ? parseFloat(item.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2}) : 'Isento'}}
+				span(v-if="item.tipoTaxa != 'formula'")
+					| {{parseFloat(item.valor) !== 0 ? parseFloat(item.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2}) : 'Isento'}}
+				span(v-else)
+					| {{item.valor}}
 
 			template(v-slot:item.actions='{ item }')
 				v-tooltip(bottom)

@@ -387,7 +387,7 @@ export default {
 
 			if(this.checkFormVinculacao()){
 
-				var dadoListagem = {};
+				let dadoListagem = {};
 
 				if(this.isInclusao) {
 
@@ -396,7 +396,7 @@ export default {
 						dadoListagem = this.getDadosItem(licenca);
 
 						this.dadosListagem.push(dadoListagem);
-						dadoListagem = {};
+						dadoListagem = [];
 				
 					});
 
@@ -421,11 +421,12 @@ export default {
 
 		getDadosItem(licenca) {
 
-			var dadoListagem = {};
+			let dadoListagem = {};
 
 			dadoListagem.porteEmpreendimento = this.valor.porteEmpreendimento;
 			dadoListagem.potencialPoluidor = this.valor.potencialPoluidor;
 			dadoListagem.licenca = licenca;
+			dadoListagem.tipoTaxa = this.tipoTaxa;
 
 			if(this.tipoTaxa === 'fixo') {
 
@@ -438,7 +439,6 @@ export default {
 			} else {
 
 				dadoListagem.valor = '0.0';
-
 			}
 
 			return dadoListagem;
@@ -548,7 +548,7 @@ export default {
 
 			if (this.tipoTaxa) {
 
-				var tipoTaxaValido = this.tipoTaxa === 'formula' ? (this.valor.formula && this.valor.formula != '') : (this.valor.valor && this.valor.valor != 'R$ 0,00');
+				let tipoTaxaValido = this.tipoTaxa === 'formula' ? (this.valor.formula && this.valor.formula != '') : (this.valor.valor && this.valor.valor != 'R$ 0,00');
 
 				return this.valor.porteEmpreendimento
 					&& this.valor.potencialPoluidor
@@ -609,9 +609,7 @@ export default {
 			this.valor.licencas = [];
 			this.valor.licencas.push(item.licenca);
 
-			const regex = /[^0-9\.]/;
-
-			if( regex.test(item.valor)) {
+			if (this.isFormula(item.valor)) {
 
 				this.tipoTaxa = 'formula';
 				this.valor.formula = item.valor;
@@ -634,7 +632,11 @@ export default {
 
 		excluirItem(item) {
 
-			let valor = parseFloat(item.valor) !== 0 ? parseFloat(item.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2}) : 'Isento';
+			let valor = item.valor;
+
+			if (!this.isFormula(valor)) {
+				valor = parseFloat(item.valor) !== 0 ? 'R$ ' + parseFloat(item.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2}) : 'Isento';
+			}
 
 			this.$fire({
 
@@ -655,11 +657,18 @@ export default {
 
 			}).then((result) => {
 
-				if(result.value) {	
+				if (result.value) {
 					this.dadosListagem = this.dadosListagem.filter(dado => dado.licenca != item.licenca);
 				}
 
 			});		
+		},
+		
+		isFormula(valor) {
+			
+			const regex = /[^0-9\.]/;
+			return regex.test(valor);
+
 		},
 
 		alterarTipoTaxa() {
@@ -667,7 +676,7 @@ export default {
 			this.valor.formula = null;
 			this.parametroSelecionado = null;
 
-			if(this.tipoTaxa === 'isento') {
+			if (this.tipoTaxa === 'isento') {
 				this.valor.valor = '0.0';
 			}
 		},
@@ -701,7 +710,18 @@ export default {
 			this.taxaLicenciamento.id = this.$route.params.idTaxaLicenciamento;
 			
 			this.dadosListagem = [];
-			this.dadosListagem = requisito.taxasLicenciamento;
+
+			let taxas = {};
+
+			requisito.taxasLicenciamento.forEach( taxa => {
+
+				if (this.isFormula(taxa.valor)) {
+					taxa.tipoTaxa = 'formula';
+				}
+
+				this.dadosListagem.push(taxa);
+
+			});
 
 		},
 
@@ -733,7 +753,7 @@ export default {
 
 	mounted() {
 
-		if(this.$route.params.idTaxaLicenciamento) {
+		if (this.$route.params.idTaxaLicenciamento) {
 
 			this.labelBotaoCadastrarEditar = "Editar";
 			this.iconBotaoCadastrarEditar = "mdi-pencil";
