@@ -41,7 +41,7 @@ export default {
 		return {
 			tituloAba:'tabela de taxa de licenciamento',
 			tituloListagem: 'Listagem de tabelas de taxas de licenciamento cadastradas',
-			placeholderPesquisa: "Pesquisar pelo código ou descrição da tabela de taxa de licenciamento",
+			placeholderPesquisa: "Pesquisar pelo código ou descrição da tabela de taxas de licenciamento",
 			headerListagem: HEADER,
 			dadosListagem: {
 				nomeItem: "tabelas de taxas de licenciamento",

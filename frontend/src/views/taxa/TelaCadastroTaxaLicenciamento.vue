@@ -293,7 +293,7 @@ export default {
 			parametros: [],
 			errorMessageEmpty: true,
 			errorMessageEmptyInclusao: true,
-			tituloListagem: "Listagem de taxas adicionadas para esta tabela",
+			tituloListagem: "Listagem de taxas de licenciamento adicionadas para esta tabela",
 			headerListagem: HEADER,
 			dadosListagem: [],
 			labelBotaoCadastrarEditar: 'Cadastrar',
