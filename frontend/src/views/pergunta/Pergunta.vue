@@ -54,9 +54,9 @@ export default {
 
 	data: () => {
 		return {
-			tituloAba: "Pergunta",
-			tituloListagem: 'Listagem de tabelas de perguntas',
-			placeholderPesquisa: "Pesquisar pelo título",
+			tituloAba: "pergunta",
+			tituloListagem: 'Listagem de perguntas cadastradas',
+			placeholderPesquisa: "Pesquisar pela pergunta",
 			headerListagem: HEADER,
 			dadosListagem: {},
 			labelBotaoCadastrarEditar: "Cadastrar",
