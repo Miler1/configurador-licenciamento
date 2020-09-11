@@ -17,7 +17,19 @@
 						@click.native="resetErrorMessage",
 						required,
 					)
-				v-col.mr-9(cols="12", md="2")
+
+				v-col(cols="12", md="2")
+
+					ToggleOptions(
+						ref="toggleOptionsIsento",
+						labelOption="Isento",
+						idToggle="QA-btn-toggle-taxa-licenciamento-isento",
+						:errorMessage="errorMessage",
+						:options="optionsIsento",
+						@changeOption="taxaAdministrativa.isento = $event"
+					)
+
+				v-col.mr-9(cols="12", md="2", v-if="taxaAdministrativa.isento == 'false'")
 					v-label Valor
 					v-text-field#QA-input-taxa-licenciamento-valor(
 						v-money="money"
@@ -29,12 +41,26 @@
 						required,
 						dense
 					)
-				v-col(cols="12", md="7")
-					v-label Opções para cobrança
-						i &nbsp (opcional)
-					v-col.d-flex.flex-row.pa-0
-						v-checkbox(v-model="taxaAdministrativa.atividadeDispensavel", label="Atividades dispensáveis", color="#84A98C")
-						v-checkbox.ml-5(v-model="taxaAdministrativa.atividadeLicenciavel", label="Atividades licenciáveis", color="#84A98C")
+				
+				v-col(cols="12", md="2", v-if="taxaAdministrativa.isento == 'false'")
+					ToggleOptions(
+						ref="toggleAtividadeDispensavel",
+						labelOption="Atividades dispensáveis",
+						idToggle="QA-btn-toggle-atividade-dispensavel",
+						:errorMessage="errorMessage",
+						:options="optionsAtividadeDispensavel",
+						@changeOption="taxaAdministrativa.atividadeDispensavel = $event"
+					)
+				
+				v-col(cols="12", md="2", v-if="taxaAdministrativa.isento == 'false'")
+					ToggleOptions(
+						ref="toggleAtividadeLicenciavel",
+						labelOption="Atividades licenciáveis",
+						idToggle="QA-btn-toggle-atividade-licenciavel",
+						:errorMessage="errorMessage",
+						:options="optionsAtividadeLicenciavel",
+						@changeOption="taxaAdministrativa.atividadeLicenciavel = $event"
+					)
 
 			v-row
 				v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
@@ -50,10 +76,15 @@
 <script>
 
 import { VMoney } from 'v-money';
+import ToggleOptions from "@/components/ToggleOptions";
 
 export default {
 	
 	name: 'FormCadastroTaxaAdministrativa',
+
+	components: {
+		ToggleOptions
+	},
 
 	directives: {money: VMoney},
 
@@ -67,7 +98,43 @@ export default {
 				prefix: 'R$ ',
 				precision: 2,
 				masked: false
-			}
+			},
+			optionsIsento:[
+				{
+					idOption: "QA-btn-isento-taxa-adm-sim",
+					value: "true",
+					label: "Sim"
+				},
+				{
+					idOption: "QA-btn-isento-taxa-adm-nao",
+					value: "false",
+					label: "Não"
+				}
+			],
+			optionsAtividadeDispensavel:[
+				{
+					idOption: "QA-btn-atividade-dispensavel-sim",
+					value: "true",
+					label: "Sim"
+				},
+				{
+					idOption: "QA-btn-atividade-dispensavel-nao",
+					value: "false",
+					label: "Não"
+				}
+			],
+			optionsAtividadeLicenciavel:[
+				{
+					idOption: "QA-btn-atividade-licenciavel-sim",
+					value: "true",
+					label: "Sim"
+				},
+				{
+					idOption: "QA-btn-atividade-licenciavel-nao",
+					value: "false",
+					label: "Não"
+				}
+			],
 		};
 	},
 

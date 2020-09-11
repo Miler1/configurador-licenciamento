@@ -33,4 +33,8 @@ public class TaxaAdministrativaDTO implements Serializable {
     @NotBlank(message = "{validacao.notBlank}")
     private Boolean ativo;
 
+    @NotNull(message = "{validacao.notnull}")
+    @NotBlank(message = "{validacao.notBlank}")
+    private Boolean isento;
+
 }

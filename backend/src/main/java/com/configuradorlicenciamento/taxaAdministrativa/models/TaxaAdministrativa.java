@@ -42,6 +42,9 @@ public class TaxaAdministrativa implements Serializable {
     private String linkTaxasLicenciamento;
 
     @NotNull(message = "{validacao.notnull}")
+    private Boolean isento;
+
+    @NotNull(message = "{validacao.notnull}")
     private Boolean ativo;
 
     @NotNull(message = "{validacao.notnull}")
@@ -59,6 +62,7 @@ public class TaxaAdministrativa implements Serializable {
         this.atividadeDispensavel = taxaAdministrativaBuilder.atividadeDispensavel;
         this.atividadeLicenciavel = taxaAdministrativaBuilder.atividadeLicenciavel;
         this.linkTaxasLicenciamento = "";
+        this.isento = taxaAdministrativaBuilder.isento;
         this.ativo = taxaAdministrativaBuilder.ativo;
         this.dataCadastro = taxaAdministrativaBuilder.dataCadastro;
         this.usuarioLicenciamento = taxaAdministrativaBuilder.usuarioLicenciamento;
@@ -71,6 +75,7 @@ public class TaxaAdministrativa implements Serializable {
         private final Float valor;
         private final Boolean atividadeDispensavel;
         private final Boolean atividadeLicenciavel;
+        private final Boolean isento;
         private final Boolean ativo;
         private Date dataCadastro;
         private UsuarioLicenciamento usuarioLicenciamento;
@@ -82,6 +87,7 @@ public class TaxaAdministrativa implements Serializable {
             this.atividadeDispensavel = taxaAdministrativaDTO.getAtividadeDispensavel();
             this.atividadeLicenciavel = taxaAdministrativaDTO.getAtividadeLicenciavel();
             this.ativo = taxaAdministrativaDTO.getAtivo();
+            this.isento = taxaAdministrativaDTO.getIsento();
 
         }
 
