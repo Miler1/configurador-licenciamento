@@ -20,7 +20,8 @@
 				:headers="headers",
 				:items='dadosListagem',
 				:search='stringPesquisa'
-				:items-per-page="itemsPerPage"
+				:customFilter='customFilter'
+				:items-per-page='itemsPerPage'
 				:footer-props='footerProps'
 			)
 
@@ -68,6 +69,19 @@ export default {
 		},
 
 	}),
+
+	methods: {
+
+		customFilter(value, search, item) {
+
+			return value != null
+				&& search != null
+				&& value !== 'true'
+				&& value !== 'false'
+				&& value.toString().indexOf(search) !== -1;
+		},
+
+	},
 
 	name:'GridListagemInclusao',
 
