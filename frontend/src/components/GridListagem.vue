@@ -56,13 +56,16 @@
 				span {{item.ativo ? 'Ativo' : 'Inativo'}}
 
 			template(v-slot:item.atividadeDispensavel='{ item }')
-				span {{item.atividadeDispensavel ? 'Sim' : 'Não'}}
+				span {{item.atividadeDispensavel === null ? ' ‒' : item.atividadeDispensavel ? 'Sim' : 'Não'}}
 
 			template(v-slot:item.atividadeLicenciavel='{ item }')
-				span {{item.atividadeLicenciavel ? 'Sim' : 'Não'}}
+				span {{item.atividadeLicenciavel === null ? ' ‒' : item.atividadeLicenciavel ? 'Sim' : 'Não'}}
+
+			template(v-slot:item.isento='{ item }')
+				span {{item.isento ? 'Sim' : 'Não'}}
 
 			template(v-slot:item.valor='{ item }')
-				span {{ item.valor !== 0 ? item.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2}) : ' ‒' }}
+				span {{item.valor == '0' ? ' ‒' : item.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2})}}
 
 			template(v-slot:item.actions='{ item }')
 				v-tooltip(bottom)
@@ -71,9 +74,9 @@
 							| mdi-pencil
 					span Editar {{tituloAba}}
 
-				v-tooltip(bottom, open-on-click = false)
+				v-tooltip(bottom, v-model = 'item.model')
 					template(v-slot:activator="{ on, attrs }")
-						v-icon(small @click='ativarDesativarItem(item)', v-on='on', :color= "item.ativo ? '#E6A23B' : '#67C239'")
+						v-icon(small @click='ativarDesativar(item)', v-on='on', :color= "item.ativo ? '#E6A23B' : '#67C239'")
 							| {{item.ativo ? 'mdi-minus-circle' : 'mdi-check-circle'}}
 					span {{item.ativo ? 'Desativar ' + tituloAba : 'Ativar ' + tituloAba }}
 
@@ -167,8 +170,20 @@ export default {
 
 	updated() {
 
-		if(this.dadosListagem && this.dadosListagem.pageable) {
-			this.page = this.dadosListagem.pageable.pageNumber + 1;
+		if(this.dadosListagem) {
+
+			if(this.dadosListagem.pageable) {
+				this.page = this.dadosListagem.pageable.pageNumber + 1;
+			}
+
+			if(this.dadosListagem.content) {
+
+				this.dadosListagem.content.forEach((item) => {
+					item.model = false;
+				});
+				
+			}
+ 
 		}
 
 	},
@@ -226,6 +241,13 @@ export default {
 				|| this.dadosListagem.nomeItem === 'licenças' 
 				|| this.dadosListagem.nomeItem === 'tabelas de taxas de licenciamento'
 				|| this.dadosListagem.nomeItem === 'taxas administrativas';
+		},
+
+		ativarDesativar(item) {
+
+			item.model = false;
+
+			this.ativarDesativarItem(item);
 		}
 
 	},
