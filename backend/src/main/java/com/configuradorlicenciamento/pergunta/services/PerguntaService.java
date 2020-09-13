@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PerguntaService implements IPerguntaService {
@@ -57,13 +58,48 @@ public class PerguntaService implements IPerguntaService {
                 .setUsuarioLicencimento(usuarioLicenciamento)
                 .build();
 
-        perguntaRepository.save(pergunta);
-
         pergunta.setRespostas(perguntaDTO.getRespostas());
 
         perguntaRepository.save(pergunta);
 
         return pergunta;
+
+    }
+
+    @Override
+    public Pergunta editar(HttpServletRequest request, PerguntaDTO perguntaDTO) {
+
+        Object login = request.getSession().getAttribute("login");
+
+        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
+
+        Optional<Pergunta> perguntaSalva = perguntaRepository.findById(perguntaDTO.getId())
+                .map(pergunta -> {
+
+                    tratarPergunta(perguntaDTO);
+
+                    Specification<Pergunta> specification = Specification.where(PerguntaSpecification.padrao());
+                    specification = specification.and(PerguntaSpecification.matchTitulo(perguntaDTO.getTexto()));
+
+                    if(!perguntaRepository.findAll(specification).isEmpty() && !pergunta.getTexto().equals(perguntaDTO.getTexto())) {
+                        throw new ConstraintUniqueViolationException("Já existe uma pergunta com o mesmo título.");
+                    }
+
+                    pergunta.setTexto(perguntaDTO.getTexto());
+                    pergunta.setCodigo(perguntaDTO.getCodigo());
+                    pergunta.setOrdem(perguntaDTO.getOrdem());
+                    pergunta.setTipoPergunta(perguntaDTO.getTipoPergunta());
+                    pergunta.setDataCadastro(new Date());
+                    pergunta.setAtivo(perguntaDTO.getAtivo());
+                    pergunta.setRespostas(perguntaDTO.getRespostas());
+                    pergunta.setUsuarioLicenciamento(usuarioLicenciamento);
+                    pergunta.setTipoLocalizacaoEmpreendimento(perguntaDTO.getTipoLocalizacaoEmpreendimento());
+                    return pergunta;
+                });
+
+        perguntaRepository.save(perguntaSalva.get());
+
+        return perguntaSalva.get();
 
     }
 
