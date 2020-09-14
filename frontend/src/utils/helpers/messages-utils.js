@@ -75,6 +75,7 @@ const ERROR_MESSAGES = {
 		listagem: ER_BASE + 'listar as taxas de licenciamento. ',
 		ativar: ER_BASE + 'ativar a taxa de licenciamento. ',
 		desativar: ER_BASE + 'desativar a taxa de licencimaneto. ',
+		adicionarValores: ER_BASE + 'adicionar a taxa. ',
 	},
 
 	taxaAdministrativa: {
@@ -83,7 +84,7 @@ const ERROR_MESSAGES = {
 		listagem: ER_BASE + 'listar as taxas administrativas. ',
 		ativar: ER_BASE + 'ativar a taxa administrativa. ',
 		desativar: ER_BASE + 'desativar a taxa administrativa. ',
-	}
+	},
 
 };
 
@@ -110,6 +111,11 @@ const SUCCESS_MESSAGES = {
 	parametro: {
 		ativar: 'Sucesso! O parâmetro foi ativado.',
 		desativar: 'Sucesso! O parâmetro foi desativado.'
+	},
+
+	pergunta: {
+		ativar: 'Sucesso! A pergunta foi ativada.',
+		desativar: 'Sucesso! A pergunta foi desativada.'
 	},
 
 	documento: {

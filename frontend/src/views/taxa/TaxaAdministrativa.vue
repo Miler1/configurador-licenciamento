@@ -53,6 +53,7 @@ export default {
 		PanelCadastro,
 		FormCadastroTaxaAdministrativa,
 		GridListagem
+
 	},
 
 	data: () => {
@@ -188,11 +189,11 @@ export default {
 
 		checkForm() {
 
-			if(this.taxaAdministrativa.isento === 'true') {
+			if (this.taxaAdministrativa.isento === 'true') {
 
 				return !!this.taxaAdministrativa.ano;
 
-			} else if(this.taxaAdministrativa.isento === 'false') {
+			} else if (this.taxaAdministrativa.isento === 'false') {
 
 				return this.taxaAdministrativa.ano
 					&& this.taxaAdministrativa.valor
@@ -203,6 +204,7 @@ export default {
 			}
 
 			return false;
+
 		},
 
 		resetErrorMessage() {
@@ -211,7 +213,7 @@ export default {
 
 		errorMessage(value) {
 
-			if(!this.errorMessageEmpty && value === 'R$ 0,00') { return 'Obrigatório'; }
+			if (!this.errorMessageEmpty && value === 'R$ 0,00') { return 'Obrigatório'; }
 			
 			return this.errorMessageEmpty || value ? '' : 'Obrigatório';
 		},
@@ -254,18 +256,17 @@ export default {
 
 			this.taxaAdministrativa.isento = this.taxaAdministrativa.isento ? 'true' : 'false';
 
-			if(this.taxaAdministrativa.isento === 'false') {
+			if (this.taxaAdministrativa.isento === 'false') {
 
 				this.taxaAdministrativa.atividadeDispensavel = this.taxaAdministrativa.atividadeDispensavel ? 'true' : 'false';
 				this.taxaAdministrativa.atividadeLicenciavel = this.taxaAdministrativa.atividadeLicenciavel ? 'true' : 'false';
 
-			
 			}
 
 			this.isCadastro = false;
 			window.scrollTo(0,0);
 
-			var that = this;
+			let that = this;
 
 			setTimeout(function() {
 
@@ -312,7 +313,7 @@ export default {
 					TaxaAdministrativaService.editar(item)
 						.then(() => {
 
-							if(!item.ativo) {
+							if (!item.ativo) {
 								snackbar.alert(SUCCESS_MESSAGES.taxaAdministrativa.desativar, snackbar.type.SUCCESS);
 							} else {
 								snackbar.alert(SUCCESS_MESSAGES.taxaAdministrativa.ativar, snackbar.type.SUCCESS);
@@ -326,7 +327,7 @@ export default {
 
 							console.error(error);
 
-							if(!item.ativo) {
+							if (!item.ativo) {
 								snackbar.alert(ERROR_MESSAGES.taxaAdministrativa.desativar);
 							} else {
 								snackbar.alert(ERROR_MESSAGES.taxaAdministrativa.ativar);

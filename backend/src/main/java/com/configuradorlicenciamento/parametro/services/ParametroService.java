@@ -26,7 +26,6 @@ import java.util.Optional;
 @Service
 public class ParametroService implements IParametroService {
 
-
     private static final String PARAMETRO_EXISTENTE = "Já existe um parâmetro com o mesmo código.";
 
     @Autowired
@@ -42,9 +41,9 @@ public class ParametroService implements IParametroService {
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
-        boolean existsByCodigo = parametroRepository.existsByCodigo(parametroDTO.getCodigo());
+        boolean existeCodigo = parametroRepository.existsByCodigo(parametroDTO.getCodigo());
 
-        if (existsByCodigo) {
+        if (existeCodigo) {
             throw new ConstraintUniqueViolationException(PARAMETRO_EXISTENTE);
         }
 
@@ -68,9 +67,9 @@ public class ParametroService implements IParametroService {
 
         String codigo = parametroDTO.getCodigo();
 
-        boolean existsCodigo = parametroRepository.existsByCodigo(codigo);
+        boolean existeCodigo = parametroRepository.existsByCodigo(codigo);
 
-        if(existsCodigo) {
+        if (existeCodigo) {
 
             Parametro parametroExistente = parametroRepository.findByCodigo(codigo);
 

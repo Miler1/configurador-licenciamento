@@ -7,6 +7,7 @@
 			:dadosPanel="dadosPanel"
 		)
 			FormCadastroRequisitoAdministrativo(
+				ref="formCadastroRequisitoAdministrativo"
 				:requisitoAdministrativo="requisitoAdministrativo",
 				:clear="clear",
 				:submit="submit",
@@ -232,6 +233,16 @@ export default {
 			this.iconBotaoCadastrarEditar = "mdi-pencil";
 			item.obrigatorio = item.obrigatorio === true ? "true" : "false";
 			this.requisitoAdministrativo = { ... item};
+
+			var that = this;
+
+			setTimeout(function() {
+
+				that.$refs.formCadastroRequisitoAdministrativo.$refs.toggleOptionsPessoa.setModel(that.requisitoAdministrativo.tipoPessoa);
+				that.$refs.formCadastroRequisitoAdministrativo.$refs.toggleOptionsRequisitoAdm.setModel(that.requisitoAdministrativo.obrigatorio);
+
+			}, 100);
+
 			this.requisitoAdministrativo.licencas = [item.licenca];
 			this.isCadastro = false;
 			window.scrollTo(0,0);

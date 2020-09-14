@@ -104,35 +104,15 @@
 
 							v-row
 								v-col.d-flex.flex-column(cols="12", md="5")
-									v-col.pa-0
-										v-label Tipo de taxa
-									v-col.pa-0.mb-1
-										v-btn-toggle#QA-btn-toggle-taxa-licenciamento(
-												v-model="tipoTaxa",
-												color="green lighten-4",
-												@change="alterarTipoTaxa()"
-											)
-											v-btn#QA-btn-taxa-licenciamento-fixo(
-												color="white",
-												value="fixo",
-												width="140px",
-											) 
-												span Valor fixo
-											v-btn#QA-btn-taxa-licenciamento-formula(
-												color="white",
-												value="formula",
-												width="140px",
-											) 
-												span Fórmula
-											v-btn#QA-btn-taxa-licenciamento-isento(
-												color="white",
-												value="isento",
-												width="140px",
-											) 
-												span Isento
-									v-col.d-flex.pa-0
-										span.v-messages.theme--light.error--text.v-messages__message.pl-3.mb-3 
-											| {{ errorMessage(tipoTaxa, true) }}
+
+									ToggleOptions(
+										ref="toggleOptionsTipoTaxa",
+										labelOption="Tipo de taxa",
+										idToggle="QA-btn-toggle-taxa-licenciamento",
+										:errorMessage="errorMessage",
+										:options="optionsTipoTaxa",
+										@changeOption="tipoTaxa = $event"
+									)
 							
 							v-row(v-if="tipoTaxa === 'fixo'")
 								v-col(cols="12", md="3")
@@ -150,7 +130,7 @@
 									)
 
 							v-row(v-if="tipoTaxa === 'formula'")
-								v-col(cols="12", md="3")
+								v-col(cols="12", md="4")
 									v-label Equação da fórmula
 									v-text-field#QA-input-taxa-licenciamento-valor-formula(
 										outlined,
@@ -163,7 +143,7 @@
 										dense,
 										ref="formula"
 									)
-								v-col(cols="12", md="3")
+								v-col(cols="12", md="4")
 									v-label Parâmetro
 									v-autocomplete#QA-select-taxa-licenciamento-licenca(
 										outlined,
@@ -177,7 +157,7 @@
 										:search-input.sync="searchInput"
 										@change="adicionarParamentro"
 									)
-								v-col(cols="12", md="6")
+								v-col(cols="12", md="4")
 									v-label Operadores
 									div
 										v-tooltip(bottom)
@@ -265,13 +245,15 @@ import PotencialPoluidorService from '@/services/potencialPoluidor.service';
 import ParametroService from '@/services/parametro.service';
 import TaxaLicenciamentoService from '@/services/taxaLicenciamento.service.js';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
+import ToggleOptions from "@/components/ToggleOptions";
 
 export default {
 
 	name:'TelaCadastroTaxaLicenciamento',
 
 	components: {
-		GridListagemInclusao
+		GridListagemInclusao,
+		ToggleOptions
 	},
 
 	directives: {money: VMoney},
@@ -311,7 +293,7 @@ export default {
 			parametros: [],
 			errorMessageEmpty: true,
 			errorMessageEmptyInclusao: true,
-			tituloListagem: "Listagem de taxas adicionadas para esta tabela",
+			tituloListagem: "Listagem de taxas de licenciamento adicionadas para esta tabela",
 			headerListagem: HEADER,
 			dadosListagem: [],
 			labelBotaoCadastrarEditar: 'Cadastrar',
@@ -324,7 +306,27 @@ export default {
 			labelNoData: 'Não existem taxas adicionadas.',
 			placeholderPesquisa: "Pesquisar pelo porte, PPD ou tipo de licença",
 			searchResult: null,
-			searchInput: ''
+			searchInput: '',
+			optionsTipoTaxa:[
+				{
+					idOption: "QA-btn-taxa-licenciamento-fixo",
+					value: "fixo",
+					label: "Valor fixo",
+					width: "140px"
+				},
+				{
+					idOption: "QA-btn-taxa-licenciamento-formula",
+					value: "formula",
+					label: "Fórmula",
+					width: "140px"
+				},
+				{
+					idOption: "QA-btn-taxa-licenciamento-isento",
+					value: "isento",
+					label: "Isento",
+					width: "140px"
+				}
+			]
 		};
 	},
 
@@ -337,13 +339,13 @@ export default {
 
 		errorMessage(value, isVinculacao) {
 
-			if(isVinculacao) {
+			if (isVinculacao) {
 
-				if((!this.errorMessageEmpty || !this.errorMessageEmptyInclusao) && value === 'R$ 0,00') {
+				if ((!this.errorMessageEmpty || !this.errorMessageEmptyInclusao) && value === 'R$ 0,00') {
 					return 'Obrigatório';
 				}
 
-				if(Array.isArray(value)){
+				if (Array.isArray(value)){
 
 					if (!this.isInclusao) {
 						return 'Este campo não permite ser editado';
@@ -352,7 +354,7 @@ export default {
 					}
 				}
 
-				else if(!this.errorMessageEmptyInclusao && !value) {
+				else if (!this.errorMessageEmptyInclusao && !value) {
 					return 'Obrigatório';
 				}
 
@@ -381,22 +383,36 @@ export default {
 			this.tipoTaxa = null;
 			this.isInclusao = true;
 			this.resetErrorMessage();
+
 		},
 
 		incluirDados() {
 
-			if(this.checkFormVinculacao()){
+			if (this.checkFormVinculacao()) {
 
 				let dadoListagem = {};
 
-				if(this.isInclusao) {
+				if (this.isInclusao) {
 
 					this.valor.licencas.forEach(licenca => {
 
-						dadoListagem = this.getDadosItem(licenca);
+						if (this.validarTaxaTabela(licenca)) {
 
-						this.dadosListagem.push(dadoListagem);
-						dadoListagem = [];
+							dadoListagem = this.getDadosItem(licenca);
+
+							this.dadosListagem.push(dadoListagem);
+							dadoListagem = {};
+
+						} else {
+
+							let message = ERROR_MESSAGES.taxaLicenciamento.adicionarValores + "Já existe uma taxa com a mesma combinação: " +
+								"Porte: " + this.valor.porteEmpreendimento.nome + ", " +
+								"PPD: " + this.valor.potencialPoluidor.nome + "e " +
+								"Tipo licença: " + licenca.sigla + ".";
+
+							snackbar.alert(message);
+
+						}
 				
 					});
 
@@ -419,6 +435,25 @@ export default {
 
 		},
 
+		validarTaxaTabela(licenca) {
+
+			let validacao = true;
+
+			this.dadosListagem.forEach(
+				dado => {
+					if (dado.potencialPoluidor.codigo == this.valor.potencialPoluidor.codigo 
+						&& dado.porteEmpreendimento.codigo == this.valor.porteEmpreendimento.codigo
+						&& dado.licenca.sigla == licenca.sigla) {
+
+						validacao = false;
+					}
+				}
+			);
+
+			return validacao;
+
+		},
+
 		getDadosItem(licenca) {
 
 			let dadoListagem = {};
@@ -428,11 +463,11 @@ export default {
 			dadoListagem.licenca = licenca;
 			dadoListagem.tipoTaxa = this.tipoTaxa;
 
-			if(this.tipoTaxa === 'fixo') {
+			if (this.tipoTaxa === 'fixo') {
 
 				dadoListagem.valor = this.valor.valor.replace(/R\$\s|\./g, '').replace(',', '.');
 
-			} else if(this.tipoTaxa === 'formula') {
+			} else if (this.tipoTaxa === 'formula') {
 
 				dadoListagem.valor = this.valor.formula;
 
@@ -628,6 +663,14 @@ export default {
 			this.indexItemEdicao = this.dadosListagem.indexOf(item);
 			this.isInclusao = false;
 
+			var that = this;
+
+			setTimeout(function() {
+
+				that.$refs.toggleOptionsTipoTaxa.setModel(that.tipoTaxa);
+
+			}, 100);
+
 		},
 
 		excluirItem(item) {
@@ -658,7 +701,12 @@ export default {
 			}).then((result) => {
 
 				if (result.value) {
-					this.dadosListagem = this.dadosListagem.filter(dado => dado.licenca != item.licenca);
+					this.dadosListagem = this.dadosListagem.filter(
+
+						dado => dado.potencialPoluidor.codigo != item.potencialPoluidor.codigo
+							&& dado.porteEmpreendimento.codigo !== item.porteEmpreendimento.codigo
+							&& dado.tipoTaxa !== item.tipoTaxa
+							&& dado.valor !== item.valor);
 				}
 
 			});		
@@ -672,6 +720,7 @@ export default {
 		},
 
 		alterarTipoTaxa() {
+
 			this.valor.valor = null;
 			this.valor.formula = null;
 			this.parametroSelecionado = null;
@@ -679,6 +728,7 @@ export default {
 			if (this.tipoTaxa === 'isento') {
 				this.valor.valor = '0.0';
 			}
+
 		},
 
 		adicionarParamentro(value) {
@@ -700,6 +750,7 @@ export default {
 			this.$nextTick(() => {
 				this.$refs.formula.focus();
 			});
+
 		},
 
 		prepararDadosParaEdicao(requisito) {
@@ -782,7 +833,7 @@ export default {
 			next();
 		}
 
-	}
+	},
 
 };
 
@@ -848,15 +899,6 @@ export default {
 		color: @bg-text-field !important;
 	}
 
-}
-
-.theme--light.v-btn-toggle:not(.v-btn-toggle--group) .v-btn.v-btn.v-btn--active {
-	border-color: @green-primary !important;
-	border-left-width: 1px !important;
-
-	span {
-		color: @green-primary !important;
-	}
 }
 
 .v-input--is-disabled{

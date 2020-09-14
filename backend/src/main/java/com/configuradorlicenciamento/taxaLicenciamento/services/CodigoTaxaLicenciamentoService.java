@@ -1,6 +1,7 @@
 package com.configuradorlicenciamento.taxaLicenciamento.services;
 
 import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
+import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoCsv;
 import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoDTO;
@@ -37,8 +38,18 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
     @Autowired
     ITaxaLicenciamentoService taxaLicenciamentoService;
 
+    public static final String TAXA_EXISTENTE = "Erro! Não foi possível cadastrar a tabela de taxas. Já existe tabela com o mesmo código.";
+
     @Override
     public CodigoTaxaLicenciamento salvar(HttpServletRequest request, CodigoTaxaLicenciamentoDTO codigoTaxaLicenciamentoDTO) {
+
+        String codigo = codigoTaxaLicenciamentoDTO.getCodigo();
+
+        boolean existeCodigo = codigoTaxaLicenciamentoRepository.existsByCodigo(codigo);
+
+        if (existeCodigo) {
+            throw new ConstraintUniqueViolationException(TAXA_EXISTENTE);
+        }
 
         Object login = request.getSession().getAttribute("login");
 
@@ -59,6 +70,19 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
 
     @Override
     public CodigoTaxaLicenciamento editar(HttpServletRequest request, CodigoTaxaLicenciamentoDTO codigoTaxaLicenciamentoDTO) {
+
+        String codigo = codigoTaxaLicenciamentoDTO.getCodigo();
+
+        boolean existeCodigo = codigoTaxaLicenciamentoRepository.existsByCodigo(codigo);
+
+        if (existeCodigo) {
+
+            CodigoTaxaLicenciamento codigoTaxaLicenciamento = codigoTaxaLicenciamentoRepository.findByCodigo(codigo);
+
+            if (codigoTaxaLicenciamento != null && !codigoTaxaLicenciamento.getId().equals(codigoTaxaLicenciamentoDTO.getId())) {
+                throw new ConstraintUniqueViolationException(TAXA_EXISTENTE);
+            }
+        }
 
         Object login = request.getSession().getAttribute("login");
 
@@ -136,7 +160,6 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
         return new CodigoTaxaLicenciamentoEdicaoDTO(codigoTaxaLicenciamento, taxasLicencas);
 
     }
-
 
     private Specification<CodigoTaxaLicenciamento> preparaFiltro(FiltroPesquisa filtro) {
 

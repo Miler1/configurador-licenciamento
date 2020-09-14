@@ -56,11 +56,11 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
         List<RequisitoAdministrativo> requisitoAdministrativoList = new ArrayList<>();
         List<String> licencasExistentes = new ArrayList<>();
 
-        for (Licenca licenca : requisitoAdministrativoDTO.getLicencas()){
+        for (Licenca licenca : requisitoAdministrativoDTO.getLicencas()) {
 
-            boolean existsRequisitoAdministrativo = requisitoAdministrativoRepository.existsByLicencaAndDocumento(licenca, requisitoAdministrativoDTO.getDocumento());
+            boolean existeRequisitoAdministrativo = requisitoAdministrativoRepository.existsByLicencaAndDocumento(licenca, requisitoAdministrativoDTO.getDocumento());
 
-            if (existsRequisitoAdministrativo) {
+            if (existeRequisitoAdministrativo) {
                 licencasExistentes.add(licenca.getSigla());
             }
 
@@ -92,13 +92,13 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
 
         Optional<RequisitoAdministrativo> requisitoAdministrativoSalvo = requisitoAdministrativoRepository.findById(requisitoAdministrativoDTO.getId());
 
-        if(requisitoAdministrativoSalvo.isEmpty()){
+        if (requisitoAdministrativoSalvo.isEmpty()) {
             throw new ConfiguradorNotFoundException("O requisito não foi encontrado no sistema. Atualize a página e tente novamente.");
         }
 
         RequisitoAdministrativo requisitoAdministrativo = requisitoAdministrativoSalvo.get();
 
-        if(!requisitoAdministrativo.getAtivo().equals(requisitoAdministrativoDTO.getAtivo())){
+        if (!requisitoAdministrativo.getAtivo().equals(requisitoAdministrativoDTO.getAtivo())) {
             requisitoAdministrativo.setAtivo(requisitoAdministrativoDTO.getAtivo());
         } else {
 
@@ -111,7 +111,7 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
 
             List<RequisitoAdministrativo> alreadyExistents = requisitoAdministrativoRepository.findAll(RequisitoAdministrativoSpecification.documentoAndLicenca(novoDocumento.getId(), requisitoAdministrativo.getLicenca().getId(), requisitoAdministrativo.getTipoPessoa()));
 
-            if(alreadyExistents.size() > 1 || !alreadyExistents.isEmpty() && !alreadyExistents.get(0).getId().equals(requisitoAdministrativo.getId())){
+            if (alreadyExistents.size() > 1 || !alreadyExistents.isEmpty() && !alreadyExistents.get(0).getId().equals(requisitoAdministrativo.getId())) {
                 throw new ConstraintUniqueViolationException(REQUISITO_ADMINISTRATIVO_EXISTENTE);
             }
         }
@@ -131,6 +131,7 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
         Specification<RequisitoAdministrativo> specification = preparaFiltro(filtro);
 
         return requisitoAdministrativoRepository.findAll(specification, pageable);
+
     }
 
     @Override
@@ -139,7 +140,7 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
         List<RequisitoAdministrativo> requisitosAdministrativos = requisitoAdministrativoRepository.findAll(Sort.by("documento"));
         List<RequisitoAdministrativoCsv> dtos = new ArrayList<>();
 
-        for (RequisitoAdministrativo requisitoAdministrativo: requisitosAdministrativos) {
+        for (RequisitoAdministrativo requisitoAdministrativo : requisitosAdministrativos) {
             dtos.add(requisitoAdministrativo.preparaParaCsv());
         }
 
@@ -160,7 +161,7 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
 
             specification = specification.and(RequisitoAdministrativoSpecification.licencaSigla(filtro.getStringPesquisa()));
 
-            if(requisitoAdministrativoRepository.findAll(specification).isEmpty()){
+            if (requisitoAdministrativoRepository.findAll(specification).isEmpty()) {
                 specification = specification.or(RequisitoAdministrativoSpecification.documento(filtro.getStringPesquisa()));
             }
         }

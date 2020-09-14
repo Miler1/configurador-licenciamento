@@ -26,6 +26,7 @@
 			:dadosListagem="dadosListagem",
 			:updatePagination="updatePagination",
 			:editarItem="editarItem",
+			:ativarDesativarItem="ativarDesativarItem",
 			:parametrosFiltro="parametrosFiltro"
 		)
 
@@ -176,7 +177,7 @@ export default {
 
 							console.error(erro);
 
-							snackbar.alert(ERROR_MESSAGES.pergunta.editar);
+							snackbar.alert(ERROR_MESSAGES.pergunta.editar + erro.message);
 
 							this.resetaDadosCadastro();
 
@@ -264,17 +265,17 @@ export default {
 			this.$fire({
 
 				title: item.ativo ? 
-					'<p class="title-modal-confirm">Desativar CNAE - ' + item.codigo+ '</p>' :
-					'<p class="title-modal-confirm">Ativar CNAE - ' + item.codigo+ '</p>',
+					'<p class="title-modal-confirm">Desativar Pergunta - ' + item.texto+ '</p>' :
+					'<p class="title-modal-confirm">Ativar Pergunta - ' + item.texto+ '</p>',
 
 				html: item.ativo ?
-					`<p class="message-modal-confirm">Ao desativar o CNAE, ele não estará mais disponível no sistema.</p>
+					`<p class="message-modal-confirm">Ao desativar a Pergunta, ele não estará mais disponível no sistema.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja desativar o CNAE? Esta opção pode ser desfeita a qualquer momento ao ativá-lo novamente.</b>
+						<b>Tem certeza que deseja desativar a Pergunta? Esta opção pode ser desfeita a qualquer momento ao ativá-lo novamente.</b>
 					</p>` :
-					`<p class="message-modal-confirm">Ao ativar o CNAE, ele ficará disponível no sistema.</p>
+					`<p class="message-modal-confirm">Ao ativar a Pergunta, ele ficará disponível no sistema.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja ativar o CNAE? Esta opção pode ser desfeita a qualquer momento ao desativá-lo novamente.</b>
+						<b>Tem certeza que deseja ativar a Pergunta? Esta opção pode ser desfeita a qualquer momento ao desativá-lo novamente.</b>
 					</p>`,
 				showCancelButton: true,
 				confirmButtonColor: item.ativo ? '#E6A23C' : '#67C23A',
@@ -290,9 +291,9 @@ export default {
 				if(result.value) {
 
 					item.ativo = !item.ativo;
-					perguntaService.editar(item)
+					PerguntaService.editar(item)
 						.then(() => {
-							
+							console.log('editar');
 							if(!item.ativo) {
 								snackbar.alert(SUCCESS_MESSAGES.pergunta.desativar, snackbar.type.SUCCESS);
 							} else {

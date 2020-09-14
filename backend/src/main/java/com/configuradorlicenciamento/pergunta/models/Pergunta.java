@@ -4,7 +4,6 @@ import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.pergunta.dtos.PerguntaCsv;
 import com.configuradorlicenciamento.pergunta.dtos.PerguntaDTO;
 import com.configuradorlicenciamento.resposta.dtos.RespostaDTO;
-import com.configuradorlicenciamento.tipologia.dtos.TipologiaCsv;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -64,6 +63,8 @@ public class Pergunta implements Serializable {
 
         if(this.respostas == null) {
             this.respostas = new ArrayList<>();
+        } else {
+            this.respostas.clear();
         }
 
         for (RespostaDTO resposta : respostas){

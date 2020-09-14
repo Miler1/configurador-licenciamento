@@ -8,4 +8,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CodigoTaxaLicenciamentoRepository extends JpaRepository<CodigoTaxaLicenciamento, Integer>, JpaSpecificationExecutor<CodigoTaxaLicenciamento> {
 
+    Boolean existsByCodigo(String codigo);
+
+    CodigoTaxaLicenciamento findByCodigo(String codigo);
+
 }
