@@ -130,7 +130,7 @@
 									)
 
 							v-row(v-if="tipoTaxa === 'formula'")
-								v-col(cols="12", md="3")
+								v-col(cols="12", md="4")
 									v-label Equação da fórmula
 									v-text-field#QA-input-taxa-licenciamento-valor-formula(
 										outlined,
@@ -143,7 +143,7 @@
 										dense,
 										ref="formula"
 									)
-								v-col(cols="12", md="3")
+								v-col(cols="12", md="4")
 									v-label Parâmetro
 									v-autocomplete#QA-select-taxa-licenciamento-licenca(
 										outlined,
@@ -157,7 +157,7 @@
 										:search-input.sync="searchInput"
 										@change="adicionarParamentro"
 									)
-								v-col(cols="12", md="6")
+								v-col(cols="12", md="4")
 									v-label Operadores
 									div
 										v-tooltip(bottom)
@@ -293,7 +293,7 @@ export default {
 			parametros: [],
 			errorMessageEmpty: true,
 			errorMessageEmptyInclusao: true,
-			tituloListagem: "Listagem de taxas adicionadas para esta tabela",
+			tituloListagem: "Listagem de taxas de licenciamento adicionadas para esta tabela",
 			headerListagem: HEADER,
 			dadosListagem: [],
 			labelBotaoCadastrarEditar: 'Cadastrar',
