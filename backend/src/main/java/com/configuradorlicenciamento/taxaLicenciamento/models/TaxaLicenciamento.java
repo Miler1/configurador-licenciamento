@@ -46,7 +46,7 @@ public class TaxaLicenciamento implements Serializable {
     @JoinColumn(name="codigo", referencedColumnName = "id")
     public CodigoTaxaLicenciamento codigo;
 
-    public String valor;
+    private String valor;
 
     public TaxaLicenciamento(TaxaLicenciamento.TaxaLicenciamentoBuilder builder) {
         this.codigo = builder.codigo;

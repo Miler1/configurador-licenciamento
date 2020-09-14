@@ -41,9 +41,9 @@ public class DocumentoService implements IDocumentoService {
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
-        boolean existsName = documentoRepository.existsByNome(documentoDTO.getNome());
+        boolean nomeExistente = documentoRepository.existsByNome(documentoDTO.getNome());
 
-        if (existsName) {
+        if (nomeExistente) {
             throw new ConstraintUniqueViolationException(DOCUMENTO_EXISTENTE);
         }
 
@@ -105,9 +105,9 @@ public class DocumentoService implements IDocumentoService {
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
-        boolean existsNome = documentoRepository.existsByNome(documentoDTO.getNome());
+        boolean nomeExistente = documentoRepository.existsByNome(documentoDTO.getNome());
 
-        if (existsNome){
+        if (nomeExistente){
 
             Documento documentoExistente = documentoRepository.findByNome(documentoDTO.getNome());
 

@@ -35,15 +35,15 @@ public class LicencaService implements ILicencaService {
     UsuarioLicenciamentoRepository usuarioLicenciamentoRepository;
 
     @Override
-    public Licenca salvar(HttpServletRequest request, LicencaDTO licencaDTO) throws Exception {
+    public Licenca salvar(HttpServletRequest request, LicencaDTO licencaDTO) {
 
         Object login = request.getSession().getAttribute("login");
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
-        boolean existsSigla = licencaRepository.existsBySigla(licencaDTO.getSigla());
+        boolean existeSigla = licencaRepository.existsBySigla(licencaDTO.getSigla());
 
-        if (existsSigla) {
+        if (existeSigla) {
             throw new ConstraintUniqueViolationException(LICENCA_EXISTENTE);
         }
 
@@ -55,6 +55,7 @@ public class LicencaService implements ILicencaService {
         licencaRepository.save(licenca);
 
         return licenca;
+
     }
 
     @Override
@@ -66,9 +67,9 @@ public class LicencaService implements ILicencaService {
 
         String sigla = licencaDTO.getSigla();
 
-        boolean existsSigla = licencaRepository.existsBySigla(sigla);
+        boolean existeSigla = licencaRepository.existsBySigla(sigla);
 
-        if (existsSigla) {
+        if (existeSigla) {
 
             Licenca licencaExistente = licencaRepository.findBySigla(sigla);
 
@@ -133,6 +134,7 @@ public class LicencaService implements ILicencaService {
         }
 
         return dtos;
+
     }
 
     public List<Licenca> findAll() {

@@ -32,6 +32,7 @@ public class TipoLicencaGrupoDocumentoService implements ITipoLicencaGrupoDocume
         listRequisitos.forEach(tipoLicencaGrupoDocumentoDTO ->
                 tipoLicencaGrupoDocumentoRepository.save(montaObjetoParaSalvar(tipoLicencaGrupoDocumentoDTO, requisitoTecnico))
         );
+
     }
 
     @Override
@@ -46,6 +47,7 @@ public class TipoLicencaGrupoDocumentoService implements ITipoLicencaGrupoDocume
         listRequisitos.forEach(tipoLicencaGrupoDocumentoDTO ->
                 tipoLicencaGrupoDocumentoRepository.save(montaObjetoParaSalvar(tipoLicencaGrupoDocumentoDTO, requisitoTecnico))
         );
+
     }
 
     public TipoLicencaGrupoDocumento montaObjetoParaSalvar(TipoLicencaGrupoDocumentoDTO tDTO, RequisitoTecnico requisitoTecnico) {
@@ -59,6 +61,7 @@ public class TipoLicencaGrupoDocumentoService implements ITipoLicencaGrupoDocume
                 .setLicenca(licenca)
                 .setRequisitoTecnico(requisitoTecnico)
                 .build();
+
     }
 
     @Override
