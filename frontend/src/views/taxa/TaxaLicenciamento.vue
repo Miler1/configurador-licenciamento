@@ -41,7 +41,7 @@ export default {
 		return {
 			tituloAba:'tabela de taxa de licenciamento',
 			tituloListagem: 'Listagem de tabelas de taxas de licenciamento cadastradas',
-			placeholderPesquisa: "Pesquisar pelo código ou descrição da tabela de taxa de licenciamento",
+			placeholderPesquisa: "Pesquisar pelo código ou descrição da tabela de taxas de licenciamento",
 			headerListagem: HEADER,
 			dadosListagem: {
 				nomeItem: "tabelas de taxas de licenciamento",
@@ -103,17 +103,17 @@ export default {
 			this.$fire({
 
 				title: item.ativo ? 
-					'<p class="title-modal-confirm">Desativar taxa de licenciamento - ' + item.codigo+ '</p>' :
-					'<p class="title-modal-confirm">Ativar taxa de licenciamento - ' + item.codigo+ '</p>',
+					'<p class="title-modal-confirm">Desativar tabela de taxa de licenciamento - ' + item.codigo+ '</p>' :
+					'<p class="title-modal-confirm">Ativar tabela de taxa de licenciamento - ' + item.codigo+ '</p>',
 
 				html: item.ativo ?
-					`<p class="message-modal-confirm">Ao desativar a taxa de licenciamento, ela não estará mais disponível no sistema.</p>
+					`<p class="message-modal-confirm">Ao desativar a tabela de taxa de licenciamento, ela não estará mais disponível no sistema.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja desativar a taxa de licenciamento? Esta opção pode ser desfeita a qualquer momento ao ativá-lo novamente.</b>
+						<b>Tem certeza que deseja desativar a tabela de taxa de licenciamento? Esta opção pode ser desfeita a qualquer momento ao ativá-la novamente.</b>
 					</p>` :
 					`<p class="message-modal-confirm">Ao ativar a taxa de licenciamento, ela ficará disponível no sistema.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja ativar a taxa de licenciamento? Esta opção pode ser desfeita a qualquer momento ao desativá-lo novamente.</b>
+						<b>Tem certeza que deseja ativar a tabela de taxa de licenciamento? Esta opção pode ser desfeita a qualquer momento ao desativá-la novamente.</b>
 					</p>`,
 				showCancelButton: true,
 				confirmButtonColor: item.ativo ? '#E6A23C' : '#67C23A',
@@ -134,9 +134,9 @@ export default {
 						.then(() => {
 							
 							if(item.ativo) {
-								snackbar.alert(SUCCESS_MESSAGES.taxaLicenciamento.desativar, snackbar.type.SUCCESS);
-							} else {
 								snackbar.alert(SUCCESS_MESSAGES.taxaLicenciamento.ativar, snackbar.type.SUCCESS);
+							} else {
+								snackbar.alert(SUCCESS_MESSAGES.taxaLicenciamento.desativar, snackbar.type.SUCCESS);
 							}
 
 							this.updatePagination();

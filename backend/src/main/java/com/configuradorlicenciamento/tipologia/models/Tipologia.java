@@ -83,7 +83,9 @@ public class Tipologia implements Serializable {
             return this;
         }
 
-        public Tipologia build() { return new Tipologia(this); }
+        public Tipologia build() {
+            return new Tipologia(this);
+        }
 
         public static String gerarCodigo(String string) {
 
@@ -96,7 +98,7 @@ public class Tipologia implements Serializable {
 
             List<String> preposicoes = StringUtil.preposicoes();
 
-            for(String preposicao : preposicoes) {
+            for (String preposicao : preposicoes) {
                 codigo = codigo.replace(preposicao, " ");
             }
 

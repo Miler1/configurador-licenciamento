@@ -61,6 +61,7 @@
 										:items="documentos",
 										item-text="nome",
 										:error-messages="errorMessage( grupoRequisito.documento, true )",
+										no-data-text="Nenhum documento encontrado",
 										@click.native="resetErrorMessage",
 										required,
 										return-object=true
@@ -87,28 +88,16 @@
 									)
 							v-row
 								v-col.d-flex.flex-column(cols="12", md="5")
-									v-col.pa-0
-										v-label Tipo do requisito
-									v-col.pa-0.mb-1
-										v-btn-toggle#QA-btn-toggle-requisito-tecnico(
-												v-model="grupoRequisito.obrigatorio",
-												color="green lighten-4", 
-											)
-											v-btn#QA-btn-requisito-tecnico-basico(
-												color="white",
-												value="true",
-												width="140px",
-											) 
-												span Básico
-											v-btn#QA-btn-requisito-tecnico-complementar(
-												color="white",
-												value="false",
-												width="140px",
-											) 
-												span Complementar
-									v-col.d-flex.pa-0
-										span.v-messages.theme--light.error--text.v-messages__message.pl-3.mb-3 
-											| {{ errorMessage(grupoRequisito.obrigatorio, true) }}
+
+									ToggleOptions(
+										ref="toggleOptionsTipoRequisito",
+										labelOption="Tipo do requisito",
+										idToggle="QA-btn-toggle-requisito-tecnico",
+										:errorMessage="errorMessage",
+										:options="optionsTipoRequisito",
+										@changeOption="grupoRequisito.obrigatorio = $event"
+									)
+
 							v-row
 								v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
 									a#QA-limpar-dados-requisito-tecnico.d-flex.flex-row.align-center.justify-end(@click="clearRequisito")
@@ -155,13 +144,15 @@ import GridListagemInclusao from '@/components/GridListagemInclusao';
 import snackbar from '@/services/snack.service';
 import { HEADER } from '@/utils/dadosHeader/ListagemRequisitoTecnicoInclusao';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
+import ToggleOptions from "@/components/ToggleOptions";
 
 export default {
 
 	name:'TelaCadastroRequisitoTecnico',
 
 	components: {
-		GridListagemInclusao
+		GridListagemInclusao,
+		ToggleOptions
 	},
 	
 	data: () => {
@@ -198,7 +189,21 @@ export default {
 			indexItemEdicao: null,
 			allowRedirect: true,
 			labelNoData: 'Não existem documentos adicionados.',
-			placeholderPesquisa: "Pesquisar pelo nome do documento ou tipo de licença"
+			placeholderPesquisa: "Pesquisar pelo nome do documento ou tipo de licença",
+			optionsTipoRequisito:[
+				{
+					idOption: "QA-btn-requisito-tecnico-basico",
+					value: "true",
+					label: "Básico",
+					width: "140px"
+				},
+				{
+					idOption: "QA-btn-requisito-tecnico-complementar",
+					value: "false",
+					label: "Complementar",
+					width: "140px"
+				}
+			]
 		};
 	},
 
@@ -454,6 +459,14 @@ export default {
 			this.indexItemEdicao = this.dadosListagem.indexOf(item);
 			this.isInclusao = false;
 
+			var that = this;
+
+			setTimeout(function() {
+
+				that.$refs.toggleOptionsTipoRequisito.setModel(that.grupoRequisito.obrigatorio);
+
+			}, 100);
+
 		},
 
 		excluirItem(item) {
@@ -615,15 +628,6 @@ export default {
 
 }
 
-.theme--light.v-btn-toggle:not(.v-btn-toggle--group) .v-btn.v-btn.v-btn--active {
-	border-color: @green-primary !important;
-	border-left-width: 1px !important;
-
-	span {
-		color: @green-primary !important;
-	}
-}
-
 .v-input--is-disabled{
 	pointer-events: auto !important;
 
@@ -634,6 +638,11 @@ export default {
 
 .v-autocomplete:not(.v-input--is-focused).v-select--chips input {
 	max-height: 100% !important;
+}
+
+.theme--light.v-list-item .v-list-item__mask{
+	color:white;
+	background: #65afef;
 }
 
 </style>

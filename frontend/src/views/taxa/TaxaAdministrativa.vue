@@ -8,6 +8,7 @@
 		)
 
 			FormCadastroTaxaAdministrativa(
+				ref="formCadastroTaxaAdministrativa",
 				:taxaAdministrativa="taxaAdministrativa",
 				:clear="clear",
 				:submit="submit",
@@ -52,6 +53,7 @@ export default {
 		PanelCadastro,
 		FormCadastroTaxaAdministrativa,
 		GridListagem
+
 	},
 
 	data: () => {
@@ -65,10 +67,11 @@ export default {
 			iconBotaoCadastrarEditar: "mdi-plus",
 			taxaAdministrativa: {
 				ano: null,
-				valor: 0,
-				atividadeDispensavel: false,
-				atividadeLicenciavel: false,
-				ativo: true
+				valor: null,
+				atividadeDispensavel: null,
+				atividadeLicenciavel: null,
+				ativo: true,
+				isento: null
 			},
 			dadosListagem: {},
 			headerListagem: HEADER,
@@ -96,10 +99,12 @@ export default {
 			this.taxaAdministrativa.ano = null;
 			delete this.taxaAdministrativa.valor;
 			this.taxaAdministrativa.valor = 'R$ 0,00';
-			this.taxaAdministrativa.atividadeDispensavel = false;
-			this.taxaAdministrativa.atividadeLicenciavel = false;
+			this.taxaAdministrativa.isento = null;
+			this.taxaAdministrativa.atividadeDispensavel = null;
+			this.taxaAdministrativa.atividadeLicenciavel = null;
 			this.taxaAdministrativa.ativo = true;
 			this.errorMessageEmpty = true;
+			this.$refs.formCadastroTaxaAdministrativa.$refs.toggleOptionsIsento.clearModel();
 			this.resetarDadosCadastro();
 
 		},
@@ -171,17 +176,35 @@ export default {
 
 		preparaPraSalvar() {
 
-			let TaxaAdm = {... this.taxaAdministrativa};
+			let taxaAdm = {... this.taxaAdministrativa};
 
-			TaxaAdm.valor = parseFloat(TaxaAdm.valor.replace(/R\$\s|\./g, '').replace(',', '.'));
+			taxaAdm.isento = taxaAdm.isento === 'true';
+			taxaAdm.atividadeDispensavel = taxaAdm.atividadeDispensavel ? (taxaAdm.atividadeDispensavel === 'true') : null;
+			taxaAdm.atividadeLicenciavel = taxaAdm.atividadeLicenciavel ? (taxaAdm.atividadeLicenciavel === 'true') : null;
+			taxaAdm.valor = taxaAdm.valor ? parseFloat(taxaAdm.valor.replace(/R\$\s|\./g, '').replace(',', '.')) : 0.0;
 
-			return TaxaAdm;
+			return taxaAdm;
 
 		},
 
 		checkForm() {
-			return this.taxaAdministrativa.ano
-				&& this.taxaAdministrativa !== "";
+
+			if (this.taxaAdministrativa.isento === 'true') {
+
+				return !!this.taxaAdministrativa.ano;
+
+			} else if (this.taxaAdministrativa.isento === 'false') {
+
+				return this.taxaAdministrativa.ano
+					&& this.taxaAdministrativa.valor
+					&& this.taxaAdministrativa.valor != 'R$ 0,00'
+					&& this.taxaAdministrativa.atividadeDispensavel
+					&& this.taxaAdministrativa.atividadeLicenciavel;
+
+			}
+
+			return false;
+
 		},
 
 		resetErrorMessage() {
@@ -189,7 +212,10 @@ export default {
 		},
 
 		errorMessage(value) {
-			return this.errorMessageEmpty || value ? [] : 'Obrigatório';
+
+			if (!this.errorMessageEmpty && value === 'R$ 0,00') { return 'Obrigatório'; }
+			
+			return this.errorMessageEmpty || value ? '' : 'Obrigatório';
 		},
 
 		handlerSuccess(edicao = false) {
@@ -227,8 +253,28 @@ export default {
 			this.labelBotaoCadastrarEditar = "Editar";
 			this.iconBotaoCadastrarEditar = "mdi-pencil";
 			this.taxaAdministrativa = { ... item};
+
+			this.taxaAdministrativa.isento = this.taxaAdministrativa.isento ? 'true' : 'false';
+
+			if (this.taxaAdministrativa.isento === 'false') {
+
+				this.taxaAdministrativa.atividadeDispensavel = this.taxaAdministrativa.atividadeDispensavel ? 'true' : 'false';
+				this.taxaAdministrativa.atividadeLicenciavel = this.taxaAdministrativa.atividadeLicenciavel ? 'true' : 'false';
+
+			}
+
 			this.isCadastro = false;
 			window.scrollTo(0,0);
+
+			let that = this;
+
+			setTimeout(function() {
+
+				that.$refs.formCadastroTaxaAdministrativa.$refs.toggleOptionsIsento.setModel(that.taxaAdministrativa.isento);
+				that.$refs.formCadastroTaxaAdministrativa.$refs.toggleAtividadeDispensavel.setModel(that.taxaAdministrativa.atividadeDispensavel);
+				that.$refs.formCadastroTaxaAdministrativa.$refs.toggleAtividadeLicenciavel.setModel(that.taxaAdministrativa.atividadeLicenciavel);
+
+			}, 100);
 
 		},
 
@@ -267,7 +313,7 @@ export default {
 					TaxaAdministrativaService.editar(item)
 						.then(() => {
 
-							if(!item.ativo) {
+							if (!item.ativo) {
 								snackbar.alert(SUCCESS_MESSAGES.taxaAdministrativa.desativar, snackbar.type.SUCCESS);
 							} else {
 								snackbar.alert(SUCCESS_MESSAGES.taxaAdministrativa.ativar, snackbar.type.SUCCESS);
@@ -281,7 +327,7 @@ export default {
 
 							console.error(error);
 
-							if(!item.ativo) {
+							if (!item.ativo) {
 								snackbar.alert(ERROR_MESSAGES.taxaAdministrativa.desativar);
 							} else {
 								snackbar.alert(ERROR_MESSAGES.taxaAdministrativa.ativar);

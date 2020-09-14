@@ -34,9 +34,9 @@ public class TaxaLicenciamentoService implements ITaxaLicenciamentoService {
     @Override
     public void salvar(List<TaxaLicenciamentoDTO> listTaxasLicenciamento, CodigoTaxaLicenciamento codigoTaxaLicenciamento) {
 
-        listTaxasLicenciamento.forEach(taxaLicenciamentoDTO ->
-                taxaLicenciamentoRepository.save(montaObjetoParaSalvar(taxaLicenciamentoDTO, codigoTaxaLicenciamento))
-        );
+        listTaxasLicenciamento.forEach(taxaLicenciamentoDTO -> {
+            taxaLicenciamentoRepository.save(montaObjetoParaSalvar(taxaLicenciamentoDTO, codigoTaxaLicenciamento));
+        });
 
     }
 
@@ -46,7 +46,7 @@ public class TaxaLicenciamentoService implements ITaxaLicenciamentoService {
         List<TaxaLicenciamento> taxasLicenciamento = taxaLicenciamentoRepository.findByCodigo(codigoTaxaLicenciamento);
 
         taxasLicenciamento.forEach(taxaLicenciamento ->
-            taxaLicenciamentoRepository.delete( taxaLicenciamento )
+                taxaLicenciamentoRepository.delete(taxaLicenciamento)
         );
 
         taxasLicenciamentoDTO.forEach(tipoLicencaGrupoDocumentoDTO ->
