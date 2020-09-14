@@ -191,6 +191,11 @@ export default {
 
 			if (this.taxaAdministrativa.isento === 'true') {
 
+				delete this.taxaAdministrativa.valor;
+				this.taxaAdministrativa.atividadeDispensavel = null;
+				this.taxaAdministrativa.atividadeLicenciavel = null;
+				this.taxaAdministrativa.ativo = true;
+
 				return !!this.taxaAdministrativa.ano;
 
 			} else if (this.taxaAdministrativa.isento === 'false') {
