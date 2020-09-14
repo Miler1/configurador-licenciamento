@@ -35,7 +35,7 @@ import java.util.Optional;
 @Service
 public class RequisitoAdministrativoService implements IRequisitoAdministrativoService {
 
-    private static final String REQUISITO_ADMINISTRATIVO_EXISTENTE = "Já existe um requisito administrativo com o mesmo documento para esse tipo de licença.";
+    private static final String REQUISITO_ADMINISTRATIVO_EXISTENTE = "Já existe um requisito administrativo com o mesmo documento para o(s) tipo(s) de licença(s): ";
 
     @Autowired
     RequisitoAdministrativoRepository requisitoAdministrativoRepository;
@@ -54,23 +54,29 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
         List<RequisitoAdministrativo> requisitoAdministrativoList = new ArrayList<>();
+        List<String> licencasExistentes = new ArrayList<>();
 
         for (Licenca licenca : requisitoAdministrativoDTO.getLicencas()){
 
             boolean existsRequisitoAdministrativo = requisitoAdministrativoRepository.existsByLicencaAndDocumento(licenca, requisitoAdministrativoDTO.getDocumento());
 
             if (existsRequisitoAdministrativo) {
-                throw new ConstraintUniqueViolationException(REQUISITO_ADMINISTRATIVO_EXISTENTE);
+                licencasExistentes.add(licenca.getSigla());
             }
+
             RequisitoAdministrativo requisitoAdministrativo = new RequisitoAdministrativo.RequisitoAdministrativoBuilder(requisitoAdministrativoDTO)
                     .setLicenca(licenca)
                     .setDataCadastro(new Date())
                     .setUsuarioLicencimento(usuarioLicenciamento)
                     .build();
 
-            requisitoAdministrativoRepository.save(requisitoAdministrativo);
-
             requisitoAdministrativoList.add(requisitoAdministrativo);
+        }
+
+        if(licencasExistentes.isEmpty()){
+            requisitoAdministrativoRepository.saveAll(requisitoAdministrativoList);
+        } else {
+            throw new ConstraintUniqueViolationException(REQUISITO_ADMINISTRATIVO_EXISTENTE + tratarLicencasParaErro(licencasExistentes));
         }
 
         return requisitoAdministrativoList;
@@ -161,6 +167,24 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
 
         return specification;
 
+    }
+
+    private String tratarLicencasParaErro(List<String> licencasExistentes){
+
+        StringBuilder licencas = new StringBuilder();
+
+        for(int i = 0; i < licencasExistentes.size(); i++){
+
+            licencas.append(licencasExistentes.get(i));
+
+            if(i != licencasExistentes.size() - 1){
+                licencas.append(", ");
+            } else {
+                licencas.append(". ");
+            }
+        }
+
+        return licencas.toString();
     }
 
 }
