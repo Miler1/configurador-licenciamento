@@ -128,6 +128,8 @@ export default {
 
 			if (this.checkForm()) {
 
+				console.log(this.isCadastro);
+
 				if (this.isCadastro) {
 					this.cadastrar();
 				} else {
@@ -148,7 +150,7 @@ export default {
 					this.handleSuccess();
 				})
 				.catch(error => {
-					this.handleError(error, true);
+					this.handleError(error);
 				});
 
 		},

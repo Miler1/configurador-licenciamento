@@ -381,6 +381,7 @@ export default {
 			this.valor.potencialPoluidor = null;
 			this.valor.licencas = null;
 			this.tipoTaxa = null;
+			this.$refs.toggleOptionsTipoTaxa.clearModel();
 			this.isInclusao = true;
 			this.resetErrorMessage();
 
