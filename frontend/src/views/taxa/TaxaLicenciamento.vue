@@ -111,7 +111,7 @@ export default {
 					<p class="message-modal-confirm">
 						<b>Tem certeza que deseja desativar a tabela de taxa de licenciamento? Esta opção pode ser desfeita a qualquer momento ao ativá-la novamente.</b>
 					</p>` :
-					`<p class="message-modal-confirm">Ao ativar a taxa de licenciamento, ela ficará disponível no sistema.</p>
+					`<p class="message-modal-confirm">Ao ativar a tabela de taxa de licenciamento, ela ficará disponível no sistema.</p>
 					<p class="message-modal-confirm">
 						<b>Tem certeza que deseja ativar a tabela de taxa de licenciamento? Esta opção pode ser desfeita a qualquer momento ao desativá-la novamente.</b>
 					</p>`,
