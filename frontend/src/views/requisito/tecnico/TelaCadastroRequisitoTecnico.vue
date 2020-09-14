@@ -61,6 +61,7 @@
 										:items="documentos",
 										item-text="nome",
 										:error-messages="errorMessage( grupoRequisito.documento, true )",
+										no-data-text="Nenhum documento encontrado",
 										@click.native="resetErrorMessage",
 										required,
 										return-object=true
@@ -637,6 +638,11 @@ export default {
 
 .v-autocomplete:not(.v-input--is-focused).v-select--chips input {
 	max-height: 100% !important;
+}
+
+.theme--light.v-list-item .v-list-item__mask{
+	color:white;
+	background: #65afef;
 }
 
 </style>
