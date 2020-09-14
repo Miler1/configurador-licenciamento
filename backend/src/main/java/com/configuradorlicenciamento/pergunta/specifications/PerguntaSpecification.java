@@ -1,5 +1,6 @@
 package com.configuradorlicenciamento.pergunta.specifications;
 
+import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.pergunta.models.Pergunta;
 import org.springframework.data.jpa.domain.Specification;
 
