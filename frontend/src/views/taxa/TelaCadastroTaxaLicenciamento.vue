@@ -333,8 +333,10 @@ export default {
 	methods: {
 
 		resetErrorMessage() {
+
 			this.errorMessageEmpty = true;
 			this.errorMessageEmptyInclusao = true;
+
 		},
 
 		errorMessage(value, isVinculacao) {
@@ -397,7 +399,7 @@ export default {
 
 					this.valor.licencas.forEach(licenca => {
 
-						if (this.validarTaxaTabela(licenca)) {
+						if (this.validarValoresAdicionados(licenca)) {
 
 							dadoListagem = this.getDadosItem(licenca);
 
@@ -436,7 +438,7 @@ export default {
 
 		},
 
-		validarTaxaTabela(licenca) {
+		validarValoresAdicionados(licenca) {
 
 			let validacao = true;
 
@@ -549,6 +551,7 @@ export default {
 			message += error.message;
 
 			snackbar.alert(message);
+
 		},
 
 		handleSuccess(edicao = false) {
@@ -584,7 +587,13 @@ export default {
 
 			if (this.tipoTaxa) {
 
-				let tipoTaxaValido = this.tipoTaxa === 'formula' ? (this.valor.formula && this.valor.formula != '') : (this.valor.valor && this.valor.valor != 'R$ 0,00');
+				let tipoTaxaValido;
+
+				if (this.tipoTaxa === 'isento') {
+					tipoTaxaValido = true;
+				} else {
+					tipoTaxaValido = this.tipoTaxa === 'formula' ? (this.valor.formula && this.valor.formula != '') : (this.valor.valor && this.valor.valor != 'R$ 0,00');	
+				}
 
 				return this.valor.porteEmpreendimento
 					&& this.valor.potencialPoluidor
@@ -595,6 +604,7 @@ export default {
 			}
 
 			return false;
+
 		},
 
 		cancelar() {
