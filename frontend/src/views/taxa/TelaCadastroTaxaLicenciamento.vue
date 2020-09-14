@@ -382,6 +382,7 @@ export default {
 			this.valor.porteEmpreendimento = null;
 			this.valor.potencialPoluidor = null;
 			this.valor.licencas = null;
+			this.valor.valor = null;
 			this.tipoTaxa = null;
 			this.$refs.toggleOptionsTipoTaxa.clearModel();
 			this.isInclusao = true;
@@ -444,9 +445,9 @@ export default {
 
 			this.dadosListagem.forEach(
 				dado => {
-					if (dado.potencialPoluidor.codigo == this.valor.potencialPoluidor.codigo 
-						&& dado.porteEmpreendimento.codigo == this.valor.porteEmpreendimento.codigo
-						&& dado.licenca.sigla == licenca.sigla) {
+					if (dado.potencialPoluidor.codigo === this.valor.potencialPoluidor.codigo 
+						&& dado.porteEmpreendimento.codigo === this.valor.porteEmpreendimento.codigo
+						&& dado.licenca.sigla === licenca.sigla) {
 
 						validacao = false;
 					}
@@ -543,6 +544,7 @@ export default {
 			});
 
 			return this.taxaLicenciamento;
+
 		},
 
 		handleError(error, edicao = false) {
@@ -591,8 +593,10 @@ export default {
 
 				if (this.tipoTaxa === 'isento') {
 					tipoTaxaValido = true;
-				} else {
-					tipoTaxaValido = this.tipoTaxa === 'formula' ? (this.valor.formula && this.valor.formula != '') : (this.valor.valor && this.valor.valor != 'R$ 0,00');	
+				} else if (this.tipoTaxa === 'formula') {
+					tipoTaxaValido = this.valor.formula && this.valor.formula != '';	
+				} else {//tipoTaxa = 'fixo'
+					tipoTaxaValido = this.valor.valor && this.valor.valor != 'R$ 0,00';
 				}
 
 				return this.valor.porteEmpreendimento
@@ -712,12 +716,7 @@ export default {
 			}).then((result) => {
 
 				if (result.value) {
-					this.dadosListagem = this.dadosListagem.filter(
-
-						dado => dado.potencialPoluidor.codigo != item.potencialPoluidor.codigo
-							&& dado.porteEmpreendimento.codigo !== item.porteEmpreendimento.codigo
-							&& dado.tipoTaxa !== item.tipoTaxa
-							&& dado.valor !== item.valor);
+					this.dadosListagem = this.dadosListagem.filter(dado => dado.id != item.id);
 				}
 
 			});		
