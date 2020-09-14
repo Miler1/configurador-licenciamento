@@ -4,6 +4,8 @@ export default {
 
 	cadastrar: async (pergunta) => ApiService.post('/pergunta/salvar', pergunta),
 
+	editar: async (pergunta) => ApiService.post('/pergunta/editar', pergunta),
+
 	listar: async (parametrosFiltro) => {
 		
 		if (parametrosFiltro) {

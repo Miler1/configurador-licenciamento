@@ -10,7 +10,6 @@ import com.configuradorlicenciamento.pergunta.dtos.PerguntaCsv;
 import com.configuradorlicenciamento.pergunta.dtos.PerguntaDTO;
 import com.configuradorlicenciamento.pergunta.interfaces.IPerguntaService;
 import com.configuradorlicenciamento.pergunta.models.Pergunta;
-import com.configuradorlicenciamento.tipologia.dtos.TipologiaCsv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -56,6 +55,19 @@ public class PerguntaController extends DefaultController {
         mappingStrategy.setType(PerguntaCsv.class);
 
         downloadCsv(perguntaService.listarPerguntaParaCsv(), nome, mappingStrategy, response);
+    }
+
+    @PostMapping(value = "/editar")
+    public ResponseEntity<Pergunta> editar(HttpServletRequest request, @Valid @RequestBody PerguntaDTO perguntaDTO) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        Pergunta pergunta = perguntaService.editar(request, perguntaDTO);
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(pergunta);
+
     }
 
     @PostMapping(value = "/listar")
