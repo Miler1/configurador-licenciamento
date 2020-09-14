@@ -175,6 +175,15 @@ export default {
 
 		preparaPraSalvar() {
 
+			if(this.taxaAdministrativa.isento === 'true'){
+
+				delete this.taxaAdministrativa.valor;
+				this.taxaAdministrativa.atividadeDispensavel = null;
+				this.taxaAdministrativa.atividadeLicenciavel = null;
+				this.taxaAdministrativa.ativo = true;
+
+			}
+
 			let taxaAdm = {... this.taxaAdministrativa};
 
 			taxaAdm.isento = taxaAdm.isento === 'true';
