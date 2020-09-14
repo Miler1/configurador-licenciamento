@@ -383,6 +383,7 @@ export default {
 			this.tipoTaxa = null;
 			this.isInclusao = true;
 			this.resetErrorMessage();
+
 		},
 
 		incluirDados() {
@@ -403,12 +404,14 @@ export default {
 							dadoListagem = {};
 
 						} else {
+
 							let message = ERROR_MESSAGES.taxaLicenciamento.adicionarValores + "Já existe uma taxa com a mesma combinação: " +
 								"Porte: " + this.valor.porteEmpreendimento.nome + ", " +
 								"PPD: " + this.valor.potencialPoluidor.nome + "e " +
 								"Tipo licença: " + licenca.sigla + ".";
-								
+
 							snackbar.alert(message);
+
 						}
 				
 					});
@@ -435,12 +438,9 @@ export default {
 		validarTaxaTabela(licenca) {
 
 			let validacao = true;
-		
 
 			this.dadosListagem.forEach(
 				dado => {
-					console.log("dadoLicenca: ", dado.licenca.sigla);
-
 					if (dado.potencialPoluidor.codigo == this.valor.potencialPoluidor.codigo 
 						&& dado.porteEmpreendimento.codigo == this.valor.porteEmpreendimento.codigo
 						&& dado.licenca.sigla == licenca.sigla) {
@@ -449,7 +449,7 @@ export default {
 					}
 				}
 			);
-			
+
 			return validacao;
 
 		},
