@@ -113,6 +113,11 @@ const SUCCESS_MESSAGES = {
 		desativar: 'Sucesso! O parâmetro foi desativado.'
 	},
 
+	pergunta: {
+		ativar: 'Sucesso! A pergunta foi ativada.',
+		desativar: 'Sucesso! A pergunta foi desativada.'
+	},
+
 	documento: {
 		ativar: 'Sucesso! O documento foi ativado.',
 		desativar: 'Sucesso! O documento foi desativado.',
