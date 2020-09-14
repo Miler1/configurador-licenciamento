@@ -38,9 +38,9 @@ public class TaxaAdministrativaService implements ITaxaAdministrativaService {
     @Override
     public TaxaAdministrativa salvar(HttpServletRequest request, TaxaAdministrativaDTO taxaAdministrativaDTO) {
 
-        boolean existsAno = taxaAdministrativaRepository.existsByAno(taxaAdministrativaDTO.getAno());
+        boolean existeAno = taxaAdministrativaRepository.existsByAno(taxaAdministrativaDTO.getAno());
 
-        if (existsAno) {
+        if (existeAno) {
             throw new ConstraintUniqueViolationException(TAXA_EXISTENTE);
         }
 
@@ -56,6 +56,7 @@ public class TaxaAdministrativaService implements ITaxaAdministrativaService {
         taxaAdministrativaRepository.save(taxaAdministrativa);
 
         return taxaAdministrativa;
+
     }
 
     @Override
@@ -63,9 +64,9 @@ public class TaxaAdministrativaService implements ITaxaAdministrativaService {
 
         Integer ano = taxaAdministrativaDTO.getAno();
 
-        boolean existsCodigo = taxaAdministrativaRepository.existsByAno(ano);
+        boolean existeAno = taxaAdministrativaRepository.existsByAno(ano);
 
-        if (existsCodigo) {
+        if (existeAno) {
 
             TaxaAdministrativa taxaExistente = taxaAdministrativaRepository.findByAno(ano);
 

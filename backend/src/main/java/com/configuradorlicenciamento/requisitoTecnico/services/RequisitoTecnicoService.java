@@ -94,6 +94,7 @@ public class RequisitoTecnicoService implements IRequisitoTecnicoService {
         requisitoTecnicoRepository.save(requisitoTecnico);
 
         return requisitoTecnico;
+
     }
 
     @Override
@@ -102,13 +103,14 @@ public class RequisitoTecnicoService implements IRequisitoTecnicoService {
         Specification<RequisitoTecnico> specification = preparaFiltro(filtro);
 
         return requisitoTecnicoRepository.findAll(specification, pageable);
+
     }
 
     private Specification<RequisitoTecnico> preparaFiltro(FiltroPesquisa filtro) {
 
         Specification<RequisitoTecnico> specification = Specification.where(RequisitoTecnicoSpecification.padrao());
 
-        if(filtro.getStringPesquisa() != null) {
+        if (filtro.getStringPesquisa() != null) {
             specification = specification.and(RequisitoTecnicoSpecification.codigo(filtro.getStringPesquisa())
                     .or(RequisitoTecnicoSpecification.descricao(filtro.getStringPesquisa())));
         }

@@ -324,7 +324,7 @@ export default {
 			labelNoData: 'Não existem taxas adicionadas.',
 			placeholderPesquisa: "Pesquisar pelo porte, PPD ou tipo de licença",
 			searchResult: null,
-			searchInput: ''
+			searchInput: '',
 		};
 	},
 
@@ -337,13 +337,13 @@ export default {
 
 		errorMessage(value, isVinculacao) {
 
-			if(isVinculacao) {
+			if (isVinculacao) {
 
-				if((!this.errorMessageEmpty || !this.errorMessageEmptyInclusao) && value === 'R$ 0,00') {
+				if ((!this.errorMessageEmpty || !this.errorMessageEmptyInclusao) && value === 'R$ 0,00') {
 					return 'Obrigatório';
 				}
 
-				if(Array.isArray(value)){
+				if (Array.isArray(value)){
 
 					if (!this.isInclusao) {
 						return 'Este campo não permite ser editado';
@@ -352,7 +352,7 @@ export default {
 					}
 				}
 
-				else if(!this.errorMessageEmptyInclusao && !value) {
+				else if (!this.errorMessageEmptyInclusao && !value) {
 					return 'Obrigatório';
 				}
 
@@ -385,18 +385,29 @@ export default {
 
 		incluirDados() {
 
-			if(this.checkFormVinculacao()){
+			if (this.checkFormVinculacao()) {
 
 				let dadoListagem = {};
 
-				if(this.isInclusao) {
+				if (this.isInclusao) {
 
 					this.valor.licencas.forEach(licenca => {
 
-						dadoListagem = this.getDadosItem(licenca);
+						if (this.validarTaxaTabela(licenca)) {
 
-						this.dadosListagem.push(dadoListagem);
-						dadoListagem = [];
+							dadoListagem = this.getDadosItem(licenca);
+
+							this.dadosListagem.push(dadoListagem);
+							dadoListagem = {};
+
+						} else {
+							let message = ERROR_MESSAGES.taxaLicenciamento.adicionarValores + "Já existe uma taxa com a mesma combinação: " +
+								"Porte: " + this.valor.porteEmpreendimento.nome + ", " +
+								"PPD: " + this.valor.potencialPoluidor.nome + "e " +
+								"Tipo licença: " + licenca.sigla + ".";
+								
+							snackbar.alert(message);
+						}
 				
 					});
 
@@ -419,6 +430,28 @@ export default {
 
 		},
 
+		validarTaxaTabela(licenca) {
+
+			let validacao = true;
+		
+
+			this.dadosListagem.forEach(
+				dado => {
+					console.log("dadoLicenca: ", dado.licenca.sigla);
+
+					if (dado.potencialPoluidor.codigo == this.valor.potencialPoluidor.codigo 
+						&& dado.porteEmpreendimento.codigo == this.valor.porteEmpreendimento.codigo
+						&& dado.licenca.sigla == licenca.sigla) {
+
+						validacao = false;
+					}
+				}
+			);
+			
+			return validacao;
+
+		},
+
 		getDadosItem(licenca) {
 
 			let dadoListagem = {};
@@ -428,11 +461,11 @@ export default {
 			dadoListagem.licenca = licenca;
 			dadoListagem.tipoTaxa = this.tipoTaxa;
 
-			if(this.tipoTaxa === 'fixo') {
+			if (this.tipoTaxa === 'fixo') {
 
 				dadoListagem.valor = this.valor.valor.replace(/R\$\s|\./g, '').replace(',', '.');
 
-			} else if(this.tipoTaxa === 'formula') {
+			} else if (this.tipoTaxa === 'formula') {
 
 				dadoListagem.valor = this.valor.formula;
 
@@ -658,7 +691,12 @@ export default {
 			}).then((result) => {
 
 				if (result.value) {
-					this.dadosListagem = this.dadosListagem.filter(dado => dado.licenca != item.licenca);
+					this.dadosListagem = this.dadosListagem.filter(
+
+						dado => dado.potencialPoluidor.codigo != item.potencialPoluidor.codigo
+							&& dado.porteEmpreendimento.codigo !== item.porteEmpreendimento.codigo
+							&& dado.tipoTaxa !== item.tipoTaxa
+							&& dado.valor !== item.valor);
 				}
 
 			});		
@@ -672,6 +710,7 @@ export default {
 		},
 
 		alterarTipoTaxa() {
+
 			this.valor.valor = null;
 			this.valor.formula = null;
 			this.parametroSelecionado = null;
@@ -679,6 +718,7 @@ export default {
 			if (this.tipoTaxa === 'isento') {
 				this.valor.valor = '0.0';
 			}
+
 		},
 
 		adicionarParamentro(value) {
@@ -700,6 +740,7 @@ export default {
 			this.$nextTick(() => {
 				this.$refs.formula.focus();
 			});
+
 		},
 
 		prepararDadosParaEdicao(requisito) {
@@ -782,7 +823,7 @@ export default {
 			next();
 		}
 
-	}
+	},
 
 };
 

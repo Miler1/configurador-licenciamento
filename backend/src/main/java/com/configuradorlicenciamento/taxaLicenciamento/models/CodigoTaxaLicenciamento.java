@@ -24,10 +24,10 @@ public class CodigoTaxaLicenciamento implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name="codigo")
+    @Column(name = "codigo")
     private String codigo;
 
-    @Column(name="descricao")
+    @Column(name = "descricao")
     private String descricao;
 
     @NotNull(message = "{validacao.notnull}")
@@ -42,11 +42,13 @@ public class CodigoTaxaLicenciamento implements Serializable {
     private UsuarioLicenciamento usuarioLicenciamento;
 
     public CodigoTaxaLicenciamento(CodigoTaxaLicenciamento.CodigoTaxaLicenciamentoBuilder builder) {
+
         this.codigo = builder.codigo;
         this.descricao = builder.descricao;
         this.ativo = builder.ativo;
         this.usuarioLicenciamento = builder.usuarioLicenciamento;
         this.dataCadastro = builder.dataCadastro;
+
     }
 
     public static class CodigoTaxaLicenciamentoBuilder {
@@ -58,9 +60,11 @@ public class CodigoTaxaLicenciamento implements Serializable {
         private UsuarioLicenciamento usuarioLicenciamento;
 
         public CodigoTaxaLicenciamentoBuilder(CodigoTaxaLicenciamentoDTO codigoTaxaLicenciamentoDTO) {
+
             this.codigo = codigoTaxaLicenciamentoDTO.getCodigo();
             this.descricao = codigoTaxaLicenciamentoDTO.getDescricao();
             this.ativo = codigoTaxaLicenciamentoDTO.getAtivo();
+
         }
 
         public CodigoTaxaLicenciamento.CodigoTaxaLicenciamentoBuilder setDataCadastro(Date dataCadastro) {
@@ -73,10 +77,14 @@ public class CodigoTaxaLicenciamento implements Serializable {
             return this;
         }
 
-        public CodigoTaxaLicenciamento build() { return new CodigoTaxaLicenciamento(this); }
+        public CodigoTaxaLicenciamento build() {
+            return new CodigoTaxaLicenciamento(this);
+        }
 
     }
 
-    public CodigoTaxaLicenciamentoCsv prepararParaCsv() { return new CodigoTaxaLicenciamentoCsv(this); }
+    public CodigoTaxaLicenciamentoCsv prepararParaCsv() {
+        return new CodigoTaxaLicenciamentoCsv(this);
+    }
 
 }
