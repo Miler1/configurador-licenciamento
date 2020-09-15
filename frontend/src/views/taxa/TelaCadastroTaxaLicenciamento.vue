@@ -114,7 +114,7 @@
 										@changeOption="tipoTaxa = $event"
 									)
 							
-							v-row(v-if="tipoTaxa === 'fixo'")
+							v-row(v-show="tipoTaxa === 'fixo'")
 								v-col(cols="12", md="3")
 									v-label Valor
 									v-text-field#QA-input-taxa-licenciamento-valor-fixo(
@@ -129,7 +129,7 @@
 										dense
 									)
 
-							v-row(v-if="tipoTaxa === 'formula'")
+							v-row(v-show="tipoTaxa === 'formula'")
 								v-col(cols="12", md="4")
 									v-label Equação da fórmula
 									v-text-field#QA-input-taxa-licenciamento-valor-formula(
@@ -145,7 +145,7 @@
 									)
 								v-col(cols="12", md="4")
 									v-label Parâmetro
-									v-autocomplete#QA-select-taxa-licenciamento-licenca(
+									v-autocomplete#QA-select-taxa-licenciamento-parametro(
 										outlined,
 										dense,
 										color="#E0E0E0",
@@ -398,7 +398,7 @@ export default {
 			const valorFormula = document.getElementById('QA-input-taxa-licenciamento-valor-formula');
 
 			if (valorFormula) {
-				valorFormula = null;
+				valorFormula.value = null;
 			}
 
 
@@ -683,11 +683,12 @@ export default {
 				const valorFormula = document.getElementById('QA-input-taxa-licenciamento-valor-formula');
 
 				if (valorFormula) {
-					valorFormula = item.valor;
+					valorFormula.value = item.valor;
 				}
 
 				this.tipoTaxa = 'formula';
 				this.valor.formula = item.valor;
+				this.valor.valor = null;
 
 			} else if (item.valor === '0.0') {
 
@@ -704,6 +705,7 @@ export default {
 
 				this.tipoTaxa = 'fixo';
 				this.valor.valor = item.valor;
+				this.valor.formula = null;
 
 			}
 
