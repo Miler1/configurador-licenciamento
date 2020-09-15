@@ -1,6 +1,7 @@
 package com.configuradorlicenciamento.requisitoTecnico.services;
 
 import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
+import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.requisitoTecnico.dtos.RequisitoTecnicoDTO;
 import com.configuradorlicenciamento.requisitoTecnico.dtos.RequisitoTecnicoCsv;
@@ -44,6 +45,10 @@ public class RequisitoTecnicoService implements IRequisitoTecnicoService {
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
+        if(!requisitoTecnicoRepository.findByCodigo(requisitoTecnicoDTO.getCodigo()).isEmpty()){
+            throw new ConstraintUniqueViolationException("Já existe um grupo com o mesmo código.");
+        }
+
         RequisitoTecnico requisitoTecnico = new RequisitoTecnico.RequisitoTecnicoBuilder(requisitoTecnicoDTO)
                 .setDataCadastro(new Date())
                 .setUsuarioLicencimento(usuarioLicenciamento)
@@ -63,6 +68,12 @@ public class RequisitoTecnicoService implements IRequisitoTecnicoService {
         Object login = request.getSession().getAttribute("login");
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
+
+        List<RequisitoTecnico> existentes = requisitoTecnicoRepository.findByCodigo(requisitoTecnicoDTO.getCodigo());
+
+        if(!existentes.isEmpty() && !existentes.get(0).getId().equals(requisitoTecnicoDTO.getId())){
+            throw new ConstraintUniqueViolationException("Já existe um grupo com o mesmo código.");
+        }
 
         RequisitoTecnico requisitoTecnicosalvo = requisitoTecnicoRepository.findById(requisitoTecnicoDTO.getId())
                 .map(requisitoTecnico -> {
