@@ -132,13 +132,17 @@
 							v-row.borda-campo(v-show="tipoTaxa === 'formula'")
 								v-col(cols="12", md="4")
 									v-label Equação da fórmula
+										v-tooltip(top, left, max-width=400)
+											template(v-slot:activator="{ on, attrs }")
+												v-icon.information.ml-1.mb-1(v-bind="attrs", v-on="on") mdi-information
+											span Utilize apenas ponto para separar os números monetários e decimais.
 									v-text-field#QA-input-taxa-licenciamento-valor-formula(
 										outlined,
 										color="#E0E0E0",
-										placeholder="Ex.: 1252.58 + ( 0.4 * AU )",
+										placeholder="Ex.: 1252.50 + (0.4 * AU) + 100",
 										v-model.lazy="valor.formula",
 										@click.native="resetErrorMessage",
-										:error-messages="errorMessage( valor.formula, true )",
+										:error-messages="errorMessage( valor.formula, true, true)",
 										required,
 										dense,
 										ref="formula"
@@ -339,7 +343,7 @@ export default {
 
 		},
 
-		errorMessage(value, isVinculacao) {
+		errorMessage(value, isVinculacao, validaVirgula) {
 
 			if (isVinculacao) {
 
@@ -358,6 +362,11 @@ export default {
 
 				else if (!this.errorMessageEmptyInclusao && !value) {
 					return 'Obrigatório';
+				}
+
+				if (validaVirgula) {
+					return this.errorMessageEmptyInclusao || this.verificaVirgula(value) ? 
+						'' : 'Erro! Equação da fórmula inválida. Utilize apenas ponto para separar os números monetários e decimais.';
 				}
 
 				return this.errorMessageEmpty || value || (this.dadosListagem.length > 0) ? '' : 'Obrigatório';
@@ -621,7 +630,7 @@ export default {
 				if (this.tipoTaxa === 'isento') {
 					tipoTaxaValido = true;
 				} else if (this.tipoTaxa === 'formula') {
-					tipoTaxaValido = this.valor.formula && this.valor.formula != '';	
+					tipoTaxaValido = this.valor.formula && this.valor.formula != '' && this.verificaVirgula(this.valor.formula);
 				} else {//tipoTaxa = 'fixo'
 					tipoTaxaValido = this.valor.valor && this.valor.valor != 'R$ 0,00';
 				}
@@ -636,6 +645,10 @@ export default {
 
 			return false;
 
+		},
+
+		verificaVirgula(formula) {
+			return formula ? formula.indexOf(",") === -1 : false;
 		},
 
 		cancelar() {
@@ -976,6 +989,10 @@ export default {
 	border: 1px solid #eee;
 	border-radius: 4px;
 	margin: 0 0 15px 0;
+}
+
+.information {
+	font-size: 16px !important;
 }
 
 </style>
