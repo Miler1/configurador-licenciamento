@@ -1,7 +1,7 @@
 <template lang="pug">
   
 #tela-cadastro-taxa-licenciamento
-	v-container
+	div
 		v-expansion-panels.pa-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
 			v-expansion-panel
 				v-expansion-panel-header
@@ -114,7 +114,7 @@
 										@changeOption="tipoTaxa = $event"
 									)
 							
-							v-row(v-if="tipoTaxa === 'fixo'")
+							v-row.borda-campo(v-show="tipoTaxa === 'fixo'")
 								v-col(cols="12", md="3")
 									v-label Valor
 									v-text-field#QA-input-taxa-licenciamento-valor-fixo.large-error-line(
@@ -129,7 +129,7 @@
 										dense
 									)
 
-							v-row(v-if="tipoTaxa === 'formula'")
+							v-row.borda-campo(v-show="tipoTaxa === 'formula'")
 								v-col(cols="12", md="4")
 									v-label Equação da fórmula
 									v-text-field#QA-input-taxa-licenciamento-valor-formula(
@@ -145,7 +145,7 @@
 									)
 								v-col(cols="12", md="4")
 									v-label Parâmetro
-									v-autocomplete#QA-select-taxa-licenciamento-licenca(
+									v-autocomplete#QA-select-taxa-licenciamento-parametro(
 										outlined,
 										dense,
 										color="#E0E0E0",
@@ -404,7 +404,7 @@ export default {
 			const valorFormula = document.getElementById('QA-input-taxa-licenciamento-valor-formula');
 
 			if (valorFormula) {
-				valorFormula = null;
+				valorFormula.value = null;
 			}
 
 
@@ -427,33 +427,30 @@ export default {
 							this.dadosListagem.push(dadoListagem);
 							dadoListagem = {};
 
-						} else {
-
-							let message = ERROR_MESSAGES.taxaLicenciamento.adicionarValores + "Já existe uma taxa com a mesma combinação: " +
-								"Porte: " + this.valor.porteEmpreendimento.nome + ", " +
-								"PPD: " + this.valor.potencialPoluidor.nome + "e " +
-								"Tipo licença: " + licenca.sigla + ".";
-
-							snackbar.alert(message);
-
 							this.clearTaxaLicenciamento();
 
+						} else {
+							this.erroIncluirValoresTaxa(licenca);
 						}
 				
 					});
 
 				} else {
 
-					dadoListagem = this.getDadosItem(this.valor.licencas[0]);
+					if (this.validarValoresAdicionados(this.valor.licencas[0])) {
 
-					this.dadosListagem.splice(this.indexItemEdicao, 1, dadoListagem);
-					dadoListagem = {};
-					this.indexItemEdicao = null;
-					this.isInclusao = true;
+						dadoListagem = this.getDadosItem(this.valor.licencas[0]);
+
+						this.dadosListagem.splice(this.indexItemEdicao, 1, dadoListagem);
+						dadoListagem = {};
+						this.indexItemEdicao = null;
+						this.isInclusao = true;
+
+					} else {
+						this.erroIncluirValoresTaxa(this.valor.licencas[0]);
+					}
 
 				}
-
-				this.clearTaxaLicenciamento();
 
 			} else {
 				this.errorMessageEmptyInclusao = false;
@@ -541,7 +538,6 @@ export default {
 		editar() {
 
 			TaxaLicenciamentoService.editar(this.preparaPraSalvar())
-
 				.then(() => {
 					this.handleSuccess(true);
 				})
@@ -552,9 +548,10 @@ export default {
 		},
 
 		preparaPraSalvar() {
+
+			let dadoListagem = {};
 			
 			this.taxaLicenciamento.listTaxasLicenciamento = [];
-			let dadoListagem = {};
 
 			this.dadosListagem.forEach(dado => {
 
@@ -589,6 +586,17 @@ export default {
 
 			this.clear();
 			this.redirectListagem();
+
+		},
+
+		erroIncluirValoresTaxa(licenca) {
+
+			let message = ERROR_MESSAGES.taxaLicenciamento.adicionarValores + "Já existe uma taxa com a mesma combinação: " +
+				"Porte: " + this.valor.porteEmpreendimento.nome + ", " +
+				"PPD: " + this.valor.potencialPoluidor.nome + " e " +
+				"Tipo licença: " + licenca.sigla + ".";
+
+			snackbar.alert(message);
 
 		},
 
@@ -689,11 +697,12 @@ export default {
 				const valorFormula = document.getElementById('QA-input-taxa-licenciamento-valor-formula');
 
 				if (valorFormula) {
-					valorFormula = item.valor;
+					valorFormula.value = item.valor;
 				}
 
 				this.tipoTaxa = 'formula';
 				this.valor.formula = item.valor;
+				this.valor.valor = null;
 
 			} else if (item.valor === '0.0') {
 
@@ -710,6 +719,7 @@ export default {
 
 				this.tipoTaxa = 'fixo';
 				this.valor.valor = item.valor;
+				this.valor.formula = null;
 
 			}
 
@@ -972,6 +982,12 @@ export default {
 .div-money {
 	border: 1px solid @border-components;
 	height: 40px;
+}
+
+.borda-campo {
+	border: 1px solid #eee;
+	border-radius: 4px;
+	margin: 0 0 15px 0;
 }
 
 </style>

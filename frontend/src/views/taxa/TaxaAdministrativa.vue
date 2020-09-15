@@ -1,6 +1,6 @@
 <template lang='pug'>
 
-	v-container
+	div
 
 		PanelCadastro.pa-7(
 			:clear="clear",

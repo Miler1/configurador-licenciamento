@@ -1,6 +1,6 @@
 <template lang="pug">
 
-	v-container
+	div
 
 		GridListagem.pa-7(
 			:tituloAba="tituloAba"
