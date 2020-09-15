@@ -32,7 +32,7 @@
 
 				v-col(cols="12", xl="3", lg="3", md="4", v-if="taxaAdministrativa.isento == 'false'")
 					v-label Valor
-					v-text-field#QA-input-taxa-licenciamento-valor(
+					v-text-field#QA-input-taxa-administrativa-valor(
 						v-money="money"
 						outlined,
 						color="#E0E0E0",
@@ -97,8 +97,9 @@ export default {
 				decimal: ',',
 				thousands: '.',
 				prefix: 'R$ ',
+				sufix: '',
 				precision: 2,
-				masked: false
+				masked: false,
 			},
 			optionsIsento:[
 				{

@@ -1,6 +1,6 @@
 const HEADER = [
-	{ text: 'Ano', value: 'ano', width: '150px'},
-	{ text: 'Isento', value: 'isento', width: '150px'},
+	{ text: 'Ano', value: 'ano', width: '125px'},
+	{ text: 'Isento', value: 'isento', width: '125px'},
 	{ text: 'Valor (R$)', value: 'valor', width: '150px'},
 	{ text: 'Atividade dispensável', value: 'atividadeDispensavel', width: 'auto' },
 	{ text: 'Atividade licenciável', value: 'atividadeLicenciavel', width: 'auto' },
