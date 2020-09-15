@@ -176,10 +176,7 @@ export default {
 						.catch(erro => {
 
 							console.error(erro);
-
 							snackbar.alert(ERROR_MESSAGES.pergunta.editar + erro.message);
-
-							this.resetaDadosCadastro();
 
 						});
 				}

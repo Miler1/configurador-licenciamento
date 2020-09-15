@@ -26,7 +26,8 @@
 						idToggle="QA-btn-toggle-taxa-licenciamento-isento",
 						:errorMessage="errorMessage",
 						:options="optionsIsento",
-						@changeOption="taxaAdministrativa.isento = $event"
+						@changeOption="taxaAdministrativa.isento = $event",
+						:change="changeOptionIsento"
 					)
 
 				v-col(cols="12", xl="3", lg="3", md="4", v-if="taxaAdministrativa.isento == 'false'")
@@ -160,6 +161,16 @@ export default {
 		},
 		iconBotaoCadastrarEditar: {
 			type: [String]
+		}
+	},
+
+	methods: {
+		changeOptionIsento() {
+
+			this.taxaAdministrativa.valor = 0;
+			this.taxaAdministrativa.atividadeDispensavel = null;
+			this.taxaAdministrativa.atividadeLicenciavel = null;
+
 		}
 	},
 
