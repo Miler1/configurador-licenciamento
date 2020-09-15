@@ -114,7 +114,7 @@
 										@changeOption="tipoTaxa = $event"
 									)
 							
-							v-row(v-show="tipoTaxa === 'fixo'")
+							v-row.borda-campo(v-show="tipoTaxa === 'fixo'")
 								v-col(cols="12", md="3")
 									v-label Valor
 									v-text-field#QA-input-taxa-licenciamento-valor-fixo(
@@ -129,7 +129,7 @@
 										dense
 									)
 
-							v-row(v-show="tipoTaxa === 'formula'")
+							v-row.borda-campo(v-show="tipoTaxa === 'formula'")
 								v-col(cols="12", md="4")
 									v-label Equação da fórmula
 									v-text-field#QA-input-taxa-licenciamento-valor-formula(
@@ -970,6 +970,12 @@ export default {
 .div-money {
 	border: 1px solid @border-components;
 	height: 40px;
+}
+
+.borda-campo {
+	border: 1px solid #eee;
+	border-radius: 4px;
+	margin: 0 0 15px 0;
 }
 
 </style>
