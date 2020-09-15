@@ -495,7 +495,10 @@ export default {
 				}
 
 			} else {
+
 				this.errorMessageEmpty = false;
+				window.scrollTo(0,0);
+
 			}
 
 		},
