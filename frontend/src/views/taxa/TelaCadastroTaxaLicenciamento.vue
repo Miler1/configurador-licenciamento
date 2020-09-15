@@ -117,7 +117,7 @@
 							v-row.borda-campo(v-show="tipoTaxa === 'fixo'")
 								v-col(cols="12", md="3")
 									v-label Valor
-									v-text-field#QA-input-taxa-licenciamento-valor-fixo(
+									v-text-field#QA-input-taxa-licenciamento-valor-fixo.large-error-line(
 										v-money="money"
 										outlined,
 										color="#E0E0E0",
@@ -347,8 +347,14 @@ export default {
 
 			if (isVinculacao) {
 
-				if ((!this.errorMessageEmpty || !this.errorMessageEmptyInclusao) && value === 'R$ 0,00') {
-					return 'Obrigatório';
+				if(typeof value === 'string' && value.substring(0, 2) === "R$"){
+
+					value = value ? parseFloat(value.replace(/R\$\s|\./g, '').replace(',', '.')) : 0.0;
+
+					if( value < 0) {return 'Este campo permite apenas números decimais maiores ou iguais a 0,01.';}
+
+					if (!this.errorMessageEmpty && value === 0.0) { return 'Obrigatório'; }
+
 				}
 
 				if (Array.isArray(value)){
@@ -937,6 +943,12 @@ export default {
 	fieldset {
 		border: 1px solid @border-components;
 		border-radius: 2px;
+	}
+}
+
+.large-error-line{
+	.v-messages__message{
+		line-height: initial;
 	}
 }
 
