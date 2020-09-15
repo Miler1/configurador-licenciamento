@@ -97,8 +97,7 @@ export default {
 		clear() {
 
 			this.taxaAdministrativa.ano = null;
-			delete this.taxaAdministrativa.valor;
-			this.taxaAdministrativa.valor = 'R$ 0,00';
+			this.taxaAdministrativa.valor = 0.00;
 			this.taxaAdministrativa.isento = null;
 			this.taxaAdministrativa.atividadeDispensavel = null;
 			this.taxaAdministrativa.atividadeLicenciavel = null;
@@ -176,7 +175,7 @@ export default {
 
 		preparaPraSalvar() {
 
-			if(this.taxaAdministrativa.isento === 'true'){
+			if (this.taxaAdministrativa.isento === 'true') {
 
 				delete this.taxaAdministrativa.valor;
 				this.taxaAdministrativa.atividadeDispensavel = null;
@@ -206,7 +205,7 @@ export default {
 
 				return this.taxaAdministrativa.ano
 					&& this.taxaAdministrativa.valor
-					&& this.taxaAdministrativa.valor != 'R$ 0,00'
+					&& this.taxaAdministrativa.valor != 0
 					&& this.taxaAdministrativa.atividadeDispensavel
 					&& this.taxaAdministrativa.atividadeLicenciavel;
 
@@ -272,6 +271,12 @@ export default {
 
 			}
 
+			const valorTaxa = document.getElementById('QA-input-taxa-administrativa-valor');
+
+			if (valorTaxa) {
+				valorTaxa.value = item.valor;
+			}
+
 			this.isCadastro = false;
 			window.scrollTo(0,0);
 
@@ -284,6 +289,8 @@ export default {
 				that.$refs.formCadastroTaxaAdministrativa.$refs.toggleAtividadeLicenciavel.setModel(that.taxaAdministrativa.atividadeLicenciavel);
 
 			}, 100);
+
+
 
 		},
 
