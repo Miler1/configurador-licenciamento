@@ -122,7 +122,7 @@
 										outlined,
 										color="#E0E0E0",
 										:placeholder="placeholder",
-										v-model="valor.valor",
+										v-model.lazy="valor.valor",
 										@click.native="resetErrorMessage",
 										:error-messages="errorMessage( valor.valor, true )",
 										required,
@@ -136,7 +136,7 @@
 										outlined,
 										color="#E0E0E0",
 										placeholder="Ex.: 1252.58 + ( 0.4 * AU )",
-										v-model="valor.formula",
+										v-model.lazy="valor.formula",
 										@click.native="resetErrorMessage",
 										:error-messages="errorMessage( valor.formula, true )",
 										required,
@@ -383,10 +383,24 @@ export default {
 			this.valor.potencialPoluidor = null;
 			this.valor.licencas = null;
 			this.valor.valor = null;
+			this.valor.formula = null;
 			this.tipoTaxa = null;
 			this.$refs.toggleOptionsTipoTaxa.clearModel();
 			this.isInclusao = true;
 			this.resetErrorMessage();
+
+			const valorFixo = document.getElementById('QA-input-taxa-licenciamento-valor-fixo');
+
+			if (valorFixo) {
+				valorFixo.value = null;
+			}
+
+			const valorFormula = document.getElementById('QA-input-taxa-licenciamento-valor-formula');
+
+			if (valorFormula) {
+				valorFormula = null;
+			}
+
 
 		},
 
@@ -415,6 +429,8 @@ export default {
 								"Tipo licença: " + licenca.sigla + ".";
 
 							snackbar.alert(message);
+
+							this.clearTaxaLicenciamento();
 
 						}
 				
@@ -495,7 +511,10 @@ export default {
 				}
 
 			} else {
+
 				this.errorMessageEmpty = false;
+				window.scrollTo(0,0);
+
 			}
 
 		},
@@ -661,6 +680,12 @@ export default {
 
 			if (this.isFormula(item.valor)) {
 
+				const valorFormula = document.getElementById('QA-input-taxa-licenciamento-valor-formula');
+
+				if (valorFormula) {
+					valorFormula = item.valor;
+				}
+
 				this.tipoTaxa = 'formula';
 				this.valor.formula = item.valor;
 
@@ -671,8 +696,15 @@ export default {
 
 			} else {
 
+				const valorFixo = document.getElementById('QA-input-taxa-licenciamento-valor-fixo');
+
+				if (valorFixo ) {
+					valorFixo.value = item.valor;
+				}
+
 				this.tipoTaxa = 'fixo';
 				this.valor.valor = item.valor;
+
 			}
 
 			this.indexItemEdicao = this.dadosListagem.indexOf(item);
@@ -693,6 +725,7 @@ export default {
 			let valor = item.valor;
 
 			if (!this.isFormula(valor)) {
+				//formatar para exibir no modal
 				valor = parseFloat(item.valor) !== 0 ? 'R$ ' + parseFloat(item.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2}) : 'Isento';
 			}
 
