@@ -421,33 +421,30 @@ export default {
 							this.dadosListagem.push(dadoListagem);
 							dadoListagem = {};
 
-						} else {
-
-							let message = ERROR_MESSAGES.taxaLicenciamento.adicionarValores + "Já existe uma taxa com a mesma combinação: " +
-								"Porte: " + this.valor.porteEmpreendimento.nome + ", " +
-								"PPD: " + this.valor.potencialPoluidor.nome + "e " +
-								"Tipo licença: " + licenca.sigla + ".";
-
-							snackbar.alert(message);
-
 							this.clearTaxaLicenciamento();
 
+						} else {
+							this.erroIncluirValoresTaxa(licenca);
 						}
 				
 					});
 
 				} else {
 
-					dadoListagem = this.getDadosItem(this.valor.licencas[0]);
+					if (this.validarValoresAdicionados(this.valor.licencas[0])) {
 
-					this.dadosListagem.splice(this.indexItemEdicao, 1, dadoListagem);
-					dadoListagem = {};
-					this.indexItemEdicao = null;
-					this.isInclusao = true;
+						dadoListagem = this.getDadosItem(this.valor.licencas[0]);
+
+						this.dadosListagem.splice(this.indexItemEdicao, 1, dadoListagem);
+						dadoListagem = {};
+						this.indexItemEdicao = null;
+						this.isInclusao = true;
+
+					} else {
+						this.erroIncluirValoresTaxa(this.valor.licencas[0]);
+					}
 
 				}
-
-				this.clearTaxaLicenciamento();
 
 			} else {
 				this.errorMessageEmptyInclusao = false;
@@ -535,7 +532,6 @@ export default {
 		editar() {
 
 			TaxaLicenciamentoService.editar(this.preparaPraSalvar())
-
 				.then(() => {
 					this.handleSuccess(true);
 				})
@@ -546,9 +542,10 @@ export default {
 		},
 
 		preparaPraSalvar() {
+
+			let dadoListagem = {};
 			
 			this.taxaLicenciamento.listTaxasLicenciamento = [];
-			let dadoListagem = {};
 
 			this.dadosListagem.forEach(dado => {
 
@@ -583,6 +580,17 @@ export default {
 
 			this.clear();
 			this.redirectListagem();
+
+		},
+
+		erroIncluirValoresTaxa(licenca) {
+
+			let message = ERROR_MESSAGES.taxaLicenciamento.adicionarValores + "Já existe uma taxa com a mesma combinação: " +
+				"Porte: " + this.valor.porteEmpreendimento.nome + ", " +
+				"PPD: " + this.valor.potencialPoluidor.nome + " e " +
+				"Tipo licença: " + licenca.sigla + ".";
+
+			snackbar.alert(message);
 
 		},
 
