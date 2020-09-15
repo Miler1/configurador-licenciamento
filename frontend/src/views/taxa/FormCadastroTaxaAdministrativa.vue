@@ -32,7 +32,7 @@
 
 				v-col(cols="12", xl="3", lg="3", md="4", v-if="taxaAdministrativa.isento == 'false'")
 					v-label Valor
-					v-text-field#QA-input-taxa-administrativa-valor(
+					v-text-field#QA-input-taxa-administrativa-valor.large-error-line(
 						v-money="money"
 						outlined,
 						color="#E0E0E0",
@@ -191,6 +191,12 @@ export default {
 </script>
 
 <style lang='less'>
+
+.large-error-line{
+	.v-messages__message{
+		line-height: initial;
+	}
+}
 
 .v-input--selection-controls {
 	margin-top: 4px !important;
