@@ -1,7 +1,7 @@
 <template lang="pug">
 
 #tela-cadastro-requisito-tecnico
-	v-container
+	div
 		v-expansion-panels.pa-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
 			v-expansion-panel
 				v-expansion-panel-header
