@@ -219,9 +219,17 @@ export default {
 			this.errorMessageEmpty = true;
 		},
 
-		errorMessage(value) {
+		errorMessage(value, campo) {
 
-			if (!this.errorMessageEmpty && value === 'R$ 0,00') { return 'Obrigatório'; }
+			if(typeof value === 'string' && value.substring(0, 2) === "R$"){
+
+				value = value ? parseFloat(value.replace(/R\$\s|\./g, '').replace(',', '.')) : 0.0;
+
+				if( value < 0) {return 'Este campo permite apenas números decimais maiores ou iguais a 0,01.';}
+
+				if (!this.errorMessageEmpty && value === 0.0) { return 'Obrigatório'; }
+
+			}
 			
 			return this.errorMessageEmpty || value ? '' : 'Obrigatório';
 		},
