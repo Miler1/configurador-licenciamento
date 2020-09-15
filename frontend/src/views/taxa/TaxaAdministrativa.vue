@@ -97,8 +97,7 @@ export default {
 		clear() {
 
 			this.taxaAdministrativa.ano = null;
-			delete this.taxaAdministrativa.valor;
-			this.taxaAdministrativa.valor = 'R$ 0,00';
+			this.taxaAdministrativa.valor = 0;
 			this.taxaAdministrativa.isento = null;
 			this.taxaAdministrativa.atividadeDispensavel = null;
 			this.taxaAdministrativa.atividadeLicenciavel = null;
@@ -261,6 +260,7 @@ export default {
 			this.dadosPanel.tipo = "edição";
 			this.labelBotaoCadastrarEditar = "Editar";
 			this.iconBotaoCadastrarEditar = "mdi-pencil";
+			this.taxaAdministrativa.valor = 0;
 			this.taxaAdministrativa = { ... item};
 
 			this.taxaAdministrativa.isento = this.taxaAdministrativa.isento ? 'true' : 'false';
