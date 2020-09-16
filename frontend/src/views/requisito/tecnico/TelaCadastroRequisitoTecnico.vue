@@ -1,7 +1,7 @@
 <template lang="pug">
 
 #tela-cadastro-requisito-tecnico
-	v-container
+	div.pb-7
 		v-expansion-panels.pa-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
 			v-expansion-panel
 				v-expansion-panel-header
@@ -42,7 +42,7 @@
 			v-expansion-panel
 				v-expansion-panel-header
 					div.d-flex.flex-row.align-center.justify-start
-						span.align-baseline Requisito técnico para solicitação de licenciamento
+						span.align-baseline {{ isInclusao ? 'Adição de ' : 'Editar ' }}  requisito técnico para solicitação de licenciamento
 					template(v-slot:actions)
 						v-icon
 				v-expansion-panel-content
@@ -171,7 +171,7 @@ export default {
 				licencas: null,
 				obrigatorio: null
 			},
-			tituloTooltip: "documento",
+			tituloTooltip: "requisito técnico",
 			placeholder: "Digite aqui...",
 			placeholderSelect: "Selecione",
 			placeholderSelectLicenca: "Selecione um ou mais",
@@ -179,7 +179,7 @@ export default {
 			licencas: [],
 			errorMessageEmpty: true,
 			errorMessageEmptyInclusao: true,
-			tituloListagem: "Listagem de documentos adicionados para este grupo",
+			tituloListagem: "Listagem de requisitos técnicos adicionados para este grupo",
 			headerListagem: HEADER,
 			dadosListagem: [],
 			labelBotaoCadastrarEditar: 'Cadastrar',
@@ -188,7 +188,7 @@ export default {
 			isInclusao: true,
 			indexItemEdicao: null,
 			allowRedirect: true,
-			labelNoData: 'Não existem documentos adicionados.',
+			labelNoData: 'Não existem requisitos técnicos adicionados.',
 			placeholderPesquisa: "Pesquisar pelo nome do documento ou tipo de licença",
 			optionsTipoRequisito:[
 				{
@@ -264,41 +264,90 @@ export default {
 
 			if(this.checkFormVinculacao()){
 
-				var dadoListagem = {};
+				let dadosInclusao = [];
+				let dadosExistentes = [];
 
 				if(this.isInclusao) {
 
 					this.grupoRequisito.licencas.forEach(licenca => {
 
-						dadoListagem.documento = this.grupoRequisito.documento;
-						dadoListagem.licenca = licenca;
-						dadoListagem.obrigatorio = this.grupoRequisito.obrigatorio;
+						if (!this.validarValoresAdicionados(licenca)) {
+							dadosExistentes.push(licenca.sigla);
+						}
 
-						this.dadosListagem.push(dadoListagem);
-						dadoListagem = {};
+						dadosInclusao.push(this.getDadosItem(licenca));
 				
 					});
 
+					if (dadosExistentes.length === 0) {
+
+						this.dadosListagem.push(...dadosInclusao);
+						this.clearRequisito();
+
+					} else {
+						this.erroIncluirRequisitoTecnico(dadosExistentes);
+					}
+
 				} else {
 
-					dadoListagem.documento = this.grupoRequisito.documento;
-					dadoListagem.licenca = this.grupoRequisito.licencas[0];
-					dadoListagem.obrigatorio = this.grupoRequisito.obrigatorio;
+					if (!this.validarValoresAdicionados(this.grupoRequisito.licencas[0])) {
+						dadosExistentes.push(this.grupoRequisito.licencas[0].sigla);
+					}
 
-					this.dadosListagem.splice(this.indexItemEdicao, 1, dadoListagem);
-					dadoListagem = {};
-					this.indexItemEdicao = null;
-					this.isInclusao = true;
+					if (dadosExistentes.length === 0 ) {
+
+						dadosInclusao = this.getDadosItem(this.grupoRequisito.licencas[0]);
+
+						this.dadosListagem.splice(this.indexItemEdicao, 1, dadosInclusao);
+
+						this.indexItemEdicao = null;
+						this.isInclusao = true;
+						this.clearRequisito();
+
+					} else {
+						this.erroIncluirRequisitoTecnico(dadosExistentes);
+					}
 
 				}
-
-				this.clearRequisito();
 
 			} else {
 				this.errorMessageEmptyInclusao = false;
 			}
 
 		},
+
+		validarValoresAdicionados(licenca) {
+
+			let validacao = true;
+
+			this.dadosListagem.forEach(
+				(dado, index) => {
+					if (dado.documento.id === this.grupoRequisito.documento.id
+						&& dado.licenca.sigla === licenca.sigla
+						&& (this.isInclusao || this.indexItemEdicao != index)) {
+
+						validacao = false;
+					}
+				}
+			);
+
+			return validacao;
+
+		},
+
+
+		getDadosItem(licenca) {
+
+			let dadoListagem = {};
+
+			dadoListagem.documento = this.grupoRequisito.documento;
+			dadoListagem.licenca = licenca;
+			dadoListagem.obrigatorio = this.grupoRequisito.obrigatorio;
+
+			return dadoListagem;
+
+		},
+
 
 		submit() {
 
@@ -311,7 +360,10 @@ export default {
 				}
 
 			} else {
+
 				this.errorMessageEmpty = false;
+				window.scrollTo(0,0);
+
 			}
 
 		},
@@ -380,6 +432,31 @@ export default {
 
 		},
 
+		erroIncluirRequisitoTecnico(licencas) {
+
+			let licencasExistentes = '';
+
+			licencas.forEach((licenca, index) => {
+
+				licencasExistentes+= licenca;
+
+				if (index !== licencas.length -1) {
+					licencasExistentes+= ", ";
+				} else {
+					licencasExistentes+= ". ";
+				}
+
+			});
+			console.log(licencas);
+			let message = ERROR_MESSAGES.requisitoTecnico.adicionar + "Já existe um requisito técnico com o mesmo " +
+				"documento: " + this.grupoRequisito.documento.nome + " e " +
+				"Tipo(s) de licença(s): " + licencasExistentes;
+
+			snackbar.alert(message);
+
+		},
+
+
 		redirectListagem(allowed = true) {
 
 			this.allowRedirect = allowed;
@@ -399,7 +476,6 @@ export default {
 		},
 
 		checkFormVinculacao() {
-
 			return this.grupoRequisito.documento
 				&& this.grupoRequisito.documento != ''
 				&& this.grupoRequisito.licencas
@@ -472,11 +548,11 @@ export default {
 		excluirItem(item) {
 
 			this.$fire({
-				title:'<p class="title-modal-confirm">Remover documento - ' + item.documento.nome + '</p>',
+				title:'<p class="title-modal-confirm">Remover requisito técnico - ' + item.documento.nome + '</p>',
 
-				html:`<p class="message-modal-confirm">Ao remover o documento, ele não estará mais vinculado nesse grupo.</p>
+				html:`<p class="message-modal-confirm">Ao remover o requisito técnico, ele não estará mais vinculado nesse grupo.</p>
 						<p class="message-modal-confirm">
-						<b>Tem certeza que deseja remover o documento? Esta opção pode ser desfeita a qualquer momento ao adicioná-lo novamente.</b>
+						<b>Tem certeza que deseja remover o requisito técnico? Esta opção pode ser desfeita a qualquer momento ao adicioná-lo novamente.</b>
 					</p>`,
 				showCancelButton: true,
 				confirmButtonColor:'#F56C6C',
@@ -529,7 +605,6 @@ export default {
 			.then((response) => {
 				this.licencas = response.data;
 			});
-
 	},
 
 	mounted() {

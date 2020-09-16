@@ -1,6 +1,6 @@
 <template lang="pug">
 
-	v-container
+	div
 
 		PanelCadastro.pa-7(
 			:clear="clear",
@@ -176,10 +176,7 @@ export default {
 						.catch(erro => {
 
 							console.error(erro);
-
 							snackbar.alert(ERROR_MESSAGES.pergunta.editar + erro.message);
-
-							this.resetaDadosCadastro();
 
 						});
 				}
@@ -236,6 +233,28 @@ export default {
 					this.dadosListagem = response.data;
 					this.dadosListagem.nomeItem = "perguntas";
 
+					this.dadosListagem.content.forEach((pergunta) => {
+
+						pergunta.respostasEsperadas = "";
+						let primeiro = true;
+
+						pergunta.respostas.forEach((resposta , index) => {
+
+							if(resposta.permiteLicenciamento){
+
+								if(!primeiro){
+									pergunta.respostasEsperadas += " / ";
+								}
+
+								pergunta.respostasEsperadas += resposta.texto;
+								primeiro = false;
+
+							}
+
+						});
+
+					});
+
 				})
 				.catch(erro => {
 
@@ -265,17 +284,17 @@ export default {
 			this.$fire({
 
 				title: item.ativo ? 
-					'<p class="title-modal-confirm">Desativar Pergunta - ' + item.texto+ '</p>' :
-					'<p class="title-modal-confirm">Ativar Pergunta - ' + item.texto+ '</p>',
+					'<p class="title-modal-confirm">Desativar pergunta - ' + item.texto+ '</p>' :
+					'<p class="title-modal-confirm">Ativar pergunta - ' + item.texto+ '</p>',
 
 				html: item.ativo ?
-					`<p class="message-modal-confirm">Ao desativar a Pergunta, ele não estará mais disponível no sistema.</p>
+					`<p class="message-modal-confirm">Ao desativar a pergunta, ela não estará mais disponível no sistema.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja desativar a Pergunta? Esta opção pode ser desfeita a qualquer momento ao ativá-lo novamente.</b>
+						<b>Tem certeza que deseja desativar a pergunta? Esta opção pode ser desfeita a qualquer momento ao ativá-la novamente.</b>
 					</p>` :
-					`<p class="message-modal-confirm">Ao ativar a Pergunta, ele ficará disponível no sistema.</p>
+					`<p class="message-modal-confirm">Ao ativar a pergunta, ela ficará disponível no sistema.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja ativar a Pergunta? Esta opção pode ser desfeita a qualquer momento ao desativá-lo novamente.</b>
+						<b>Tem certeza que deseja ativar a pergunta? Esta opção pode ser desfeita a qualquer momento ao desativá-la novamente.</b>
 					</p>`,
 				showCancelButton: true,
 				confirmButtonColor: item.ativo ? '#E6A23C' : '#67C23A',

@@ -1,6 +1,6 @@
 <template lang='pug'>
 
-	v-container
+	div
 
 		PanelCadastro.pa-7(
 			:clear="clear",
@@ -97,8 +97,7 @@ export default {
 		clear() {
 
 			this.taxaAdministrativa.ano = null;
-			delete this.taxaAdministrativa.valor;
-			this.taxaAdministrativa.valor = 'R$ 0,00';
+			this.taxaAdministrativa.valor = 0;
 			this.taxaAdministrativa.isento = null;
 			this.taxaAdministrativa.atividadeDispensavel = null;
 			this.taxaAdministrativa.atividadeLicenciavel = null;
@@ -176,6 +175,15 @@ export default {
 
 		preparaPraSalvar() {
 
+			if (this.taxaAdministrativa.isento === 'true') {
+
+				delete this.taxaAdministrativa.valor;
+				this.taxaAdministrativa.atividadeDispensavel = null;
+				this.taxaAdministrativa.atividadeLicenciavel = null;
+				this.taxaAdministrativa.ativo = true;
+
+			}
+
 			let taxaAdm = {... this.taxaAdministrativa};
 
 			taxaAdm.isento = taxaAdm.isento === 'true';
@@ -197,7 +205,7 @@ export default {
 
 				return this.taxaAdministrativa.ano
 					&& this.taxaAdministrativa.valor
-					&& this.taxaAdministrativa.valor != 'R$ 0,00'
+					&& this.taxaAdministrativa.valor != 0
 					&& this.taxaAdministrativa.atividadeDispensavel
 					&& this.taxaAdministrativa.atividadeLicenciavel;
 
@@ -211,9 +219,17 @@ export default {
 			this.errorMessageEmpty = true;
 		},
 
-		errorMessage(value) {
+		errorMessage(value, campo) {
 
-			if (!this.errorMessageEmpty && value === 'R$ 0,00') { return 'Obrigatório'; }
+			if(typeof value === 'string' && value.substring(0, 2) === "R$"){
+
+				value = value ? parseFloat(value.replace(/R\$\s|\./g, '').replace(',', '.')) : 0.0;
+
+				if( value < 0) {return 'Este campo permite apenas números decimais maiores ou iguais a 0,01.';}
+
+				if (!this.errorMessageEmpty && value === 0.0) { return 'Obrigatório'; }
+
+			}
 			
 			return this.errorMessageEmpty || value ? '' : 'Obrigatório';
 		},
@@ -252,6 +268,7 @@ export default {
 			this.dadosPanel.tipo = "edição";
 			this.labelBotaoCadastrarEditar = "Editar";
 			this.iconBotaoCadastrarEditar = "mdi-pencil";
+			this.taxaAdministrativa.valor = 0;
 			this.taxaAdministrativa = { ... item};
 
 			this.taxaAdministrativa.isento = this.taxaAdministrativa.isento ? 'true' : 'false';
@@ -261,6 +278,12 @@ export default {
 				this.taxaAdministrativa.atividadeDispensavel = this.taxaAdministrativa.atividadeDispensavel ? 'true' : 'false';
 				this.taxaAdministrativa.atividadeLicenciavel = this.taxaAdministrativa.atividadeLicenciavel ? 'true' : 'false';
 
+			}
+
+			const valorTaxa = document.getElementById('QA-input-taxa-administrativa-valor');
+
+			if (valorTaxa) {
+				valorTaxa.value = item.valor;
 			}
 
 			this.isCadastro = false;
@@ -275,6 +298,8 @@ export default {
 				that.$refs.formCadastroTaxaAdministrativa.$refs.toggleAtividadeLicenciavel.setModel(that.taxaAdministrativa.atividadeLicenciavel);
 
 			}, 100);
+
+
 
 		},
 

@@ -47,6 +47,9 @@ export default {
 		errorMessage: {
 			type: [Function]
 		},
+		change: {
+			type: [Function]
+		}
 	},
 
 	data: () => {
@@ -57,6 +60,9 @@ export default {
 
 	methods: {
 		changeModel() {
+			if(this.change) {
+				this.change();
+			}
 			this.$emit('changeOption', this.modelToggle);
 		},
 

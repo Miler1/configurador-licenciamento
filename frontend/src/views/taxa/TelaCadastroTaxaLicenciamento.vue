@@ -1,12 +1,12 @@
 <template lang="pug">
   
 #tela-cadastro-taxa-licenciamento
-	v-container
+	div.pb-7
 		v-expansion-panels.pa-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
 			v-expansion-panel
 				v-expansion-panel-header
 					div.d-flex.flex-row.align-center.justify-start
-						span.align-baseline Tabela de taxa de licenciamento
+						span.align-baseline Tabela de taxas de licenciamento
 					template(v-slot:actions)
 						v-icon
 				v-expansion-panel-content
@@ -42,7 +42,7 @@
 			v-expansion-panel
 				v-expansion-panel-header
 					div.d-flex.flex-row.align-center.justify-start
-						span.align-baseline Valores
+						span.align-baseline {{ isInclusao ? 'Adição de ' : 'Editar ' }} taxa de licenciamento
 					template(v-slot:actions)
 						v-icon
 				v-expansion-panel-content
@@ -114,38 +114,42 @@
 										@changeOption="tipoTaxa = $event"
 									)
 							
-							v-row(v-if="tipoTaxa === 'fixo'")
+							v-row.borda-campo(v-show="tipoTaxa === 'fixo'")
 								v-col(cols="12", md="3")
 									v-label Valor
-									v-text-field#QA-input-taxa-licenciamento-valor-fixo(
+									v-text-field#QA-input-taxa-licenciamento-valor-fixo.large-error-line(
 										v-money="money"
 										outlined,
 										color="#E0E0E0",
 										:placeholder="placeholder",
-										v-model="valor.valor",
+										v-model.lazy="valor.valor",
 										@click.native="resetErrorMessage",
 										:error-messages="errorMessage( valor.valor, true )",
 										required,
 										dense
 									)
 
-							v-row(v-if="tipoTaxa === 'formula'")
+							v-row.borda-campo(v-show="tipoTaxa === 'formula'")
 								v-col(cols="12", md="4")
 									v-label Equação da fórmula
+										v-tooltip(top, left, max-width=400)
+											template(v-slot:activator="{ on, attrs }")
+												v-icon.information.ml-1.mb-1(v-bind="attrs", v-on="on") mdi-information
+											span Utilize apenas ponto para separar os números monetários e decimais.
 									v-text-field#QA-input-taxa-licenciamento-valor-formula(
 										outlined,
 										color="#E0E0E0",
-										placeholder="Ex.: 1252.58 + ( 0.4 * AU )",
-										v-model="valor.formula",
+										placeholder="Ex.: 1252.50 + (0.4 * AU) + 100",
+										v-model.lazy="valor.formula",
 										@click.native="resetErrorMessage",
-										:error-messages="errorMessage( valor.formula, true )",
+										:error-messages="errorMessage( valor.formula, true, true)",
 										required,
 										dense,
 										ref="formula"
 									)
 								v-col(cols="12", md="4")
 									v-label Parâmetro
-									v-autocomplete#QA-select-taxa-licenciamento-licenca(
+									v-autocomplete#QA-select-taxa-licenciamento-parametro(
 										outlined,
 										dense,
 										color="#E0E0E0",
@@ -283,7 +287,7 @@ export default {
 				precision: 2,
 				masked: false
 			},
-			tituloTooltip: "taxa",
+			tituloTooltip: "taxa de licenciamento",
 			placeholder: "Digite aqui...",
 			placeholderSelect: "Selecione",
 			placeholderSelectLicenca: "Selecione um ou mais",
@@ -303,7 +307,7 @@ export default {
 			indexItemEdicao: null,
 			allowRedirect: true,
 			tipoTaxa: null,
-			labelNoData: 'Não existem taxas adicionadas.',
+			labelNoData: 'Não existem taxas de licenciamento adicionadas.',
 			placeholderPesquisa: "Pesquisar pelo porte, PPD ou tipo de licença",
 			searchResult: null,
 			searchInput: '',
@@ -333,16 +337,24 @@ export default {
 	methods: {
 
 		resetErrorMessage() {
+
 			this.errorMessageEmpty = true;
 			this.errorMessageEmptyInclusao = true;
+
 		},
 
-		errorMessage(value, isVinculacao) {
+		errorMessage(value, isVinculacao, validaVirgula) {
 
 			if (isVinculacao) {
 
-				if ((!this.errorMessageEmpty || !this.errorMessageEmptyInclusao) && value === 'R$ 0,00') {
-					return 'Obrigatório';
+				if(typeof value === 'string' && value.substring(0, 2) === "R$"){
+
+					value = value ? parseFloat(value.replace(/R\$\s|\./g, '').replace(',', '.')) : 0.0;
+
+					if( value < 0) {return 'Este campo permite apenas números decimais maiores ou iguais a 0,01.';}
+
+					if (!this.errorMessageEmpty && value === 0.0) { return 'Obrigatório'; }
+
 				}
 
 				if (Array.isArray(value)){
@@ -356,6 +368,11 @@ export default {
 
 				else if (!this.errorMessageEmptyInclusao && !value) {
 					return 'Obrigatório';
+				}
+
+				if (validaVirgula) {
+					return this.errorMessageEmptyInclusao || this.verificaVirgula(value) ? 
+						'' : 'Erro! Equação da fórmula inválida. Utilize apenas ponto para separar os números monetários e decimais.';
 				}
 
 				return this.errorMessageEmpty || value || (this.dadosListagem.length > 0) ? '' : 'Obrigatório';
@@ -380,9 +397,24 @@ export default {
 			this.valor.porteEmpreendimento = null;
 			this.valor.potencialPoluidor = null;
 			this.valor.licencas = null;
+			this.valor.valor = null;
+			this.valor.formula = null;
 			this.tipoTaxa = null;
+			this.$refs.toggleOptionsTipoTaxa.clearModel();
 			this.isInclusao = true;
 			this.resetErrorMessage();
+
+			const valorFixo = document.getElementById('QA-input-taxa-licenciamento-valor-fixo');
+
+			if (valorFixo) {
+				valorFixo.value = null;
+			}
+
+			const valorFormula = document.getElementById('QA-input-taxa-licenciamento-valor-formula');
+
+			if (valorFormula) {
+				valorFormula.value = null;
+			}
 
 		},
 
@@ -390,44 +422,51 @@ export default {
 
 			if (this.checkFormVinculacao()) {
 
-				let dadoListagem = {};
+				let dadosInclusao = [];
+				let dadosExistentes = [];
 
 				if (this.isInclusao) {
 
 					this.valor.licencas.forEach(licenca => {
 
-						if (this.validarTaxaTabela(licenca)) {
-
-							dadoListagem = this.getDadosItem(licenca);
-
-							this.dadosListagem.push(dadoListagem);
-							dadoListagem = {};
-
-						} else {
-
-							let message = ERROR_MESSAGES.taxaLicenciamento.adicionarValores + "Já existe uma taxa com a mesma combinação: " +
-								"Porte: " + this.valor.porteEmpreendimento.nome + ", " +
-								"PPD: " + this.valor.potencialPoluidor.nome + "e " +
-								"Tipo licença: " + licenca.sigla + ".";
-
-							snackbar.alert(message);
-
+						if (!this.validarValoresAdicionados(licenca)) {
+							dadosExistentes.push(licenca.sigla);
 						}
-				
+
+						dadosInclusao.push(this.getDadosItem(licenca));
+
 					});
+
+					if (dadosExistentes.length === 0) {
+
+						this.dadosListagem.push(...dadosInclusao);
+						this.clearTaxaLicenciamento();
+
+					} else {
+						this.erroIncluirValoresTaxa(dadosExistentes);
+					}
 
 				} else {
 
-					dadoListagem = this.getDadosItem(this.valor.licencas[0]);
+					if (!this.validarValoresAdicionados(this.valor.licencas[0])) {
+						dadosExistentes.push(this.valor.licencas[0].sigla);
+					}
 
-					this.dadosListagem.splice(this.indexItemEdicao, 1, dadoListagem);
-					dadoListagem = {};
-					this.indexItemEdicao = null;
-					this.isInclusao = true;
+					if (dadosExistentes.length === 0 ) {
+
+						dadosInclusao = this.getDadosItem(this.valor.licencas[0]);
+
+						this.dadosListagem.splice(this.indexItemEdicao, 1, dadosInclusao);
+
+						this.indexItemEdicao = null;
+						this.isInclusao = true;
+						this.clearTaxaLicenciamento();
+
+					} else {
+						this.erroIncluirValoresTaxa(dadosExistentes);
+					}
 
 				}
-
-				this.clearTaxaLicenciamento();
 
 			} else {
 				this.errorMessageEmptyInclusao = false;
@@ -435,15 +474,16 @@ export default {
 
 		},
 
-		validarTaxaTabela(licenca) {
+		validarValoresAdicionados(licenca) {
 
 			let validacao = true;
 
 			this.dadosListagem.forEach(
-				dado => {
-					if (dado.potencialPoluidor.codigo == this.valor.potencialPoluidor.codigo 
-						&& dado.porteEmpreendimento.codigo == this.valor.porteEmpreendimento.codigo
-						&& dado.licenca.sigla == licenca.sigla) {
+				(dado, index) => {
+					if (dado.potencialPoluidor.codigo === this.valor.potencialPoluidor.codigo 
+						&& dado.porteEmpreendimento.codigo === this.valor.porteEmpreendimento.codigo
+						&& dado.licenca.sigla === licenca.sigla
+						&& (this.isInclusao || this.indexItemEdicao != index)) {
 
 						validacao = false;
 					}
@@ -491,7 +531,10 @@ export default {
 				}
 
 			} else {
+
 				this.errorMessageEmpty = false;
+				window.scrollTo(0,0);
+
 			}
 
 		},
@@ -512,7 +555,6 @@ export default {
 		editar() {
 
 			TaxaLicenciamentoService.editar(this.preparaPraSalvar())
-
 				.then(() => {
 					this.handleSuccess(true);
 				})
@@ -523,9 +565,10 @@ export default {
 		},
 
 		preparaPraSalvar() {
+
+			let dadoListagem = {};
 			
 			this.taxaLicenciamento.listTaxasLicenciamento = [];
-			let dadoListagem = {};
 
 			this.dadosListagem.forEach(dado => {
 
@@ -540,6 +583,7 @@ export default {
 			});
 
 			return this.taxaLicenciamento;
+
 		},
 
 		handleError(error, edicao = false) {
@@ -548,6 +592,7 @@ export default {
 			message += error.message;
 
 			snackbar.alert(message);
+
 		},
 
 		handleSuccess(edicao = false) {
@@ -558,6 +603,31 @@ export default {
 
 			this.clear();
 			this.redirectListagem();
+
+		},
+
+		erroIncluirValoresTaxa(licencas) {
+
+			let licencasExistentes = '';
+
+			licencas.forEach((licenca, index) => {
+
+				licencasExistentes+= licenca;
+
+				if (index !== licencas.length -1) {
+					licencasExistentes+= ", ";
+				} else {
+					licencasExistentes+= ". ";
+				}
+
+			});
+
+			let message = ERROR_MESSAGES.taxaLicenciamento.adicionarValores + "Já existe uma taxa com a mesma combinação " +
+				"para o Porte: " + this.valor.porteEmpreendimento.nome + ", " +
+				"PPD: " + this.valor.potencialPoluidor.nome + " e " +
+				"Tipo(s) de licença(s): " + licencasExistentes;
+
+			snackbar.alert(message);
 
 		},
 
@@ -583,7 +653,15 @@ export default {
 
 			if (this.tipoTaxa) {
 
-				let tipoTaxaValido = this.tipoTaxa === 'formula' ? (this.valor.formula && this.valor.formula != '') : (this.valor.valor && this.valor.valor != 'R$ 0,00');
+				let tipoTaxaValido;
+
+				if (this.tipoTaxa === 'isento') {
+					tipoTaxaValido = true;
+				} else if (this.tipoTaxa === 'formula') {
+					tipoTaxaValido = this.valor.formula && this.valor.formula != '' && this.verificaVirgula(this.valor.formula);
+				} else {//tipoTaxa = 'fixo'
+					tipoTaxaValido = this.valor.valor && this.valor.valor != 'R$ 0,00';
+				}
 
 				return this.valor.porteEmpreendimento
 					&& this.valor.potencialPoluidor
@@ -594,6 +672,11 @@ export default {
 			}
 
 			return false;
+
+		},
+
+		verificaVirgula(formula) {
+			return formula ? formula.indexOf(",") === -1 : false;
 		},
 
 		cancelar() {
@@ -646,8 +729,15 @@ export default {
 
 			if (this.isFormula(item.valor)) {
 
+				const valorFormula = document.getElementById('QA-input-taxa-licenciamento-valor-formula');
+
+				if (valorFormula) {
+					valorFormula.value = item.valor;
+				}
+
 				this.tipoTaxa = 'formula';
 				this.valor.formula = item.valor;
+				this.valor.valor = null;
 
 			} else if (item.valor === '0.0') {
 
@@ -656,8 +746,16 @@ export default {
 
 			} else {
 
+				const valorFixo = document.getElementById('QA-input-taxa-licenciamento-valor-fixo');
+
+				if (valorFixo ) {
+					valorFixo.value = item.valor;
+				}
+
 				this.tipoTaxa = 'fixo';
 				this.valor.valor = item.valor;
+				this.valor.formula = null;
+
 			}
 
 			this.indexItemEdicao = this.dadosListagem.indexOf(item);
@@ -678,6 +776,7 @@ export default {
 			let valor = item.valor;
 
 			if (!this.isFormula(valor)) {
+				//formatar para exibir no modal
 				valor = parseFloat(item.valor) !== 0 ? 'R$ ' + parseFloat(item.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2}) : 'Isento';
 			}
 
@@ -685,9 +784,9 @@ export default {
 
 				title:'<p class="title-modal-confirm">Remover taxa de licenciamento - ' + valor + '</p>',
 
-				html:`<p class="message-modal-confirm">Ao remover a taxa, ela não estará mais vinculada nessa tabela.</p>
+				html:`<p class="message-modal-confirm">Ao remover a taxa de licenciamento, ela não estará mais vinculada nessa tabela.</p>
 						<p class="message-modal-confirm">
-						<b>Tem certeza que deseja remover a taxa? Esta opção pode ser desfeita a qualquer momento ao adicioná-la novamente.</b>
+						<b>Tem certeza que deseja remover a taxa de licenciamento? Esta opção pode ser desfeita a qualquer momento ao adicioná-la novamente.</b>
 					</p>`,
 				showCancelButton: true,
 				confirmButtonColor:'#F56C6C',
@@ -701,12 +800,10 @@ export default {
 			}).then((result) => {
 
 				if (result.value) {
-					this.dadosListagem = this.dadosListagem.filter(
 
-						dado => dado.potencialPoluidor.codigo != item.potencialPoluidor.codigo
-							&& dado.porteEmpreendimento.codigo !== item.porteEmpreendimento.codigo
-							&& dado.tipoTaxa !== item.tipoTaxa
-							&& dado.valor !== item.valor);
+					let indexItemExclusao = this.dadosListagem.indexOf(item);
+					this.dadosListagem.splice(indexItemExclusao, 1);
+
 				}
 
 			});		
@@ -810,6 +907,8 @@ export default {
 			this.iconBotaoCadastrarEditar = "mdi-pencil";
 			this.isCadastro = false;
 
+
+
 			TaxaLicenciamentoService.findById(this.$route.params.idTaxaLicenciamento)
 
 				.then((response) => {
@@ -874,6 +973,12 @@ export default {
 	}
 }
 
+.large-error-line{
+	.v-messages__message{
+		line-height: initial;
+	}
+}
+
 #form-actions {
 	padding: 0 12px;
 
@@ -917,6 +1022,16 @@ export default {
 .div-money {
 	border: 1px solid @border-components;
 	height: 40px;
+}
+
+.borda-campo {
+	border: 1px solid #eee;
+	border-radius: 4px;
+	margin: 0 0 15px 0;
+}
+
+.information {
+	font-size: 16px !important;
 }
 
 </style>

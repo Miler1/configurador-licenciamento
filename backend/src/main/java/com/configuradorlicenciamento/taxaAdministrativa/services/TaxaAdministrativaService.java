@@ -83,6 +83,7 @@ public class TaxaAdministrativaService implements ITaxaAdministrativaService {
         Optional<TaxaAdministrativa> taxaAdministrativaSalva = taxaAdministrativaRepository.findById(taxaAdministrativaDTO.getId())
                 .map(taxaAdministrativa -> {
                     taxaAdministrativa.setAno(taxaAdministrativaDTO.getAno());
+                    taxaAdministrativa.setIsento(taxaAdministrativaDTO.getIsento());
                     taxaAdministrativa.setValor(taxaAdministrativaDTO.getValor());
                     taxaAdministrativa.setAtividadeDispensavel(taxaAdministrativaDTO.getAtividadeDispensavel());
                     taxaAdministrativa.setAtividadeLicenciavel(taxaAdministrativaDTO.getAtividadeLicenciavel());
