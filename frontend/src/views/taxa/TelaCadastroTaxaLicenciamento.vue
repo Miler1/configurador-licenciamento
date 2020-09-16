@@ -800,7 +800,10 @@ export default {
 			}).then((result) => {
 
 				if (result.value) {
-					this.dadosListagem = this.dadosListagem.filter(dado => dado.id != item.id);
+
+					let indexItemExclusao = this.dadosListagem.indexOf(item);
+					this.dadosListagem.splice(indexItemExclusao, 1);
+
 				}
 
 			});		
