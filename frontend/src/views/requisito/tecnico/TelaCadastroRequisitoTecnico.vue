@@ -190,6 +190,7 @@ export default {
 			allowRedirect: true,
 			labelNoData: 'Não existem documentos adicionados.',
 			placeholderPesquisa: "Pesquisar pelo nome do documento ou tipo de licença",
+			mensagemErroRegistroTecnico: 'Já existe um requisito técnico com o mesmo documento para o tipo de licença: ',
 			optionsTipoRequisito:[
 				{
 					idOption: "QA-btn-requisito-tecnico-basico",
@@ -265,19 +266,33 @@ export default {
 			if(this.checkFormVinculacao()){
 
 				var dadoListagem = {};
+				var dadosFiltrados = {};
+				var novosRegistros = 0;
+				var houveErroRegistro = false;
 
 				if(this.isInclusao) {
 
-					this.grupoRequisito.licencas.forEach(licenca => {
+					this.grupoRequisito.licencas.forEach((licenca, index) => {
 
 						dadoListagem.documento = this.grupoRequisito.documento;
 						dadoListagem.licenca = licenca;
 						dadoListagem.obrigatorio = this.grupoRequisito.obrigatorio;
+						dadosFiltrados = this.filtrarDadosInclusao(dadoListagem);
+						if (dadosFiltrados.length > 0) {
+							snackbar.alert(ERROR_MESSAGES.requisitoTecnico.adicionar + this.mensagemErroRegistroTecnico + dadoListagem.licenca.sigla);
+							houveErroRegistro = true;
+						} else {
+							novosRegistros++;
+							this.dadosListagem.push(dadoListagem);
+						}
 
-						this.dadosListagem.push(dadoListagem);
 						dadoListagem = {};
 				
 					});
+
+					if (houveErroRegistro) {
+						this.dadosListagem.splice(-novosRegistros, novosRegistros);
+					}
 
 				} else {
 
@@ -292,11 +307,21 @@ export default {
 
 				}
 
-				this.clearRequisito();
+				// this.clearRequisito();
 
 			} else {
 				this.errorMessageEmptyInclusao = false;
 			}
+
+		},
+
+		filtrarDadosInclusao(filtro) {
+
+			let dadosFiltrados = this.dadosListagem.filter(dado => {
+				return dado.licenca.id == filtro.licenca.id && dado.documento.id == filtro.documento.id;
+			});
+
+			return dadosFiltrados;
 
 		},
 
@@ -399,7 +424,6 @@ export default {
 		},
 
 		checkFormVinculacao() {
-
 			return this.grupoRequisito.documento
 				&& this.grupoRequisito.documento != ''
 				&& this.grupoRequisito.licencas
@@ -529,7 +553,6 @@ export default {
 			.then((response) => {
 				this.licencas = response.data;
 			});
-
 	},
 
 	mounted() {

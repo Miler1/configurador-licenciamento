@@ -67,6 +67,7 @@ const ERROR_MESSAGES = {
 		listagem: ER_BASE + 'listar os tequisitos técnicos. ',
 		ativar: ER_BASE + 'ativar o requisito técnico. ',
 		desativar: ER_BASE + 'desativar o requisito técnico. ',
+		adicionar: ER_BASE + 'adicionar o requisito técnico. ',
 	},
 
 	taxaLicenciamento: {
