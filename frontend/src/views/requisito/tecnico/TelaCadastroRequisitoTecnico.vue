@@ -1,7 +1,7 @@
 <template lang="pug">
 
 #tela-cadastro-requisito-tecnico
-	v-container
+	div.pb-7
 		v-expansion-panels.pa-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
 			v-expansion-panel
 				v-expansion-panel-header
@@ -42,7 +42,7 @@
 			v-expansion-panel
 				v-expansion-panel-header
 					div.d-flex.flex-row.align-center.justify-start
-						span.align-baseline Requisito técnico para solicitação de licenciamento
+						span.align-baseline {{ isInclusao ? 'Adição de ' : 'Editar ' }}  requisito técnico para solicitação de licenciamento
 					template(v-slot:actions)
 						v-icon
 				v-expansion-panel-content
@@ -171,7 +171,7 @@ export default {
 				licencas: null,
 				obrigatorio: null
 			},
-			tituloTooltip: "documento",
+			tituloTooltip: "requisito técnico",
 			placeholder: "Digite aqui...",
 			placeholderSelect: "Selecione",
 			placeholderSelectLicenca: "Selecione um ou mais",
@@ -179,7 +179,7 @@ export default {
 			licencas: [],
 			errorMessageEmpty: true,
 			errorMessageEmptyInclusao: true,
-			tituloListagem: "Listagem de documentos adicionados para este grupo",
+			tituloListagem: "Listagem de requisitos técnicos adicionados para este grupo",
 			headerListagem: HEADER,
 			dadosListagem: [],
 			labelBotaoCadastrarEditar: 'Cadastrar',
@@ -188,7 +188,7 @@ export default {
 			isInclusao: true,
 			indexItemEdicao: null,
 			allowRedirect: true,
-			labelNoData: 'Não existem documentos adicionados.',
+			labelNoData: 'Não existem requisitos técnicos adicionados.',
 			placeholderPesquisa: "Pesquisar pelo nome do documento ou tipo de licença",
 			optionsTipoRequisito:[
 				{
@@ -360,7 +360,10 @@ export default {
 				}
 
 			} else {
+
 				this.errorMessageEmpty = false;
+				window.scrollTo(0,0);
+
 			}
 
 		},
@@ -545,11 +548,11 @@ export default {
 		excluirItem(item) {
 
 			this.$fire({
-				title:'<p class="title-modal-confirm">Remover documento - ' + item.documento.nome + '</p>',
+				title:'<p class="title-modal-confirm">Remover requisito técnico - ' + item.documento.nome + '</p>',
 
-				html:`<p class="message-modal-confirm">Ao remover o documento, ele não estará mais vinculado nesse grupo.</p>
+				html:`<p class="message-modal-confirm">Ao remover o requisito técnico, ele não estará mais vinculado nesse grupo.</p>
 						<p class="message-modal-confirm">
-						<b>Tem certeza que deseja remover o documento? Esta opção pode ser desfeita a qualquer momento ao adicioná-lo novamente.</b>
+						<b>Tem certeza que deseja remover o requisito técnico? Esta opção pode ser desfeita a qualquer momento ao adicioná-lo novamente.</b>
 					</p>`,
 				showCancelButton: true,
 				confirmButtonColor:'#F56C6C',

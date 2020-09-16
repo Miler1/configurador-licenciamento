@@ -261,6 +261,10 @@ export default {
 
 @import "../assets/css/variaveis.less";
 
+thead tr th {
+	font-size: 14px !important;
+}
+
 tbody tr:nth-of-type(odd) {
 	background-color: rgba(0, 0, 0, .05);
 }
@@ -276,6 +280,10 @@ tbody tr:nth-of-type(odd) {
 
 .v-pagination__item {
 	font-size: 13px;
+}
+
+.v-pagination__item--active{
+	cursor: default !important;
 }
 
 .w-80{

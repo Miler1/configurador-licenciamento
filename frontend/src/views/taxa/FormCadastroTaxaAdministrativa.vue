@@ -26,12 +26,13 @@
 						idToggle="QA-btn-toggle-taxa-licenciamento-isento",
 						:errorMessage="errorMessage",
 						:options="optionsIsento",
-						@changeOption="taxaAdministrativa.isento = $event"
+						@changeOption="taxaAdministrativa.isento = $event",
+						:change="changeOptionIsento"
 					)
 
 				v-col(cols="12", xl="3", lg="3", md="4", v-if="taxaAdministrativa.isento == 'false'")
 					v-label Valor
-					v-text-field#QA-input-taxa-licenciamento-valor(
+					v-text-field#QA-input-taxa-administrativa-valor.large-error-line(
 						v-money="money"
 						outlined,
 						color="#E0E0E0",
@@ -96,8 +97,9 @@ export default {
 				decimal: ',',
 				thousands: '.',
 				prefix: 'R$ ',
+				sufix: '',
 				precision: 2,
-				masked: false
+				masked: false,
 			},
 			optionsIsento:[
 				{
@@ -162,6 +164,16 @@ export default {
 		}
 	},
 
+	methods: {
+		changeOptionIsento() {
+
+			this.taxaAdministrativa.valor = 0;
+			this.taxaAdministrativa.atividadeDispensavel = null;
+			this.taxaAdministrativa.atividadeLicenciavel = null;
+
+		}
+	},
+
 	created() {
 
 		let anoAtual = new Date().getFullYear();
@@ -179,6 +191,12 @@ export default {
 </script>
 
 <style lang='less'>
+
+.large-error-line{
+	.v-messages__message{
+		line-height: initial;
+	}
+}
 
 .v-input--selection-controls {
 	margin-top: 4px !important;

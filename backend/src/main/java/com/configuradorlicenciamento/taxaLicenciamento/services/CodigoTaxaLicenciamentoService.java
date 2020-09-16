@@ -38,7 +38,7 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
     @Autowired
     ITaxaLicenciamentoService taxaLicenciamentoService;
 
-    public static final String TAXA_EXISTENTE = "Erro! Não foi possível cadastrar a tabela de taxas. Já existe tabela com o mesmo código.";
+    public static final String TAXA_EXISTENTE = "Já existe uma tabela com o mesmo código.";
 
     @Override
     public CodigoTaxaLicenciamento salvar(HttpServletRequest request, CodigoTaxaLicenciamentoDTO codigoTaxaLicenciamentoDTO) {
