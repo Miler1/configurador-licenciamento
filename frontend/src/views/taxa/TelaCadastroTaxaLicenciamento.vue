@@ -416,47 +416,54 @@ export default {
 				valorFormula.value = null;
 			}
 
-
 		},
 
 		incluirDados() {
 
 			if (this.checkFormVinculacao()) {
 
-				let dadoListagem = {};
+				let dadosInclusao = [];
+				let dadosExistentes = [];
 
 				if (this.isInclusao) {
 
 					this.valor.licencas.forEach(licenca => {
 
-						if (this.validarValoresAdicionados(licenca)) {
-
-							dadoListagem = this.getDadosItem(licenca);
-
-							this.dadosListagem.push(dadoListagem);
-							dadoListagem = {};
-
-							this.clearTaxaLicenciamento();
-
-						} else {
-							this.erroIncluirValoresTaxa(licenca);
+						if (!this.validarValoresAdicionados(licenca)) {
+							dadosExistentes.push(licenca.sigla);
 						}
-				
+
+						dadosInclusao.push(this.getDadosItem(licenca));
+
 					});
+
+					if (dadosExistentes.length === 0) {
+
+						this.dadosListagem.push(...dadosInclusao);
+						this.clearTaxaLicenciamento();
+
+					} else {
+						this.erroIncluirValoresTaxa(dadosExistentes);
+					}
 
 				} else {
 
-					if (this.validarValoresAdicionados(this.valor.licencas[0])) {
+					if (!this.validarValoresAdicionados(this.valor.licencas[0])) {
+						dadosExistentes.push(this.valor.licencas[0].sigla);
+					}
 
-						dadoListagem = this.getDadosItem(this.valor.licencas[0]);
+					if (dadosExistentes.length === 0 ) {
 
-						this.dadosListagem.splice(this.indexItemEdicao, 1, dadoListagem);
-						dadoListagem = {};
+						dadosInclusao = this.getDadosItem(this.valor.licencas[0]);
+
+						this.dadosListagem.splice(this.indexItemEdicao, 1, dadosInclusao);
+
 						this.indexItemEdicao = null;
 						this.isInclusao = true;
+						this.clearTaxaLicenciamento();
 
 					} else {
-						this.erroIncluirValoresTaxa(this.valor.licencas[0]);
+						this.erroIncluirValoresTaxa(dadosExistentes);
 					}
 
 				}
@@ -472,10 +479,11 @@ export default {
 			let validacao = true;
 
 			this.dadosListagem.forEach(
-				dado => {
+				(dado, index) => {
 					if (dado.potencialPoluidor.codigo === this.valor.potencialPoluidor.codigo 
 						&& dado.porteEmpreendimento.codigo === this.valor.porteEmpreendimento.codigo
-						&& dado.licenca.sigla === licenca.sigla) {
+						&& dado.licenca.sigla === licenca.sigla
+						&& (this.isInclusao || this.indexItemEdicao != index)) {
 
 						validacao = false;
 					}
@@ -598,12 +606,26 @@ export default {
 
 		},
 
-		erroIncluirValoresTaxa(licenca) {
+		erroIncluirValoresTaxa(licencas) {
 
-			let message = ERROR_MESSAGES.taxaLicenciamento.adicionarValores + "Já existe uma taxa com a mesma combinação: " +
-				"Porte: " + this.valor.porteEmpreendimento.nome + ", " +
+			let licencasExistentes = '';
+
+			licencas.forEach((licenca, index) => {
+
+				licencasExistentes+= licenca;
+
+				if (index !== licencas.length -1) {
+					licencasExistentes+= ", ";
+				} else {
+					licencasExistentes+= ". ";
+				}
+
+			});
+
+			let message = ERROR_MESSAGES.taxaLicenciamento.adicionarValores + "Já existe uma taxa com a mesma combinação " +
+				"para o Porte: " + this.valor.porteEmpreendimento.nome + ", " +
 				"PPD: " + this.valor.potencialPoluidor.nome + " e " +
-				"Tipo licença: " + licenca.sigla + ".";
+				"Tipo(s) de licença(s): " + licencasExistentes;
 
 			snackbar.alert(message);
 
