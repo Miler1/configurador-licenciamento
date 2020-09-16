@@ -784,9 +784,9 @@ export default {
 
 				title:'<p class="title-modal-confirm">Remover taxa de licenciamento - ' + valor + '</p>',
 
-				html:`<p class="message-modal-confirm">Ao remover a taxa, ela não estará mais vinculada nessa tabela.</p>
+				html:`<p class="message-modal-confirm">Ao remover a taxa de licenciamento, ela não estará mais vinculada nessa tabela.</p>
 						<p class="message-modal-confirm">
-						<b>Tem certeza que deseja remover a taxa? Esta opção pode ser desfeita a qualquer momento ao adicioná-la novamente.</b>
+						<b>Tem certeza que deseja remover a taxa de licenciamento? Esta opção pode ser desfeita a qualquer momento ao adicioná-la novamente.</b>
 					</p>`,
 				showCancelButton: true,
 				confirmButtonColor:'#F56C6C',
