@@ -32,7 +32,7 @@ let iconDecider = type => {
 
 export default {
 
-	alert: (mensagem, tipo = types.ERROR, timeout = '6000') => {
+	alert: (mensagem, tipo = types.ERROR, timeout = '8000') => {
 		store.dispatch(SET_SNACKBAR, {color: tipo, text: mensagem, timeout: timeout, icon: iconDecider(tipo)});
 	},
 

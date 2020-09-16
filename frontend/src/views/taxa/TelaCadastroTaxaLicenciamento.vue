@@ -6,7 +6,7 @@
 			v-expansion-panel
 				v-expansion-panel-header
 					div.d-flex.flex-row.align-center.justify-start
-						span.align-baseline Tabela de taxa de licenciamento
+						span.align-baseline Tabela de taxas de licenciamento
 					template(v-slot:actions)
 						v-icon
 				v-expansion-panel-content
@@ -42,7 +42,7 @@
 			v-expansion-panel
 				v-expansion-panel-header
 					div.d-flex.flex-row.align-center.justify-start
-						span.align-baseline Valores
+						span.align-baseline Adição de taxa de licenciamento
 					template(v-slot:actions)
 						v-icon
 				v-expansion-panel-content
@@ -132,13 +132,17 @@
 							v-row.borda-campo(v-show="tipoTaxa === 'formula'")
 								v-col(cols="12", md="4")
 									v-label Equação da fórmula
+										v-tooltip(top, left, max-width=400)
+											template(v-slot:activator="{ on, attrs }")
+												v-icon.information.ml-1.mb-1(v-bind="attrs", v-on="on") mdi-information
+											span Utilize apenas ponto para separar os números monetários e decimais.
 									v-text-field#QA-input-taxa-licenciamento-valor-formula(
 										outlined,
 										color="#E0E0E0",
-										placeholder="Ex.: 1252.58 + ( 0.4 * AU )",
+										placeholder="Ex.: 1252.50 + (0.4 * AU) + 100",
 										v-model.lazy="valor.formula",
 										@click.native="resetErrorMessage",
-										:error-messages="errorMessage( valor.formula, true )",
+										:error-messages="errorMessage( valor.formula, true, true)",
 										required,
 										dense,
 										ref="formula"
@@ -339,7 +343,7 @@ export default {
 
 		},
 
-		errorMessage(value, isVinculacao) {
+		errorMessage(value, isVinculacao, validaVirgula) {
 
 			if (isVinculacao) {
 
@@ -364,6 +368,11 @@ export default {
 
 				else if (!this.errorMessageEmptyInclusao && !value) {
 					return 'Obrigatório';
+				}
+
+				if (validaVirgula) {
+					return this.errorMessageEmptyInclusao || this.verificaVirgula(value) ? 
+						'' : 'Erro! Equação da fórmula inválida. Utilize apenas ponto para separar os números monetários e decimais.';
 				}
 
 				return this.errorMessageEmpty || value || (this.dadosListagem.length > 0) ? '' : 'Obrigatório';
@@ -407,47 +416,54 @@ export default {
 				valorFormula.value = null;
 			}
 
-
 		},
 
 		incluirDados() {
 
 			if (this.checkFormVinculacao()) {
 
-				let dadoListagem = {};
+				let dadosInclusao = [];
+				let dadosExistentes = [];
 
 				if (this.isInclusao) {
 
 					this.valor.licencas.forEach(licenca => {
 
-						if (this.validarValoresAdicionados(licenca)) {
-
-							dadoListagem = this.getDadosItem(licenca);
-
-							this.dadosListagem.push(dadoListagem);
-							dadoListagem = {};
-
-							this.clearTaxaLicenciamento();
-
-						} else {
-							this.erroIncluirValoresTaxa(licenca);
+						if (!this.validarValoresAdicionados(licenca)) {
+							dadosExistentes.push(licenca.sigla);
 						}
-				
+
+						dadosInclusao.push(this.getDadosItem(licenca));
+
 					});
+
+					if (dadosExistentes.length === 0) {
+
+						this.dadosListagem.push(...dadosInclusao);
+						this.clearTaxaLicenciamento();
+
+					} else {
+						this.erroIncluirValoresTaxa(dadosExistentes);
+					}
 
 				} else {
 
-					if (this.validarValoresAdicionados(this.valor.licencas[0])) {
+					if (!this.validarValoresAdicionados(this.valor.licencas[0])) {
+						dadosExistentes.push(this.valor.licencas[0].sigla);
+					}
 
-						dadoListagem = this.getDadosItem(this.valor.licencas[0]);
+					if (dadosExistentes.length === 0 ) {
 
-						this.dadosListagem.splice(this.indexItemEdicao, 1, dadoListagem);
-						dadoListagem = {};
+						dadosInclusao = this.getDadosItem(this.valor.licencas[0]);
+
+						this.dadosListagem.splice(this.indexItemEdicao, 1, dadosInclusao);
+
 						this.indexItemEdicao = null;
 						this.isInclusao = true;
+						this.clearTaxaLicenciamento();
 
 					} else {
-						this.erroIncluirValoresTaxa(this.valor.licencas[0]);
+						this.erroIncluirValoresTaxa(dadosExistentes);
 					}
 
 				}
@@ -463,10 +479,11 @@ export default {
 			let validacao = true;
 
 			this.dadosListagem.forEach(
-				dado => {
+				(dado, index) => {
 					if (dado.potencialPoluidor.codigo === this.valor.potencialPoluidor.codigo 
 						&& dado.porteEmpreendimento.codigo === this.valor.porteEmpreendimento.codigo
-						&& dado.licenca.sigla === licenca.sigla) {
+						&& dado.licenca.sigla === licenca.sigla
+						&& (this.isInclusao || this.indexItemEdicao != index)) {
 
 						validacao = false;
 					}
@@ -589,12 +606,26 @@ export default {
 
 		},
 
-		erroIncluirValoresTaxa(licenca) {
+		erroIncluirValoresTaxa(licencas) {
 
-			let message = ERROR_MESSAGES.taxaLicenciamento.adicionarValores + "Já existe uma taxa com a mesma combinação: " +
-				"Porte: " + this.valor.porteEmpreendimento.nome + ", " +
+			let licencasExistentes = '';
+
+			licencas.forEach((licenca, index) => {
+
+				licencasExistentes+= licenca;
+
+				if (index !== licencas.length -1) {
+					licencasExistentes+= ", ";
+				} else {
+					licencasExistentes+= ". ";
+				}
+
+			});
+
+			let message = ERROR_MESSAGES.taxaLicenciamento.adicionarValores + "Já existe uma taxa com a mesma combinação " +
+				"para o Porte: " + this.valor.porteEmpreendimento.nome + ", " +
 				"PPD: " + this.valor.potencialPoluidor.nome + " e " +
-				"Tipo licença: " + licenca.sigla + ".";
+				"Tipo(s) de licença(s): " + licencasExistentes;
 
 			snackbar.alert(message);
 
@@ -627,7 +658,7 @@ export default {
 				if (this.tipoTaxa === 'isento') {
 					tipoTaxaValido = true;
 				} else if (this.tipoTaxa === 'formula') {
-					tipoTaxaValido = this.valor.formula && this.valor.formula != '';	
+					tipoTaxaValido = this.valor.formula && this.valor.formula != '' && this.verificaVirgula(this.valor.formula);
 				} else {//tipoTaxa = 'fixo'
 					tipoTaxaValido = this.valor.valor && this.valor.valor != 'R$ 0,00';
 				}
@@ -642,6 +673,10 @@ export default {
 
 			return false;
 
+		},
+
+		verificaVirgula(formula) {
+			return formula ? formula.indexOf(",") === -1 : false;
 		},
 
 		cancelar() {
@@ -765,7 +800,10 @@ export default {
 			}).then((result) => {
 
 				if (result.value) {
-					this.dadosListagem = this.dadosListagem.filter(dado => dado.id != item.id);
+
+					let indexItemExclusao = this.dadosListagem.indexOf(item);
+					this.dadosListagem.splice(indexItemExclusao, 1);
+
 				}
 
 			});		
@@ -988,6 +1026,10 @@ export default {
 	border: 1px solid #eee;
 	border-radius: 4px;
 	margin: 0 0 15px 0;
+}
+
+.information {
+	font-size: 16px !important;
 }
 
 </style>
