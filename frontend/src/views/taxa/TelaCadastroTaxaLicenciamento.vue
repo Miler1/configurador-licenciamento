@@ -287,7 +287,7 @@ export default {
 				precision: 2,
 				masked: false
 			},
-			tituloTooltip: "taxa",
+			tituloTooltip: "taxa de licenciamento",
 			placeholder: "Digite aqui...",
 			placeholderSelect: "Selecione",
 			placeholderSelectLicenca: "Selecione um ou mais",
@@ -307,7 +307,7 @@ export default {
 			indexItemEdicao: null,
 			allowRedirect: true,
 			tipoTaxa: null,
-			labelNoData: 'Não existem taxas adicionadas.',
+			labelNoData: 'Não existem taxas de licenciamento adicionadas.',
 			placeholderPesquisa: "Pesquisar pelo porte, PPD ou tipo de licença",
 			searchResult: null,
 			searchInput: '',
