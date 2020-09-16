@@ -190,7 +190,6 @@ export default {
 			allowRedirect: true,
 			labelNoData: 'Não existem documentos adicionados.',
 			placeholderPesquisa: "Pesquisar pelo nome do documento ou tipo de licença",
-			mensagemErroRegistroTecnico: 'Já existe um requisito técnico com o mesmo documento para o tipo de licença: ',
 			optionsTipoRequisito:[
 				{
 					idOption: "QA-btn-requisito-tecnico-basico",
@@ -265,49 +264,51 @@ export default {
 
 			if(this.checkFormVinculacao()){
 
-				var dadoListagem = {};
-				var dadosFiltrados = {};
-				var novosRegistros = 0;
-				var houveErroRegistro = false;
+				let dadosInclusao = [];
+				let dadosExistentes = [];
 
 				if(this.isInclusao) {
 
-					this.grupoRequisito.licencas.forEach((licenca, index) => {
+					this.grupoRequisito.licencas.forEach(licenca => {
 
-						dadoListagem.documento = this.grupoRequisito.documento;
-						dadoListagem.licenca = licenca;
-						dadoListagem.obrigatorio = this.grupoRequisito.obrigatorio;
-						dadosFiltrados = this.filtrarDadosInclusao(dadoListagem);
-						if (dadosFiltrados.length > 0) {
-							snackbar.alert(ERROR_MESSAGES.requisitoTecnico.adicionar + this.mensagemErroRegistroTecnico + dadoListagem.licenca.sigla);
-							houveErroRegistro = true;
-						} else {
-							novosRegistros++;
-							this.dadosListagem.push(dadoListagem);
+						if (!this.validarValoresAdicionados(licenca)) {
+							dadosExistentes.push(licenca.sigla);
 						}
 
-						dadoListagem = {};
+						dadosInclusao.push(this.getDadosItem(licenca));
 				
 					});
 
-					if (houveErroRegistro) {
-						this.dadosListagem.splice(-novosRegistros, novosRegistros);
+					if (dadosExistentes.length === 0) {
+
+						this.dadosListagem.push(...dadosInclusao);
+						this.clearRequisito();
+
+					} else {
+						this.erroIncluirRequisitoTecnico(dadosExistentes);
 					}
 
 				} else {
 
-					dadoListagem.documento = this.grupoRequisito.documento;
-					dadoListagem.licenca = this.grupoRequisito.licencas[0];
-					dadoListagem.obrigatorio = this.grupoRequisito.obrigatorio;
+					if (!this.validarValoresAdicionados(this.grupoRequisito.licencas[0])) {
+						dadosExistentes.push(this.grupoRequisito.licencas[0].sigla);
+					}
 
-					this.dadosListagem.splice(this.indexItemEdicao, 1, dadoListagem);
-					dadoListagem = {};
-					this.indexItemEdicao = null;
-					this.isInclusao = true;
+					if (dadosExistentes.length === 0 ) {
+
+						dadosInclusao = this.getDadosItem(this.grupoRequisito.licencas[0]);
+
+						this.dadosListagem.splice(this.indexItemEdicao, 1, dadosInclusao);
+
+						this.indexItemEdicao = null;
+						this.isInclusao = true;
+						this.clearRequisito();
+
+					} else {
+						this.erroIncluirRequisitoTecnico(dadosExistentes);
+					}
 
 				}
-
-				// this.clearRequisito();
 
 			} else {
 				this.errorMessageEmptyInclusao = false;
@@ -315,15 +316,38 @@ export default {
 
 		},
 
-		filtrarDadosInclusao(filtro) {
+		validarValoresAdicionados(licenca) {
 
-			let dadosFiltrados = this.dadosListagem.filter(dado => {
-				return dado.licenca.id == filtro.licenca.id && dado.documento.id == filtro.documento.id;
-			});
+			let validacao = true;
 
-			return dadosFiltrados;
+			this.dadosListagem.forEach(
+				(dado, index) => {
+					if (dado.documento.id === this.grupoRequisito.documento.id
+						&& dado.licenca.sigla === licenca.sigla
+						&& (this.isInclusao || this.indexItemEdicao != index)) {
+
+						validacao = false;
+					}
+				}
+			);
+
+			return validacao;
 
 		},
+
+
+		getDadosItem(licenca) {
+
+			let dadoListagem = {};
+
+			dadoListagem.documento = this.grupoRequisito.documento;
+			dadoListagem.licenca = licenca;
+			dadoListagem.obrigatorio = this.grupoRequisito.obrigatorio;
+
+			return dadoListagem;
+
+		},
+
 
 		submit() {
 
@@ -404,6 +428,31 @@ export default {
 			this.redirectListagem();
 
 		},
+
+		erroIncluirRequisitoTecnico(licencas) {
+
+			let licencasExistentes = '';
+
+			licencas.forEach((licenca, index) => {
+
+				licencasExistentes+= licenca;
+
+				if (index !== licencas.length -1) {
+					licencasExistentes+= ", ";
+				} else {
+					licencasExistentes+= ". ";
+				}
+
+			});
+			console.log(licencas);
+			let message = ERROR_MESSAGES.requisitoTecnico.adicionar + "Já existe um requisito técnico com o mesmo " +
+				"documento: " + this.grupoRequisito.documento.nome + " e " +
+				"Tipo(s) de licença(s): " + licencasExistentes;
+
+			snackbar.alert(message);
+
+		},
+
 
 		redirectListagem(allowed = true) {
 
