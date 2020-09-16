@@ -264,41 +264,90 @@ export default {
 
 			if(this.checkFormVinculacao()){
 
-				var dadoListagem = {};
+				let dadosInclusao = [];
+				let dadosExistentes = [];
 
 				if(this.isInclusao) {
 
 					this.grupoRequisito.licencas.forEach(licenca => {
 
-						dadoListagem.documento = this.grupoRequisito.documento;
-						dadoListagem.licenca = licenca;
-						dadoListagem.obrigatorio = this.grupoRequisito.obrigatorio;
+						if (!this.validarValoresAdicionados(licenca)) {
+							dadosExistentes.push(licenca.sigla);
+						}
 
-						this.dadosListagem.push(dadoListagem);
-						dadoListagem = {};
+						dadosInclusao.push(this.getDadosItem(licenca));
 				
 					});
 
+					if (dadosExistentes.length === 0) {
+
+						this.dadosListagem.push(...dadosInclusao);
+						this.clearRequisito();
+
+					} else {
+						this.erroIncluirRequisitoTecnico(dadosExistentes);
+					}
+
 				} else {
 
-					dadoListagem.documento = this.grupoRequisito.documento;
-					dadoListagem.licenca = this.grupoRequisito.licencas[0];
-					dadoListagem.obrigatorio = this.grupoRequisito.obrigatorio;
+					if (!this.validarValoresAdicionados(this.grupoRequisito.licencas[0])) {
+						dadosExistentes.push(this.grupoRequisito.licencas[0].sigla);
+					}
 
-					this.dadosListagem.splice(this.indexItemEdicao, 1, dadoListagem);
-					dadoListagem = {};
-					this.indexItemEdicao = null;
-					this.isInclusao = true;
+					if (dadosExistentes.length === 0 ) {
+
+						dadosInclusao = this.getDadosItem(this.grupoRequisito.licencas[0]);
+
+						this.dadosListagem.splice(this.indexItemEdicao, 1, dadosInclusao);
+
+						this.indexItemEdicao = null;
+						this.isInclusao = true;
+						this.clearRequisito();
+
+					} else {
+						this.erroIncluirRequisitoTecnico(dadosExistentes);
+					}
 
 				}
-
-				this.clearRequisito();
 
 			} else {
 				this.errorMessageEmptyInclusao = false;
 			}
 
 		},
+
+		validarValoresAdicionados(licenca) {
+
+			let validacao = true;
+
+			this.dadosListagem.forEach(
+				(dado, index) => {
+					if (dado.documento.id === this.grupoRequisito.documento.id
+						&& dado.licenca.sigla === licenca.sigla
+						&& (this.isInclusao || this.indexItemEdicao != index)) {
+
+						validacao = false;
+					}
+				}
+			);
+
+			return validacao;
+
+		},
+
+
+		getDadosItem(licenca) {
+
+			let dadoListagem = {};
+
+			dadoListagem.documento = this.grupoRequisito.documento;
+			dadoListagem.licenca = licenca;
+			dadoListagem.obrigatorio = this.grupoRequisito.obrigatorio;
+
+			return dadoListagem;
+
+		},
+
 
 		submit() {
 
@@ -383,6 +432,31 @@ export default {
 
 		},
 
+		erroIncluirRequisitoTecnico(licencas) {
+
+			let licencasExistentes = '';
+
+			licencas.forEach((licenca, index) => {
+
+				licencasExistentes+= licenca;
+
+				if (index !== licencas.length -1) {
+					licencasExistentes+= ", ";
+				} else {
+					licencasExistentes+= ". ";
+				}
+
+			});
+			console.log(licencas);
+			let message = ERROR_MESSAGES.requisitoTecnico.adicionar + "Já existe um requisito técnico com o mesmo " +
+				"documento: " + this.grupoRequisito.documento.nome + " e " +
+				"Tipo(s) de licença(s): " + licencasExistentes;
+
+			snackbar.alert(message);
+
+		},
+
+
 		redirectListagem(allowed = true) {
 
 			this.allowRedirect = allowed;
@@ -402,7 +476,6 @@ export default {
 		},
 
 		checkFormVinculacao() {
-
 			return this.grupoRequisito.documento
 				&& this.grupoRequisito.documento != ''
 				&& this.grupoRequisito.licencas
@@ -532,7 +605,6 @@ export default {
 			.then((response) => {
 				this.licencas = response.data;
 			});
-
 	},
 
 	mounted() {
