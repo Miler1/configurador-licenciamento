@@ -24,7 +24,7 @@ public class TaxaAdministrativaCsv implements Serializable {
     @CsvBindByPosition(position = 1)
     private String isento;
 
-    @CsvBindByName(column = "Valor (R$)")
+    @CsvBindByName(column = "Valor")
     @CsvBindByPosition(position = 2)
     private String valor;
 
