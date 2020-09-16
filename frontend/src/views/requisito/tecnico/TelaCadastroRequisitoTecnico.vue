@@ -1,7 +1,7 @@
 <template lang="pug">
 
 #tela-cadastro-requisito-tecnico
-	div
+	div.pb-7
 		v-expansion-panels.pa-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
 			v-expansion-panel
 				v-expansion-panel-header
@@ -42,7 +42,7 @@
 			v-expansion-panel
 				v-expansion-panel-header
 					div.d-flex.flex-row.align-center.justify-start
-						span.align-baseline Adição de requisito técnico para solicitação de licenciamento
+						span.align-baseline {{ isInclusao ? 'Adição de ' : 'Editar ' }}  requisito técnico para solicitação de licenciamento
 					template(v-slot:actions)
 						v-icon
 				v-expansion-panel-content

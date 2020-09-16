@@ -1,6 +1,6 @@
 <template lang="pug">
 
-	siv
+	div
 
 		PanelCadastro.pa-7(
 			:clear="clear",
@@ -232,6 +232,28 @@ export default {
 
 					this.dadosListagem = response.data;
 					this.dadosListagem.nomeItem = "perguntas";
+
+					this.dadosListagem.content.forEach((pergunta) => {
+
+						pergunta.respostasEsperadas = "";
+						let primeiro = true;
+
+						pergunta.respostas.forEach((resposta , index) => {
+
+							if(resposta.permiteLicenciamento){
+
+								if(!primeiro){
+									pergunta.respostasEsperadas += " / ";
+								}
+
+								pergunta.respostasEsperadas += resposta.texto;
+								primeiro = false;
+
+							}
+
+						});
+
+					});
 
 				})
 				.catch(erro => {
