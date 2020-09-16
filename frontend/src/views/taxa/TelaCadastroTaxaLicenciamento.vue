@@ -6,7 +6,7 @@
 			v-expansion-panel
 				v-expansion-panel-header
 					div.d-flex.flex-row.align-center.justify-start
-						span.align-baseline Tabela de taxa de licenciamento
+						span.align-baseline Tabela de taxas de licenciamento
 					template(v-slot:actions)
 						v-icon
 				v-expansion-panel-content
@@ -42,7 +42,7 @@
 			v-expansion-panel
 				v-expansion-panel-header
 					div.d-flex.flex-row.align-center.justify-start
-						span.align-baseline Valores
+						span.align-baseline Adição de taxa de licenciamento
 					template(v-slot:actions)
 						v-icon
 				v-expansion-panel-content
