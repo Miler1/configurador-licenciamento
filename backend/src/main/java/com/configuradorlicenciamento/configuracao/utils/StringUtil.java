@@ -2,9 +2,11 @@ package com.configuradorlicenciamento.configuracao.utils;
 
 import java.text.DecimalFormat;
 import java.text.Normalizer;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class StringUtil {
 
@@ -114,10 +116,10 @@ public class StringUtil {
 
         if (valor != 0) {
 
-            DecimalFormat formatter = new DecimalFormat();
-            formatter.setMinimumFractionDigits(2);
+            Locale locale = new Locale("pt", "BR");
+            NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
 
-            valorFormatado = formatter.format(valor);
+            valorFormatado = currencyFormatter.format(valor);
 
         }
 

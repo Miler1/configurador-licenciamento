@@ -14,7 +14,10 @@
 						top,
 						:style='`padding-top: ${(index * 60) + 8}px;`')
 				
-				| {{snackbar.text}}
+				v-icon.mr-4 {{snackbar.icon}}
+
+				span {{snackbar.text}}
+
 				template(v-slot:action=	'{ attrs }')
 					v-btn(text @click='snackbar.showing = false' v-bind="attrs")
 						| Fechar
