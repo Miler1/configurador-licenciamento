@@ -249,7 +249,6 @@ export default {
 			this.requisitoTecnico.codigo = null;
 			this.requisitoTecnico.descricao = null;
 			this.requisitoTecnico.ativo = true;
-
 			this.clearRequisito();
 
 		},
@@ -261,6 +260,8 @@ export default {
 			this.grupoRequisito.obrigatorio = null;
 			this.isInclusao = true;
 			this.resetErrorMessage();
+			this.$refs.toggleOptionsTipoRequisito.setModel(this.grupoRequisito.obrigatorio);
+
 		},
 
 		incluirDados() {
@@ -373,7 +374,7 @@ export default {
 
 		cadastrar() {
 
-			RequisitoTecnicoService.cadastrar(this.preparaPraSalvar())
+			RequisitoTecnicoService.cadastrar(this.prepararParaSalvar())
 
 				.then(() => {
 					this.handleSuccess();
@@ -386,7 +387,7 @@ export default {
 
 		editar() {
 
-			RequisitoTecnicoService.editar(this.preparaPraSalvar())
+			RequisitoTecnicoService.editar(this.prepararParaaSalvar())
 
 				.then(() => {
 					this.handleSuccess(true);
@@ -397,7 +398,7 @@ export default {
 
 		},
 
-		preparaPraSalvar() {
+		prepararParaSalvar() {
 			
 			this.requisitoTecnico.listRequisitos = [];
 			let dadoListagem = {};
@@ -580,7 +581,7 @@ export default {
 			});		
 		},
 
-		preparaDadosParaEdicao(requisito) {
+		prepararDadosParaEdicao(requisito) {
 
 			this.requisitoTecnico.codigo = requisito.codigo;
 			this.requisitoTecnico.descricao = requisito.descricao;
@@ -620,7 +621,7 @@ export default {
 			RequisitoTecnicoService.findById(this.$route.params.idRequisito)
 
 				.then((response) => {
-					this.preparaDadosParaEdicao(response.data);
+					this.prepararDadosParaEdicao(response.data);
 				})
 				.catch((error) => {
 					snackbar.alert(error.message);
