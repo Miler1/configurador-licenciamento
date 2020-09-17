@@ -201,6 +201,20 @@
 													h3 )
 											span Fim do grupo [)]
 
+							v-row(v-show="!isCadastro")
+								v-col(cols="12")
+									v-label Justificativa
+									v-textarea#QA-input-taxa-licenciamento-justificativa(
+										outlined,
+										color="#E0E0E0",
+										rows="3",
+										auto-grow
+										v-model="justificativa",
+										:error-messages="errorMessage(justificativa, true)",
+										@click.native="resetErrorMessage",
+										required,
+									)
+								
 							v-row
 								v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
 									a#QA-limpar-dados-taxa-licenciamento.d-flex.flex-row.align-center.justify-end(@click="clearTaxaLicenciamento")
@@ -289,6 +303,7 @@ export default {
 				precision: 2,
 				masked: false
 			},
+			justificativa: null,
 			tituloTooltip: "taxa de licenciamento",
 			placeholder: "Digite aqui...",
 			placeholderSelect: "Selecione",
@@ -556,6 +571,9 @@ export default {
 		},
 
 		editar() {
+
+			console.log(this.taxaLicenciamento.id);
+
 
 			TaxaLicenciamentoService.editar(this.preparaPraSalvar())
 				.then(() => {
