@@ -27,7 +27,7 @@ public class TipoCaracterizacaoAtividadeController extends DefaultController {
     @Autowired
     ITipoCaracterizacaoAtividadeService tipoCaracterizacaoAtividadeService;
 
-    @PostMapping(value = "/listarAtividadesDispensaveis")
+    @PostMapping(value = "atividadeDispensavel/listar")
     public ResponseEntity<Page<TipoCaracterizacaoAtividade>> listarAtividadesDispensaveis(HttpServletRequest request,
                                                                     @PageableDefault(size = 20) Pageable pageable,
                                                                     @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {

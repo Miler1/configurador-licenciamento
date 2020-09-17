@@ -1,5 +1,7 @@
 package com.configuradorlicenciamento.tipoCaracterizacaoAtividade.services;
 
+import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
+import com.configuradorlicenciamento.atividadeCnae.specifications.AtividadeCnaeSpecification;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.interfaces.ITipoCaracterizacaoAtividadeService;
 import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.models.TipoCaracterizacaoAtividade;
@@ -28,8 +30,16 @@ public class TipoCaracterizacaoAtividadeService implements ITipoCaracterizacaoAt
 
     private Specification<TipoCaracterizacaoAtividade> preparaFiltro(FiltroPesquisa filtro) {
 
-        return Specification.where(TipoCaracterizacaoAtividadeSpecification.padrao()
+        Specification<TipoCaracterizacaoAtividade> specification = Specification.where(TipoCaracterizacaoAtividadeSpecification.padrao()
                 .and(TipoCaracterizacaoAtividadeSpecification.filtrarAtividadesDispensaveis()));
+
+        if(filtro.getStringPesquisa() != null) {
+            specification = specification.and(TipoCaracterizacaoAtividadeSpecification.atividadeCnaeNome(filtro.getStringPesquisa())
+                    .or(TipoCaracterizacaoAtividadeSpecification.atividadeCnaeCodigo(filtro.getStringPesquisa())));
+
+        }
+
+        return specification;
 
     }
 }
