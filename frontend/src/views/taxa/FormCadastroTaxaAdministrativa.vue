@@ -165,13 +165,25 @@ export default {
 	},
 
 	methods: {
+
 		changeOptionIsento() {
 
 			this.taxaAdministrativa.valor = 0;
 			this.taxaAdministrativa.atividadeDispensavel = null;
 			this.taxaAdministrativa.atividadeLicenciavel = null;
 
+		},
+
+		setTextFieldValor(valor) {
+
+			const valorTaxa = document.getElementById('QA-input-taxa-administrativa-valor');
+
+			if (valorTaxa) {
+				valorTaxa.value = this.taxaAdministrativa.valor = valor;
+			}
+
 		}
+
 	},
 
 	created() {
@@ -184,7 +196,7 @@ export default {
 
 		this.anos = anos;
 
-	}
+	},
 
 };
 

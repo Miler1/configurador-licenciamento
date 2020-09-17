@@ -268,7 +268,6 @@ export default {
 			this.dadosPanel.tipo = "edição";
 			this.labelBotaoCadastrarEditar = "Editar";
 			this.iconBotaoCadastrarEditar = "mdi-pencil";
-			this.taxaAdministrativa.valor = 0;
 			this.taxaAdministrativa = { ... item};
 
 			this.taxaAdministrativa.isento = this.taxaAdministrativa.isento ? 'true' : 'false';
@@ -280,12 +279,6 @@ export default {
 
 			}
 
-			const valorTaxa = document.getElementById('QA-input-taxa-administrativa-valor');
-
-			if (valorTaxa) {
-				valorTaxa.value = item.valor;
-			}
-
 			this.isCadastro = false;
 			window.scrollTo(0,0);
 
@@ -293,13 +286,12 @@ export default {
 
 			setTimeout(function() {
 
+				that.$refs.formCadastroTaxaAdministrativa.setTextFieldValor(item.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2}));
 				that.$refs.formCadastroTaxaAdministrativa.$refs.toggleOptionsIsento.setModel(that.taxaAdministrativa.isento);
 				that.$refs.formCadastroTaxaAdministrativa.$refs.toggleAtividadeDispensavel.setModel(that.taxaAdministrativa.atividadeDispensavel);
 				that.$refs.formCadastroTaxaAdministrativa.$refs.toggleAtividadeLicenciavel.setModel(that.taxaAdministrativa.atividadeLicenciavel);
 
 			}, 100);
-
-
 
 		},
 
