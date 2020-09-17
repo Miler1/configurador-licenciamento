@@ -78,6 +78,7 @@
 										:items="licencas",
 										item-text="sigla",
 										:error-messages="errorMessage(validarArray(grupoRequisito.licencas), true )",
+										no-data-text="Nenhum tipo de licença encontrado",
 										@click.native="resetErrorMessage",
 										required,
 										return-object=true,
