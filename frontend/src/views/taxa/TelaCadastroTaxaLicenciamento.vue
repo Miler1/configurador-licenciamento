@@ -222,7 +222,8 @@
 			:excluirItem="excluirItem",
 			:labelNoData="labelNoData",
 			:placeholderPesquisa="placeholderPesquisa",
-			:tituloTooltip="tituloTooltip",
+			:tituloTooltip="tituloTooltip",,
+			:labelNoResultset="semResultados"
 		)
 
 		v-row.pt-6.px-7
@@ -308,6 +309,7 @@ export default {
 			allowRedirect: true,
 			tipoTaxa: null,
 			labelNoData: 'Não existem taxas de licenciamento adicionadas.',
+			semResultados: 'Nenhuma taxa de licenciamento encontrada com a pesquisa informada.',
 			placeholderPesquisa: "Pesquisar pelo porte, PPD ou tipo de licença",
 			searchResult: null,
 			searchInput: '',

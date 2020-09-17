@@ -23,6 +23,7 @@
 				:customFilter='customFilter'
 				:items-per-page='itemsPerPage'
 				:footer-props='footerProps'
+				:no-results-text='labelNoResultset'
 			)
 
 			template(v-slot:item.obrigatorio='{ item }')
@@ -103,6 +104,9 @@ export default {
 			type: [Function]
 		},
 		labelNoData: {
+			type: [String]
+		},
+		labelNoResultset: {
 			type: [String]
 		},
 		placeholderPesquisa: {

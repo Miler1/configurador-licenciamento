@@ -122,6 +122,7 @@
 			:labelNoData="labelNoData",
 			:placeholderPesquisa="placeholderPesquisa",
 			:tituloTooltip="tituloTooltip",
+			:labelNoResultset="semResultados"
 		)
 
 		v-row.pt-6.px-7
@@ -190,6 +191,7 @@ export default {
 			indexItemEdicao: null,
 			allowRedirect: true,
 			labelNoData: 'Não existem requisitos técnicos adicionados.',
+			semResultados: 'Nenhum requisito técnico encontrado com a pesquisa informada.',
 			placeholderPesquisa: "Pesquisar pelo nome do documento ou tipo de licença",
 			optionsTipoRequisito:[
 				{
