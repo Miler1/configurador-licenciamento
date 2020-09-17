@@ -2,6 +2,7 @@ package com.configuradorlicenciamento.parametro.services;
 
 import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
+import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.parametro.dtos.ParametroCsv;
 import com.configuradorlicenciamento.parametro.dtos.ParametroDTO;
 import com.configuradorlicenciamento.parametro.interfaces.IParametroService;
@@ -41,6 +42,8 @@ public class ParametroService implements IParametroService {
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
+        parametroDTO.setCodigo(StringUtil.tratarEspacos(parametroDTO.getCodigo()));
+
         boolean existeCodigo = parametroRepository.existsByCodigo(parametroDTO.getCodigo());
 
         if (existeCodigo) {
@@ -65,6 +68,7 @@ public class ParametroService implements IParametroService {
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
+        parametroDTO.setCodigo(StringUtil.tratarEspacos(parametroDTO.getCodigo()));
         String codigo = parametroDTO.getCodigo();
 
         boolean existeCodigo = parametroRepository.existsByCodigo(codigo);

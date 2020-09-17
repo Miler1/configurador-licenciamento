@@ -78,6 +78,7 @@
 										:items="licencas",
 										item-text="sigla",
 										:error-messages="errorMessage(validarArray(grupoRequisito.licencas), true )",
+										no-data-text="Nenhum tipo de licença encontrado",
 										@click.native="resetErrorMessage",
 										required,
 										return-object=true,
@@ -121,6 +122,7 @@
 			:labelNoData="labelNoData",
 			:placeholderPesquisa="placeholderPesquisa",
 			:tituloTooltip="tituloTooltip",
+			:labelNoResultset="semResultados"
 		)
 
 		v-row.pt-6.px-7
@@ -189,6 +191,7 @@ export default {
 			indexItemEdicao: null,
 			allowRedirect: true,
 			labelNoData: 'Não existem requisitos técnicos adicionados.',
+			semResultados: 'Nenhum requisito técnico encontrado com a pesquisa informada.',
 			placeholderPesquisa: "Pesquisar pelo nome do documento ou tipo de licença",
 			optionsTipoRequisito:[
 				{

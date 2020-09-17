@@ -3,6 +3,7 @@ package com.configuradorlicenciamento.taxaLicenciamento.services;
 import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
 import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
+import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoCsv;
 import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoDTO;
 import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoEdicaoDTO;
@@ -43,6 +44,7 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
     @Override
     public CodigoTaxaLicenciamento salvar(HttpServletRequest request, CodigoTaxaLicenciamentoDTO codigoTaxaLicenciamentoDTO) {
 
+        codigoTaxaLicenciamentoDTO.setCodigo(StringUtil.tratarEspacos(codigoTaxaLicenciamentoDTO.getCodigo()));
         String codigo = codigoTaxaLicenciamentoDTO.getCodigo();
 
         boolean existeCodigo = codigoTaxaLicenciamentoRepository.existsByCodigo(codigo);
@@ -71,6 +73,7 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
     @Override
     public CodigoTaxaLicenciamento editar(HttpServletRequest request, CodigoTaxaLicenciamentoDTO codigoTaxaLicenciamentoDTO) {
 
+        codigoTaxaLicenciamentoDTO.setCodigo(StringUtil.tratarEspacos(codigoTaxaLicenciamentoDTO.getCodigo()));
         String codigo = codigoTaxaLicenciamentoDTO.getCodigo();
 
         boolean existeCodigo = codigoTaxaLicenciamentoRepository.existsByCodigo(codigo);

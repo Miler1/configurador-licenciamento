@@ -2,6 +2,7 @@ package com.configuradorlicenciamento.licenca.services;
 
 import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
+import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.licenca.dtos.LicencaCsv;
 import com.configuradorlicenciamento.licenca.dtos.LicencaDTO;
 import com.configuradorlicenciamento.licenca.interfaces.ILicencaService;
@@ -81,7 +82,7 @@ public class LicencaService implements ILicencaService {
 
         Optional<Licenca> licencaSalva = licencaRepository.findById(licencaDTO.getId())
                 .map(licenca -> {
-                    licenca.setSigla(licencaDTO.getSigla());
+                    licenca.setSigla(StringUtil.tratarEspacos(licencaDTO.getSigla()));
                     licenca.setNome(licencaDTO.getNome());
                     licenca.setFinalidade(licencaDTO.getFinalidade());
                     licenca.setValidadeEmAnos(licencaDTO.getValidadeEmAnos());
