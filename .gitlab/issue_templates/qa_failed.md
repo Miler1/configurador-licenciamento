@@ -66,8 +66,8 @@ logs, and code as it's very hard to read otherwise.)
   
 
 [//]: <It's a bug? Use these tags.> 
-/label ~"QA:Failed" ~"Workflow:Ready for development" ~P3 
+/label ~"QA:Failed" ~"Workflow:Planning" ~P3 
 
 [//]: <It's a improvement? Use these tags.> 
-/label ~"QA:Failed" ~"Workflow:Ready for development" ~Improvement ~P4
+/label ~"QA:Failed" ~"Workflow:Planning" ~Improvement ~P4
 
