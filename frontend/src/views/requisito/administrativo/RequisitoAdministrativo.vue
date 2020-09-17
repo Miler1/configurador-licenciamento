@@ -84,7 +84,7 @@ export default {
 				panel: [],
 				readonly: true,
 				title: "Cadastro de requisito administrativo",
-				iconName:'fa fa-file-text-o',
+				iconName:'fa fa-list-alt',
 				tipo: "cadastro"
 			},
 		};
