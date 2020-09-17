@@ -93,6 +93,7 @@
 										:items="licencas",
 										item-text="sigla",
 										:error-messages="errorMessage( valor.licencas, true )",
+										no-data-text="Nenhum tipo de licença encontrado",
 										@click.native="resetErrorMessage",
 										required,
 										return-object=true,
@@ -731,15 +732,15 @@ export default {
 
 			if (this.isFormula(item.valor)) {
 
+				this.tipoTaxa = 'formula';
+				this.valor.formula = item.valor;
+				this.valor.valor = null;
+
 				const valorFormula = document.getElementById('QA-input-taxa-licenciamento-valor-formula');
 
 				if (valorFormula) {
 					valorFormula.value = item.valor;
 				}
-
-				this.tipoTaxa = 'formula';
-				this.valor.formula = item.valor;
-				this.valor.valor = null;
 
 			} else if (item.valor === '0.0') {
 
@@ -748,15 +749,15 @@ export default {
 
 			} else {
 
+				this.tipoTaxa = 'fixo';
+				this.valor.valor = item.valor;
+				this.valor.formula = null;
+
 				const valorFixo = document.getElementById('QA-input-taxa-licenciamento-valor-fixo');
 
 				if (valorFixo ) {
 					valorFixo.value = item.valor;
 				}
-
-				this.tipoTaxa = 'fixo';
-				this.valor.valor = item.valor;
-				this.valor.formula = null;
 
 			}
 
@@ -808,11 +809,12 @@ export default {
 
 				}
 
-			});		
+			});
+
 		},
 		
 		isFormula(valor) {
-			
+
 			const regex = /[^0-9\.]/;
 			return regex.test(valor);
 
@@ -835,9 +837,11 @@ export default {
 			this.valor.formula = this.valor.formula ? this.valor.formula + value : value;
 
 			this.$nextTick(() => {
+
 				this.searchInput = '';
 				this.searchResult = null;
 				this.$refs.formula.focus();
+
 			});
 
 		},
