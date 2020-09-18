@@ -148,7 +148,7 @@ tbody tr:nth-of-type(odd) {
 }
 
 .v-pagination__item {
-	font-size: 13px;
+	font-size: 13px !important;
 }
 
 .v-pagination__item--active{
