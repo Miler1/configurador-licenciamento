@@ -56,7 +56,7 @@ export default {
 	methods: {
 
 		gerarRelatorio() {
-			// RelatorioService.baixarRelatorio("/tipoCaracterizacaoAtividade/atividadeDispensavel/relatorio");
+			RelatorioService.baixarRelatorio("/tipoCaracterizacaoAtividade/atividadeDispensavel/relatorio");
 		},
 
 		updatePagination(parametrosFiltro) {

@@ -9,13 +9,13 @@ export default {
 			return ApiService.post(`tipoCaracterizacaoAtividade/atividadeDispensavel/listar/?
 						page=${parametrosFiltro.pagina > 0 ? parametrosFiltro.pagina : 0}
 						&size=${parametrosFiltro.itemsPorPagina > 0 ? parametrosFiltro.itemsPorPagina : 10}
-						&sort=${parametrosFiltro.tipoOrdenacao ? parametrosFiltro.tipoOrdenacao : 'id,asc'}`,
+						&sort=${parametrosFiltro.tipoOrdenacao ? parametrosFiltro.tipoOrdenacao : 'dataCadastro,desc'}`,
 
 			parametrosFiltro
 			);
 
 		} else {
-			return ApiService.post('tipoCaracterizacaoAtividade/atividadeDispensavel/listar/?page=0&size=10&sort=id,asc', {});
+			return ApiService.post('tipoCaracterizacaoAtividade/atividadeDispensavel/listar/?page=0&size=10&sort=dataCadastro,desc', {});
 		}
 
 	}
