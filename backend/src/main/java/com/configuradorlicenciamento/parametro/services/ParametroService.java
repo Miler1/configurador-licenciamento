@@ -2,6 +2,7 @@ package com.configuradorlicenciamento.parametro.services;
 
 import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
+import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.parametro.dtos.ParametroCsv;
 import com.configuradorlicenciamento.parametro.dtos.ParametroDTO;
 import com.configuradorlicenciamento.parametro.interfaces.IParametroService;
@@ -26,7 +27,6 @@ import java.util.Optional;
 @Service
 public class ParametroService implements IParametroService {
 
-
     private static final String PARAMETRO_EXISTENTE = "Já existe um parâmetro com o mesmo código.";
 
     @Autowired
@@ -42,9 +42,11 @@ public class ParametroService implements IParametroService {
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
-        boolean existsByCodigo = parametroRepository.existsByCodigo(parametroDTO.getCodigo());
+        parametroDTO.setCodigo(StringUtil.tratarEspacos(parametroDTO.getCodigo()));
 
-        if (existsByCodigo) {
+        boolean existeCodigo = parametroRepository.existsByCodigo(parametroDTO.getCodigo());
+
+        if (existeCodigo) {
             throw new ConstraintUniqueViolationException(PARAMETRO_EXISTENTE);
         }
 
@@ -66,11 +68,12 @@ public class ParametroService implements IParametroService {
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
+        parametroDTO.setCodigo(StringUtil.tratarEspacos(parametroDTO.getCodigo()));
         String codigo = parametroDTO.getCodigo();
 
-        boolean existsCodigo = parametroRepository.existsByCodigo(codigo);
+        boolean existeCodigo = parametroRepository.existsByCodigo(codigo);
 
-        if(existsCodigo) {
+        if (existeCodigo) {
 
             Parametro parametroExistente = parametroRepository.findByCodigo(codigo);
 

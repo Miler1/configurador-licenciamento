@@ -1,6 +1,7 @@
 package com.configuradorlicenciamento.parametro.models;
 
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
+import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.parametro.dtos.ParametroCsv;
 import com.configuradorlicenciamento.parametro.dtos.ParametroDTO;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
@@ -65,7 +66,7 @@ public class Parametro implements Serializable {
         private UsuarioLicenciamento usuarioLicenciamento;
 
         public ParametroBuilder(ParametroDTO parametroDTO) {
-            this.codigo = parametroDTO.getCodigo();
+            this.codigo = StringUtil.tratarEspacos(parametroDTO.getCodigo());
             this.nome = parametroDTO.getNome();
             this.casasDecimais = parametroDTO.getCasasDecimais();
             this.ativo = parametroDTO.getAtivo();

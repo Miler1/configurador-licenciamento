@@ -3,6 +3,7 @@ const ER_BASE = 'Erro! Não foi possível ';
 const ERROR_MESSAGES = {
 
 	logout: 'Erro ao realizar logout.',
+	unauthorized: 'Erro! Sua sessão expirou, faça login novamente.',
 
 	cnae: {
 		cadastro: ER_BASE + 'cadastrar o CNAE. ',
@@ -36,6 +37,14 @@ const ERROR_MESSAGES = {
 		desativar: ER_BASE + 'desativar o parâmetro. ',
 	},
 
+	pergunta: {
+		cadastro: ER_BASE + 'cadastrar a pergunta. ',
+		listagem: ER_BASE + 'listar as perguntas. ',
+		editar: ER_BASE + 'editar a pergunta. ',
+		ativar: ER_BASE + 'ativar a pergunta. ',
+		desativar: ER_BASE + 'desativar a pergunta. '
+	},
+
 	documento: {
 		cadastro: ER_BASE + 'cadastrar o documento. ',
 		listagem: ER_BASE + 'listar os documentos. ',
@@ -53,16 +62,38 @@ const ERROR_MESSAGES = {
 	},
 
 	requisitoTecnico: {
-		cadastro: ER_BASE + 'cadastrar o requisito técnico. ',
-		editar: ER_BASE + 'editar o requisito técnico. ',
-		listagem: ER_BASE + 'listar os tequisitos técnicos. ',
-		ativar: ER_BASE + 'ativar o requisito técnico. ',
-		desativar: ER_BASE + 'desativar o requisito técnico. ',
+		cadastro: ER_BASE + 'cadastrar o grupo de requisito técnico. ',
+		editar: ER_BASE + 'editar o grupo de requisito técnico. ',
+		listagem: ER_BASE + 'listar os grupos de requisitos técnicos. ',
+		ativar: ER_BASE + 'ativar o grupo de requisito técnico. ',
+		desativar: ER_BASE + 'desativar o grupo de requisito técnico. ',
+		adicionar: ER_BASE + 'adicionar o requisito técnico. ',
 	},
 
-	taxa: {
-		listagem: ER_BASE + 'listar as taxas. ',
-	}
+	taxaLicenciamento: {
+		cadastro: ER_BASE + 'cadastrar a tabela de taxas. ',
+		editar: ER_BASE + 'editar a tabela de taxas. ',
+		listagem: ER_BASE + 'listar as tabelas de taxas de licenciamento. ',
+		ativar: ER_BASE + 'ativar a tabela de taxas. ',
+		desativar: ER_BASE + 'desativar a tabela de taxas. ',
+		adicionarValores: ER_BASE + 'adicionar a taxa de licenciamento. ',
+	},
+
+	taxaAdministrativa: {
+		cadastro: ER_BASE + 'cadastrar a taxa administrativa. ',
+		editar: ER_BASE + 'editar a taxa administrativa. ',
+		listagem: ER_BASE + 'listar as taxas administrativas. ',
+		ativar: ER_BASE + 'ativar a taxa administrativa. ',
+		desativar: ER_BASE + 'desativar a taxa administrativa. ',
+	},
+
+	atividadeDispensavel: {
+		cadastro: ER_BASE + 'cadastrar a atividade dispensável. ',
+		editar: ER_BASE + 'editar a atividade dispensável. ',
+		listagem: ER_BASE + 'listar as atividades dispensáveis. ',
+		ativar: ER_BASE + 'ativar a atividade dispensável. ',
+		desativar: ER_BASE + 'desativar a atividade dispensável. ',
+	},
 
 };
 
@@ -91,14 +122,34 @@ const SUCCESS_MESSAGES = {
 		desativar: 'Sucesso! O parâmetro foi desativado.'
 	},
 
+	pergunta: {
+		ativar: 'Sucesso! A pergunta foi ativada.',
+		desativar: 'Sucesso! A pergunta foi desativada.'
+	},
+
 	documento: {
 		ativar: 'Sucesso! O documento foi ativado.',
 		desativar: 'Sucesso! O documento foi desativado.',
 	},
 
+	requisitoAdministrativo: {
+		ativar: 'Sucesso! O requisito administrativo foi ativado.',
+		desativar: 'Sucesso! O requisito administrativo foi desativado.',
+	},
+
 	requisitoTecnico: {
 		ativar: 'Sucesso! O grupo de requisito técnico foi ativado.',
 		desativar: 'Sucesso! O grupo de requisito técnico foi desativado.',
+	},
+
+	taxaAdministrativa: {
+		ativar: 'Sucesso! A taxa administrativa foi ativada.',
+		desativar: 'Sucesso! A taxa administrativa foi desativida.',
+	},
+
+	taxaLicenciamento: {
+		ativar: 'Sucesso! A tabela de taxa de licenciamento foi ativada.',
+		desativar: 'Sucesso! A tabela de taxa de licenciamento foi desativada.',
 	}
 	
 };

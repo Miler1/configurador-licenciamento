@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/documento")
@@ -33,7 +34,7 @@ public class DocumentoController extends DefaultController {
     IDocumentoService documentoService;
 
     @PostMapping(value = "/salvar")
-    public ResponseEntity<Documento> salvar (HttpServletRequest request, @Valid @RequestBody DocumentoDTO documentoDTO) throws Exception {
+    public ResponseEntity<Documento> salvar(HttpServletRequest request, @Valid @RequestBody DocumentoDTO documentoDTO) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
@@ -45,8 +46,8 @@ public class DocumentoController extends DefaultController {
 
     }
 
-    @GetMapping("/relatorio")
-    public void relatorioCSV (HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @GetMapping(value = "/relatorio")
+    public void relatorioCSV(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
@@ -58,11 +59,11 @@ public class DocumentoController extends DefaultController {
 
         downloadCsv(documentoService.listarDocumentoParaCsv(), nome, mappingStrategy, response);
     }
-    
-    @PostMapping(value="/listar")
+
+    @PostMapping(value = "/listar")
     public ResponseEntity<Page<Documento>> listar(HttpServletRequest request,
-                                                 @PageableDefault(size = 20) Pageable pageable,
-                                                 @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
+                                                  @PageableDefault(size = 20) Pageable pageable,
+                                                  @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
@@ -74,22 +75,24 @@ public class DocumentoController extends DefaultController {
 
     }
 
-    @GetMapping( value="/findAll")
-    public ResponseEntity<List<Documento>> findAll(HttpServletRequest request) throws Exception {
+    @GetMapping(value = "/buscarDocumentosAtivos")
+    public ResponseEntity<List<Documento>> buscarDocumentosAtivos(HttpServletRequest request) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
         List<Documento> documentos = documentoService.findAll();
 
+        List<Documento> documentosAtivos = documentos.stream().filter(Documento::getAtivo).collect(Collectors.toList());
+
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
-                .body(documentos);
+                .body(documentosAtivos);
 
     }
 
     @PostMapping(value = "/editar")
-    public ResponseEntity <Documento> editar(HttpServletRequest request,
-                                             @Valid @RequestBody DocumentoDTO documentoDTO) throws Exception{
+    public ResponseEntity<Documento> editar(HttpServletRequest request,
+                                            @Valid @RequestBody DocumentoDTO documentoDTO) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
@@ -98,6 +101,7 @@ public class DocumentoController extends DefaultController {
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
                 .body(documento);
+
     }
 
 }

@@ -46,9 +46,9 @@ public class TipologiaService implements ITipologiaService {
                 .setUsuarioLicencimento(usuarioLicenciamento)
                 .build();
 
-        boolean existsCodigo = tipologiaRepository.existsByCodigo(tipologia.getCodigo());
+        boolean codigoExistente = tipologiaRepository.existsByCodigo(tipologia.getCodigo());
 
-        if (existsCodigo) {
+        if (codigoExistente) {
             throw new ConstraintUniqueViolationException(TIPOLOGIA_EXISTENTE);
         }
 
@@ -66,30 +66,31 @@ public class TipologiaService implements ITipologiaService {
 
         Optional<Tipologia> tipologiaSalva = tipologiaRepository.findById(tipologiaDTO.getId());
 
-        if(tipologiaSalva.isEmpty()){
+        if (tipologiaSalva.isEmpty()) {
             throw new ConfiguradorNotFoundException("Por algum motivo a tipologia não foi encontrada.");
         }
 
         Tipologia tipologia = tipologiaSalva.get();
 
-        boolean existsCodigo = tipologiaRepository.existsByCodigo(tipologia.getCodigo());
-
-        if(existsCodigo){
-
-            Tipologia tipologiaExistente = tipologiaRepository.findByCodigo(tipologia.getCodigo());
-
-            if (tipologiaExistente != null && !tipologia.getId().equals(tipologiaExistente.getId())) {
-                throw new ConstraintUniqueViolationException(TIPOLOGIA_EXISTENTE);
-            }
-        }
-
-        if(!tipologiaDTO.getAtivo().equals(tipologia.getAtivo())){
+        if (!tipologiaDTO.getAtivo().equals(tipologia.getAtivo())) {
             tipologia.setAtivo(tipologiaDTO.getAtivo());
         } else {
+
             tipologia.setNome(tipologiaDTO.getNome());
             tipologia.setCodigo(Tipologia.TipologiaBuilder.gerarCodigo(tipologia.getNome()));
             tipologia.setUsuarioLicenciamento(usuarioLicenciamento);
             tipologia.setDataCadastro(new Date());
+
+            boolean codigoExistente = tipologiaRepository.existsByCodigo(tipologia.getCodigo());
+
+            if (codigoExistente) {
+
+                Tipologia tipologiaExistente = tipologiaRepository.findByCodigo(tipologia.getCodigo());
+
+                if (tipologiaExistente != null && !tipologia.getId().equals(tipologiaExistente.getId())) {
+                    throw new ConstraintUniqueViolationException(TIPOLOGIA_EXISTENTE);
+                }
+            }
         }
 
         tipologiaRepository.save(tipologia);

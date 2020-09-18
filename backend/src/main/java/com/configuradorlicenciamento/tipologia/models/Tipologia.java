@@ -13,6 +13,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -82,7 +83,9 @@ public class Tipologia implements Serializable {
             return this;
         }
 
-        public Tipologia build() { return new Tipologia(this); }
+        public Tipologia build() {
+            return new Tipologia(this);
+        }
 
         public static String gerarCodigo(String string) {
 
@@ -93,7 +96,9 @@ public class Tipologia implements Serializable {
             //codigo = codigo.replace("_", " ");
             codigo = StringUtil.removeCaracteresEspeciais(codigo);
 
-            for(String preposicao : StringUtil.preposicoes()) {
+            List<String> preposicoes = StringUtil.preposicoes();
+
+            for (String preposicao : preposicoes) {
                 codigo = codigo.replace(preposicao, " ");
             }
 
@@ -104,7 +109,6 @@ public class Tipologia implements Serializable {
     }
 
     public TipologiaCsv preparaParaCsv() {
-
         return new TipologiaCsv(this);
     }
 }

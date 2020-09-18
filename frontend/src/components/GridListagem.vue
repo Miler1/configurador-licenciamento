@@ -40,9 +40,11 @@
 				:items-per-page="itensPerPage",
 				@update:options="sortBy"
 			)
-
-			template#text-align-center(v-slot:item.validadeEmAnos='{ item }')
+			template(v-slot:item.validadeEmAnos='{ item }')
 				span {{item.validadeEmAnos ? item.validadeEmAnos : ' ‒'}}
+
+			template(v-slot:item.tipoPessoa='{ item }')
+				span {{item.tipoPessoa === 'PF' ? 'Física' : 'Jurídica'}}
 
 			template(v-slot:item.finalidade='{ item }')
 				span {{item.finalidade}}
@@ -53,26 +55,34 @@
 			template(v-slot:item.ativo='{ item }')
 				span {{item.ativo ? 'Ativo' : 'Inativo'}}
 
-			template(v-slot:item.actions='{ item }')
-				v-tooltip(bottom, v-if="tituloAba === ' taxa'")
-					template(v-slot:activator="{ on, attrs }")
-						v-icon.mr-2(small @click='visualizarTaxa(item)', v-on='on')
-							| mdi-eye
-					span {{'Visualizar ' + tituloAba}}
+			template(v-slot:item.atividadeDispensavel='{ item }')
+				span {{item.atividadeDispensavel === null ? ' ‒' : item.atividadeDispensavel ? 'Sim' : 'Não'}}
 
+			template(v-slot:item.atividadeLicenciavel='{ item }')
+				span {{item.atividadeLicenciavel === null ? ' ‒' : item.atividadeLicenciavel ? 'Sim' : 'Não'}}
+
+			template(v-slot:item.isento='{ item }')
+				span {{item.isento ? 'Sim' : 'Não'}}
+
+			template(v-slot:item.valor='{ item }')
+				span {{item.valor == '0' ? ' ‒' : item.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2})}}
+
+			template(v-slot:item.actions='{ item }')
 				v-tooltip(bottom)
 					template(v-slot:activator="{ on, attrs }")
-						v-icon.mr-2(small @click='editarItem(item)', v-on='on')
+						v-icon.mr-2(small @click='editarItem(item)', v-on='on', color='#9EBAA4')
 							| mdi-pencil
 					span Editar {{tituloAba}}
 
-				v-tooltip(bottom)
+				v-tooltip(bottom, v-model = 'item.model')
 					template(v-slot:activator="{ on, attrs }")
-						v-icon(small @click='ativarDesativarItem(item)', v-on='on')
+						v-icon(small @click='ativarDesativar(item)', v-on='on', :color= "item.ativo ? '#E6A23B' : '#67C239'")
 							| {{item.ativo ? 'mdi-minus-circle' : 'mdi-check-circle'}}
 					span {{item.ativo ? 'Desativar ' + tituloAba : 'Ativar ' + tituloAba }}
 
-			template(v-slot:no-data)
+			template(v-slot:no-data, v-if="checkNomeItem()")
+				span Não existem {{dadosListagem.nomeItem}} a serem exibidas.
+			template(v-slot:no-data, v-else)
 				span Não existem {{dadosListagem.nomeItem}} a serem exibidos.
 
 			template(v-slot:footer, v-if="dadosListagem.numberOfElements > 0")
@@ -160,8 +170,20 @@ export default {
 
 	updated() {
 
-		if(this.dadosListagem && this.dadosListagem.pageable) {
-			this.page = this.dadosListagem.pageable.pageNumber + 1;
+		if(this.dadosListagem) {
+
+			if(this.dadosListagem.pageable) {
+				this.page = this.dadosListagem.pageable.pageNumber + 1;
+			}
+
+			if(this.dadosListagem.content) {
+
+				this.dadosListagem.content.forEach((item) => {
+					item.model = false;
+				});
+				
+			}
+ 
 		}
 
 	},
@@ -214,6 +236,22 @@ export default {
 			return this.dadosListagem == null;
 		},
 
+		checkNomeItem() {
+			return this.dadosListagem.nomeItem === 'tipologias' 
+				|| this.dadosListagem.nomeItem === 'licenças' 
+				|| this.dadosListagem.nomeItem === 'tabelas de taxas de licenciamento'
+				|| this.dadosListagem.nomeItem === 'taxas administrativas'
+				|| this.dadosListagem.nomeItem === 'perguntas'
+				|| this.dadosListagem.nomeItem === 'atividades dispensáveis';
+		},
+
+		ativarDesativar(item) {
+
+			item.model = false;
+
+			this.ativarDesativarItem(item);
+		}
+
 	},
 
 };
@@ -224,12 +262,12 @@ export default {
 
 @import "../assets/css/variaveis.less";
 
-tbody tr:nth-of-type(odd) {
-	background-color: rgba(0, 0, 0, .05);
+thead tr th {
+	font-size: 14px !important;
 }
 
-#text-align-center {
-	text-align: center;
+tbody tr:nth-of-type(odd) {
+	background-color: rgba(0, 0, 0, .05);
 }
 
 .titulo-listagem{
@@ -242,7 +280,11 @@ tbody tr:nth-of-type(odd) {
 }
 
 .v-pagination__item {
-	font-size: 13px;
+	font-size: 13px !important;
+}
+
+.v-pagination__item--active{
+	cursor: default !important;
 }
 
 .w-80{

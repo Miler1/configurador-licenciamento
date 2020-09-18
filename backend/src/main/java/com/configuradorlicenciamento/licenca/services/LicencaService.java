@@ -2,6 +2,7 @@ package com.configuradorlicenciamento.licenca.services;
 
 import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
+import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.licenca.dtos.LicencaCsv;
 import com.configuradorlicenciamento.licenca.dtos.LicencaDTO;
 import com.configuradorlicenciamento.licenca.interfaces.ILicencaService;
@@ -35,15 +36,16 @@ public class LicencaService implements ILicencaService {
     UsuarioLicenciamentoRepository usuarioLicenciamentoRepository;
 
     @Override
-    public Licenca salvar(HttpServletRequest request, LicencaDTO licencaDTO) throws Exception {
+    public Licenca salvar(HttpServletRequest request, LicencaDTO licencaDTO) {
 
         Object login = request.getSession().getAttribute("login");
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
-        boolean existsSigla = licencaRepository.existsBySigla(licencaDTO.getSigla());
+        licencaDTO.setSigla(StringUtil.tratarEspacos(licencaDTO.getSigla()));
+        boolean existeSigla = licencaRepository.existsBySigla(licencaDTO.getSigla());
 
-        if (existsSigla) {
+        if (existeSigla) {
             throw new ConstraintUniqueViolationException(LICENCA_EXISTENTE);
         }
 
@@ -55,6 +57,7 @@ public class LicencaService implements ILicencaService {
         licencaRepository.save(licenca);
 
         return licenca;
+
     }
 
     @Override
@@ -64,11 +67,12 @@ public class LicencaService implements ILicencaService {
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
+        licencaDTO.setSigla(StringUtil.tratarEspacos(licencaDTO.getSigla()));
         String sigla = licencaDTO.getSigla();
 
-        boolean existsSigla = licencaRepository.existsBySigla(sigla);
+        boolean existeSigla = licencaRepository.existsBySigla(sigla);
 
-        if (existsSigla) {
+        if (existeSigla) {
 
             Licenca licencaExistente = licencaRepository.findBySigla(sigla);
 
@@ -133,6 +137,7 @@ public class LicencaService implements ILicencaService {
         }
 
         return dtos;
+
     }
 
     public List<Licenca> findAll() {

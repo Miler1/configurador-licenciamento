@@ -2,6 +2,9 @@ import Vue from 'vue';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import { loading } from '@/utils/loading.js';
+import { ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
+import snackbar from '@/services/snack.service';
+
 var countRequest = 0;
 const ApiService = {
 	async init () {
@@ -60,9 +63,12 @@ const ApiService = {
 		try {
 			return await Vue.axios.get(`${resource}/${slug}`);
 		} catch (error) {
+
 			const result = { message: this.genericErrorHandling(error) };
 
-			return Promise.reject(result);
+			if(result){
+				return Promise.reject(result);
+			}
 		}
 	},
 
@@ -113,6 +119,7 @@ const ApiService = {
 			switch (error.response.status) {
 			case 401:
 				this.handling401(error.response.data);
+				message = '';
 				break;
 			case 404:
 				message = error.response.data.message;
@@ -132,7 +139,7 @@ const ApiService = {
 	},
 
 	handling401 () {
-		//redireciona para página de login
+		setTimeout(() => snackbar.alert(ERROR_MESSAGES.unauthorized), 500);
 		window.location.hash = '#/login';
 	},
 

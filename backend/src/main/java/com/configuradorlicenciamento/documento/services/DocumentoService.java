@@ -1,5 +1,6 @@
 package com.configuradorlicenciamento.documento.services;
 
+import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.documento.dtos.DocumentoCsv;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
@@ -41,9 +42,10 @@ public class DocumentoService implements IDocumentoService {
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
-        boolean existsName = documentoRepository.existsByNome(documentoDTO.getNome());
+        documentoDTO.setNome(StringUtil.tratarEspacos(documentoDTO.getNome()));
+        boolean nomeExistente = documentoRepository.existsByNome(documentoDTO.getNome());
 
-        if (existsName) {
+        if (nomeExistente) {
             throw new ConstraintUniqueViolationException(DOCUMENTO_EXISTENTE);
         }
 
@@ -105,9 +107,10 @@ public class DocumentoService implements IDocumentoService {
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
-        boolean existsNome = documentoRepository.existsByNome(documentoDTO.getNome());
+        documentoDTO.setNome(StringUtil.tratarEspacos(documentoDTO.getNome()));
+        boolean nomeExistente = documentoRepository.existsByNome(documentoDTO.getNome());
 
-        if (existsNome){
+        if (nomeExistente){
 
             Documento documentoExistente = documentoRepository.findByNome(documentoDTO.getNome());
 

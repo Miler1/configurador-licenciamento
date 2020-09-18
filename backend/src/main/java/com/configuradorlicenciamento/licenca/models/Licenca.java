@@ -1,6 +1,7 @@
 package com.configuradorlicenciamento.licenca.models;
 
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
+import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.licenca.dtos.LicencaCsv;
 import com.configuradorlicenciamento.licenca.dtos.LicencaDTO;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
@@ -71,8 +72,8 @@ public class Licenca implements Serializable {
 
         public LicencaBuilder(LicencaDTO licencaDTO) {
             this.nome = licencaDTO.getNome();
-            this.validadeEmAnos = licencaDTO.getValidadeEmAnos();
             this.sigla = licencaDTO.getSigla();
+            this.validadeEmAnos = licencaDTO.getValidadeEmAnos();
             this.finalidade = licencaDTO.getFinalidade();
             this.ativo = licencaDTO.getAtivo();
         }
