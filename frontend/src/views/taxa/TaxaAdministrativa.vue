@@ -203,12 +203,12 @@ export default {
 
 			} else if (this.taxaAdministrativa.isento === 'false') {
 
+				let valor = this.taxaAdministrativa.valor ? parseFloat(this.taxaAdministrativa.valor.replace(/R\$\s|\./g, '').replace(',', '.')) : 0.0;
+
 				return this.taxaAdministrativa.ano
-					&& this.taxaAdministrativa.valor
-					&& this.taxaAdministrativa.valor > 0
-					&& this.taxaAdministrativa.valor != 'R$ 0,00'
 					&& this.taxaAdministrativa.atividadeDispensavel
-					&& this.taxaAdministrativa.atividadeLicenciavel;
+					&& this.taxaAdministrativa.atividadeLicenciavel
+					&& valor > 0;
 
 			}
 

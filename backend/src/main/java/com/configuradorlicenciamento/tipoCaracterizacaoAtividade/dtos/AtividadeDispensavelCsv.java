@@ -24,7 +24,7 @@ public class AtividadeDispensavelCsv implements Serializable {
     @CsvBindByPosition(position = 1)
     private String descricaoCnae;
 
-    @CsvBindByName(column = "Tipologia de CNAE")
+    @CsvBindByName(column = "Tipologia do CNAE")
     @CsvBindByPosition(position = 2)
     private String tipologiaCnae;
 
