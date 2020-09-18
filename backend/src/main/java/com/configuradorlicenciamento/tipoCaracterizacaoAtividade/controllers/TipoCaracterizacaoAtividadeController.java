@@ -51,7 +51,7 @@ public class TipoCaracterizacaoAtividadeController extends DefaultController {
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
         String data = DateUtil.formataBrHoraMinuto(new Date());
-        String nome = "Relatorio_atividades_dispensaveis_" + data + ".csv";
+        String nome = "Relatorio_de_atividades_dispensaveis_" + data + ".csv";
 
         CustomMappingStrategy<AtividadeDispensavelCsv> mappingStrategy = new CustomMappingStrategy<>();
         mappingStrategy.setType(AtividadeDispensavelCsv.class);
