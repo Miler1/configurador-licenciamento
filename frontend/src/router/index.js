@@ -108,6 +108,11 @@ const routes = [
 				name: 'Pergunta',
 				component: () => import('../views/pergunta/Pergunta.vue')
 			},
+			{
+				path: 'cnaes-dispensaveis/cadastrar',
+				name: 'TelaCadastroAtividadeDispensavel',
+				component: () => import('@/views/atividade/dispensavel/TelaCadastro.vue')
+			},
 			{ 
 				path: '*', 
 				component: () => import('@/views/UnderConstruction.vue') 
