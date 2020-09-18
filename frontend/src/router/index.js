@@ -115,7 +115,7 @@ const routes = [
 			},
 			{
 				path: 'cnaes-dispensaveis/cadastrar',
-				name: 'TelaCadastroAtividadeDispensavel',
+				name: 'CadastrarAtividadeDispensavel',
 				component: () => import('@/views/atividade/dispensavel/TelaCadastro.vue')
 			},
 			{ 

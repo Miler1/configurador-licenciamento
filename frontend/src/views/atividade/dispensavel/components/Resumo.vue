@@ -1,7 +1,7 @@
 <template lang="pug">
 
 #step-cnaes-atividade-dispensavel.pr-10.pl-10
-	v-card.mb-12(color="CCCCCC", height="400px")
+	v-card(color="CCCCCC", height="400px")
 		v-card-title Um lindo componente com o resumo do cadastro :)
 
 </template>
