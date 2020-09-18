@@ -1,0 +1,6 @@
+package com.configuradorlicenciamento.historicoConfigurador.services;
+
+import com.configuradorlicenciamento.historicoConfigurador.interfaces.IAcaoConfiguradorService;
+
+public class AcaoConfiguradorService implements IAcaoConfiguradorService {
+}

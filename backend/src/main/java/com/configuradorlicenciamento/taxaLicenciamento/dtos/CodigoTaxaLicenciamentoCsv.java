@@ -1,9 +1,7 @@
 package com.configuradorlicenciamento.taxaLicenciamento.dtos;
 
-import com.configuradorlicenciamento.configuracao.utils.DateUtil;
 import com.configuradorlicenciamento.entradaUnica.services.EntradaUnicaWS;
 import com.configuradorlicenciamento.taxaLicenciamento.models.CodigoTaxaLicenciamento;
-import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;
@@ -39,12 +37,12 @@ public class CodigoTaxaLicenciamentoCsv implements Serializable {
         this.codigo = codigoTaxaLicenciamento.getCodigo();
         this.descricao = codigoTaxaLicenciamento.getDescricao();
         this.status = codigoTaxaLicenciamento.getAtivo() ? "Ativo" : "Inativo";
-        this.dataCadastro = codigoTaxaLicenciamento.getDataCadastro() != null ? DateUtil.formataBrSimples(codigoTaxaLicenciamento.getDataCadastro()) : "-";
-        this.usuarioLicenciamento = codigoTaxaLicenciamento.getUsuarioLicenciamento() != null ? getNomeUsuario(codigoTaxaLicenciamento.getUsuarioLicenciamento()) : "-";
+//        this.dataCadastro = codigoTaxaLicenciamento.getDataCadastro() != null ? DateUtil.formataBrSimples(codigoTaxaLicenciamento.getDataCadastro()) : "-";
+//        this.usuarioLicenciamento = codigoTaxaLicenciamento.getUsuarioLicenciamento() != null ? getNomeUsuario(codigoTaxaLicenciamento.getUsuarioLicenciamento()) : "-";
     }
 
-    private String getNomeUsuario(UsuarioLicenciamento usuario){
-        return EntradaUnicaWS.ws.buscarPessoaFisicaPeloCpf(usuario.getLogin()).nome;
-    }
+//    private String getNomeUsuario(UsuarioLicenciamento usuario){
+//        return EntradaUnicaWS.ws.buscarPessoaFisicaPeloCpf(usuario.getLogin()).nome;
+//    }
 
 }

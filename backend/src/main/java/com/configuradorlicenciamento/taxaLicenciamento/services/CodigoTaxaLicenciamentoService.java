@@ -4,6 +4,9 @@ import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoun
 import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.configuracao.utils.StringUtil;
+import com.configuradorlicenciamento.historicoConfigurador.interfaces.IHistoricoConfiguradorService;
+import com.configuradorlicenciamento.historicoConfigurador.models.AcaoConfigurador;
+import com.configuradorlicenciamento.historicoConfigurador.models.Funcionalidade;
 import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoCsv;
 import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoDTO;
 import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoEdicaoDTO;
@@ -13,7 +16,6 @@ import com.configuradorlicenciamento.taxaLicenciamento.models.CodigoTaxaLicencia
 import com.configuradorlicenciamento.taxaLicenciamento.models.TaxaLicenciamento;
 import com.configuradorlicenciamento.taxaLicenciamento.repositories.CodigoTaxaLicenciamentoRepository;
 import com.configuradorlicenciamento.taxaLicenciamento.specifications.CodigoTaxaLicenciamentoSpecification;
-import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLicenciamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,10 +24,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 
 @Service
 public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoService {
@@ -38,6 +39,9 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
 
     @Autowired
     ITaxaLicenciamentoService taxaLicenciamentoService;
+
+    @Autowired
+    IHistoricoConfiguradorService historicoConfiguradorService;
 
     public static final String TAXA_EXISTENTE = "Já existe uma tabela com o mesmo código.";
 
@@ -53,18 +57,20 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
             throw new ConstraintUniqueViolationException(TAXA_EXISTENTE);
         }
 
-        Object login = request.getSession().getAttribute("login");
-
-        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
-
-        CodigoTaxaLicenciamento codigoTaxaLicenciamento = new CodigoTaxaLicenciamento.CodigoTaxaLicenciamentoBuilder(codigoTaxaLicenciamentoDTO)
-                .setDataCadastro(new Date())
-                .setUsuarioLicencimento(usuarioLicenciamento)
-                .build();
+        CodigoTaxaLicenciamento codigoTaxaLicenciamento =
+                new CodigoTaxaLicenciamento.CodigoTaxaLicenciamentoBuilder(codigoTaxaLicenciamentoDTO).build();
 
         codigoTaxaLicenciamentoRepository.save(codigoTaxaLicenciamento);
 
         taxaLicenciamentoService.salvar(codigoTaxaLicenciamentoDTO.getListTaxasLicenciamento(), codigoTaxaLicenciamento);
+
+        historicoConfiguradorService.salvar(
+                request,
+                codigoTaxaLicenciamentoDTO.getId(),
+                Funcionalidade.Funcionalidades.TAXA_LICENCIAMENTO.getId(),
+                AcaoConfigurador.Acoes.EDITAR.getId()
+
+        );
 
         return codigoTaxaLicenciamento;
 
@@ -74,6 +80,7 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
     public CodigoTaxaLicenciamento editar(HttpServletRequest request, CodigoTaxaLicenciamentoDTO codigoTaxaLicenciamentoDTO) {
 
         codigoTaxaLicenciamentoDTO.setCodigo(StringUtil.tratarEspacos(codigoTaxaLicenciamentoDTO.getCodigo()));
+
         String codigo = codigoTaxaLicenciamentoDTO.getCodigo();
 
         boolean existeCodigo = codigoTaxaLicenciamentoRepository.existsByCodigo(codigo);
@@ -85,18 +92,13 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
             if (codigoTaxaLicenciamento != null && !codigoTaxaLicenciamento.getId().equals(codigoTaxaLicenciamentoDTO.getId())) {
                 throw new ConstraintUniqueViolationException(TAXA_EXISTENTE);
             }
+
         }
-
-        Object login = request.getSession().getAttribute("login");
-
-        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
         CodigoTaxaLicenciamento codigoTaxaLicenciamentoSalvo = codigoTaxaLicenciamentoRepository.findById(codigoTaxaLicenciamentoDTO.getId())
                 .map(codigoTaxaLicenciamento -> {
                     codigoTaxaLicenciamento.setCodigo(codigoTaxaLicenciamentoDTO.getCodigo());
                     codigoTaxaLicenciamento.setDescricao(codigoTaxaLicenciamentoDTO.getDescricao());
-                    codigoTaxaLicenciamento.setUsuarioLicenciamento(usuarioLicenciamento);
-                    codigoTaxaLicenciamento.setDataCadastro(new Date());
                     codigoTaxaLicenciamento.setAtivo(codigoTaxaLicenciamentoDTO.getAtivo());
                     return codigoTaxaLicenciamento;
                 })
@@ -106,12 +108,19 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
 
         taxaLicenciamentoService.editar(codigoTaxaLicenciamentoDTO.getListTaxasLicenciamento(), codigoTaxaLicenciamentoSalvo);
 
+        historicoConfiguradorService.editar(
+                request,
+                codigoTaxaLicenciamentoSalvo.getId(),
+                codigoTaxaLicenciamentoDTO.getJustificativa(),
+                Funcionalidade.Funcionalidades.TAXA_LICENCIAMENTO.getId(),
+                AcaoConfigurador.Acoes.EDITAR.getId());
+
         return codigoTaxaLicenciamentoSalvo;
 
     }
 
     @Override
-    public CodigoTaxaLicenciamento ativarDesativar(Integer idTaxaLicenciamento) {
+    public CodigoTaxaLicenciamento ativarDesativar(HttpServletRequest request, Integer idTaxaLicenciamento) {
 
         CodigoTaxaLicenciamento codigoTaxaLicenciamento = codigoTaxaLicenciamentoRepository.findById(idTaxaLicenciamento).orElseThrow(() ->
                 new ConfiguradorNotFoundException("Não Foi possível Ativar/Desativar a taxa de licenciamento"));
@@ -119,6 +128,15 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
         codigoTaxaLicenciamento.setAtivo(!codigoTaxaLicenciamento.getAtivo());
 
         codigoTaxaLicenciamentoRepository.save(codigoTaxaLicenciamento);
+
+        //'Salvar' pois para o caso tem justificativa
+        historicoConfiguradorService.salvar(
+                request,
+                codigoTaxaLicenciamento.getId(),
+                Funcionalidade.Funcionalidades.TAXA_LICENCIAMENTO.getId(),
+                AcaoConfigurador.Acoes.EDITAR.getId()
+
+        );
 
         return codigoTaxaLicenciamento;
 
