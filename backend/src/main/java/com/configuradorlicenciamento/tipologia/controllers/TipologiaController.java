@@ -79,7 +79,7 @@ public class TipologiaController extends DefaultController {
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
         String data = DateUtil.formataBrHoraMinuto(new Date());
-        String nome = "Relatorio_Tipologias_" + data + ".csv";
+        String nome = "Relatorio_de_tipologias_" + data + ".csv";
 
         CustomMappingStrategy<TipologiaCsv> mappingStrategy = new CustomMappingStrategy<>();
         mappingStrategy.setType(TipologiaCsv.class);

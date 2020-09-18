@@ -52,7 +52,7 @@ public class DocumentoController extends DefaultController {
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
         String data = DateUtil.formataBrHoraMinuto(new Date());
-        String nome = "Relatorio_Documentos_" + data + ".csv";
+        String nome = "Relatorio_de_documentos_" + data + ".csv";
 
         CustomMappingStrategy<DocumentoCsv> mappingStrategy = new CustomMappingStrategy<>();
         mappingStrategy.setType(DocumentoCsv.class);

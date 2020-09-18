@@ -79,7 +79,7 @@ public class ParametroController extends DefaultController {
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
         String data = DateUtil.formataBrHoraMinuto(new Date());
-        String nome = "Relatorio_Parametros_" + data + ".csv";
+        String nome = "Relatorio_de_parametros_" + data + ".csv";
 
         CustomMappingStrategy<ParametroCsv> mappingStrategy = new CustomMappingStrategy<>();
         mappingStrategy.setType(ParametroCsv.class);
