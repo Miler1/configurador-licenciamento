@@ -205,7 +205,7 @@ export default {
 
 				return this.taxaAdministrativa.ano
 					&& this.taxaAdministrativa.valor
-					&& this.taxaAdministrativa.valor != 0
+					&& this.taxaAdministrativa.valor > 0
 					&& this.taxaAdministrativa.valor != 'R$ 0,00'
 					&& this.taxaAdministrativa.atividadeDispensavel
 					&& this.taxaAdministrativa.atividadeLicenciavel;
