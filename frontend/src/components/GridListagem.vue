@@ -241,7 +241,8 @@ export default {
 				|| this.dadosListagem.nomeItem === 'licenças' 
 				|| this.dadosListagem.nomeItem === 'tabelas de taxas de licenciamento'
 				|| this.dadosListagem.nomeItem === 'taxas administrativas'
-				|| this.dadosListagem.nomeItem === 'perguntas';
+				|| this.dadosListagem.nomeItem === 'perguntas'
+				|| this.dadosListagem.nomeItem === 'atividades dispensáveis';
 		},
 
 		ativarDesativar(item) {

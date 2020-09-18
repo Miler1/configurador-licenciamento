@@ -106,7 +106,12 @@ const routes = [
 			{
 				path: 'perguntas',
 				name: 'Pergunta',
-				component: () => import('../views/pergunta/Pergunta.vue')
+				component: () => import('@/views/pergunta/Pergunta.vue')
+			},
+			{
+				path: 'cnaes-dispensaveis',
+				name: 'cnaesDispensaveis',
+				component: () => import('@/views/atividade/dispensavel/atividadeDispensavel.vue')
 			},
 			{
 				path: 'cnaes-dispensaveis/cadastrar',
