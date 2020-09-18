@@ -84,7 +84,7 @@ export default {
 				panel: [],
 				readonly: true,
 				title: "Cadastro de requisito administrativo",
-				iconName:'fa fa-file-text-o',
+				iconName:'fa fa-list-alt',
 				tipo: "cadastro"
 			},
 		};
@@ -100,11 +100,12 @@ export default {
 			this.requisitoAdministrativo.tipoPessoa = null;
 			this.requisitoAdministrativo.ativo= true;
 			this.errorMessageEmpty=true;
-			this.resetaDadosCadastro();
-
+			this.resetarDadosCadastro();
+			this.$refs.formCadastroRequisitoAdministrativo.$refs.toggleOptionsPessoa.setModel(this.requisitoAdministrativo.tipoPessoa);
+			this.$refs.formCadastroRequisitoAdministrativo.$refs.toggleOptionsRequisitoAdm.setModel(this.requisitoAdministrativo.obrigatorio);
 		},
 
-		resetaDadosFiltragem() {
+		resetarDadosFiltragem() {
 
 			this.parametrosFiltro.pagina = 0;
 			this.parametrosFiltro.itemsPorPagina = 10;
@@ -113,22 +114,18 @@ export default {
 
 		},
 
-
-		resetaDadosCadastro() {
+		resetarDadosCadastro() {
 
 			this.dadosPanel.title = "Cadastro de requisito administrativo";
 			this.dadosPanel.tipo = "cadastro";
 			this.labelBotaoCadastrarEditar = "Cadastrar";
 			this.iconBotaoCadastrarEditar = "mdi-plus";
 			this.isCadastro = true;
-
 		},
 
 		submit() {
 
 			if (this.checkForm()) {
-
-				console.log(this.isCadastro);
 
 				if (this.isCadastro) {
 					this.cadastrar();
@@ -186,7 +183,7 @@ export default {
 			if(edicao) this.dadosPanel.panel = [];
 
 			this.clear();
-			this.resetaDadosFiltragem();
+			this.resetarDadosFiltragem();
 			this.updatePagination();
 			this.clear();
 
@@ -290,7 +287,7 @@ export default {
 							}
 
 							this.updatePagination();
-							this.resetaDadosFiltragem();
+							this.resetarDadosFiltragem();
 
 						})
 						.catch(error => {

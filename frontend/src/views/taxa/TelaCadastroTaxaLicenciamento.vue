@@ -1,7 +1,7 @@
 <template lang="pug">
   
 #tela-cadastro-taxa-licenciamento
-	div
+	div.pb-7
 		v-expansion-panels.pa-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
 			v-expansion-panel
 				v-expansion-panel-header
@@ -42,7 +42,7 @@
 			v-expansion-panel
 				v-expansion-panel-header
 					div.d-flex.flex-row.align-center.justify-start
-						span.align-baseline Adição de taxa de licenciamento
+						span.align-baseline {{ isInclusao ? 'Adição de ' : 'Editar ' }} taxa de licenciamento
 					template(v-slot:actions)
 						v-icon
 				v-expansion-panel-content
@@ -93,6 +93,7 @@
 										:items="licencas",
 										item-text="sigla",
 										:error-messages="errorMessage( valor.licencas, true )",
+										no-data-text="Nenhum tipo de licença encontrado",
 										@click.native="resetErrorMessage",
 										required,
 										return-object=true,
@@ -222,7 +223,8 @@
 			:excluirItem="excluirItem",
 			:labelNoData="labelNoData",
 			:placeholderPesquisa="placeholderPesquisa",
-			:tituloTooltip="tituloTooltip",
+			:tituloTooltip="tituloTooltip",,
+			:labelNoResultset="semResultados"
 		)
 
 		v-row.pt-6.px-7
@@ -308,6 +310,7 @@ export default {
 			allowRedirect: true,
 			tipoTaxa: null,
 			labelNoData: 'Não existem taxas de licenciamento adicionadas.',
+			semResultados: 'Nenhuma taxa de licenciamento encontrada com a pesquisa informada.',
 			placeholderPesquisa: "Pesquisar pelo porte, PPD ou tipo de licença",
 			searchResult: null,
 			searchInput: '',
@@ -729,15 +732,15 @@ export default {
 
 			if (this.isFormula(item.valor)) {
 
+				this.tipoTaxa = 'formula';
+				this.valor.formula = item.valor;
+				this.valor.valor = null;
+
 				const valorFormula = document.getElementById('QA-input-taxa-licenciamento-valor-formula');
 
 				if (valorFormula) {
 					valorFormula.value = item.valor;
 				}
-
-				this.tipoTaxa = 'formula';
-				this.valor.formula = item.valor;
-				this.valor.valor = null;
 
 			} else if (item.valor === '0.0') {
 
@@ -746,15 +749,15 @@ export default {
 
 			} else {
 
+				this.tipoTaxa = 'fixo';
+				this.valor.valor = item.valor;
+				this.valor.formula = null;
+
 				const valorFixo = document.getElementById('QA-input-taxa-licenciamento-valor-fixo');
 
 				if (valorFixo ) {
 					valorFixo.value = item.valor;
 				}
-
-				this.tipoTaxa = 'fixo';
-				this.valor.valor = item.valor;
-				this.valor.formula = null;
 
 			}
 
@@ -806,11 +809,12 @@ export default {
 
 				}
 
-			});		
+			});
+
 		},
 		
 		isFormula(valor) {
-			
+
 			const regex = /[^0-9\.]/;
 			return regex.test(valor);
 
@@ -833,9 +837,11 @@ export default {
 			this.valor.formula = this.valor.formula ? this.valor.formula + value : value;
 
 			this.$nextTick(() => {
+
 				this.searchInput = '';
 				this.searchResult = null;
 				this.$refs.formula.focus();
+
 			});
 
 		},
@@ -906,6 +912,8 @@ export default {
 			this.labelBotaoCadastrarEditar = "Editar";
 			this.iconBotaoCadastrarEditar = "mdi-pencil";
 			this.isCadastro = false;
+
+
 
 			TaxaLicenciamentoService.findById(this.$route.params.idTaxaLicenciamento)
 

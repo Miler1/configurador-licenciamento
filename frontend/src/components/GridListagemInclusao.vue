@@ -23,6 +23,7 @@
 				:customFilter='customFilter'
 				:items-per-page='itemsPerPage'
 				:footer-props='footerProps'
+				:no-results-text='labelNoResultset'
 			)
 
 			template(v-slot:item.obrigatorio='{ item }')
@@ -30,7 +31,7 @@
 
 			template(v-slot:item.valor='{ item }')
 				span(v-if="item.tipoTaxa != 'formula'")
-					| {{parseFloat(item.valor) !== 0 ? item.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2}) : 'Isento'}}
+					| {{parseFloat(item.valor) !== 0 ? parseFloat(item.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2}) : 'Isento'}}
 				span(v-else)
 					| {{item.valor}}
 
@@ -103,6 +104,9 @@ export default {
 			type: [Function]
 		},
 		labelNoData: {
+			type: [String]
+		},
+		labelNoResultset: {
 			type: [String]
 		},
 		placeholderPesquisa: {

@@ -62,20 +62,21 @@ const ERROR_MESSAGES = {
 	},
 
 	requisitoTecnico: {
-		cadastro: ER_BASE + 'cadastrar o requisito técnico. ',
-		editar: ER_BASE + 'editar o requisito técnico. ',
-		listagem: ER_BASE + 'listar os tequisitos técnicos. ',
-		ativar: ER_BASE + 'ativar o requisito técnico. ',
-		desativar: ER_BASE + 'desativar o requisito técnico. ',
+		cadastro: ER_BASE + 'cadastrar o grupo de requisito técnico. ',
+		editar: ER_BASE + 'editar o grupo de requisito técnico. ',
+		listagem: ER_BASE + 'listar os grupos de requisitos técnicos. ',
+		ativar: ER_BASE + 'ativar o grupo de requisito técnico. ',
+		desativar: ER_BASE + 'desativar o grupo de requisito técnico. ',
+		adicionar: ER_BASE + 'adicionar o requisito técnico. ',
 	},
 
 	taxaLicenciamento: {
 		cadastro: ER_BASE + 'cadastrar a tabela de taxas. ',
 		editar: ER_BASE + 'editar a tabela de taxas. ',
-		listagem: ER_BASE + 'listar as taxas de licenciamento. ',
+		listagem: ER_BASE + 'listar as tabelas de taxas de licenciamento. ',
 		ativar: ER_BASE + 'ativar a tabela de taxas. ',
 		desativar: ER_BASE + 'desativar a tabela de taxas. ',
-		adicionarValores: ER_BASE + 'adicionar a taxa. ',
+		adicionarValores: ER_BASE + 'adicionar a taxa de licenciamento. ',
 	},
 
 	taxaAdministrativa: {

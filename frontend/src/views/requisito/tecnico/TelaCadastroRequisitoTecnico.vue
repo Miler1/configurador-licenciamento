@@ -1,7 +1,7 @@
 <template lang="pug">
 
 #tela-cadastro-requisito-tecnico
-	div
+	div.pb-7
 		v-expansion-panels.pa-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
 			v-expansion-panel
 				v-expansion-panel-header
@@ -42,7 +42,7 @@
 			v-expansion-panel
 				v-expansion-panel-header
 					div.d-flex.flex-row.align-center.justify-start
-						span.align-baseline Adição de requisito técnico para solicitação de licenciamento
+						span.align-baseline {{ isInclusao ? 'Adição de ' : 'Editar ' }}  requisito técnico para solicitação de licenciamento
 					template(v-slot:actions)
 						v-icon
 				v-expansion-panel-content
@@ -78,6 +78,7 @@
 										:items="licencas",
 										item-text="sigla",
 										:error-messages="errorMessage(validarArray(grupoRequisito.licencas), true )",
+										no-data-text="Nenhum tipo de licença encontrado",
 										@click.native="resetErrorMessage",
 										required,
 										return-object=true,
@@ -121,6 +122,7 @@
 			:labelNoData="labelNoData",
 			:placeholderPesquisa="placeholderPesquisa",
 			:tituloTooltip="tituloTooltip",
+			:labelNoResultset="semResultados"
 		)
 
 		v-row.pt-6.px-7
@@ -189,6 +191,7 @@ export default {
 			indexItemEdicao: null,
 			allowRedirect: true,
 			labelNoData: 'Não existem requisitos técnicos adicionados.',
+			semResultados: 'Nenhum requisito técnico encontrado com a pesquisa informada.',
 			placeholderPesquisa: "Pesquisar pelo nome do documento ou tipo de licença",
 			optionsTipoRequisito:[
 				{
@@ -246,7 +249,6 @@ export default {
 			this.requisitoTecnico.codigo = null;
 			this.requisitoTecnico.descricao = null;
 			this.requisitoTecnico.ativo = true;
-
 			this.clearRequisito();
 
 		},
@@ -258,47 +260,98 @@ export default {
 			this.grupoRequisito.obrigatorio = null;
 			this.isInclusao = true;
 			this.resetErrorMessage();
+			this.$refs.toggleOptionsTipoRequisito.setModel(this.grupoRequisito.obrigatorio);
+
 		},
 
 		incluirDados() {
 
 			if(this.checkFormVinculacao()){
 
-				var dadoListagem = {};
+				let dadosInclusao = [];
+				let dadosExistentes = [];
 
 				if(this.isInclusao) {
 
 					this.grupoRequisito.licencas.forEach(licenca => {
 
-						dadoListagem.documento = this.grupoRequisito.documento;
-						dadoListagem.licenca = licenca;
-						dadoListagem.obrigatorio = this.grupoRequisito.obrigatorio;
+						if (!this.validarValoresAdicionados(licenca)) {
+							dadosExistentes.push(licenca.sigla);
+						}
 
-						this.dadosListagem.push(dadoListagem);
-						dadoListagem = {};
+						dadosInclusao.push(this.getDadosItem(licenca));
 				
 					});
 
+					if (dadosExistentes.length === 0) {
+
+						this.dadosListagem.push(...dadosInclusao);
+						this.clearRequisito();
+
+					} else {
+						this.erroIncluirRequisitoTecnico(dadosExistentes);
+					}
+
 				} else {
 
-					dadoListagem.documento = this.grupoRequisito.documento;
-					dadoListagem.licenca = this.grupoRequisito.licencas[0];
-					dadoListagem.obrigatorio = this.grupoRequisito.obrigatorio;
+					if (!this.validarValoresAdicionados(this.grupoRequisito.licencas[0])) {
+						dadosExistentes.push(this.grupoRequisito.licencas[0].sigla);
+					}
 
-					this.dadosListagem.splice(this.indexItemEdicao, 1, dadoListagem);
-					dadoListagem = {};
-					this.indexItemEdicao = null;
-					this.isInclusao = true;
+					if (dadosExistentes.length === 0 ) {
+
+						dadosInclusao = this.getDadosItem(this.grupoRequisito.licencas[0]);
+
+						this.dadosListagem.splice(this.indexItemEdicao, 1, dadosInclusao);
+
+						this.indexItemEdicao = null;
+						this.isInclusao = true;
+						this.clearRequisito();
+
+					} else {
+						this.erroIncluirRequisitoTecnico(dadosExistentes);
+					}
 
 				}
-
-				this.clearRequisito();
 
 			} else {
 				this.errorMessageEmptyInclusao = false;
 			}
 
 		},
+
+		validarValoresAdicionados(licenca) {
+
+			let validacao = true;
+
+			this.dadosListagem.forEach(
+				(dado, index) => {
+					if (dado.documento.id === this.grupoRequisito.documento.id
+						&& dado.licenca.sigla === licenca.sigla
+						&& (this.isInclusao || this.indexItemEdicao != index)) {
+
+						validacao = false;
+					}
+				}
+			);
+
+			return validacao;
+
+		},
+
+
+		getDadosItem(licenca) {
+
+			let dadoListagem = {};
+
+			dadoListagem.documento = this.grupoRequisito.documento;
+			dadoListagem.licenca = licenca;
+			dadoListagem.obrigatorio = this.grupoRequisito.obrigatorio;
+
+			return dadoListagem;
+
+		},
+
 
 		submit() {
 
@@ -321,7 +374,7 @@ export default {
 
 		cadastrar() {
 
-			RequisitoTecnicoService.cadastrar(this.preparaPraSalvar())
+			RequisitoTecnicoService.cadastrar(this.prepararParaSalvar())
 
 				.then(() => {
 					this.handleSuccess();
@@ -334,7 +387,7 @@ export default {
 
 		editar() {
 
-			RequisitoTecnicoService.editar(this.preparaPraSalvar())
+			RequisitoTecnicoService.editar(this.prepararParaaSalvar())
 
 				.then(() => {
 					this.handleSuccess(true);
@@ -345,7 +398,7 @@ export default {
 
 		},
 
-		preparaPraSalvar() {
+		prepararParaSalvar() {
 			
 			this.requisitoTecnico.listRequisitos = [];
 			let dadoListagem = {};
@@ -383,6 +436,31 @@ export default {
 
 		},
 
+		erroIncluirRequisitoTecnico(licencas) {
+
+			let licencasExistentes = '';
+
+			licencas.forEach((licenca, index) => {
+
+				licencasExistentes+= licenca;
+
+				if (index !== licencas.length -1) {
+					licencasExistentes+= ", ";
+				} else {
+					licencasExistentes+= ". ";
+				}
+
+			});
+			console.log(licencas);
+			let message = ERROR_MESSAGES.requisitoTecnico.adicionar + "Já existe um requisito técnico com o mesmo " +
+				"documento: " + this.grupoRequisito.documento.nome + " e " +
+				"Tipo(s) de licença(s): " + licencasExistentes;
+
+			snackbar.alert(message);
+
+		},
+
+
 		redirectListagem(allowed = true) {
 
 			this.allowRedirect = allowed;
@@ -402,7 +480,6 @@ export default {
 		},
 
 		checkFormVinculacao() {
-
 			return this.grupoRequisito.documento
 				&& this.grupoRequisito.documento != ''
 				&& this.grupoRequisito.licencas
@@ -504,7 +581,7 @@ export default {
 			});		
 		},
 
-		preparaDadosParaEdicao(requisito) {
+		prepararDadosParaEdicao(requisito) {
 
 			this.requisitoTecnico.codigo = requisito.codigo;
 			this.requisitoTecnico.descricao = requisito.descricao;
@@ -532,7 +609,6 @@ export default {
 			.then((response) => {
 				this.licencas = response.data;
 			});
-
 	},
 
 	mounted() {
@@ -545,7 +621,7 @@ export default {
 			RequisitoTecnicoService.findById(this.$route.params.idRequisito)
 
 				.then((response) => {
-					this.preparaDadosParaEdicao(response.data);
+					this.prepararDadosParaEdicao(response.data);
 				})
 				.catch((error) => {
 					snackbar.alert(error.message);
