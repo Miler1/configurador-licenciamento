@@ -38,7 +38,7 @@
 						v-icon mdi-arrow-left
 						span Voltar
 
-					v-btn#QA-btn--proximo-cadastrar-atividade-dispensavel.ml-2.btn-cadastrar(@click="nextOrSubmit", :min-width="buttonMinWidth", large)
+					v-btn#QA-btn-proximo-cadastrar-atividade-dispensavel.ml-2.btn-cadastrar(@click="nextOrSubmit", :min-width="buttonMinWidth", large)
 						v-icon(color="white") {{nextButtonDecider().icon}}
 						span {{nextButtonDecider().text}}
 
