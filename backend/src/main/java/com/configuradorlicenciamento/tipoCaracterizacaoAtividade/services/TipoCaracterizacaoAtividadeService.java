@@ -1,7 +1,5 @@
 package com.configuradorlicenciamento.tipoCaracterizacaoAtividade.services;
 
-import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
-import com.configuradorlicenciamento.atividadeCnae.specifications.AtividadeCnaeSpecification;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.interfaces.ITipoCaracterizacaoAtividadeService;
 import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.models.TipoCaracterizacaoAtividade;

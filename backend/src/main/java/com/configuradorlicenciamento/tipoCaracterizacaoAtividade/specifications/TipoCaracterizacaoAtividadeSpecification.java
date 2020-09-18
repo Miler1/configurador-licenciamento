@@ -1,6 +1,5 @@
 package com.configuradorlicenciamento.tipoCaracterizacaoAtividade.specifications;
 
-import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.models.TipoCaracterizacaoAtividade;
 import lombok.AllArgsConstructor;
