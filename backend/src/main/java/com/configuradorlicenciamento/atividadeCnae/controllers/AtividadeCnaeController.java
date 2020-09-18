@@ -78,7 +78,7 @@ public class AtividadeCnaeController extends DefaultController {
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
         String data = DateUtil.formataBrHoraMinuto(new Date());
-        String nome = "Relatorio_CNAE_" + data + ".csv";
+        String nome = "Relatorio_de_CNAEs_" + data + ".csv";
 
         CustomMappingStrategy<AtividadeCnaeCsv> mappingStrategy = new CustomMappingStrategy<>();
         mappingStrategy.setType(AtividadeCnaeCsv.class);

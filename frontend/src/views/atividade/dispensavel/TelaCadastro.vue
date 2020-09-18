@@ -80,6 +80,10 @@ export default {
 					completo: false
 				}
 			],
+			atividadeDispensavel: {
+				cnaes: [],
+				perguntas: []
+			},
 			allowRedirect: false,
 			isCadastro: true,
 			buttonMinWidth: "9em"

@@ -80,7 +80,7 @@ public class RequisitoAdministrativoController extends DefaultController {
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
         String data = DateUtil.formataBrHoraMinuto(new Date());
-        String nome = "Relatorio_Requisito_Administrativo_" + data + ".csv";
+        String nome = "Relatorio_de_requisito_administrativos_" + data + ".csv";
 
         CustomMappingStrategy<RequisitoAdministrativoCsv> mappingStrategy = new CustomMappingStrategy<>();
         mappingStrategy.setType(RequisitoAdministrativoCsv.class);
