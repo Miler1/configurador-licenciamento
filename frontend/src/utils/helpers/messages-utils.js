@@ -86,6 +86,14 @@ const ERROR_MESSAGES = {
 		desativar: ER_BASE + 'desativar a taxa administrativa. ',
 	},
 
+	atividadeDispensavel: {
+		cadastro: ER_BASE + 'cadastrar a atividade dispensável. ',
+		editar: ER_BASE + 'editar a atividade dispensável. ',
+		listagem: ER_BASE + 'listar as atividades dispensáveis. ',
+		ativar: ER_BASE + 'ativar a atividade dispensável. ',
+		desativar: ER_BASE + 'desativar a atividade dispensável. ',
+	},
+
 };
 
 const SUCCESS_MESSAGES = {
