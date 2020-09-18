@@ -72,11 +72,10 @@ public class Licenca implements Serializable {
 
         public LicencaBuilder(LicencaDTO licencaDTO) {
             this.nome = licencaDTO.getNome();
+            this.sigla = licencaDTO.getSigla();
             this.validadeEmAnos = licencaDTO.getValidadeEmAnos();
             this.finalidade = licencaDTO.getFinalidade();
             this.ativo = licencaDTO.getAtivo();
-
-            this.sigla = StringUtil.tratarEspacos(licencaDTO.getSigla());
         }
 
         public LicencaBuilder setDataCadastro(Date dataCadastro) {
