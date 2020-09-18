@@ -75,11 +75,14 @@ export default {
 
 		customFilter(value, search, item) {
 
+			value = value.toLowerCase();
+			search = search.toLowerCase();
+
 			return value != null
 				&& search != null
 				&& value !== 'true'
 				&& value !== 'false'
-				&& value.toString().indexOf(search) !== -1;
+				&& value.toString().indexOf(search) !== -1; //Faz o matching da pesquisa dentro do valor
 		},
 
 	},
@@ -148,7 +151,7 @@ tbody tr:nth-of-type(odd) {
 }
 
 .v-pagination__item {
-	font-size: 13px;
+	font-size: 13px !important;
 }
 
 .v-pagination__item--active{
