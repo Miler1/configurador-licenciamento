@@ -25,20 +25,20 @@
 
 		v-row.pt-6.px-7
 			v-col#form-actions.d-flex.justify-space-between(cols="12", md="12", flex=1)
-				v-btn#QA-btn-cancelar-atividade-dispensavel.align-self-start(@click="cancelar", outlined, large, color="#84A98C")
+				v-btn#QA-btn-cancelar-atividade-dispensavel.align-self-start(@click="cancelar", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
 					v-icon mdi-close
 					span Cancelar
 
 				div.right-buttons
-					v-btn#QA-btn-voltar-atividade-dispensavel(v-if="passo !== 1", @click="previousStep", outlined, large, color="#84A98C")
+					v-btn#QA-btn-rascunho-atividade-dispensavel(@click="salvarRascunho", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
+						v-icon mdi-content-save
+						span Salvar
+
+					v-btn#QA-btn-voltar-atividade-dispensavel.ml-2(:disabled="passo === 1", @click="previousStep", outlined, :min-width="buttonMinWidth", large, color="#84A98C")
 						v-icon mdi-arrow-left
 						span Voltar
 
-					v-btn#QA-btn-rascunho-atividade-dispensavel.ml-2(v-if="lastStep() !== true", @click="salvarRascunho", outlined, large, color="#84A98C")
-						v-icon mdi-content-save
-						span Salvar rascunho
-
-					v-btn#QA-btn--proximo-cadastrar-atividade-dispensavel.ml-2.btn-cadastrar(@click="nextOrSubmit", large)
+					v-btn#QA-btn--proximo-cadastrar-atividade-dispensavel.ml-2.btn-cadastrar(@click="nextOrSubmit", :min-width="buttonMinWidth", large)
 						v-icon(color="white") {{nextButtonDecider().icon}}
 						span {{nextButtonDecider().text}}
 
@@ -81,7 +81,8 @@ export default {
 				}
 			],
 			allowRedirect: false,
-			isCadastro: true
+			isCadastro: true,
+			buttonMinWidth: "9em"
 		};
 
 	},
