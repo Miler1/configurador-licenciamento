@@ -39,7 +39,7 @@ export default {
 	data: () => {
 		return {
 			tituloAba: "CNAE dispensado",
-			tituloListagem: "Listagem de CNAEs dispensados",
+			tituloListagem: "Listagem de CNAEs dispensáveis cadastrados",
 			placeholderPesquisa: "Pesquisar pelo código ou descrição da atividade",
 			headerListagem: HEADER,
 			dadosListagem: {},
@@ -89,7 +89,7 @@ export default {
 
 		abrirTelaCadastro() {
 
-			// this.$router.push({name: 'CadastrarRequisitosTecnicos'});
+			this.$router.push({name: 'CadastrarAtividadeDispensavel'});
 
 		},
 
