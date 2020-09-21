@@ -91,7 +91,7 @@ public class AtividadeCnaeController extends DefaultController {
     }
 
     @GetMapping(value = "/buscarCnaesAtivos")
-    public ResponseEntity<List<AtividadeCnae>> buscarcnaesAtivos(HttpServletRequest request) throws Exception {
+    public ResponseEntity<List<AtividadeCnae>> buscarCnaesAtivos(HttpServletRequest request) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 

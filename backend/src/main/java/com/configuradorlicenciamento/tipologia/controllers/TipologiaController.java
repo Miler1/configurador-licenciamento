@@ -92,7 +92,7 @@ public class TipologiaController extends DefaultController {
     }
 
     @GetMapping(value = "/buscarTipologiasAtivas")
-    public ResponseEntity<List<Tipologia>> buscarcnaesAtivos(HttpServletRequest request) throws Exception {
+    public ResponseEntity<List<Tipologia>> buscarTipologiasAtivas(HttpServletRequest request) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
