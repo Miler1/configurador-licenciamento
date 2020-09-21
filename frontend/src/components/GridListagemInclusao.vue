@@ -78,8 +78,8 @@ export default {
 
 		customFilter(value, search, item) {
 
-			value = value ? value.toLowerCase() : value;
-			search = search.toLowerCase();
+			value = value ? this.normalizer(value) : value;
+			search = this.normalizer(search);
 
 			return value != null
 				&& search != null
@@ -87,6 +87,10 @@ export default {
 				&& value !== 'false'
 				&& value.toString().indexOf(search) !== -1; //Faz o matching da pesquisa dentro do valor
 		},
+
+		normalizer(string) {
+			return string.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+		}
 
 	},
 
