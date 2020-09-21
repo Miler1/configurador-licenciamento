@@ -24,4 +24,6 @@ export default {
 
 	},
 
+	findAll: async () => ApiService.get(`pergunta/findAll`)
+
 };

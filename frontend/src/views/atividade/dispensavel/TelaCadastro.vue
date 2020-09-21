@@ -19,7 +19,10 @@
 		
 		PassoCnaes(v-if="passo == 1")
 
-		PassoPerguntas(v-if="passo == 2")
+		PassoPerguntas(
+			v-if="passo == 2",
+			:atividadeDispensavel="atividadeDispensavel",
+			:erro="erros[1]")
 
 		Resumo(v-if="passo == 3")
 
@@ -69,16 +72,24 @@ export default {
 			passos: [
 				{
 					titulo: "CNAEs",
-					completo: false
+					completo: false,
+					validar: null
 				},
 				{
 					titulo: "Perguntas",
-					completo: false
+					completo: false,
+					validar: null
 				},
 				{
 					titulo: "Resumo",
-					completo: false
+					completo: false,
+					validar: null
 				}
+			],
+			erros: [
+				{ invalido: false },
+				{ invalido: false },
+				{ invalido: false }
 			],
 			atividadeDispensavel: {
 				cnaes: [],
@@ -110,7 +121,28 @@ export default {
 		},
 
 		nextStep() {
-			this.passo += 1;
+
+			if(this.validar()) {
+				this.passo += 1;
+			}
+
+		},
+
+		validar() {
+
+			let possivel = true;
+
+			for(let i = 0; i < this.passo; i++){
+
+				if(!this.passos[i].validar()){
+					possivel = false;
+					this.erros[i].invalido = true;
+				}
+
+			}
+
+			return possivel;
+
 		},
 
 		previousStep() {
@@ -147,6 +179,15 @@ export default {
 				text: lastStep ? (this.isCadastro ? "Cadastrar" : "Editar") : "Próximo",
 				icon: lastStep ? (this.isCadastro ? "mdi-plus" : "mdi-pencil") : "mdi-arrow-right"
 			};
+		},
+
+		validarPerguntas() {
+
+			let perguntas = this.atividadeDispensavel.perguntas;
+			this.passos[1].completo = perguntas && perguntas.length > 0;
+
+			return this.passos[1].completo;
+
 		},
 
 		confirmarCancelamento(next) {
@@ -192,6 +233,10 @@ export default {
 
 	mounted() {
 
+		this.passos[0].validar = () => true;
+		this.passos[1].validar = this.validarPerguntas;
+		this.passos[2].validar = () => true;
+
 	},
 
 	beforeRouteLeave(to, from, next) {
@@ -212,11 +257,6 @@ export default {
 
 @import "../../../assets/css/variaveis.less";
 
-.btn-cadastrar {
-	background-color: @green-primary !important;
-	color: @bg-text-field !important;
-}
-
 .stepper-container {
 
 	padding-left: 20%;
@@ -228,6 +268,34 @@ export default {
 
 	.v-stepper__header {
 		box-shadow: unset;
+	}
+
+}
+
+#form-actions {
+
+	padding: 0 12px;
+
+	a {
+		margin-right: 20px;
+
+		.v-icon, span {
+			color: @red;
+		}
+	}
+
+	.v-btn {
+		font-size: 16px;
+		text-transform: none !important;
+	}
+
+	.v-icon {
+		font-size: 20px !important;
+	}
+
+	.btn-cadastrar {
+		background-color: @green-primary !important;
+		color: @bg-text-field !important;
 	}
 
 }
