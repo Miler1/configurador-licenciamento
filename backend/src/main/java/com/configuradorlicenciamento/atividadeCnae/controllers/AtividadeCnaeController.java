@@ -95,9 +95,7 @@ public class AtividadeCnaeController extends DefaultController {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        List<AtividadeCnae> atividadesCnae = atividadeCnaeService.findAll();
-
-        List<AtividadeCnae> cnaeAtivos = atividadesCnae.stream().filter(AtividadeCnae::getAtivo).collect(Collectors.toList());
+        List<AtividadeCnae> cnaeAtivos = atividadeCnaeService.findAtivos();
 
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())

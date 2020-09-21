@@ -22,5 +22,5 @@ public interface ITipologiaService {
 
     Page<Tipologia> listar(Pageable pageable, FiltroPesquisa filtro);
 
-    List<Tipologia> findAll();
+    List<Tipologia> findAtivos();
 }

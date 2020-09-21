@@ -23,5 +23,5 @@ public interface IAtividadeCnaeService {
 
     Page<AtividadeCnae> listar(Pageable pageable, FiltroPesquisa filtro);
 
-    List<AtividadeCnae> findAll();
+    List<AtividadeCnae> findAtivos();
 }

@@ -96,9 +96,7 @@ public class TipologiaController extends DefaultController {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        List<Tipologia> tipologias = tipologiaService.findAll();
-
-        List<Tipologia> tipologiasAtivas = tipologias.stream().filter(Tipologia::getAtivo).collect(Collectors.toList());
+        List<Tipologia> tipologiasAtivas = tipologiaService.findAtivos();
 
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())

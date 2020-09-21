@@ -141,9 +141,9 @@ public class TipologiaService implements ITipologiaService {
     }
 
     @Override
-    public List<Tipologia> findAll() {
+    public List<Tipologia> findAtivos() {
 
-        return tipologiaRepository.findAll();
+        return tipologiaRepository.findByAtivo(true);
 
     }
 
