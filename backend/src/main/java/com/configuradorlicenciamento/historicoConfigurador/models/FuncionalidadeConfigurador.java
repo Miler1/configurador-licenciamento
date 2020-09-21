@@ -22,6 +22,7 @@ public class FuncionalidadeConfigurador implements Serializable {
     private Integer id;
 
     @NotNull(message = "{validacao.notnull}")
+    @Column(unique = true, name="tipo")
     private String tipo;
 
     public enum Funcionalidades {

@@ -11,22 +11,23 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CodigoTaxaLicenciamentoEdicaoDTO {
 
-        private String codigo;
-        private String descricao;
-        private Boolean ativo;
-        private String justificativa;
-        private final List<TaxaLicenciamento> taxasLicenciamento;
+    private String codigo;
+    private String descricao;
+    private Boolean ativo;
+    private String justificativa;
+    private final List<TaxaLicenciamento> taxasLicenciamento;
 
-        public CodigoTaxaLicenciamentoEdicaoDTO(CodigoTaxaLicenciamento codigoTaxaLicenciamento, List<TaxaLicenciamento> taxasLicenciamento) {
+    public CodigoTaxaLicenciamentoEdicaoDTO(CodigoTaxaLicenciamento codigoTaxaLicenciamento, List<TaxaLicenciamento> taxasLicenciamento) {
 
-            this.codigo = codigoTaxaLicenciamento.getCodigo();
-            this.descricao = codigoTaxaLicenciamento.getDescricao();
-            this.ativo = codigoTaxaLicenciamento.getAtivo();
-            this.taxasLicenciamento = taxasLicenciamento;
+        this.codigo = codigoTaxaLicenciamento.getCodigo();
+        this.descricao = codigoTaxaLicenciamento.getDescricao();
+        this.ativo = codigoTaxaLicenciamento.getAtivo();
+        this.taxasLicenciamento = taxasLicenciamento;
 
-        }
+    }
 
     public void setJustificativa(String justificativa) {
         this.justificativa = justificativa;
     }
+
 }

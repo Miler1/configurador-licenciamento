@@ -22,6 +22,7 @@ public class AcaoConfigurador implements Serializable {
     private Integer id;
 
     @NotNull(message = "{validacao.notnull}")
+    @Column(unique = true, name="acao")
     private String acao;
 
     public enum Acoes {
