@@ -17,9 +17,14 @@
 
 						v-divider(v-if="index !== passos.length - 1", :key="Math.random()")
 		
-		PassoCnaes(v-if="passo == 1")
+		PassoCnaes(v-if="passo == 1",
+			:cnaesTipologia="atividadeDispensavel.cnaesTipologia"
+			:erro="erros[0]")
 
-		PassoPerguntas(v-if="passo == 2")
+		PassoPerguntas(
+			v-if="passo == 2",
+			:atividadeDispensavel="atividadeDispensavel",
+			:erro="erros[1]")
 
 		Resumo(v-if="passo == 3")
 
@@ -50,6 +55,8 @@
 import PassoCnaes from '@/views/atividade/dispensavel/components/Cnaes.vue';
 import PassoPerguntas from '@/views/atividade/dispensavel/components/Perguntas.vue';
 import Resumo from '@/views/atividade/dispensavel/components/Resumo.vue';
+import snackbar from '@/services/snack.service';
+import { ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 
 export default {
 
@@ -69,19 +76,27 @@ export default {
 			passos: [
 				{
 					titulo: "CNAEs",
-					completo: false
+					completo: false,
+					validar: null
 				},
 				{
 					titulo: "Perguntas",
-					completo: false
+					completo: false,
+					validar: null
 				},
 				{
 					titulo: "Resumo",
-					completo: false
+					completo: false,
+					validar: null
 				}
 			],
+			erros: [
+				{ invalido: false },
+				{ invalido: false },
+				{ invalido: false }
+			],
 			atividadeDispensavel: {
-				cnaes: [],
+				cnaesTipologia: [],
 				perguntas: []
 			},
 			allowRedirect: false,
@@ -110,7 +125,28 @@ export default {
 		},
 
 		nextStep() {
-			this.passo += 1;
+
+			if(this.validar()) {
+				this.passo += 1;
+			}
+
+		},
+
+		validar() {
+
+			let possivel = true;
+
+			for(let i = 0; i < this.passo; i++){
+
+				if(!this.passos[i].validar()){
+					possivel = false;
+					this.erros[i].invalido = true;
+				}
+
+			}
+
+			return possivel;
+
 		},
 
 		previousStep() {
@@ -149,6 +185,32 @@ export default {
 			};
 		},
 
+		validarCnaesTipologias() {
+
+			let cnaesTipologias = this.atividadeDispensavel.cnaesTipologia;
+			let valido = this.passos[0].completo = cnaesTipologias && cnaesTipologias.length > 0;
+
+			if(!valido) {
+				snackbar.alert(ERROR_MESSAGES.atividadeDispensavel.cnaes.avancarEtapa);
+			}
+
+			return valido;
+
+		},
+
+		validarPerguntas() {
+
+			let perguntas = this.atividadeDispensavel.perguntas;
+			let valido = this.passos[1].completo = perguntas && perguntas.length > 0;
+
+			if(!valido){
+				snackbar.alert(ERROR_MESSAGES.atividadeDispensavel.perguntas.avancarEtapa);
+			}
+
+			return valido;
+
+		},
+
 		confirmarCancelamento(next) {
 
 			this.$fire({
@@ -183,7 +245,7 @@ export default {
 				console.error(error);
 			});
 
-		},
+		}
 
 	},
 
@@ -191,6 +253,10 @@ export default {
 	},
 
 	mounted() {
+
+		this.passos[0].validar = this.validarCnaesTipologias;
+		this.passos[1].validar = this.validarPerguntas;
+		this.passos[2].validar = () => true;
 
 	},
 
@@ -212,11 +278,6 @@ export default {
 
 @import "../../../assets/css/variaveis.less";
 
-.btn-cadastrar {
-	background-color: @green-primary !important;
-	color: @bg-text-field !important;
-}
-
 .stepper-container {
 
 	padding-left: 20%;
@@ -228,6 +289,34 @@ export default {
 
 	.v-stepper__header {
 		box-shadow: unset;
+	}
+
+}
+
+#form-actions {
+
+	padding: 0 12px;
+
+	a {
+		margin-right: 20px;
+
+		.v-icon, span {
+			color: @red;
+		}
+	}
+
+	.v-btn {
+		font-size: 16px;
+		text-transform: none !important;
+	}
+
+	.v-icon {
+		font-size: 20px !important;
+	}
+
+	.btn-cadastrar {
+		background-color: @green-primary !important;
+		color: @bg-text-field !important;
 	}
 
 }

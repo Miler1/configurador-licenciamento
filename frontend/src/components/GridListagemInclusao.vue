@@ -29,6 +29,9 @@
 			template(v-slot:item.obrigatorio='{ item }')
 				span {{item.obrigatorio == "true" ? 'Básico' : 'Complementar'}}
 
+			template(v-slot:item.foraMunicipio='{ item }')
+				span {{item.foraMunicipio == "true" ? 'Sim' : 'Não'}}
+
 			template(v-slot:item.valor='{ item }')
 				span(v-if="item.tipoTaxa != 'formula'")
 					| {{parseFloat(item.valor) !== 0 ? parseFloat(item.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2}) : 'Isento'}}

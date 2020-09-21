@@ -88,11 +88,22 @@ const ERROR_MESSAGES = {
 	},
 
 	atividadeDispensavel: {
+
 		cadastro: ER_BASE + 'cadastrar a atividade dispensável. ',
 		editar: ER_BASE + 'editar a atividade dispensável. ',
 		listagem: ER_BASE + 'listar as atividades dispensáveis. ',
 		ativar: ER_BASE + 'ativar a atividade dispensável. ',
 		desativar: ER_BASE + 'desativar a atividade dispensável. ',
+
+		cnaes: {
+			adicionarValores: ER_BASE + 'adicionar a relação CNAE / Tipologia. ',
+			avancarEtapa: 'Não foi possível avançar a etapa. É necessário adicionar pelo menos uma relação.',
+		},
+
+		perguntas: {
+			avancarEtapa: 'Não foi possível avançar a etapa. É necessário adicionar pelo menos uma pergunta.',
+		},
+
 	},
 
 };
