@@ -87,8 +87,8 @@ public class PerguntaController extends DefaultController {
 
     }
 
-    @GetMapping(value = "/findAll")
-    public ResponseEntity<List<Pergunta>> findAll(HttpServletRequest request) throws Exception {
+    @GetMapping(value = "/listarPerguntasAtivas")
+    public ResponseEntity<List<Pergunta>> listarPerguntasAtivas(HttpServletRequest request) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 

@@ -266,7 +266,7 @@ export default {
 
 	mounted() {
 
-		perguntaService.findAll()
+		perguntaService.listarPerguntasAtivas()
 			.then(resposta => {
 				this.perguntasCadastradas = resposta.data;
 

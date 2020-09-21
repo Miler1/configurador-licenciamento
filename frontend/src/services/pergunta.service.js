@@ -24,6 +24,6 @@ export default {
 
 	},
 
-	findAll: async () => ApiService.get(`pergunta/findAll`)
+	listarPerguntasAtivas: async () => ApiService.get(`pergunta/listarPerguntasAtivas`)
 
 };
