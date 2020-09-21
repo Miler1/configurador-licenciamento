@@ -17,7 +17,8 @@
 
 						v-divider(v-if="index !== passos.length - 1", :key="Math.random()")
 		
-		PassoCnaes(v-if="passo == 1")
+		PassoCnaes(v-if="passo == 1",
+			:cnaesTipologia="atividadeDispensavel.cnaesTipologia")
 
 		PassoPerguntas(v-if="passo == 2")
 
@@ -50,6 +51,8 @@
 import PassoCnaes from '@/views/atividade/dispensavel/components/Cnaes.vue';
 import PassoPerguntas from '@/views/atividade/dispensavel/components/Perguntas.vue';
 import Resumo from '@/views/atividade/dispensavel/components/Resumo.vue';
+import snackbar from '@/services/snack.service';
+import { ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 
 export default {
 
@@ -81,7 +84,7 @@ export default {
 				}
 			],
 			atividadeDispensavel: {
-				cnaes: [],
+				cnaesTipologia: [],
 				perguntas: []
 			},
 			allowRedirect: false,
@@ -110,7 +113,17 @@ export default {
 		},
 
 		nextStep() {
-			this.passo += 1;
+
+			if(this.passo === 1) {
+				if(this.validarCnaesTipologias()){
+					this.passo += 1;
+				} else {
+					snackbar.alert(ERROR_MESSAGES.relacaoCnaeTipologia.avancarEtapa);
+				}
+			} else {
+				this.passo += 1;
+			}
+
 		},
 
 		previousStep() {
@@ -184,6 +197,16 @@ export default {
 			});
 
 		},
+
+		validarCnaesTipologias() {
+
+			if(this.atividadeDispensavel.cnaesTipologia.length === 0) {
+				return false;
+			}
+
+			return true;
+
+		}
 
 	},
 

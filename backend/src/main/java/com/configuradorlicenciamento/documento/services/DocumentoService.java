@@ -94,6 +94,7 @@ public class DocumentoService implements IDocumentoService {
 
     }
 
+    @Override
     public List<Documento> findAll() {
 
         return documentoRepository.findAll();

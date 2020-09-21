@@ -10,6 +10,7 @@ import com.configuradorlicenciamento.configuracao.utils.DateUtil;
 import com.configuradorlicenciamento.configuracao.enums.Acao;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.configuracao.utils.csv.CustomMappingStrategy;
+import com.configuradorlicenciamento.documento.models.Documento;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/atividadeCnae")
@@ -84,6 +87,21 @@ public class AtividadeCnaeController extends DefaultController {
         mappingStrategy.setType(AtividadeCnaeCsv.class);
 
         downloadCsv(atividadeCnaeService.listarCnaesParaCsv(), nome, mappingStrategy, response);
+
+    }
+
+    @GetMapping(value = "/buscarCnaesAtivos")
+    public ResponseEntity<List<AtividadeCnae>> buscarcnaesAtivos(HttpServletRequest request) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        List<AtividadeCnae> atividadesCnae = atividadeCnaeService.findAll();
+
+        List<AtividadeCnae> cnaeAtivos = atividadesCnae.stream().filter(AtividadeCnae::getAtivo).collect(Collectors.toList());
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(cnaeAtivos);
 
     }
 
