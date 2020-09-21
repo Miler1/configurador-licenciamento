@@ -14,7 +14,7 @@
 							v-row
 								v-col(cols="12", md="4")
 									v-label CNAE
-									v-autocomplete#QA-select-requisito-administrativo-licenca(
+									v-autocomplete#QA-select-atividade-dispensavel-cnae(
 										outlined,
 										dense,
 										color="#E0E0E0",
@@ -46,7 +46,7 @@
 												| {{ data.item.codigo }}
 								v-col(cols="12", md="4")
 									v-label Tipologia
-									v-autocomplete#QA-select-requisito-administrativo-documento(
+									v-autocomplete#QA-select-atividade-dispensavel-tipologia(
 										outlined,
 										dense,
 										color="#E0E0E0",
@@ -73,15 +73,15 @@
 
 							v-row
 								v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
-									a#QA-limpar-dados-requisito-tecnico.d-flex.flex-row.align-center.justify-end(@click="clearForm")
+									a#QA-limpar-dados-atividade-dispensavel-cnae.d-flex.flex-row.align-center.justify-end(@click="clearForm")
 										v-icon mdi-delete
 										span Limpar dados
 								
-									v-btn#QA-btn-adicionar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
+									v-btn#QA-btn-adicionar-atividade-dispensavel-cnae(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
 										v-icon mdi-plus
 										span Adicionar
 								
-									v-btn#QA-btn-editar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="!isInclusao")
+									v-btn#QA-btn-editar-atividade-dispensavel-cnae(@click="incluirDados", large, outlined, color="#84A98C", v-if="!isInclusao")
 										v-icon mdi-pencil
 										span Editar
 		
