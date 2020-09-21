@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class HistoricoConfiguradorService implements IHistoricoConfiguradorService {
@@ -28,48 +28,49 @@ public class HistoricoConfiguradorService implements IHistoricoConfiguradorServi
     @Autowired
     AcaoConfiguradorRepository acaoRepository;
 
-
     @Autowired
     UsuarioLicenciamentoRepository usuarioLicenciamentoRepository;
 
     @Override
-    public void salvar(HttpServletRequest request, Integer idFuncionalidade, Integer idAcao) {
+    public void salvar(HttpServletRequest request, Integer idTabela, String funcionalidade, String acao) {
 
         Object login = request.getSession().getAttribute("login");
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
-        Optional<FuncionalidadeConfigurador> funcionalidade = funcionadeRepository.findById(idFuncionalidade);
+        FuncionalidadeConfigurador funcionalidadeConfigurador = funcionadeRepository.findByTipo(funcionalidade);
 
-        Optional<AcaoConfigurador> acao = acaoRepository.findById(idAcao);
+        AcaoConfigurador acaoConfigurador = acaoRepository.findByAcao(acao);
 
-        HistoricoConfigurador historico = new HistoricoConfigurador(funcionalidade.get(), acao.get(), new Date(), usuarioLicenciamento);
+        HistoricoConfigurador historico = new HistoricoConfigurador(idTabela, funcionalidadeConfigurador, acaoConfigurador, new Date(), usuarioLicenciamento);
 
         historicoRepository.save(historico);
 
     }
 
     @Override
-    public void editar(HttpServletRequest request, Integer idFuncionalidade, Integer idAcao, String justificativa) {
+    public void editar(HttpServletRequest request, Integer idTabela, String funcionalidade, String acao, String justificativa) {
 
         Object login = request.getSession().getAttribute("login");
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
-        Optional<FuncionalidadeConfigurador> funcionalidade = funcionadeRepository.findById(idFuncionalidade);
+        FuncionalidadeConfigurador funcionalidadeConfigurador = funcionadeRepository.findByTipo(funcionalidade);
 
-        Optional<AcaoConfigurador> acao = acaoRepository.findById(idAcao);
+        AcaoConfigurador acaoConfigurador = acaoRepository.findByAcao(acao);
 
-        HistoricoConfigurador historicoConfigurador = new HistoricoConfigurador(funcionalidade.get(), acao.get(), justificativa, new Date(), usuarioLicenciamento);
+        HistoricoConfigurador historicoConfigurador = new HistoricoConfigurador(idTabela, funcionalidadeConfigurador, acaoConfigurador, justificativa, new Date(), usuarioLicenciamento);
 
         historicoRepository.save(historicoConfigurador);
 
     }
 
     @Override
-    public HistoricoConfigurador findbyId(Integer idTabela) {
+    public List<HistoricoConfigurador> buscarHistoricoItem(String funcionalidade, Integer idItem) {
 
-        return null;
+        FuncionalidadeConfigurador funcionalidadeConfigurador = funcionadeRepository.findByTipo(funcionalidade);
+
+        return historicoRepository.findByFuncionalidadeAndIdItemOrderByDataCadastroDesc(funcionalidadeConfigurador, idItem);
 
     }
 

@@ -1,13 +1,16 @@
 package com.configuradorlicenciamento.taxaLicenciamento.dtos;
 
+import com.configuradorlicenciamento.configuracao.utils.DateUtil;
 import com.configuradorlicenciamento.entradaUnica.services.EntradaUnicaWS;
 import com.configuradorlicenciamento.taxaLicenciamento.models.CodigoTaxaLicenciamento;
+import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;
 import lombok.Getter;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -33,16 +36,16 @@ public class CodigoTaxaLicenciamentoCsv implements Serializable {
     @CsvBindByPosition(position = 4)
     private String usuarioLicenciamento;
 
-    public CodigoTaxaLicenciamentoCsv(CodigoTaxaLicenciamento codigoTaxaLicenciamento) {
+    public CodigoTaxaLicenciamentoCsv(CodigoTaxaLicenciamento codigoTaxaLicenciamento, Date dataCadastro, UsuarioLicenciamento usuarioLicenciamento) {
         this.codigo = codigoTaxaLicenciamento.getCodigo();
         this.descricao = codigoTaxaLicenciamento.getDescricao();
         this.status = codigoTaxaLicenciamento.getAtivo() ? "Ativo" : "Inativo";
-//        this.dataCadastro = codigoTaxaLicenciamento.getDataCadastro() != null ? DateUtil.formataBrSimples(codigoTaxaLicenciamento.getDataCadastro()) : "-";
-//        this.usuarioLicenciamento = codigoTaxaLicenciamento.getUsuarioLicenciamento() != null ? getNomeUsuario(codigoTaxaLicenciamento.getUsuarioLicenciamento()) : "-";
+        this.dataCadastro = dataCadastro != null ? DateUtil.formataBrSimples(dataCadastro) : "-";
+        this.usuarioLicenciamento = usuarioLicenciamento != null ? getNomeUsuario(usuarioLicenciamento) : "-";
     }
 
-//    private String getNomeUsuario(UsuarioLicenciamento usuario){
-//        return EntradaUnicaWS.ws.buscarPessoaFisicaPeloCpf(usuario.getLogin()).nome;
-//    }
+    private String getNomeUsuario(UsuarioLicenciamento usuario){
+        return EntradaUnicaWS.ws.buscarPessoaFisicaPeloCpf(usuario.getLogin()).nome;
+    }
 
 }

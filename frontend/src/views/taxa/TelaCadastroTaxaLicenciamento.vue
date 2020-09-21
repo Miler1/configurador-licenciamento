@@ -236,7 +236,7 @@
 					rows="3",
 					auto-grow
 					v-model="justificativa",
-					:error-messages="errorMessage(justificativa, true)",
+					:error-messages="errorMessage(justificativa, true, true)",
 					@click.native="resetErrorMessage",
 					required,
 				)

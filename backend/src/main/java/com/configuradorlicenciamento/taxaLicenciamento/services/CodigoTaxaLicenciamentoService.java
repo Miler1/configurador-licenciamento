@@ -7,6 +7,7 @@ import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.historicoConfigurador.interfaces.IHistoricoConfiguradorService;
 import com.configuradorlicenciamento.historicoConfigurador.models.AcaoConfigurador;
 import com.configuradorlicenciamento.historicoConfigurador.models.FuncionalidadeConfigurador;
+import com.configuradorlicenciamento.historicoConfigurador.models.HistoricoConfigurador;
 import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoCsv;
 import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoDTO;
 import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoEdicaoDTO;
@@ -66,9 +67,9 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
 
         historicoConfiguradorService.salvar(
                 request,
-                FuncionalidadeConfigurador.Funcionalidades.TAXA_LICENCIAMENTO.getId(),
-                AcaoConfigurador.Acoes.EDITAR.getId()
-
+                codigoTaxaLicenciamento.getId(),
+                FuncionalidadeConfigurador.Funcionalidades.TAXA_LICENCIAMENTO.getTipo(),
+                AcaoConfigurador.Acoes.EDITAR.getAcao()
         );
 
         return codigoTaxaLicenciamento;
@@ -109,8 +110,9 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
 
         historicoConfiguradorService.editar(
                 request,
-                FuncionalidadeConfigurador.Funcionalidades.TAXA_LICENCIAMENTO.getId(),
-                AcaoConfigurador.Acoes.EDITAR.getId(),
+                codigoTaxaLicenciamentoSalvo.getId(),
+                FuncionalidadeConfigurador.Funcionalidades.TAXA_LICENCIAMENTO.getTipo(),
+                AcaoConfigurador.Acoes.EDITAR.getAcao(),
                 codigoTaxaLicenciamentoDTO.getJustificativa());
 
         return codigoTaxaLicenciamentoSalvo;
@@ -127,12 +129,15 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
 
         codigoTaxaLicenciamentoRepository.save(codigoTaxaLicenciamento);
 
-        //'Salvar' pois para o caso tem justificativa
+        boolean ativo = codigoTaxaLicenciamento.getAtivo();
+
+        String acao = ativo ? AcaoConfigurador.Acoes.ATIVAR.getAcao() : AcaoConfigurador.Acoes.DESATIVAR.getAcao();
+
         historicoConfiguradorService.salvar(
                 request,
-                FuncionalidadeConfigurador.Funcionalidades.TAXA_LICENCIAMENTO.getId(),
-                AcaoConfigurador.Acoes.EDITAR.getId()
-
+                codigoTaxaLicenciamento.getId(),
+                FuncionalidadeConfigurador.Funcionalidades.TAXA_LICENCIAMENTO.getTipo(),
+                acao
         );
 
         return codigoTaxaLicenciamento;
@@ -150,7 +155,7 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
 
     @Override
     public List<CodigoTaxaLicenciamento> listarCodigoTaxaLicenciamento() {
-        return codigoTaxaLicenciamentoRepository.findAll(Sort.by("dataCadastro"));
+        return codigoTaxaLicenciamentoRepository.findAll(Sort.by("codigo"));
     }
 
     @Override
@@ -160,7 +165,17 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
         List<CodigoTaxaLicenciamentoCsv> dtos = new ArrayList<>();
 
         for (CodigoTaxaLicenciamento codigoTaxaLicenciamento : licenciamentos) {
-            dtos.add(codigoTaxaLicenciamento.prepararParaCsv());
+
+            List<HistoricoConfigurador> historicos = historicoConfiguradorService.buscarHistoricoItem(
+                    FuncionalidadeConfigurador.Funcionalidades.TAXA_LICENCIAMENTO.getTipo(),
+                    codigoTaxaLicenciamento.getId()
+            );
+
+            dtos.add(codigoTaxaLicenciamento.prepararParaCsv(
+                    !historicos.isEmpty() ? historicos.get(0).getDataCadastro() : null,
+                    !historicos.isEmpty() ? historicos.get(0).getUsuarioLicenciamento() : null)
+            );
+
         }
 
         return dtos;

@@ -39,8 +39,8 @@ public class AcaoConfigurador implements Serializable {
             this.acao = acao;
         }
 
-        public Integer getId(){
-            return this.id;
+        public String getAcao(){
+            return this.acao;
         }
 
     }
