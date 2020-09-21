@@ -14,6 +14,7 @@ public class CodigoTaxaLicenciamentoEdicaoDTO {
         private String codigo;
         private String descricao;
         private Boolean ativo;
+        private String justificativa;
         private final List<TaxaLicenciamento> taxasLicenciamento;
 
         public CodigoTaxaLicenciamentoEdicaoDTO(CodigoTaxaLicenciamento codigoTaxaLicenciamento, List<TaxaLicenciamento> taxasLicenciamento) {
@@ -25,4 +26,7 @@ public class CodigoTaxaLicenciamentoEdicaoDTO {
 
         }
 
+    public void setJustificativa(String justificativa) {
+        this.justificativa = justificativa;
+    }
 }

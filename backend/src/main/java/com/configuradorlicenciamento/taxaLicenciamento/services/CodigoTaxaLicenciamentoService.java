@@ -194,6 +194,16 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
 
     }
 
+    @Override
+    public List<HistoricoConfigurador> buscarJustificativa(Integer idTaxaLicenciamento) {
+
+        return historicoConfiguradorService.buscarJustificativaItem(
+                FuncionalidadeConfigurador.Funcionalidades.TAXA_LICENCIAMENTO.getTipo(),
+                AcaoConfigurador.Acoes.EDITAR.getAcao(),
+                idTaxaLicenciamento);
+
+    }
+
     private Specification<CodigoTaxaLicenciamento> preparaFiltro(FiltroPesquisa filtro) {
 
         Specification<CodigoTaxaLicenciamento> specification = Specification.where(CodigoTaxaLicenciamentoSpecification.padrao());

@@ -42,7 +42,8 @@ public class HistoricoConfiguradorService implements IHistoricoConfiguradorServi
 
         AcaoConfigurador acaoConfigurador = acaoRepository.findByAcao(acao);
 
-        HistoricoConfigurador historico = new HistoricoConfigurador(idTabela, funcionalidadeConfigurador, acaoConfigurador, new Date(), usuarioLicenciamento);
+        HistoricoConfigurador historico = new HistoricoConfigurador(
+                idTabela, funcionalidadeConfigurador, acaoConfigurador, new Date(), usuarioLicenciamento);
 
         historicoRepository.save(historico);
 
@@ -59,7 +60,8 @@ public class HistoricoConfiguradorService implements IHistoricoConfiguradorServi
 
         AcaoConfigurador acaoConfigurador = acaoRepository.findByAcao(acao);
 
-        HistoricoConfigurador historicoConfigurador = new HistoricoConfigurador(idTabela, funcionalidadeConfigurador, acaoConfigurador, justificativa, new Date(), usuarioLicenciamento);
+        HistoricoConfigurador historicoConfigurador = new HistoricoConfigurador(
+                idTabela, funcionalidadeConfigurador, acaoConfigurador, justificativa, new Date(), usuarioLicenciamento);
 
         historicoRepository.save(historicoConfigurador);
 
@@ -70,7 +72,20 @@ public class HistoricoConfiguradorService implements IHistoricoConfiguradorServi
 
         FuncionalidadeConfigurador funcionalidadeConfigurador = funcionadeRepository.findByTipo(funcionalidade);
 
-        return historicoRepository.findByFuncionalidadeAndIdItemOrderByDataCadastroDesc(funcionalidadeConfigurador, idItem);
+        return historicoRepository.findByFuncionalidadeAndIdItemOrderByDataCadastroDesc(
+                funcionalidadeConfigurador, idItem);
+
+    }
+
+    @Override
+    public List<HistoricoConfigurador> buscarJustificativaItem(String funcionalidade, String acao, Integer idItem) {
+
+        FuncionalidadeConfigurador funcionalidadeConfigurador = funcionadeRepository.findByTipo(funcionalidade);
+
+        AcaoConfigurador acaoConfigurador = acaoRepository.findByAcao(acao);
+
+        return historicoRepository.findByFuncionalidadeAndAcaoAndIdItemOrderByDataCadastroDesc(
+                funcionalidadeConfigurador, acaoConfigurador, idItem);
 
     }
 

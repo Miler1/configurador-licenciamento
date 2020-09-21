@@ -1,6 +1,7 @@
 package com.configuradorlicenciamento.taxaLicenciamento.interfaces;
 
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
+import com.configuradorlicenciamento.historicoConfigurador.models.HistoricoConfigurador;
 import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoCsv;
 import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoDTO;
 import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoEdicaoDTO;
@@ -27,5 +28,7 @@ public interface ICodigoTaxaLicenciamentoService {
     List<CodigoTaxaLicenciamentoCsv> listarCodigoTaxaLicenciamentoParaCsv();
 
     CodigoTaxaLicenciamentoEdicaoDTO findById(Integer codigoTaxaLicenciamento);
+
+    List<HistoricoConfigurador> buscarJustificativa(Integer idTaxaLicenciamento);
 
 }
