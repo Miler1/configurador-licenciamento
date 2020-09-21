@@ -1,5 +1,7 @@
 package com.configuradorlicenciamento.tipologia.controllers;
 
+import br.ufla.lemaf.beans.pessoa.Tipo;
+import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.configuracao.components.VariaveisAmbientes;
 import com.configuradorlicenciamento.configuracao.controllers.DefaultController;
 import com.configuradorlicenciamento.configuracao.enums.Acao;
@@ -21,6 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -79,12 +83,25 @@ public class TipologiaController extends DefaultController {
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
         String data = DateUtil.formataBrHoraMinuto(new Date());
-        String nome = "Relatorio_Tipologias_" + data + ".csv";
+        String nome = "Relatorio_de_tipologias_" + data + ".csv";
 
         CustomMappingStrategy<TipologiaCsv> mappingStrategy = new CustomMappingStrategy<>();
         mappingStrategy.setType(TipologiaCsv.class);
 
         downloadCsv(tipologiaService.listarTipologiaParaCsv(), nome, mappingStrategy, response);
+    }
+
+    @GetMapping(value = "/buscarTipologiasAtivas")
+    public ResponseEntity<List<Tipologia>> buscarTipologiasAtivas(HttpServletRequest request) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        List<Tipologia> tipologiasAtivas = tipologiaService.findAtivos();
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(tipologiasAtivas);
+
     }
 
 }

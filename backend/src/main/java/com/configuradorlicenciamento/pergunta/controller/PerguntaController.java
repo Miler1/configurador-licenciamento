@@ -51,7 +51,7 @@ public class PerguntaController extends DefaultController {
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
         String data = DateUtil.formataBrHoraMinuto(new Date());
-        String nome = "Relatorio_Perguntas_" + data + ".csv";
+        String nome = "Relatorio_de_perguntas_" + data + ".csv";
 
         CustomMappingStrategy<PerguntaCsv> mappingStrategy = new CustomMappingStrategy<>();
         mappingStrategy.setType(PerguntaCsv.class);

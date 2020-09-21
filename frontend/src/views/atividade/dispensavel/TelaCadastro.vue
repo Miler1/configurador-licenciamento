@@ -17,7 +17,9 @@
 
 						v-divider(v-if="index !== passos.length - 1", :key="Math.random()")
 		
-		PassoCnaes(v-if="passo == 1")
+		PassoCnaes(v-if="passo == 1",
+			:cnaesTipologia="atividadeDispensavel.cnaesTipologia"
+			:erro="erros[0]")
 
 		PassoPerguntas(
 			v-if="passo == 2",
@@ -53,6 +55,8 @@
 import PassoCnaes from '@/views/atividade/dispensavel/components/Cnaes.vue';
 import PassoPerguntas from '@/views/atividade/dispensavel/components/Perguntas.vue';
 import Resumo from '@/views/atividade/dispensavel/components/Resumo.vue';
+import snackbar from '@/services/snack.service';
+import { ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 
 export default {
 
@@ -92,7 +96,7 @@ export default {
 				{ invalido: false }
 			],
 			atividadeDispensavel: {
-				cnaes: [],
+				cnaesTipologia: [],
 				perguntas: []
 			},
 			allowRedirect: false,
@@ -181,12 +185,29 @@ export default {
 			};
 		},
 
+		validarCnaesTipologias() {
+
+			let cnaesTipologias = this.atividadeDispensavel.cnaesTipologia;
+			let valido = this.passos[0].completo = cnaesTipologias && cnaesTipologias.length > 0;
+
+			if(!valido) {
+				snackbar.alert(ERROR_MESSAGES.atividadeDispensavel.cnaes.avancarEtapa);
+			}
+
+			return valido;
+
+		},
+
 		validarPerguntas() {
 
 			let perguntas = this.atividadeDispensavel.perguntas;
-			this.passos[1].completo = perguntas && perguntas.length > 0;
+			let valido = this.passos[1].completo = perguntas && perguntas.length > 0;
 
-			return this.passos[1].completo;
+			if(!valido){
+				snackbar.alert(ERROR_MESSAGES.atividadeDispensavel.perguntas.avancarEtapa);
+			}
+
+			return valido;
 
 		},
 
@@ -224,7 +245,7 @@ export default {
 				console.error(error);
 			});
 
-		},
+		}
 
 	},
 
@@ -233,7 +254,7 @@ export default {
 
 	mounted() {
 
-		this.passos[0].validar = () => true;
+		this.passos[0].validar = this.validarCnaesTipologias;
 		this.passos[1].validar = this.validarPerguntas;
 		this.passos[2].validar = () => true;
 
