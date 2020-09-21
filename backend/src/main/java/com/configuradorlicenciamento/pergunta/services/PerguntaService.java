@@ -87,7 +87,6 @@ public class PerguntaService implements IPerguntaService {
 
                     pergunta.setTexto(perguntaDTO.getTexto());
                     pergunta.setCodigo(perguntaDTO.getCodigo());
-                    pergunta.setOrdem(perguntaDTO.getOrdem());
                     pergunta.setTipoPergunta(perguntaDTO.getTipoPergunta());
                     pergunta.setDataCadastro(new Date());
                     pergunta.setAtivo(perguntaDTO.getAtivo());
