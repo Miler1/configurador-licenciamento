@@ -79,7 +79,7 @@ public class CodigoTaxaLicenciamentoController extends DefaultController {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        CodigoTaxaLicenciamento codigoTaxaLicenciamento = codigoTaxaLicenciamentoService.ativarDesativar(idTaxaLicenciamento);
+        CodigoTaxaLicenciamento codigoTaxaLicenciamento = codigoTaxaLicenciamentoService.ativarDesativar(request, idTaxaLicenciamento);
 
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())

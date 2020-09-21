@@ -6,7 +6,7 @@ import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.historicoConfigurador.interfaces.IHistoricoConfiguradorService;
 import com.configuradorlicenciamento.historicoConfigurador.models.AcaoConfigurador;
-import com.configuradorlicenciamento.historicoConfigurador.models.Funcionalidade;
+import com.configuradorlicenciamento.historicoConfigurador.models.FuncionalidadeConfigurador;
 import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoCsv;
 import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoDTO;
 import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoEdicaoDTO;
@@ -66,8 +66,7 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
 
         historicoConfiguradorService.salvar(
                 request,
-                codigoTaxaLicenciamentoDTO.getId(),
-                Funcionalidade.Funcionalidades.TAXA_LICENCIAMENTO.getId(),
+                FuncionalidadeConfigurador.Funcionalidades.TAXA_LICENCIAMENTO.getId(),
                 AcaoConfigurador.Acoes.EDITAR.getId()
 
         );
@@ -110,10 +109,9 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
 
         historicoConfiguradorService.editar(
                 request,
-                codigoTaxaLicenciamentoSalvo.getId(),
-                codigoTaxaLicenciamentoDTO.getJustificativa(),
-                Funcionalidade.Funcionalidades.TAXA_LICENCIAMENTO.getId(),
-                AcaoConfigurador.Acoes.EDITAR.getId());
+                FuncionalidadeConfigurador.Funcionalidades.TAXA_LICENCIAMENTO.getId(),
+                AcaoConfigurador.Acoes.EDITAR.getId(),
+                codigoTaxaLicenciamentoDTO.getJustificativa());
 
         return codigoTaxaLicenciamentoSalvo;
 
@@ -132,8 +130,7 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
         //'Salvar' pois para o caso tem justificativa
         historicoConfiguradorService.salvar(
                 request,
-                codigoTaxaLicenciamento.getId(),
-                Funcionalidade.Funcionalidades.TAXA_LICENCIAMENTO.getId(),
+                FuncionalidadeConfigurador.Funcionalidades.TAXA_LICENCIAMENTO.getId(),
                 AcaoConfigurador.Acoes.EDITAR.getId()
 
         );

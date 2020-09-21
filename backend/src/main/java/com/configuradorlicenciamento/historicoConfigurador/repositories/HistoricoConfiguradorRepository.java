@@ -1,8 +1,8 @@
 package com.configuradorlicenciamento.historicoConfigurador.repositories;
 
-import com.configuradorlicenciamento.historicoConfigurador.models.Historico;
+import com.configuradorlicenciamento.historicoConfigurador.models.HistoricoConfigurador;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface HistoricoConfiguradorRepository extends JpaRepository<Historico, Integer>, JpaSpecificationExecutor<Historico> {
+public interface HistoricoConfiguradorRepository extends JpaRepository<HistoricoConfigurador, Integer>, JpaSpecificationExecutor<HistoricoConfigurador> {
 }

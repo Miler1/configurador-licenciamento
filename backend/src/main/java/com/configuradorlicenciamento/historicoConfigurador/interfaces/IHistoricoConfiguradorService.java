@@ -1,15 +1,15 @@
 package com.configuradorlicenciamento.historicoConfigurador.interfaces;
 
-import com.configuradorlicenciamento.historicoConfigurador.models.Historico;
+import com.configuradorlicenciamento.historicoConfigurador.models.HistoricoConfigurador;
 
 import javax.servlet.http.HttpServletRequest;
 
 public interface IHistoricoConfiguradorService {
 
-    void salvar(HttpServletRequest request, Integer idTabela, Integer funcionalidade, Integer idAcaoConfigurador);
+    void salvar(HttpServletRequest request, Integer funcionalidade, Integer idAcaoConfigurador);
 
-    void editar(HttpServletRequest request, Integer idTabela, String justificativa, Integer funcionalidade, Integer idAcaoConfigurador);
+    void editar(HttpServletRequest request, Integer funcionalidade, Integer idAcaoConfigurador, String justificativa);
 
-    Historico findbyId(Integer idTabela);
+    HistoricoConfigurador findbyId(Integer idTabela);
 
 }

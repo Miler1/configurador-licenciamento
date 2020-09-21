@@ -43,9 +43,6 @@ public class AcaoConfigurador implements Serializable {
             return this.id;
         }
 
-        public static AcaoConfigurador fromEnum(AcaoConfigurador acao) {
-            return null;
-        }
-
     }
+
 }
