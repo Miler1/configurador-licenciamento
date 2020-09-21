@@ -665,8 +665,11 @@ export default {
 					tipoTaxaValido = true;
 				} else if (this.tipoTaxa === 'formula') {
 					tipoTaxaValido = this.valor.formula && this.valor.formula != '' && this.verificaVirgula(this.valor.formula);
-				} else {//tipoTaxa = 'fixo'
-					tipoTaxaValido = this.valor.valor && this.valor.valor != 'R$ 0,00';
+				} else {
+
+					let valor = this.valor.valor ? parseFloat(this.valor.valor.replace(/R\$\s|\./g, '').replace(',', '.')) : 0.0;
+					tipoTaxaValido = valor > 0;
+
 				}
 
 				return this.valor.porteEmpreendimento
