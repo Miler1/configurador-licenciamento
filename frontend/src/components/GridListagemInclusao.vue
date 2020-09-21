@@ -78,7 +78,7 @@ export default {
 
 		customFilter(value, search, item) {
 
-			value = value.toLowerCase();
+			value = value ? value.toLowerCase() : value;
 			search = search.toLowerCase();
 
 			return value != null
