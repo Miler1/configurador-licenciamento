@@ -25,7 +25,7 @@
 										:items="perguntasDisponiveis",
 										item-text="texto",
 										:error-messages="errorMessage(pergunta)",
-										no-data-text="Nenhuma pergunta disponível",
+										no-data-text="Nenhuma pergunta encontrada",
 										@click.native="resetErrorMessage",
 										required,
 										return-object=true
