@@ -94,7 +94,7 @@ public class CodigoTaxaLicenciamentoController extends DefaultController {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
         String data = DateUtil.formataBrHoraMinuto(new Date());
-        String nome = "Relatorio_Taxa_Licenciamento_" + data + ".csv";
+        String nome = "Relatorio_de_taxas_de_licenciamento_" + data + ".csv";
 
         CustomMappingStrategy<CodigoTaxaLicenciamentoCsv> mappingStrategy = new CustomMappingStrategy<>();
         mappingStrategy.setType(CodigoTaxaLicenciamentoCsv.class);

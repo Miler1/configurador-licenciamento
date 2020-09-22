@@ -35,8 +35,6 @@ public class Pergunta implements Serializable {
     @NotNull(message = "{validacao.notnull}")
     private String codigo;
 
-    private Integer ordem;
-
     @NotNull(message = "{validacao.notnull}")
     private Boolean ativo;
 
@@ -83,7 +81,6 @@ public class Pergunta implements Serializable {
         this.codigo = builder.codigo;
         this.ativo = builder.ativo;
         this.tipoPergunta = "SIM_NAO";
-        this.ordem = 1;
         this.dataCadastro = builder.dataCadastro;
         this.usuarioLicenciamento = builder.usuarioLicenciamento;
         this.respostas = new ArrayList<>();

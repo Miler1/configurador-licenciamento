@@ -22,6 +22,8 @@ export default {
 			return ApiService.post('tipologia/listar/?page=0&size=10&sort=dataCadastro,desc', {});
 		}
 
-	}
+	},
+
+	buscarTipologiasAtivas: async () => ApiService.get(`tipologia/buscarTipologiasAtivas`)
 
 };

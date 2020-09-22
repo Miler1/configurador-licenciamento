@@ -42,6 +42,7 @@ public class LicencaService implements ILicencaService {
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
+        licencaDTO.setSigla(StringUtil.tratarEspacos(licencaDTO.getSigla()));
         boolean existeSigla = licencaRepository.existsBySigla(licencaDTO.getSigla());
 
         if (existeSigla) {
@@ -66,6 +67,7 @@ public class LicencaService implements ILicencaService {
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
+        licencaDTO.setSigla(StringUtil.tratarEspacos(licencaDTO.getSigla()));
         String sigla = licencaDTO.getSigla();
 
         boolean existeSigla = licencaRepository.existsBySigla(sigla);
@@ -82,7 +84,7 @@ public class LicencaService implements ILicencaService {
 
         Optional<Licenca> licencaSalva = licencaRepository.findById(licencaDTO.getId())
                 .map(licenca -> {
-                    licenca.setSigla(StringUtil.tratarEspacos(licencaDTO.getSigla()));
+                    licenca.setSigla(licencaDTO.getSigla());
                     licenca.setNome(licencaDTO.getNome());
                     licenca.setFinalidade(licencaDTO.getFinalidade());
                     licenca.setValidadeEmAnos(licencaDTO.getValidadeEmAnos());

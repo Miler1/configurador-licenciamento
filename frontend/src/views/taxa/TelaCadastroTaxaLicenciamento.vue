@@ -63,7 +63,8 @@
 										:error-messages="errorMessage( valor.porteEmpreendimento, true )",
 										@click.native="resetErrorMessage",
 										required,
-										return-object=true
+										return-object=true,
+										no-data-text="Nenhum porte do empreendimento encontrado"
 									)
 								v-col(cols="12", md="4")
 									v-label PPD
@@ -79,7 +80,8 @@
 										:error-messages="errorMessage( valor.potencialPoluidor, true )",
 										@click.native="resetErrorMessage",
 										required,
-										return-object=true
+										return-object=true,
+										no-data-text="Nenhum PPD encontrado"
 									)
 								v-col(cols="12", md="4")
 									v-label Tipos de licenças
@@ -160,7 +162,8 @@
 										item-text="codigo",
 										v-model="searchResult",
 										:search-input.sync="searchInput"
-										@change="adicionarParamentro"
+										@change="adicionarParamentro",
+										no-data-text="Nenhum parâmetro encontrado"
 									)
 								v-col(cols="12", md="4")
 									v-label Operadores
@@ -236,7 +239,7 @@
 					rows="3",
 					auto-grow
 					v-model="justificativa",
-					:error-messages="errorMessage(justificativa, true, true)",
+					:error-messages="errorMessage(justificativa, false, false)",
 					@click.native="resetErrorMessage",
 					required,
 				)
@@ -362,6 +365,8 @@ export default {
 		},
 
 		errorMessage(value, isVinculacao, validaVirgula) {
+
+			console.log("justificativa: ", this.justificativa);
 
 			if (isVinculacao) {
 
@@ -660,10 +665,22 @@ export default {
 
 		checkForm() {
 
+			if (this.isCadastro) {
+
+				return this.taxaLicenciamento.codigo
+					&& this.taxaLicenciamento.codigo != ''
+					&& this.taxaLicenciamento.descricao
+					&& this.taxaLicenciamento.descricao != ''
+					&& this.dadosListagem
+					&& this.dadosListagem.length > 0;
+
+			}
+
 			return this.taxaLicenciamento.codigo
 				&& this.taxaLicenciamento.codigo != ''
 				&& this.taxaLicenciamento.descricao
 				&& this.taxaLicenciamento.descricao != ''
+				&& this.justificativa != ''
 				&& this.dadosListagem
 				&& this.dadosListagem.length > 0;
 
@@ -679,8 +696,11 @@ export default {
 					tipoTaxaValido = true;
 				} else if (this.tipoTaxa === 'formula') {
 					tipoTaxaValido = this.valor.formula && this.valor.formula != '' && this.verificaVirgula(this.valor.formula);
-				} else {//tipoTaxa = 'fixo'
-					tipoTaxaValido = this.valor.valor && this.valor.valor != 'R$ 0,00';
+				} else {
+
+					let valor = this.valor.valor ? parseFloat(this.valor.valor.replace(/R\$\s|\./g, '').replace(',', '.')) : 0.0;
+					tipoTaxaValido = valor > 0;
+
 				}
 
 				return this.valor.porteEmpreendimento

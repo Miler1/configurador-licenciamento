@@ -29,6 +29,9 @@
 			template(v-slot:item.obrigatorio='{ item }')
 				span {{item.obrigatorio == "true" ? 'Básico' : 'Complementar'}}
 
+			template(v-slot:item.foraMunicipio='{ item }')
+				span {{item.foraMunicipio == "true" ? 'Sim' : 'Não'}}
+
 			template(v-slot:item.valor='{ item }')
 				span(v-if="item.tipoTaxa != 'formula'")
 					| {{parseFloat(item.valor) !== 0 ? parseFloat(item.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2}) : 'Isento'}}
@@ -75,12 +78,19 @@ export default {
 
 		customFilter(value, search, item) {
 
+			value = value ? this.normalizer(value) : value;
+			search = this.normalizer(search);
+
 			return value != null
 				&& search != null
 				&& value !== 'true'
 				&& value !== 'false'
-				&& value.toString().indexOf(search) !== -1;
+				&& value.toString().indexOf(search) !== -1; //Faz o matching da pesquisa dentro do valor
 		},
+
+		normalizer(string) {
+			return string.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+		}
 
 	},
 
@@ -148,7 +158,7 @@ tbody tr:nth-of-type(odd) {
 }
 
 .v-pagination__item {
-	font-size: 13px;
+	font-size: 13px !important;
 }
 
 .v-pagination__item--active{
