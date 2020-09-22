@@ -29,6 +29,10 @@ public class CodigoTaxaLicenciamentoDTO {
 
     @NotNull(message = "{validacao.notnull}")
     @NotBlank(message = "{validacao.notBlank}")
+    private String justificativa;
+
+    @NotNull(message = "{validacao.notnull}")
+    @NotBlank(message = "{validacao.notBlank}")
     private List<TaxaLicenciamentoDTO> listTaxasLicenciamento;
 
 }

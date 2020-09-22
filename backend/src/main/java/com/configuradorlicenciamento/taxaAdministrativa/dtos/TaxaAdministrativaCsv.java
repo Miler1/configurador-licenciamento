@@ -52,7 +52,7 @@ public class TaxaAdministrativaCsv implements Serializable {
 
         this.ano = taxaAdministrativa.getAno();
         this.isento = taxaAdministrativa.getIsento() ? "Sim" : "Não";
-        this.valor = StringUtil.formatarDecimal(taxaAdministrativa.getValor());
+        this.valor = StringUtil.formatarParaMoeda(taxaAdministrativa.getValor());//formatar para moeda R$0,00(real)
         this.atividadeDispensavel = taxaAdministrativa.getAtividadeDispensavel() == null ?
                 "-" : taxaAdministrativa.getAtividadeDispensavel() ? "Sim" : "Não";
         this.atividadeLicenciavel = taxaAdministrativa.getAtividadeLicenciavel() == null ?
