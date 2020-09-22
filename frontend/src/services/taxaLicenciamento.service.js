@@ -17,13 +17,13 @@ export default {
 			return ApiService.post(`codigoTaxaLicenciamento/listar/?
 						page=${parametrosFiltro.pagina > 0 ? parametrosFiltro.pagina : 0}
 						&size=${parametrosFiltro.itemsPorPagina > 0 ? parametrosFiltro.itemsPorPagina : 10}
-						&sort=${parametrosFiltro.tipoOrdenacao ? parametrosFiltro.tipoOrdenacao : 'codigo,desc'}`,
+						&sort=${parametrosFiltro.tipoOrdenacao ? parametrosFiltro.tipoOrdenacao : 'codigo'}`,
 
 			parametrosFiltro
 			);
 
 		} else {
-			return ApiService.post('codigoTaxaLicenciamento/listar/?page=0&size=10&sort=codigo,desc', {});
+			return ApiService.post('codigoTaxaLicenciamento/listar/?page=0&size=10&sort=codigo', {});
 		}
 
 	}
