@@ -28,9 +28,9 @@ public class FuncionalidadeConfigurador implements Serializable {
     public enum Funcionalidades {
 
         CNAE(1, "CNAE"),
-        LICENCA(2, "LICENÇA"),
-        TIPOLOGIA(3, "TIPOLOCIA"),
-        PARAMETRO(4, "PARÂMETRO"),
+        LICENCA(2, "LICENCA"),
+        TIPOLOGIA(3, "TIPOLOGIA"),
+        PARAMETRO(4, "PARAMETRO"),
         TAXA_ADMINISTRATIVA(5, "TAXA_ADMINISTRATIVA"),
         TAXA_LICENCIAMENTO(6, "TAXA_LICENCIAMENTO"),
         REQUISITO_ADMINISTRATIVO(7, "REQUISITO_ADMINISTRATIVO"),
