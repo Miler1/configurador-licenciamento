@@ -376,8 +376,6 @@ export default {
 			});
 		},
 		selecionarCnae() {
-
-			console.log('here');
 			
 			this.relacaoCnaeTipologia.cnaes.forEach(cnae => {
 				cnae.textoExibicao = cnae.codigo;
