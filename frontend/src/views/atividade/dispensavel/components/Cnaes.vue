@@ -189,18 +189,17 @@ export default {
 		},
 
 		clearForm() {
+
 			if (!this.isInclusao) {
-				this.relacaoCnaeTipologia.tipologia = null;
-				this.relacaoCnaeTipologia.foraMunicipio = null;
-				this.$refs.toggleOptionsForaMunicipio.clearModel();
-				this.resetErrorMessage();
-			} else {
-				this.relacaoCnaeTipologia.cnaes = [];
-				this.relacaoCnaeTipologia.tipologia = null;
-				this.relacaoCnaeTipologia.foraMunicipio = null;
-				this.$refs.toggleOptionsForaMunicipio.clearModel();
-				this.resetErrorMessage();
+				this.isInclusao = true;
 			}
+
+			this.relacaoCnaeTipologia.cnaes = [];
+			this.relacaoCnaeTipologia.tipologia = null;
+			this.relacaoCnaeTipologia.foraMunicipio = null;
+			this.$refs.toggleOptionsForaMunicipio.clearModel();
+			this.resetErrorMessage();
+
 		},
 
 		resetErrorMessage() {
@@ -246,7 +245,7 @@ export default {
 					}
 
 					if (dadosExistentes.length === 0 ) {
-						console.log(dadosExistentes.length);
+
 						dadosInclusao = this.getDadosItem(this.relacaoCnaeTipologia.cnaes[0]);
 
 						this.cnaesTipologia.splice(this.indexItemEdicao, 1, dadosInclusao);
