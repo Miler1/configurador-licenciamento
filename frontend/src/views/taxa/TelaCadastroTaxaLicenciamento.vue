@@ -680,6 +680,7 @@ export default {
 				&& this.taxaLicenciamento.codigo != ''
 				&& this.taxaLicenciamento.descricao
 				&& this.taxaLicenciamento.descricao != ''
+				&& this.justificativa
 				&& this.justificativa != ''
 				&& this.dadosListagem
 				&& this.dadosListagem.length > 0;
