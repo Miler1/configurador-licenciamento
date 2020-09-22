@@ -23,7 +23,6 @@
 										v-model="relacaoCnaeTipologia.cnaes",
 										:items="cnaes",
 										item-text="textoExibicao",
-										item-value="codigo",
 										:error-messages="errorMessage(relacaoCnaeTipologia.cnaes)",
 										no-data-text="Nenhum tipo de CNAE encontrado",
 										@click.native="resetErrorMessage",
@@ -175,13 +174,14 @@ export default {
 
 		errorMessage(value) {
 
-			if (Array.isArray(value)){
+			if (Array.isArray(value)) {
 
 				if (!this.isInclusao) {
 					return 'Este campo não permite ser editado';
 				} else if ((!this.errorMessageEmptyInclusao || this.erro.invalido) && value.length === 0) {
 					return 'Obrigatório';
 				}
+
 			}
 
 			return (this.errorMessageEmptyInclusao && !this.erro.invalido) || value ? '' : 'Obrigatório';
@@ -284,13 +284,16 @@ export default {
 
 			this.cnaesTipologia.forEach(
 				(dado, index) => {
+
 					if (dado.tipologia.id === this.relacaoCnaeTipologia.tipologia.id
 						&& dado.cnae.id === cnae.id
 						&& (this.isInclusao || this.indexItemEdicao != index)) {
 
 						validacao = false;
 					}
+
 				}
+	
 			);
 
 			return validacao;
@@ -332,6 +335,7 @@ export default {
 		},
 
 		editarItem(item) {
+
 			window.scrollTo(0,0);
 			this.relacaoCnaeTipologia.tipologia = item.tipologia;
 			this.relacaoCnaeTipologia.cnaes = [];
@@ -348,6 +352,7 @@ export default {
 				that.$refs.toggleOptionsForaMunicipio.setModel(item.foraMunicipio);
 
 			}, 100);
+
 		},
 
 		excluirItem(item) {
@@ -381,32 +386,53 @@ export default {
 			});
 		},
 		selecionarCnae() {
-			
+
 			this.relacaoCnaeTipologia.cnaes.forEach(cnae => {
 				cnae.textoExibicao = cnae.codigo;
 			});
+
 		}
 
 	},
 
 	created(){
 
+		// atividadeCnaeService.buscarCnaesAtivos()
+		// 	.then((response) => {
+		// 		console.log(response.data);
+		// 		this.cnaes = response.data;
+
+		// 		this.cnaes.forEach(cnae => {
+
+		// 			if (cnae.codigo === '6421200') {console.log("codigocnae: ", cnae.codigo);}
+		// 			cnae.textoExibicao = cnae.codigo + ' - ' + cnae.nome;
+		// 		});
+		// 	});
+
+		// tipologiaService.buscarTipologiasAtivas()
+		// 	.then((response) => {
+		// 		this.tipologias = response.data;
+		// 	});
+
+	},
+
+	mounted() {
+
 		atividadeCnaeService.buscarCnaesAtivos()
 			.then((response) => {
+
 				this.cnaes = response.data;
 
 				this.cnaes.forEach(cnae => {
 					cnae.textoExibicao = cnae.codigo + ' - ' + cnae.nome;
 				});
+
 			});
 
 		tipologiaService.buscarTipologiasAtivas()
 			.then((response) => {
 				this.tipologias = response.data;
 			});
-	},
-
-	mounted() {
 
 	}
 

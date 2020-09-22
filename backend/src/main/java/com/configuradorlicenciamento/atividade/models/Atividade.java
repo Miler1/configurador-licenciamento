@@ -1,7 +1,6 @@
 package com.configuradorlicenciamento.atividade.models;
 
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
-import com.configuradorlicenciamento.documento.models.Documento;
 import com.configuradorlicenciamento.potencialPoluidor.models.PotencialPoluidor;
 import com.configuradorlicenciamento.requisitoTecnico.models.RequisitoTecnico;
 import com.configuradorlicenciamento.tipologia.models.Tipologia;
