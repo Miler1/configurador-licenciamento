@@ -33,21 +33,11 @@ public class CodigoTaxaLicenciamento implements Serializable {
     @NotNull(message = "{validacao.notnull}")
     private Boolean ativo;
 
-    @NotNull(message = "{validacao.notnull}")
-    private Date dataCadastro;
-
-    @NotNull(message = "{validacao.notnull}")
-    @ManyToOne
-    @JoinColumn(name = "id_usuario_licenciamento", referencedColumnName = "id")
-    private UsuarioLicenciamento usuarioLicenciamento;
-
     public CodigoTaxaLicenciamento(CodigoTaxaLicenciamento.CodigoTaxaLicenciamentoBuilder builder) {
 
         this.codigo = builder.codigo;
         this.descricao = builder.descricao;
         this.ativo = builder.ativo;
-        this.usuarioLicenciamento = builder.usuarioLicenciamento;
-        this.dataCadastro = builder.dataCadastro;
 
     }
 
@@ -56,8 +46,6 @@ public class CodigoTaxaLicenciamento implements Serializable {
         private String codigo;
         private String descricao;
         private Boolean ativo;
-        private Date dataCadastro;
-        private UsuarioLicenciamento usuarioLicenciamento;
 
         public CodigoTaxaLicenciamentoBuilder(CodigoTaxaLicenciamentoDTO codigoTaxaLicenciamentoDTO) {
 
@@ -67,24 +55,14 @@ public class CodigoTaxaLicenciamento implements Serializable {
 
         }
 
-        public CodigoTaxaLicenciamento.CodigoTaxaLicenciamentoBuilder setDataCadastro(Date dataCadastro) {
-            this.dataCadastro = dataCadastro;
-            return this;
-        }
-
-        public CodigoTaxaLicenciamento.CodigoTaxaLicenciamentoBuilder setUsuarioLicencimento(UsuarioLicenciamento usuarioLicencimento) {
-            this.usuarioLicenciamento = usuarioLicencimento;
-            return this;
-        }
-
         public CodigoTaxaLicenciamento build() {
             return new CodigoTaxaLicenciamento(this);
         }
 
     }
 
-    public CodigoTaxaLicenciamentoCsv prepararParaCsv() {
-        return new CodigoTaxaLicenciamentoCsv(this);
+    public CodigoTaxaLicenciamentoCsv prepararParaCsv(Date dataCadastro, UsuarioLicenciamento usuarioLicenciamento) {
+        return new CodigoTaxaLicenciamentoCsv(this, dataCadastro, usuarioLicenciamento);
     }
 
 }
