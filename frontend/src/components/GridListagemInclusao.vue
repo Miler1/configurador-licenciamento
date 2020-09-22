@@ -14,6 +14,7 @@
 				prepend-inner-icon="mdi-magnify",
 				color="#E0E0E0",
 				dense
+				v-if="inputPesquisa"
 			)
 
 		v-data-table.elevation-1(
@@ -125,6 +126,10 @@ export default {
 		tituloTooltip: {
 			type: [String]
 		},
+		inputPesquisa: {
+			type: [Boolean],
+			default: true
+		}
 
 	}
 

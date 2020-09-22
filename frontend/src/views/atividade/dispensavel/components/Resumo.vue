@@ -1,22 +1,55 @@
 <template lang="pug">
 
-#step-cnaes-atividade-dispensavel.pr-10.pl-10
-	v-card(color="CCCCCC", height="400px")
-		v-card-title Um lindo componente com o resumo do cadastro :)
+#step-cnaes-atividade-dispensavel-Resumo
+	div.pb-7
+	
+		GridListagemInclusao.px-7(
+			:tituloListagem="tituloListagemCnae",
+			:headers="headerCnae",
+			:dadosListagem="atividadeDispensavel.cnaesTipologia",
+			:inputPesquisa="inputPesquisa"
+		)
+
+		GridListagemInclusao.px-7.pt-15(
+			:tituloListagem="tituloListagemPergunta",
+			:headers="headerPergunta",
+			:dadosListagem="atividadeDispensavel.perguntas",
+			:inputPesquisa="inputPesquisa"
+		)
 
 </template>
 
 <script>
 
+import GridListagemInclusao from '@/components/GridListagemInclusao';
+import { HEADERCNAE, HEADERPERGUNTA } from '@/utils/dadosHeader/ListagemResumoAtividadeDispensavel';
+
 export default {
 
 	name:'Resumo',
+
+	components: {
+		GridListagemInclusao
+	},
+
+	props: {
+
+		atividadeDispensavel: {
+			type: [Object]
+		},
+
+	},
 	
 	data: () => {
 
 		return {
 
-			// Variaveis
+			inputPesquisa: false,
+			headerCnae: HEADERCNAE,
+			headerPergunta: HEADERPERGUNTA,
+			tituloListagemCnae: "CNAEs selecionados",
+			tituloListagemPergunta: "Listagem de perguntas cadastradas",
+
 		};
 
 	},

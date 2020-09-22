@@ -1,6 +1,7 @@
 <template lang="pug">
 
-	#step-cnaes-atividade-dispensavel
+#step-cnaes-atividade-dispensavel-cnae
+	div.pb-7
 		v-expansion-panels.pa-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
 			v-expansion-panel
 				v-expansion-panel-header
@@ -93,7 +94,7 @@
 			:excluirItem="excluirItem",
 			:labelNoData="labelNoData",
 			:placeholderPesquisa="placeholderPesquisa",
-			:tituloTooltip="tituloTooltip",,
+			:tituloTooltip="tituloTooltip",
 			:labelNoResultset="semResultados"
 		)
 
