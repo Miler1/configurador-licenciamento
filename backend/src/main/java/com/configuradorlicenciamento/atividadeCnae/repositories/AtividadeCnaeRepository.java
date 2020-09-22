@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface AtividadeCnaeRepository extends JpaRepository<AtividadeCnae, Integer>, JpaSpecificationExecutor<AtividadeCnae> {
 
-    List<AtividadeCnae> findByAtivo(Boolean ativo);
+    List<AtividadeCnae> findByAtivoOrderByCodigo(Boolean ativo);
 
 }
