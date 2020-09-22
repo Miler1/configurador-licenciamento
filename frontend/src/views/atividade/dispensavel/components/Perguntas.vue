@@ -25,7 +25,7 @@
 										:items="perguntasDisponiveis",
 										item-text="texto",
 										:error-messages="errorMessage(pergunta)",
-										no-data-text="Nenhuma pergunta disponível",
+										no-data-text="Nenhuma pergunta encontrada",
 										@click.native="resetErrorMessage",
 										required,
 										return-object=true
@@ -93,7 +93,7 @@ export default {
 			placeholderSelect: "Selecione",
 			errorMessageEmpty: true,
 			tituloListagem: "Listagem de perguntas adicionadas para esta atividade",
-			placeholderPesquisa: "Pesquisar pela pesquisa ou respostas esperadas",
+			placeholderPesquisa: "Pesquisar pela pergunta ou respostas esperadas",
 			labelNoData: 'Não existem perguntas adicionadas.',
 			semResultados: 'Nenhuma pergunta encontrada com a pesquisa informada.',
 			dadosListagem: [],
@@ -123,9 +123,9 @@ export default {
 
 			let modal = {};
 
-			modal.title = `Remover pergunta "${item.texto}"`;
-			modal.mensagem = `Ao remover a pergunta, ela não estará mais vinculada nessa tabela.`;
-			modal.textoConfirmacao = `Tem certeza que deseja remover a pergunta? Você pode adicioná-la novamente a qualquer momento.`;
+			modal.title = `Remover pergunta - ${item.texto}`;
+			modal.mensagem = `Ao remover a pergunta, ela não estará mais vinculada nesse(s) CNAE(s) dispensável(eis).`;
+			modal.textoConfirmacao = `Tem certeza que deseja remover a pergunta? Esta opção pode ser desfeita a qualquer momento ao adicioná-la novamente.`;
 
 			modal.textoConfirmar = `Confirmar`;
 			modal.textoCancelar = `Cancelar`;

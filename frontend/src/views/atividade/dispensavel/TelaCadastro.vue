@@ -180,7 +180,7 @@ export default {
 			let lastStep = this.lastStep();
 
 			return {
-				text: lastStep ? (this.isCadastro ? "Cadastrar" : "Editar") : "Próximo",
+				text: lastStep ? (this.isCadastro ? "Cadastrar" : "Editar") : "Próxima",
 				icon: lastStep ? (this.isCadastro ? "mdi-plus" : "mdi-pencil") : "mdi-arrow-right"
 			};
 		},

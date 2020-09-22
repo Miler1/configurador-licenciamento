@@ -24,7 +24,7 @@
 										:items="cnaes",
 										item-text="textoExibicao",
 										:error-messages="errorMessage(relacaoCnaeTipologia.cnaes)",
-										no-data-text="Nenhum tipo de CNAE encontrado",
+										no-data-text="Nenhum CNAE encontrado",
 										@click.native="resetErrorMessage",
 										required,
 										multiple=true,
@@ -55,7 +55,7 @@
 										:items="tipologias",
 										item-text="nome",
 										:error-messages="errorMessage(relacaoCnaeTipologia.tipologia)",
-										no-data-text="Nenhum documento encontrado",
+										no-data-text="Nenhuma tipologia encontrada",
 										@click.native="resetErrorMessage",
 										required,
 										return-object=true
