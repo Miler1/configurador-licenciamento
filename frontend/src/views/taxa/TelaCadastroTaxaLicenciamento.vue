@@ -200,7 +200,7 @@
 												v-btn(outlined, fab, small, v-on='on', @click="AdicionaOperadorFormula(')')")
 													h3 )
 											span Fim do grupo [)]
-
+								
 							v-row
 								v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
 									a#QA-limpar-dados-taxa-licenciamento.d-flex.flex-row.align-center.justify-end(@click="clearTaxaLicenciamento")
@@ -226,6 +226,20 @@
 			:tituloTooltip="tituloTooltip",,
 			:labelNoResultset="semResultados"
 		)
+
+		v-row.pt-5.px-7#row-justificativa(v-show="!isCadastro")
+			v-col.py-0(cols="12")
+				v-label Justificativa
+				v-textarea#QA-input-taxa-licenciamento-justificativa(
+					outlined,
+					color="#E0E0E0",
+					rows="3",
+					auto-grow
+					v-model="justificativa",
+					:error-messages="errorMessage(justificativa, true, true)",
+					@click.native="resetErrorMessage",
+					required,
+				)
 
 		v-row.pt-6.px-7
 			v-col#form-actions.d-flex.justify-space-between(cols="12", md="12")
@@ -289,6 +303,7 @@ export default {
 				precision: 2,
 				masked: false
 			},
+			justificativa: null,
 			tituloTooltip: "taxa de licenciamento",
 			placeholder: "Digite aqui...",
 			placeholderSelect: "Selecione",
@@ -544,7 +559,7 @@ export default {
 
 		cadastrar() {
 
-			TaxaLicenciamentoService.cadastrar(this.preparaPraSalvar())
+			TaxaLicenciamentoService.cadastrar(this.prepararParaSalvar())
 
 				.then(() => {
 					this.handleSuccess();
@@ -557,7 +572,7 @@ export default {
 
 		editar() {
 
-			TaxaLicenciamentoService.editar(this.preparaPraSalvar())
+			TaxaLicenciamentoService.editar(this.prepararParaSalvar())
 				.then(() => {
 					this.handleSuccess(true);
 				})
@@ -567,10 +582,12 @@ export default {
 
 		},
 
-		preparaPraSalvar() {
+		prepararParaSalvar() {
 
 			let dadoListagem = {};
-			
+
+			this.taxaLicenciamento.justificativa = this.justificativa;
+
 			this.taxaLicenciamento.listTaxasLicenciamento = [];
 
 			this.dadosListagem.forEach(dado => {
@@ -861,6 +878,7 @@ export default {
 			this.taxaLicenciamento.codigo = requisito.codigo;
 			this.taxaLicenciamento.descricao = requisito.descricao;
 			this.taxaLicenciamento.ativo = requisito.ativo;
+			this.justificativa = requisito.justificativa;
 			this.taxaLicenciamento.id = this.$route.params.idTaxaLicenciamento;
 			
 			this.dadosListagem = [];
@@ -912,8 +930,7 @@ export default {
 			this.labelBotaoCadastrarEditar = "Editar";
 			this.iconBotaoCadastrarEditar = "mdi-pencil";
 			this.isCadastro = false;
-
-
+			this.justificativa = null;
 
 			TaxaLicenciamentoService.findById(this.$route.params.idTaxaLicenciamento)
 
@@ -969,6 +986,10 @@ export default {
 
 .v-label {
 	color: @text-color !important;
+}
+
+#row-justificativa .v-label {
+	font-size: 21px !important;
 }
 
 .v-text-field, .v-checkbox {
