@@ -92,7 +92,7 @@
 			:excluirItem="excluirItem",
 			:labelNoData="labelNoData",
 			:placeholderPesquisa="placeholderPesquisa",
-			:tituloTooltip="tituloTooltip",,
+			:tituloTooltip="tituloTooltip",
 			:labelNoResultset="semResultados"
 		)
 
@@ -138,14 +138,14 @@ export default {
 			placeholder: "Digite aqui...",
 			placeholderSelect: "Selecione",
 			placeholderSelectCnae: "Selecione um ou mais",
-			placeholderPesquisa:  "Pesquisar pelo CNAE ou tipologia",
-			tituloTooltip: "CNAE e tipologia",
-			semResultados: 'Nenhum CNAE e tipologia encontrado com a pesquisa informada.',
+			placeholderPesquisa:  "Pesquisar pelo código do CNAE, nome do CNAE ou tipologia",
+			tituloTooltip: "relação CNAE / tipologia",
+			semResultados: 'Nenhuma relação CNAE / tipologia encontrada com a pesquisa informada.',
 			cnaes: [],
 			tipologias: [],
 			isInclusao: true,
-			tituloListagem: "Listagem de CNAEs e tipologias selecionadas",
-			labelNoData: 'Não existem CNAEs e tipologias adicionados.',
+			tituloListagem: "Listagem de relação CNAE / tipologia adicionadas",
+			labelNoData: 'Não existem relações CNAEs / tipologias adicionadas.',
 			headerListagem: HEADER,
 			errorMessageEmptyInclusao: true,
 			relacaoCnaeTipologia: {
@@ -189,6 +189,10 @@ export default {
 		},
 
 		clearForm() {
+
+			if (!this.isInclusao) {
+				this.isInclusao = true;
+			}
 
 			this.relacaoCnaeTipologia.cnaes = [];
 			this.relacaoCnaeTipologia.tipologia = null;
@@ -357,9 +361,9 @@ export default {
 
 				title:'<p class="title-modal-confirm">Remover CNAE e tipologia</p>',
 
-				html:`<p class="message-modal-confirm">Ao remover o CNAE e a tipologia, eles não estarão mais relacionados.</p>
+				html:`<p class="message-modal-confirm">Ao remover a relação CNAE / tipologia, eles não estarão mais relacionados.</p>
 						<p class="message-modal-confirm">
-						<b>Tem certeza que deseja remover o CNAE e a tipologia? Esta opção pode ser desfeita a qualquer momento ao relacioná-los novamente.</b>
+						<b>Tem certeza que deseja remover a relação CNAE / tipologia? Esta opção pode ser desfeita a qualquer momento ao relacioná-los novamente.</b>
 					</p>`,
 				showCancelButton: true,
 				confirmButtonColor:'#F56C6C',

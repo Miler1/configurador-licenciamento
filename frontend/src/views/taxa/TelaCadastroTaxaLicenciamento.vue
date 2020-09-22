@@ -1010,7 +1010,7 @@ export default {
 }
 
 #row-justificativa .v-label {
-	font-size: 21px !important;
+	font-size: 16px !important;
 }
 
 .v-text-field, .v-checkbox {
