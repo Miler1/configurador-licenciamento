@@ -1,5 +1,5 @@
 const HEADERCNAE = [
-	{ text: 'CNAE', value: 'cnae.codigo'},
+	{ text: 'Código', value: 'cnae.codigo'},
 	{ text: 'Nome', value: 'cnae.nome'},
 	{ text: 'Tipologia', value: 'tipologia.nome'},
 	{ text: 'Atividade fora do município', value: 'foraMunicipio'}
