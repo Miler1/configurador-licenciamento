@@ -226,7 +226,7 @@
 			:excluirItem="excluirItem",
 			:labelNoData="labelNoData",
 			:placeholderPesquisa="placeholderPesquisa",
-			:tituloTooltip="tituloTooltip",,
+			:tituloTooltip="tituloTooltip",
 			:labelNoResultset="semResultados"
 		)
 

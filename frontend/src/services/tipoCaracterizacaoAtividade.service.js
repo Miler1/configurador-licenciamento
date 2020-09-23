@@ -2,6 +2,8 @@ import ApiService from './api.service';
 
 export default {
 
+	cadastrarAtividadeDispensavel: async (atividadeDispensavel) => ApiService.post('tipoCaracterizacaoAtividade/atividadeDispensavel/salvar', atividadeDispensavel ),
+
 	listarAtividadeDispensavel: async (parametrosFiltro) => {
 		
 		if (parametrosFiltro) {

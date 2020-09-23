@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PotencialPoluidorRepository extends JpaRepository<PotencialPoluidor, Integer> {
+
+    PotencialPoluidor findByCodigo(String codigo);
+
 }
