@@ -7,7 +7,10 @@ import com.configuradorlicenciamento.configuracao.enums.Acao;
 import com.configuradorlicenciamento.configuracao.utils.DateUtil;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.configuracao.utils.csv.CustomMappingStrategy;
+import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoDTO;
+import com.configuradorlicenciamento.taxaLicenciamento.models.CodigoTaxaLicenciamento;
 import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.dtos.AtividadeDispensavelCsv;
+import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.dtos.AtividadeDispensavelDTO;
 import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.interfaces.ITipoCaracterizacaoAtividadeService;
 import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.models.TipoCaracterizacaoAtividade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +22,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/tipoCaracterizacaoAtividade")
@@ -29,6 +34,19 @@ public class TipoCaracterizacaoAtividadeController extends DefaultController {
 
     @Autowired
     ITipoCaracterizacaoAtividadeService tipoCaracterizacaoAtividadeService;
+
+    @PostMapping(value = "atividadeDispensavel/salvar")
+    public ResponseEntity<List<TipoCaracterizacaoAtividade>> salvarAtividadeDispensavel(HttpServletRequest request, @Valid @RequestBody AtividadeDispensavelDTO atividadeDispensavelDTO) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        List<TipoCaracterizacaoAtividade> tipoCaracterizacoesAtividades = tipoCaracterizacaoAtividadeService.salvarAtividadeDispensavel(request, atividadeDispensavelDTO);
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(tipoCaracterizacoesAtividades);
+
+    }
 
     @PostMapping(value = "atividadeDispensavel/listar")
     public ResponseEntity<Page<TipoCaracterizacaoAtividade>> listarAtividadesDispensaveis(HttpServletRequest request,

@@ -1,7 +1,7 @@
 <template lang="pug">
 
 #tela-cadastro-atividade-dispensavel
-
+	div.pb-7
 		div.stepper-container
 			v-stepper(v-model="passo", alt-labels=true)
 				v-stepper-header(flat)
@@ -21,12 +21,12 @@
 			:cnaesTipologia="atividadeDispensavel.cnaesTipologia"
 			:erro="erros[0]")
 
-		PassoPerguntas(
-			v-if="passo == 2",
+		PassoPerguntas(v-if="passo == 2",
 			:atividadeDispensavel="atividadeDispensavel",
 			:erro="erros[1]")
 
-		Resumo(v-if="passo == 3")
+		Resumo(v-if="passo == 3",
+			:atividadeDispensavel="atividadeDispensavel")
 
 		v-row.pt-6.px-7
 			v-col#form-actions.d-flex.justify-space-between(cols="12", md="12", flex=1)
@@ -55,8 +55,9 @@
 import PassoCnaes from '@/views/atividade/dispensavel/components/Cnaes.vue';
 import PassoPerguntas from '@/views/atividade/dispensavel/components/Perguntas.vue';
 import Resumo from '@/views/atividade/dispensavel/components/Resumo.vue';
+import TipoCaracterizacaoAtividadeService from '@/services/tipoCaracterizacaoAtividade.service';
 import snackbar from '@/services/snack.service';
-import { ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/utils/helpers/messages-utils';
 
 export default {
 
@@ -109,7 +110,26 @@ export default {
 	methods: {
 
 		cadastrar(){
-			alert("Cadastrando processamento intergaláctico :)");
+
+			this.prepararDados();
+
+			if(this.validar()){
+				TipoCaracterizacaoAtividadeService.cadastrarAtividadeDispensavel(this.atividadeDispensavel)
+					.then(() => {
+						this.handleSuccess();
+					})
+					.catch(error => {
+						this.handleError(error);
+					});
+			}
+
+		},
+
+		prepararDados() {
+			this.atividadeDispensavel.cnaesTipologia.forEach(cnaeTipologia => {
+				cnaeTipologia.foraMunicipio = cnaeTipologia.foraMunicipio === 'true' ? true : false;
+				delete cnaeTipologia.cnae.textoExibicao;
+			});
 		},
 
 		editar() {
@@ -245,7 +265,34 @@ export default {
 				console.error(error);
 			});
 
-		}
+		},
+
+		handleError(error, edicao = false) {
+
+			let message = edicao ? ERROR_MESSAGES.requisitoAdministrativo.editar : ERROR_MESSAGES.requisitoAdministrativo.cadastro;
+			message += error.message;
+
+			snackbar.alert(message);
+
+		},
+
+		handleSuccess(edicao = false) {
+
+			let message = edicao ? SUCCESS_MESSAGES.editar : SUCCESS_MESSAGES.cadastro;
+
+			snackbar.alert(message, snackbar.type.SUCCESS);
+
+			// this.clear();
+			this.redirectListagem();
+
+		},
+
+		redirectListagem(allowed = true) {
+
+			this.allowRedirect = allowed;
+			this.$router.push({name: 'cnaesDispensaveis'});
+
+		},
 
 	},
 

@@ -1,7 +1,6 @@
 package com.configuradorlicenciamento.tipoCaracterizacaoAtividade.models;
 
 import com.configuradorlicenciamento.atividade.models.Atividade;
-import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeCsv;
 import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.dtos.AtividadeDispensavelCsv;
@@ -56,6 +55,75 @@ public class TipoCaracterizacaoAtividade implements Serializable {
     @ManyToOne
     @JoinColumn(name = "id_usuario_licenciamento", referencedColumnName = "id")
     private UsuarioLicenciamento usuarioLicenciamento;
+
+    public TipoCaracterizacaoAtividade(TipoCaracterizacaoAtividadeBuilder tipoCaracterizacaoAtividadeBuilder) {
+        this.atividade = tipoCaracterizacaoAtividadeBuilder.atividade;
+        this.atividadeCnae = tipoCaracterizacaoAtividadeBuilder.atividadeCnae;
+        this.dispensaLicenciamento = tipoCaracterizacaoAtividadeBuilder.dispensaLicenciamento;
+        this.licenciamentoSimplificado = tipoCaracterizacaoAtividadeBuilder.licenciamentoSimplificado;
+        this.licenciamentoDeclaratorio = tipoCaracterizacaoAtividadeBuilder.licenciamentoDeclaratorio;
+        this.ativo = tipoCaracterizacaoAtividadeBuilder.ativo;
+        this.dataCadastro = tipoCaracterizacaoAtividadeBuilder.dataCadastro;
+        this.usuarioLicenciamento = tipoCaracterizacaoAtividadeBuilder.usuarioLicenciamento;
+    }
+
+    public static class TipoCaracterizacaoAtividadeBuilder {
+
+        private Atividade atividade;
+        private AtividadeCnae atividadeCnae;
+        private Boolean dispensaLicenciamento;
+        private Boolean licenciamentoSimplificado;
+        private Boolean licenciamentoDeclaratorio;
+        private Boolean ativo;
+        private Date dataCadastro;
+        private UsuarioLicenciamento usuarioLicenciamento;
+
+        public TipoCaracterizacaoAtividadeBuilder() {
+        }
+
+        public TipoCaracterizacaoAtividadeBuilder setAtividade(Atividade atividade) {
+            this.atividade = atividade;
+            return this;
+        }
+
+        public TipoCaracterizacaoAtividadeBuilder setAtividadeCnae(AtividadeCnae atividadeCnae) {
+            this.atividadeCnae = atividadeCnae;
+            return this;
+        }
+
+        public TipoCaracterizacaoAtividadeBuilder setDispensaLicenciamento(Boolean dispensaLicenciamento) {
+            this.dispensaLicenciamento = dispensaLicenciamento;
+            return this;
+        }
+
+        public TipoCaracterizacaoAtividadeBuilder setLicenciamentoSimplificado(Boolean licenciamentoSimplificado) {
+            this.licenciamentoSimplificado = licenciamentoSimplificado;
+            return this;
+        }
+
+        public TipoCaracterizacaoAtividadeBuilder setLicenciamentoDeclaratorio(Boolean licenciamentoDeclaratorio) {
+            this.licenciamentoDeclaratorio = licenciamentoDeclaratorio;
+            return this;
+        }
+
+        public TipoCaracterizacaoAtividadeBuilder setAtivo(Boolean ativo) {
+            this.ativo = ativo;
+            return this;
+        }
+
+        public TipoCaracterizacaoAtividadeBuilder setDataCadastro(Date dataCadastro) {
+            this.dataCadastro = dataCadastro;
+            return this;
+        }
+
+        public TipoCaracterizacaoAtividadeBuilder setUsuarioLicencimento(UsuarioLicenciamento usuarioLicencimento) {
+            this.usuarioLicenciamento = usuarioLicencimento;
+            return this;
+        }
+
+        public TipoCaracterizacaoAtividade build() { return new TipoCaracterizacaoAtividade(this); }
+
+    }
 
     public AtividadeDispensavelCsv preparaAtividadeDispensavelParaCsv() {
 

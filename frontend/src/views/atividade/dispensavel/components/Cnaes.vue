@@ -1,11 +1,12 @@
 <template lang="pug">
 
-	#step-cnaes-atividade-dispensavel
+#step-cnaes-atividade-dispensavel-cnae
+	div.pb-7
 		v-expansion-panels.pa-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
 			v-expansion-panel
 				v-expansion-panel-header
 					div.d-flex.flex-row.align-center.justify-start
-						span.align-baseline Relação CNAE / Tipologia
+						span.align-baseline {{ isInclusao ? 'Adição de ' : 'Editar ' }}  relação CNAE / Tipologia
 					template(v-slot:actions)
 						v-icon
 				v-expansion-panel-content
@@ -359,7 +360,7 @@ export default {
 
 			this.$fire({
 
-				title:'<p class="title-modal-confirm">Remover CNAE e tipologia</p>',
+				title:'<p class="title-modal-confirm">Remover relação - ' + item.cnae.nome + ' / ' + item.tipologia.nome,
 
 				html:`<p class="message-modal-confirm">Ao remover a relação CNAE / tipologia, eles não estarão mais relacionados.</p>
 						<p class="message-modal-confirm">
