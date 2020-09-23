@@ -96,7 +96,6 @@ export default {
 			placeholderPesquisa: "Pesquisar pela pergunta ou respostas esperadas",
 			labelNoData: 'Não existem perguntas adicionadas.',
 			semResultados: 'Nenhuma pergunta encontrada com a pesquisa informada.',
-			dadosListagem: [],
 			isInclusao: true,
 			indexItemEdicao: null,
 			allowRedirect: false
@@ -132,8 +131,9 @@ export default {
 
 			modal.acao = () => {
 
-				let indexItemExclusao = this.dadosListagem.indexOf(item);
+				let indexItemExclusao = this.atividadeDispensavel.perguntas.indexOf(item);
 				this.atividadeDispensavel.perguntas.splice(indexItemExclusao, 1);
+				this.filtrarPerguntasDisponiveis();
 
 			};
 
@@ -142,7 +142,7 @@ export default {
 
 		errorMessage(item) {
 
-			if(this.erro.invalido && this.pergunta) {
+			if (this.erro.invalido && this.pergunta) {
 				return 'Adicione os itens primeiro.';
 			}
 
@@ -184,8 +184,6 @@ export default {
 					this.clearPergunta();
 
 				}
-
-				this.filtrarPerguntasDisponiveis();
 
 			} else {
 				this.errorMessageEmpty = false;
