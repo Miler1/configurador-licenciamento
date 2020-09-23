@@ -316,9 +316,8 @@ export default {
 
 			});
 
-			let message = ERROR_MESSAGES.atividadeDispensavel.cnaes.adicionarValores + "Já existe uma relação com a mesma combinação " +
-				"para a tipologia: " + this.relacaoCnaeTipologia.tipologia.nome + " e " +
-				"CNAE(s): " + dadosExistentes;
+			let message = ERROR_MESSAGES.atividadeDispensavel.cnaes.adicionarValores + "Já existe uma relação " +
+				"com o(s) CNAE(s): " + dadosExistentes;
 
 			snackbar.alert(message);
 
