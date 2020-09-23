@@ -1,7 +1,7 @@
 const HEADERCNAE = [
 	{ text: 'CNAE', value: 'cnae.codigo'},
 	{ text: 'Nome', value: 'cnae.nome'},
-    { text: 'Tipologia', value: 'tipologia.nome'},
+	{ text: 'Tipologia', value: 'tipologia.nome'},
 	{ text: 'Atividade fora do município', value: 'foraMunicipio'}
 ];
 
@@ -11,6 +11,6 @@ const HEADERPERGUNTA = [
 ];
 
 export {
-    HEADERCNAE,
-    HEADERPERGUNTA
+	HEADERCNAE,
+	HEADERPERGUNTA
 };
