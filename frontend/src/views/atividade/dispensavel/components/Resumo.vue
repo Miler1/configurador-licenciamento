@@ -47,8 +47,8 @@ export default {
 			inputPesquisa: false,
 			headerCnae: HEADERCNAE,
 			headerPergunta: HEADERPERGUNTA,
-			tituloListagemCnae: "CNAEs selecionados",
-			tituloListagemPergunta: "Listagem de perguntas cadastradas",
+			tituloListagemCnae: "Listagem de relações CNAEs / tipologias adicionadas",
+			tituloListagemPergunta: "Listagem de perguntas adicionadas",
 
 		};
 
