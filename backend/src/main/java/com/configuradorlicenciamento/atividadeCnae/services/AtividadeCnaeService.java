@@ -117,7 +117,7 @@ public class AtividadeCnaeService implements IAtividadeCnaeService {
     @Override
     public List<AtividadeCnae> findAtivos() {
 
-        return atividadeCnaeRepository.findByAtivo(true);
+        return atividadeCnaeRepository.findByAtivoOrderByCodigo(true);
 
     }
 

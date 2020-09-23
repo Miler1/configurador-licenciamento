@@ -16,15 +16,15 @@ import java.io.Serializable;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AtividadeDispensavelCsv implements Serializable {
 
-    @CsvBindByName(column = "Código do CNAE")
+    @CsvBindByName(column = "Código")
     @CsvBindByPosition(position = 0)
     private String codigoCnae;
 
-    @CsvBindByName(column = "Descrição da atividade")
+    @CsvBindByName(column = "Nome")
     @CsvBindByPosition(position = 1)
     private String descricaoCnae;
 
-    @CsvBindByName(column = "Tipologia do CNAE")
+    @CsvBindByName(column = "Tipologia")
     @CsvBindByPosition(position = 2)
     private String tipologiaCnae;
 
