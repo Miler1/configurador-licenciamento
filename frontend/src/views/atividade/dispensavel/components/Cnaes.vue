@@ -286,8 +286,7 @@ export default {
 			this.cnaesTipologia.forEach(
 				(dado, index) => {
 
-					if (dado.tipologia.id === this.relacaoCnaeTipologia.tipologia.id
-						&& dado.cnae.id === cnae.id
+					if (dado.cnae.id === cnae.id
 						&& (this.isInclusao || this.indexItemEdicao != index)) {
 
 						validacao = false;
