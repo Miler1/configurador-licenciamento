@@ -145,7 +145,7 @@ export default {
 			cnaes: [],
 			tipologias: [],
 			isInclusao: true,
-			tituloListagem: "Listagem de relação CNAE / tipologia adicionadas",
+			tituloListagem: "Listagem de relações CNAEs / tipologias adicionadas",
 			labelNoData: 'Não existem relações CNAEs / tipologias adicionadas.',
 			headerListagem: HEADER,
 			errorMessageEmptyInclusao: true,
