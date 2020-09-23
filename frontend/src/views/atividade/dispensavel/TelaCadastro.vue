@@ -1,7 +1,7 @@
 <template lang="pug">
 
 #tela-cadastro-atividade-dispensavel
-
+	div.pb-7
 		div.stepper-container
 			v-stepper(v-model="passo", alt-labels=true)
 				v-stepper-header(flat)
