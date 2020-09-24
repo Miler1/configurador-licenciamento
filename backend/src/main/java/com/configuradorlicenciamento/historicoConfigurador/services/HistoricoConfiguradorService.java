@@ -77,16 +77,4 @@ public class HistoricoConfiguradorService implements IHistoricoConfiguradorServi
 
     }
 
-    @Override
-    public List<HistoricoConfigurador> buscarJustificativaItem(String funcionalidade, String acao, Integer idItem) {
-
-        FuncionalidadeConfigurador funcionalidadeConfigurador = funcionadeRepository.findByTipo(funcionalidade);
-
-        AcaoConfigurador acaoConfigurador = acaoRepository.findByAcao(acao);
-
-        return historicoRepository.findByFuncionalidadeAndAcaoAndIdItemOrderByDataCadastroDesc(
-                funcionalidadeConfigurador, acaoConfigurador, idItem);
-
-    }
-
 }

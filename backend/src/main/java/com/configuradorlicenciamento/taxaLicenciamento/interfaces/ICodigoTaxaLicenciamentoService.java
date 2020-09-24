@@ -29,6 +29,4 @@ public interface ICodigoTaxaLicenciamentoService {
 
     CodigoTaxaLicenciamentoEdicaoDTO findById(Integer codigoTaxaLicenciamento);
 
-    List<HistoricoConfigurador> buscarJustificativa(Integer idTaxaLicenciamento);
-
 }

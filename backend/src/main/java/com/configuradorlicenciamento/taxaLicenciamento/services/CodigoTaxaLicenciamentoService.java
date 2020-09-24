@@ -69,7 +69,7 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
                 request,
                 codigoTaxaLicenciamento.getId(),
                 FuncionalidadeConfigurador.Funcionalidades.TAXA_LICENCIAMENTO.getTipo(),
-                AcaoConfigurador.Acoes.EDITAR.getAcao()
+                AcaoConfigurador.Acoes.CADASTRAR.getAcao()
         );
 
         return codigoTaxaLicenciamento;
@@ -191,16 +191,6 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
         List<TaxaLicenciamento> taxasLicencas = taxaLicenciamentoService.findByCodigo(codigoTaxaLicenciamento);
 
         return new CodigoTaxaLicenciamentoEdicaoDTO(codigoTaxaLicenciamento, taxasLicencas);
-
-    }
-
-    @Override
-    public List<HistoricoConfigurador> buscarJustificativa(Integer idTaxaLicenciamento) {
-
-        return historicoConfiguradorService.buscarJustificativaItem(
-                FuncionalidadeConfigurador.Funcionalidades.TAXA_LICENCIAMENTO.getTipo(),
-                AcaoConfigurador.Acoes.EDITAR.getAcao(),
-                idTaxaLicenciamento);
 
     }
 

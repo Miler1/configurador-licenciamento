@@ -111,10 +111,6 @@ public class CodigoTaxaLicenciamentoController extends DefaultController {
 
         CodigoTaxaLicenciamentoEdicaoDTO codigoTaxaLicenciamentoEdicaoDTO = codigoTaxaLicenciamentoService.findById(idTaxaLicenciamento);
 
-        List<HistoricoConfigurador> historicos = codigoTaxaLicenciamentoService.buscarJustificativa(idTaxaLicenciamento);
-
-        codigoTaxaLicenciamentoEdicaoDTO.setJustificativa(!historicos.isEmpty() ? historicos.get(0).getJustificativa() : null);
-
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
                 .body(codigoTaxaLicenciamentoEdicaoDTO);
