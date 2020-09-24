@@ -96,7 +96,7 @@ const ERROR_MESSAGES = {
 		desativar: ER_BASE + 'desativar a atividade dispensável. ',
 
 		cnaes: {
-			adicionarValores: ER_BASE + 'adicionar a relação CNAE / Tipologia. ',
+			adicionarValores: ER_BASE + 'adicionar a relação CNAE / tipologia. ',
 			avancarEtapa: 'Não foi possível avançar a etapa. É necessário adicionar pelo menos uma relação.',
 		},
 
