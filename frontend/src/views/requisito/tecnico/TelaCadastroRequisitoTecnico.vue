@@ -387,7 +387,7 @@ export default {
 
 		editar() {
 
-			RequisitoTecnicoService.editar(this.prepararParaaSalvar())
+			RequisitoTecnicoService.editar(this.prepararParaSalvar())
 
 				.then(() => {
 					this.handleSuccess(true);
