@@ -1,7 +1,7 @@
 <template lang="pug">
 
 #tela-cadastro-atividade-dispensavel
-
+	div.pb-7
 		div.stepper-container
 			v-stepper(v-model="passo", alt-labels=true)
 				v-stepper-header(flat)
@@ -17,11 +17,16 @@
 
 						v-divider(v-if="index !== passos.length - 1", :key="Math.random()")
 		
-		PassoCnaes(v-if="passo == 1")
+		PassoCnaes(v-if="passo == 1",
+			:cnaesTipologia="atividadeDispensavel.cnaesTipologia"
+			:erro="erros[0]")
 
-		PassoPerguntas(v-if="passo == 2")
+		PassoPerguntas(v-if="passo == 2",
+			:perguntas="atividadeDispensavel.perguntas",
+			:erro="erros[1]")
 
-		Resumo(v-if="passo == 3")
+		Resumo(v-if="passo == 3",
+			:atividadeDispensavel="atividadeDispensavel")
 
 		v-row.pt-6.px-7
 			v-col#form-actions.d-flex.justify-space-between(cols="12", md="12", flex=1)
@@ -29,12 +34,12 @@
 					v-icon mdi-close
 					span Cancelar
 
-				div.right-buttons
-					v-btn#QA-btn-rascunho-atividade-dispensavel(@click="salvarRascunho", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
+				div
+					v-btn#QA-btn-rascunho-atividade-dispensavel(v-show="isCadastro", @click="salvarRascunho", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
 						v-icon mdi-content-save
 						span Salvar
 
-					v-btn#QA-btn-voltar-atividade-dispensavel.ml-2(:disabled="passo === 1", @click="previousStep", outlined, :min-width="buttonMinWidth", large, color="#84A98C")
+					v-btn#QA-btn-voltar-atividade-dispensavel.ml-2(v-show="passo != 1", :disabled="passo === 1", @click="previousStep", outlined, :min-width="buttonMinWidth", large, color="#84A98C")
 						v-icon mdi-arrow-left
 						span Voltar
 
@@ -50,6 +55,9 @@
 import PassoCnaes from '@/views/atividade/dispensavel/components/Cnaes.vue';
 import PassoPerguntas from '@/views/atividade/dispensavel/components/Perguntas.vue';
 import Resumo from '@/views/atividade/dispensavel/components/Resumo.vue';
+import TipoCaracterizacaoAtividadeService from '@/services/tipoCaracterizacaoAtividade.service';
+import snackbar from '@/services/snack.service';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/utils/helpers/messages-utils';
 
 export default {
 
@@ -64,22 +72,33 @@ export default {
 	data: () => {
 
 		return {
-
 			passo: 1,
 			passos: [
 				{
 					titulo: "CNAEs",
-					completo: false
+					completo: false,
+					validar: null
 				},
 				{
 					titulo: "Perguntas",
-					completo: false
+					completo: false,
+					validar: null
 				},
 				{
 					titulo: "Resumo",
-					completo: false
+					completo: false,
+					validar: null
 				}
 			],
+			erros: [
+				{ invalido: false },
+				{ invalido: false },
+				{ invalido: false }
+			],
+			atividadeDispensavel: {
+				cnaesTipologia: [],
+				perguntas: []
+			},
 			allowRedirect: false,
 			isCadastro: true,
 			buttonMinWidth: "9em"
@@ -90,11 +109,50 @@ export default {
 	methods: {
 
 		cadastrar(){
-			alert("Cadastrando processamento intergaláctico :)");
+
+			this.prepararDados();
+
+			if (this.validar()) {
+
+				TipoCaracterizacaoAtividadeService.cadastrarAtividadeDispensavel(this.atividadeDispensavel)
+					.then(() => {
+						this.handleSuccess();
+					})
+					.catch(error => {
+						this.handleError(error);
+					});
+
+			}
+
 		},
 
 		editar() {
-			alert("Editando esse rolê que já tava salvo :D");
+
+			this.prepararDados();
+
+			if (this.validar()) {
+
+				TipoCaracterizacaoAtividadeService.editarAtividadeDispensavel(this.atividadeDispensavel)
+					.then( () => {
+						this.handleSuccess(true);
+					})
+					.catch(error => {
+						this.handleError(error, true);
+					});
+
+			}
+
+		},
+
+		prepararDados() {
+
+			this.atividadeDispensavel.cnaesTipologia.forEach(cnaeTipologia => {
+
+				cnaeTipologia.foraMunicipio = cnaeTipologia.foraMunicipio === 'true' ? true : false;
+				delete cnaeTipologia.cnae.textoExibicao;
+
+			});
+
 		},
 
 		salvarRascunho() {
@@ -106,20 +164,45 @@ export default {
 		},
 
 		nextStep() {
-			this.passo += 1;
+
+			if (this.validar()) {
+				this.passo += 1;
+			}
+
+		},
+
+		validar() {
+
+			let possivel = true;
+
+			for (let i = 0; i < this.passo; i++) {
+
+				if (!this.passos[i].validar()) {
+
+					possivel = false;
+					this.erros[i].invalido = true;
+
+				}
+
+			}
+
+			return possivel;
+
 		},
 
 		previousStep() {
-			if(this.passo > 1){
+
+			if (this.passo > 1) {
 				this.passo -= 1;
 			}
+
 		},
 
 		nextOrSubmit() {
 
-			if(this.lastStep()){
+			if (this.lastStep()) {
 
-				if(this.isCadastro){
+				if (this.isCadastro) {
 					this.cadastrar();
 				} else {
 					this.editar();
@@ -140,9 +223,36 @@ export default {
 			let lastStep = this.lastStep();
 
 			return {
-				text: lastStep ? (this.isCadastro ? "Cadastrar" : "Editar") : "Próximo",
+				text: lastStep ? (this.isCadastro ? "Cadastrar" : "Editar") : "Próxima",
 				icon: lastStep ? (this.isCadastro ? "mdi-plus" : "mdi-pencil") : "mdi-arrow-right"
 			};
+
+		},
+
+		validarCnaesTipologias() {
+
+			let cnaesTipologias = this.atividadeDispensavel.cnaesTipologia;
+			let valido = this.passos[0].completo = cnaesTipologias && cnaesTipologias.length > 0;
+
+			if (!valido) {
+				snackbar.alert(ERROR_MESSAGES.atividadeDispensavel.cnaes.avancarEtapa);
+			}
+
+			return valido;
+
+		},
+
+		validarPerguntas() {
+
+			let perguntas = this.atividadeDispensavel.perguntas;
+			let valido = this.passos[1].completo = perguntas && perguntas.length > 0;
+
+			if (!valido) {
+				snackbar.alert(ERROR_MESSAGES.atividadeDispensavel.perguntas.avancarEtapa);
+			}
+
+			return valido;
+
 		},
 
 		confirmarCancelamento(next) {
@@ -181,18 +291,74 @@ export default {
 
 		},
 
+		handleError(error, edicao = false) {
+
+			console.log(error.message);
+
+			let message = edicao ? ERROR_MESSAGES.requisitoAdministrativo.editar : ERROR_MESSAGES.requisitoAdministrativo.cadastro;
+
+			snackbar.alert(message);
+
+		},
+
+		handleSuccess(edicao = false) {
+
+			let message = edicao ? SUCCESS_MESSAGES.editar : SUCCESS_MESSAGES.cadastro;
+
+			snackbar.alert(message, snackbar.type.SUCCESS);
+
+			// this.clear();
+			this.redirectListagem();
+
+		},
+
+		redirectListagem(allowed = true) {
+
+			this.allowRedirect = allowed;
+			this.$router.push({name: 'cnaesDispensaveis'});
+
+		},
+
+		prepararDadosParaEdicao(atividadeDispensavel) {
+
+			this.atividadeDispensavel = atividadeDispensavel;
+
+			this.atividadeDispensavel.cnaesTipologia.forEach(cnaeTipologia => {
+				cnaeTipologia.foraMunicipio = cnaeTipologia.foraMunicipio ? 'true' : 'false';
+			});
+
+		}
+
 	},
 
-	created(){
+	created() {
 	},
 
 	mounted() {
+
+		this.passos[0].validar = this.validarCnaesTipologias;
+		this.passos[1].validar = this.validarPerguntas;
+		this.passos[2].validar = () => true;
+
+		if (this.$route.params.idAtividadeDispensavel) {
+
+			this.isCadastro = false;
+
+			TipoCaracterizacaoAtividadeService.findById(this.$route.params.idAtividadeDispensavel)
+				.then((response) => {
+					this.prepararDadosParaEdicao(response.data);
+				})
+				.catch(erro => {
+
+				});
+
+		}
 
 	},
 
 	beforeRouteLeave(to, from, next) {
 
-		if(!this.allowRedirect){
+		if (!this.allowRedirect) {
 			this.confirmarCancelamento(next);
 		} else {
 			next();
@@ -208,11 +374,6 @@ export default {
 
 @import "../../../assets/css/variaveis.less";
 
-.btn-cadastrar {
-	background-color: @green-primary !important;
-	color: @bg-text-field !important;
-}
-
 .stepper-container {
 
 	padding-left: 20%;
@@ -224,6 +385,34 @@ export default {
 
 	.v-stepper__header {
 		box-shadow: unset;
+	}
+
+}
+
+#form-actions {
+
+	padding: 0 12px;
+
+	a {
+		margin-right: 20px;
+
+		.v-icon, span {
+			color: @red;
+		}
+	}
+
+	.v-btn {
+		font-size: 16px;
+		text-transform: none !important;
+	}
+
+	.v-icon {
+		font-size: 20px !important;
+	}
+
+	.btn-cadastrar {
+		background-color: @green-primary !important;
+		color: @bg-text-field !important;
 	}
 
 }

@@ -17,6 +17,8 @@ public interface IPerguntaService {
 
     List<PerguntaCsv> listarPerguntaParaCsv();
 
+    List<Pergunta> listarPerguntas();
+
     Page<Pergunta> listar(Pageable pageable, FiltroPesquisa filtro);
 
 }

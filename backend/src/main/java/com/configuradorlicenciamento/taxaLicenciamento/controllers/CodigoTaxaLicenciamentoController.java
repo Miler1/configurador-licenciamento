@@ -7,6 +7,7 @@ import com.configuradorlicenciamento.configuracao.enums.Acao;
 import com.configuradorlicenciamento.configuracao.utils.DateUtil;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.configuracao.utils.csv.CustomMappingStrategy;
+import com.configuradorlicenciamento.historicoConfigurador.models.HistoricoConfigurador;
 import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoCsv;
 import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoEdicaoDTO;
 import com.configuradorlicenciamento.taxaLicenciamento.interfaces.ICodigoTaxaLicenciamentoService;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.List;
 import javax.validation.Valid;
 
 @RestController
@@ -79,7 +81,7 @@ public class CodigoTaxaLicenciamentoController extends DefaultController {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        CodigoTaxaLicenciamento codigoTaxaLicenciamento = codigoTaxaLicenciamentoService.ativarDesativar(idTaxaLicenciamento);
+        CodigoTaxaLicenciamento codigoTaxaLicenciamento = codigoTaxaLicenciamentoService.ativarDesativar(request, idTaxaLicenciamento);
 
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
@@ -92,7 +94,7 @@ public class CodigoTaxaLicenciamentoController extends DefaultController {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
         String data = DateUtil.formataBrHoraMinuto(new Date());
-        String nome = "Relatorio_Taxa_Licenciamento_" + data + ".csv";
+        String nome = "Relatorio_de_tabelas_de_taxas_de_licenciamento_" + data + ".csv";
 
         CustomMappingStrategy<CodigoTaxaLicenciamentoCsv> mappingStrategy = new CustomMappingStrategy<>();
         mappingStrategy.setType(CodigoTaxaLicenciamentoCsv.class);

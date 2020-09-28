@@ -80,7 +80,7 @@ public class LicencaController extends DefaultController {
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
         String data = DateUtil.formataBrHoraMinuto(new Date());
-        String nome = "Relatorio_Licenca_" + data + ".csv";
+        String nome = "Relatorio_de_licencas_" + data + ".csv";
 
         CustomMappingStrategy<LicencaCsv> mappingStrategy = new CustomMappingStrategy<>();
         mappingStrategy.setType(LicencaCsv.class);

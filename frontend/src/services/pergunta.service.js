@@ -24,4 +24,6 @@ export default {
 
 	},
 
+	listarPerguntasAtivas: async () => ApiService.get(`pergunta/listarPerguntasAtivas`)
+
 };

@@ -74,7 +74,9 @@ public class AtividadeCnae implements Serializable {
             return this;
         }
 
-        public AtividadeCnae build() { return new AtividadeCnae(this); }
+        public AtividadeCnae build() {
+            return new AtividadeCnae(this);
+        }
 
     }
 
@@ -82,4 +84,5 @@ public class AtividadeCnae implements Serializable {
 
         return new AtividadeCnaeCsv(this);
     }
+
 }

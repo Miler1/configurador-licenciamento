@@ -14,6 +14,7 @@
 				prepend-inner-icon="mdi-magnify",
 				color="#E0E0E0",
 				dense
+				v-if="inputPesquisa"
 			)
 
 		v-data-table.elevation-1(
@@ -28,6 +29,9 @@
 
 			template(v-slot:item.obrigatorio='{ item }')
 				span {{item.obrigatorio == "true" ? 'Básico' : 'Complementar'}}
+
+			template(v-slot:item.foraMunicipio='{ item }')
+				span {{item.foraMunicipio == "true" ? 'Sim' : 'Não'}}
 
 			template(v-slot:item.valor='{ item }')
 				span(v-if="item.tipoTaxa != 'formula'")
@@ -75,8 +79,8 @@ export default {
 
 		customFilter(value, search, item) {
 
-			value = value.toLowerCase();
-			search = search.toLowerCase();
+			value = value ? this.normalizer(value) : value;
+			search = this.normalizer(search);
 
 			return value != null
 				&& search != null
@@ -84,6 +88,10 @@ export default {
 				&& value !== 'false'
 				&& value.toString().indexOf(search) !== -1; //Faz o matching da pesquisa dentro do valor
 		},
+
+		normalizer(string) {
+			return string.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+		}
 
 	},
 
@@ -118,6 +126,10 @@ export default {
 		tituloTooltip: {
 			type: [String]
 		},
+		inputPesquisa: {
+			type: [Boolean],
+			default: true
+		}
 
 	}
 

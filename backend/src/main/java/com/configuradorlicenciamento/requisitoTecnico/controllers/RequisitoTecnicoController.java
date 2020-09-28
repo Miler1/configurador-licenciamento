@@ -87,12 +87,12 @@ public class RequisitoTecnicoController extends DefaultController {
     }
 
     @GetMapping(value = "/relatorio")
-    public void relatorioCSV (HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void relatorioCSV(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
         String data = DateUtil.formataBrHoraMinuto(new Date());
-        String nome = "Relatorio_Requisitos_Tecnicos_" + data + ".csv";
+        String nome = "Relatorio_de_requisitos_tecnicos_" + data + ".csv";
 
         CustomMappingStrategy<RequisitoTecnicoCsv> mappingStrategy = new CustomMappingStrategy<>();
         mappingStrategy.setType(RequisitoTecnicoCsv.class);
@@ -102,7 +102,7 @@ public class RequisitoTecnicoController extends DefaultController {
 
     @GetMapping(value = "/findById/{idRequisito}")
     public ResponseEntity<RequisitoTecnicoEdicaoDTO> findById(HttpServletRequest request,
-                                                        @PathVariable("idRequisito") Integer idRequisito) throws Exception {
+                                                              @PathVariable("idRequisito") Integer idRequisito) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 

@@ -87,7 +87,6 @@ public class PerguntaService implements IPerguntaService {
 
                     pergunta.setTexto(perguntaDTO.getTexto());
                     pergunta.setCodigo(perguntaDTO.getCodigo());
-                    pergunta.setOrdem(perguntaDTO.getOrdem());
                     pergunta.setTipoPergunta(perguntaDTO.getTipoPergunta());
                     pergunta.setDataCadastro(new Date());
                     pergunta.setAtivo(perguntaDTO.getAtivo());
@@ -115,7 +114,7 @@ public class PerguntaService implements IPerguntaService {
     }
 
     public List<Pergunta> listarPerguntas() {
-        return perguntaRepository.findAll(Sort.by("texto"));
+        return perguntaRepository.findByAtivo(true, Sort.by("texto"));
     }
 
     public List<PerguntaCsv> listarPerguntaParaCsv() {

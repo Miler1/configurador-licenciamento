@@ -71,11 +71,11 @@ const ERROR_MESSAGES = {
 	},
 
 	taxaLicenciamento: {
-		cadastro: ER_BASE + 'cadastrar a tabela de taxas. ',
-		editar: ER_BASE + 'editar a tabela de taxas. ',
+		cadastro: ER_BASE + 'cadastrar a tabela de taxas de licenciamento. ',
+		editar: ER_BASE + 'editar a tabela de taxas de licenciamento. ',
 		listagem: ER_BASE + 'listar as tabelas de taxas de licenciamento. ',
-		ativar: ER_BASE + 'ativar a tabela de taxas. ',
-		desativar: ER_BASE + 'desativar a tabela de taxas. ',
+		ativar: ER_BASE + 'ativar a tabela de taxas de licenciamento. ',
+		desativar: ER_BASE + 'desativar a tabela de taxas de licenciamento. ',
 		adicionarValores: ER_BASE + 'adicionar a taxa de licenciamento. ',
 	},
 
@@ -88,11 +88,23 @@ const ERROR_MESSAGES = {
 	},
 
 	atividadeDispensavel: {
-		cadastro: ER_BASE + 'cadastrar a atividade dispensável. ',
-		editar: ER_BASE + 'editar a atividade dispensável. ',
-		listagem: ER_BASE + 'listar as atividades dispensáveis. ',
-		ativar: ER_BASE + 'ativar a atividade dispensável. ',
-		desativar: ER_BASE + 'desativar a atividade dispensável. ',
+
+		cadastro: ER_BASE + 'cadastrar o CNAE dispensável. ',
+		editar: ER_BASE + 'editar o CNAE dispensável. ',
+		listagem: ER_BASE + 'listar os CNAEs dispensáveis. ',
+		ativar: ER_BASE + 'ativar o CNAE dispensável. ',
+		desativar: ER_BASE + 'desativar o CNAE dispensável. ',
+		desativarErro: "Não foi possível inativar o registro. Ele se encontra vinculado a uma atividade ativa no sistema. ",
+
+		cnaes: {
+			adicionarValores: ER_BASE + 'adicionar a relação CNAE/Tipologia. ',
+			avancarEtapa: 'Não foi possível avançar a etapa. É necessário adicionar pelo menos uma relação. ',
+		},
+
+		perguntas: {
+			avancarEtapa: 'Não foi possível avançar a etapa. É necessário adicionar pelo menos uma pergunta. ',
+		},
+
 	},
 
 };
@@ -148,9 +160,14 @@ const SUCCESS_MESSAGES = {
 	},
 
 	taxaLicenciamento: {
-		ativar: 'Sucesso! A tabela de taxa de licenciamento foi ativada.',
-		desativar: 'Sucesso! A tabela de taxa de licenciamento foi desativada.',
-	}
+		ativar: 'Sucesso! A tabela de taxas de licenciamento foi ativada.',
+		desativar: 'Sucesso! A tabela de taxas de licenciamento foi desativada.',
+	},
+
+	atividadeDispensavel: {
+		ativar: 'Sucesso! O CNAE dispensável foi ativado.',
+		desativar: 'Sucesso! O CNAE dispensável foi desativado.',
+	},
 	
 };
 

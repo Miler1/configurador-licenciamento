@@ -49,7 +49,7 @@ export default {
 			parametrosFiltro: {
 				pagina: 0,
 				itemsPorPagina: 10,
-				tipoOrdenacao: 'dataCadastro,desc',
+				tipoOrdenacao: 'codigo',
 				stringPesquisa: ''
 			},
 			buttonCadastrar: true,
@@ -59,10 +59,10 @@ export default {
 	methods: {
 
 		resetaDadosFiltragem() {
-			
+
 			this.parametrosFiltro.pagina = 0;
 			this.parametrosFiltro.itemsPorPagina = 10;
-			this.parametrosFiltro.tipoOrdenacao = 'dataCadastro,desc';
+			this.parametrosFiltro.tipoOrdenacao = 'codigo';
 			this.parametrosFiltro.stringPesquisa = '';
 
 		},
@@ -132,7 +132,7 @@ export default {
 
 					TaxaLicenciamentoService.ativarDesativar(item.id)
 						.then(() => {
-							
+
 							if(item.ativo) {
 								snackbar.alert(SUCCESS_MESSAGES.taxaLicenciamento.ativar, snackbar.type.SUCCESS);
 							} else {
@@ -146,6 +146,7 @@ export default {
 						.catch(error => {
 
 							console.error(error);
+
 							if(!item.ativo) {
 								snackbar.alert(ERROR_MESSAGES.taxaLicenciamento.desativar);
 							} else {

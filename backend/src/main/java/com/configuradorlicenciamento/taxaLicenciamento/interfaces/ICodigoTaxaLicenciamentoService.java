@@ -1,6 +1,7 @@
 package com.configuradorlicenciamento.taxaLicenciamento.interfaces;
 
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
+import com.configuradorlicenciamento.historicoConfigurador.models.HistoricoConfigurador;
 import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoCsv;
 import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoDTO;
 import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoEdicaoDTO;
@@ -18,7 +19,7 @@ public interface ICodigoTaxaLicenciamentoService {
 
     CodigoTaxaLicenciamento editar(HttpServletRequest request, CodigoTaxaLicenciamentoDTO codigoTaxaLicenciamentoDTO);
 
-    CodigoTaxaLicenciamento ativarDesativar(Integer idTaxaLicenciamento);
+    CodigoTaxaLicenciamento ativarDesativar(HttpServletRequest request, Integer idTaxaLicenciamento);
 
     Page<CodigoTaxaLicenciamento> listar(Pageable pageable, FiltroPesquisa filtro);
 

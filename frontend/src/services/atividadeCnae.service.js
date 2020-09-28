@@ -22,6 +22,8 @@ export default {
 			return ApiService.post('atividadeCnae/listar/?page=0&size=10&sort=dataCadastro,desc', {});
 		}
 
-	}
+	},
+
+	buscarCnaesAtivos: async () => ApiService.get(`atividadeCnae/buscarCnaesAtivos`)
 
 };

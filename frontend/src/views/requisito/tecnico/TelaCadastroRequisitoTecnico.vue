@@ -102,7 +102,7 @@
 							v-row
 								v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
 									a#QA-limpar-dados-requisito-tecnico.d-flex.flex-row.align-center.justify-end(@click="clearRequisito")
-										v-icon mdi-delete
+										v-icon fa-eraser
 										span Limpar dados
 								
 									v-btn#QA-btn-adicionar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
@@ -387,7 +387,7 @@ export default {
 
 		editar() {
 
-			RequisitoTecnicoService.editar(this.prepararParaaSalvar())
+			RequisitoTecnicoService.editar(this.prepararParaSalvar())
 
 				.then(() => {
 					this.handleSuccess(true);
@@ -613,7 +613,7 @@ export default {
 
 	mounted() {
 
-		if(this.$route.params.idRequisito) {
+		if (this.$route.params.idRequisito) {
 			this.labelBotaoCadastrarEditar = "Editar";
 			this.iconBotaoCadastrarEditar = "mdi-pencil";
 			this.isCadastro = false;
@@ -634,11 +634,13 @@ export default {
 	},
 
 	beforeRouteLeave(to, from, next) {
-		if(!this.allowRedirect){
+
+		if (!this.allowRedirect) {
 			this.confirmarCancelamento(next);
 		} else {
 			next();
 		}
+
 	}
 
 };

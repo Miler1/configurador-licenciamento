@@ -110,7 +110,7 @@ public class StringUtil {
 
     }
 
-    public static String formatarDecimal(Float valor) {
+    public static String formatarParaMoeda(Float valor) {
 
         String valorFormatado = "-";
 

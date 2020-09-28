@@ -1,5 +1,7 @@
 package com.configuradorlicenciamento.tipologia.services;
 
+import br.ufla.lemaf.beans.pessoa.Tipo;
+import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
 import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
@@ -137,4 +139,12 @@ public class TipologiaService implements ITipologiaService {
 
         return dtos;
     }
+
+    @Override
+    public List<Tipologia> findAtivos() {
+
+        return tipologiaRepository.findByAtivo(true);
+
+    }
+
 }
