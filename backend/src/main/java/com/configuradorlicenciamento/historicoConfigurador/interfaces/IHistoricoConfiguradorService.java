@@ -13,6 +13,4 @@ public interface IHistoricoConfiguradorService {
 
     List<HistoricoConfigurador> buscarHistoricoItem(String funcionalidade, Integer idItem);
 
-    List<HistoricoConfigurador> buscarJustificativaItem(String funcionalidade, String acao, Integer idItem);
-
 }

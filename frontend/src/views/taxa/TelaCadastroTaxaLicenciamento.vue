@@ -366,8 +366,6 @@ export default {
 
 		errorMessage(value, isVinculacao, validaVirgula) {
 
-			console.log("justificativa: ", this.justificativa);
-
 			if (isVinculacao) {
 
 				if(typeof value === 'string' && value.substring(0, 2) === "R$"){
@@ -899,7 +897,6 @@ export default {
 			this.taxaLicenciamento.codigo = requisito.codigo;
 			this.taxaLicenciamento.descricao = requisito.descricao;
 			this.taxaLicenciamento.ativo = requisito.ativo;
-			this.justificativa = requisito.justificativa;
 			this.taxaLicenciamento.id = this.$route.params.idTaxaLicenciamento;
 			
 			this.dadosListagem = [];

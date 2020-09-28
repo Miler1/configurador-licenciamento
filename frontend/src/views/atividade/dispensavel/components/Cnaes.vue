@@ -144,7 +144,7 @@ export default {
 			cnaes: [],
 			tipologias: [],
 			isInclusao: true,
-			tituloListagem: "Listagem de relação CNAE / tipologia adicionadas",
+			tituloListagem: "Listagem de relações CNAEs / tipologias adicionadas",
 			labelNoData: 'Não existem relações CNAEs / tipologias adicionadas.',
 			headerListagem: HEADER,
 			errorMessageEmptyInclusao: true,
@@ -281,8 +281,7 @@ export default {
 			this.cnaesTipologia.forEach(
 				(dado, index) => {
 
-					if (dado.tipologia.id === this.relacaoCnaeTipologia.tipologia.id
-						&& dado.cnae.id === cnae.id
+					if (dado.cnae.id === cnae.id
 						&& (this.isInclusao || this.indexItemEdicao != index)) {
 
 						validacao = false;
@@ -312,9 +311,8 @@ export default {
 
 			});
 
-			let message = ERROR_MESSAGES.atividadeDispensavel.cnaes.adicionarValores + "Já existe uma relação com a mesma combinação " +
-				"para a tipologia: " + this.relacaoCnaeTipologia.tipologia.nome + " e " +
-				"CNAE(s): " + dadosExistentes;
+			let message = ERROR_MESSAGES.atividadeDispensavel.cnaes.adicionarValores + "Já existe uma relação " +
+				"com o(s) CNAE(s): " + dadosExistentes;
 
 			snackbar.alert(message);
 

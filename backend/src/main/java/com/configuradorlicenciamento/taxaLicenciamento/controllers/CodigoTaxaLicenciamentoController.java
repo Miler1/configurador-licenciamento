@@ -94,7 +94,7 @@ public class CodigoTaxaLicenciamentoController extends DefaultController {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
         String data = DateUtil.formataBrHoraMinuto(new Date());
-        String nome = "Relatorio_de_taxas_de_licenciamento_" + data + ".csv";
+        String nome = "Relatorio_de_tabela_de_taxas_de_licenciamento_" + data + ".csv";
 
         CustomMappingStrategy<CodigoTaxaLicenciamentoCsv> mappingStrategy = new CustomMappingStrategy<>();
         mappingStrategy.setType(CodigoTaxaLicenciamentoCsv.class);
@@ -110,10 +110,6 @@ public class CodigoTaxaLicenciamentoController extends DefaultController {
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
         CodigoTaxaLicenciamentoEdicaoDTO codigoTaxaLicenciamentoEdicaoDTO = codigoTaxaLicenciamentoService.findById(idTaxaLicenciamento);
-
-        List<HistoricoConfigurador> historicos = codigoTaxaLicenciamentoService.buscarJustificativa(idTaxaLicenciamento);
-
-        codigoTaxaLicenciamentoEdicaoDTO.setJustificativa(!historicos.isEmpty() ? historicos.get(0).getJustificativa() : null);
 
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
