@@ -70,7 +70,7 @@
 				v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
 					a#QA-limpar-dados-licenca.d-flex.flex-row.align-center.justify-end(@click="clear")
 						v-icon fa-eraser
-						span  Limpar dados
+						span Limpar dados
 
 					v-btn#QA-btn-cadastrar-licenca(@click="submit", large, color="#84A98C")
 						v-icon(color="white") {{iconBotaoCadastrarEditar}}

@@ -73,7 +73,7 @@ public class Atividade implements Serializable {
     private Boolean v1;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinTable(schema = GlobalReferences.ESQUEMA, name="rel_atividade_tipo_atividade", joinColumns =
+    @JoinTable(schema = GlobalReferences.ESQUEMA, name = "rel_atividade_tipo_atividade", joinColumns =
             {@JoinColumn(name = "id_atividade")}, inverseJoinColumns =
             {@JoinColumn(name = "id_tipo_atividade")})
     private List<TipoAtividade> tiposAtividades;
@@ -112,10 +112,10 @@ public class Atividade implements Serializable {
         private Boolean v1;
         private List<TipoAtividade> tiposAtividades;
 
-        public AtividadeBuilder(AtividadeDispensavelDTO.RelacaoCnaeTipologia atividadeDispensavelDTO){
+        public AtividadeBuilder() {};
 
+        public AtividadeBuilder(AtividadeDispensavelDTO.RelacaoCnaeTipologia atividadeDispensavelDTO) {
             this.dentroMunicipio = !atividadeDispensavelDTO.getForaMunicipio();
-
         }
 
         public AtividadeBuilder setNome(String nome) {
@@ -183,7 +183,9 @@ public class Atividade implements Serializable {
             return this;
         }
 
-        public Atividade build() { return new Atividade(this); }
+        public Atividade build() {
+            return new Atividade(this);
+        }
 
     }
 

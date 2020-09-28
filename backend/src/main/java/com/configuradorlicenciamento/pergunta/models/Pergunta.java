@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import com.configuradorlicenciamento.resposta.models.Resposta;
 import lombok.ToString;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -57,15 +58,15 @@ public class Pergunta implements Serializable {
     @JoinColumn(name = "id_pergunta")
     private List<Resposta> respostas;
 
-    public void setRespostas(List<RespostaDTO> respostas){
+    public void setRespostas(List<RespostaDTO> respostas) {
 
-        if(this.respostas == null) {
+        if (this.respostas == null) {
             this.respostas = new ArrayList<>();
         } else {
             this.respostas.clear();
         }
 
-        for (RespostaDTO resposta : respostas){
+        for (RespostaDTO resposta : respostas) {
 
             Resposta entidade = new Resposta.RespostaBuilder(resposta)
                     .setDataCadastro(this.dataCadastro)
@@ -74,6 +75,7 @@ public class Pergunta implements Serializable {
 
             this.respostas.add(entidade);
         }
+
     }
 
     public Pergunta(PerguntaBuilder builder) {
@@ -110,7 +112,9 @@ public class Pergunta implements Serializable {
             return this;
         }
 
-        public Pergunta build() { return new Pergunta(this); }
+        public Pergunta build() {
+            return new Pergunta(this);
+        }
 
     }
 
@@ -118,4 +122,5 @@ public class Pergunta implements Serializable {
 
         return new PerguntaCsv(this);
     }
+
 }

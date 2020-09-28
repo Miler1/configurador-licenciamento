@@ -6,7 +6,7 @@
 			v-expansion-panel
 				v-expansion-panel-header
 					div.d-flex.flex-row.align-center.justify-start
-						span.align-baseline Perguntas
+						span.align-baseline {{ isInclusao ? 'Adição de ' : 'Editar ' }}  perguntas
 					template(v-slot:actions)
 						v-icon
 				v-expansion-panel-content
@@ -48,7 +48,7 @@
 		GridListagemInclusao.px-7(
 			:tituloListagem="tituloListagem",
 			:headers="headerListagem",
-			:dadosListagem="atividadeDispensavel.perguntas",
+			:dadosListagem="perguntas",
 			:editarItem="editarItem",
 			:excluirItem="excluirItem",
 			:labelNoData="labelNoData",
@@ -71,6 +71,17 @@ export default {
 
 	components: {
 		GridListagemInclusao
+	},
+
+	props: {
+
+		perguntas: {
+			type: [Array]
+		},
+		erro: {
+			type: [Object]
+		}
+
 	},
 	
 	data: () => {
@@ -105,6 +116,30 @@ export default {
 
 	methods: {
 
+		incluirDados() {
+
+			if (this.pergunta) {
+
+				if (this.isInclusao) {
+
+					this.perguntas.push(this.pergunta);
+					this.clearPergunta();
+
+				} else {
+
+					this.perguntas.splice(this.indexItemEdicao, 1, this.pergunta);
+
+					this.indexItemEdicao = null;
+					this.clearPergunta();
+
+				}
+
+			} else {
+				this.errorMessageEmpty = false;
+			}
+
+		},
+
 		editarItem(item) {
 
 			window.scrollTo(0,0);
@@ -113,7 +148,8 @@ export default {
 
 			this.pergunta = item;
 
-			this.indexItemEdicao = this.atividadeDispensavel.perguntas.indexOf(item);
+			this.indexItemEdicao = this.perguntas.indexOf(item);
+
 			this.isInclusao = false;
 
 		},
@@ -131,8 +167,8 @@ export default {
 
 			modal.acao = () => {
 
-				let indexItemExclusao = this.atividadeDispensavel.perguntas.indexOf(item);
-				this.atividadeDispensavel.perguntas.splice(indexItemExclusao, 1);
+				let indexItemExclusao = this.perguntas.indexOf(item);
+				this.perguntas.splice(indexItemExclusao, 1);
 				this.filtrarPerguntasDisponiveis();
 
 			};
@@ -160,34 +196,8 @@ export default {
 		clearPergunta() {
 
 			this.pergunta = null;
-			this.isInclusao = true;
 			this.filtrarPerguntasDisponiveis();
 			this.resetErrorMessage();
-
-		},
-
-		incluirDados() {
-
-			if (this.pergunta) {
-
-				if (this.isInclusao) {
-
-					this.atividadeDispensavel.perguntas.push(this.pergunta);
-					this.clearPergunta();
-
-				} else {
-
-					this.atividadeDispensavel.perguntas.splice(this.indexItemEdicao, 1, this.pergunta);
-
-					this.indexItemEdicao = null;
-					this.isInclusao = true;
-					this.clearPergunta();
-
-				}
-
-			} else {
-				this.errorMessageEmpty = false;
-			}
 
 		},
 
@@ -216,7 +226,7 @@ export default {
 			this.$fire(modal)
 				.then((result) => {
 
-					if(result.value) {
+					if (result.value) {
 						conteudo.acao();
 					}
 
@@ -232,7 +242,7 @@ export default {
 
 				let exists = false;
 
-				that.atividadeDispensavel.perguntas.forEach(element => {
+				that.perguntas.forEach(element => {
 					exists = element.id === item.id ? true : exists;
 				});
 
@@ -244,40 +254,24 @@ export default {
 
 	},
 
-	computed: {
-
-	},
-
-	props: {
-
-		atividadeDispensavel: {
-			type: [Object]
-		},
-		erro: {
-			type: [Object]
-		}
-
-	},
-
-	created(){
-	},
-
-	mounted() {
+	created() {
 
 		perguntaService.listarPerguntasAtivas()
 			.then(resposta => {
+
 				this.perguntasCadastradas = resposta.data;
 
 				this.perguntasCadastradas.forEach((pergunta) => {
 
-					pergunta.respostasEsperadas = "";
 					let primeiro = true;
+
+					pergunta.respostasEsperadas = "";
 
 					pergunta.respostas.forEach((resposta , index) => {
 
-						if(resposta.permiteLicenciamento){
+						if (resposta.permiteLicenciamento){
 
-							if(!primeiro){
+							if (!primeiro) {
 								pergunta.respostasEsperadas += " / ";
 							}
 
@@ -291,9 +285,17 @@ export default {
 				});
 
 				this.filtrarPerguntasDisponiveis();
+
 			});
 
-	}
+	},
+
+	mounted() {
+		
+		if (this.$route.params.idAtividadeDispensavel) {
+			this.isInclusao = false;
+		}
+	},
 
 };
 
@@ -317,4 +319,5 @@ export default {
 	color:white;
 	background: #65afef;
 }
+
 </style>

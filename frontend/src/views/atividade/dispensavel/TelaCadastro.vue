@@ -22,7 +22,7 @@
 			:erro="erros[0]")
 
 		PassoPerguntas(v-if="passo == 2",
-			:atividadeDispensavel="atividadeDispensavel",
+			:perguntas="atividadeDispensavel.perguntas",
 			:erro="erros[1]")
 
 		Resumo(v-if="passo == 3",
@@ -34,12 +34,12 @@
 					v-icon mdi-close
 					span Cancelar
 
-				div.right-buttons
-					v-btn#QA-btn-rascunho-atividade-dispensavel(@click="salvarRascunho", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
+				div
+					v-btn#QA-btn-rascunho-atividade-dispensavel(v-show="isCadastro", @click="salvarRascunho", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
 						v-icon mdi-content-save
 						span Salvar
 
-					v-btn#QA-btn-voltar-atividade-dispensavel.ml-2(:disabled="passo === 1", @click="previousStep", outlined, :min-width="buttonMinWidth", large, color="#84A98C")
+					v-btn#QA-btn-voltar-atividade-dispensavel.ml-2(v-show="passo != 1", :disabled="passo === 1", @click="previousStep", outlined, :min-width="buttonMinWidth", large, color="#84A98C")
 						v-icon mdi-arrow-left
 						span Voltar
 
@@ -72,7 +72,6 @@ export default {
 	data: () => {
 
 		return {
-
 			passo: 1,
 			passos: [
 				{
@@ -113,7 +112,8 @@ export default {
 
 			this.prepararDados();
 
-			if(this.validar()){
+			if (this.validar()) {
+
 				TipoCaracterizacaoAtividadeService.cadastrarAtividadeDispensavel(this.atividadeDispensavel)
 					.then(() => {
 						this.handleSuccess();
@@ -121,19 +121,38 @@ export default {
 					.catch(error => {
 						this.handleError(error);
 					});
+
+			}
+
+		},
+
+		editar() {
+
+			this.prepararDados();
+
+			if (this.validar()) {
+
+				TipoCaracterizacaoAtividadeService.editarAtividadeDispensavel(this.atividadeDispensavel)
+					.then( () => {
+						this.handleSuccess(true);
+					})
+					.catch(error => {
+						this.handleError(error, true);
+					});
+
 			}
 
 		},
 
 		prepararDados() {
+
 			this.atividadeDispensavel.cnaesTipologia.forEach(cnaeTipologia => {
+
 				cnaeTipologia.foraMunicipio = cnaeTipologia.foraMunicipio === 'true' ? true : false;
 				delete cnaeTipologia.cnae.textoExibicao;
-			});
-		},
 
-		editar() {
-			alert("Editando esse rolê que já tava salvo :D");
+			});
+
 		},
 
 		salvarRascunho() {
@@ -146,7 +165,7 @@ export default {
 
 		nextStep() {
 
-			if(this.validar()) {
+			if (this.validar()) {
 				this.passo += 1;
 			}
 
@@ -156,11 +175,13 @@ export default {
 
 			let possivel = true;
 
-			for(let i = 0; i < this.passo; i++){
+			for (let i = 0; i < this.passo; i++) {
 
-				if(!this.passos[i].validar()){
+				if (!this.passos[i].validar()) {
+
 					possivel = false;
 					this.erros[i].invalido = true;
+
 				}
 
 			}
@@ -170,16 +191,18 @@ export default {
 		},
 
 		previousStep() {
-			if(this.passo > 1){
+
+			if (this.passo > 1) {
 				this.passo -= 1;
 			}
+
 		},
 
 		nextOrSubmit() {
 
-			if(this.lastStep()){
+			if (this.lastStep()) {
 
-				if(this.isCadastro){
+				if (this.isCadastro) {
 					this.cadastrar();
 				} else {
 					this.editar();
@@ -203,6 +226,7 @@ export default {
 				text: lastStep ? (this.isCadastro ? "Cadastrar" : "Editar") : "Próxima",
 				icon: lastStep ? (this.isCadastro ? "mdi-plus" : "mdi-pencil") : "mdi-arrow-right"
 			};
+
 		},
 
 		validarCnaesTipologias() {
@@ -210,7 +234,7 @@ export default {
 			let cnaesTipologias = this.atividadeDispensavel.cnaesTipologia;
 			let valido = this.passos[0].completo = cnaesTipologias && cnaesTipologias.length > 0;
 
-			if(!valido) {
+			if (!valido) {
 				snackbar.alert(ERROR_MESSAGES.atividadeDispensavel.cnaes.avancarEtapa);
 			}
 
@@ -223,7 +247,7 @@ export default {
 			let perguntas = this.atividadeDispensavel.perguntas;
 			let valido = this.passos[1].completo = perguntas && perguntas.length > 0;
 
-			if(!valido){
+			if (!valido) {
 				snackbar.alert(ERROR_MESSAGES.atividadeDispensavel.perguntas.avancarEtapa);
 			}
 
@@ -269,8 +293,9 @@ export default {
 
 		handleError(error, edicao = false) {
 
+			console.log(error.message);
+
 			let message = edicao ? ERROR_MESSAGES.requisitoAdministrativo.editar : ERROR_MESSAGES.requisitoAdministrativo.cadastro;
-			message += error.message;
 
 			snackbar.alert(message);
 
@@ -294,9 +319,19 @@ export default {
 
 		},
 
+		prepararDadosParaEdicao(atividadeDispensavel) {
+
+			this.atividadeDispensavel = atividadeDispensavel;
+
+			this.atividadeDispensavel.cnaesTipologia.forEach(cnaeTipologia => {
+				cnaeTipologia.foraMunicipio = cnaeTipologia.foraMunicipio ? 'true' : 'false';
+			});
+
+		}
+
 	},
 
-	created(){
+	created() {
 	},
 
 	mounted() {
@@ -305,11 +340,25 @@ export default {
 		this.passos[1].validar = this.validarPerguntas;
 		this.passos[2].validar = () => true;
 
+		if (this.$route.params.idAtividadeDispensavel) {
+
+			this.isCadastro = false;
+
+			TipoCaracterizacaoAtividadeService.findById(this.$route.params.idAtividadeDispensavel)
+				.then((response) => {
+					this.prepararDadosParaEdicao(response.data);
+				})
+				.catch(erro => {
+
+				});
+
+		}
+
 	},
 
 	beforeRouteLeave(to, from, next) {
 
-		if(!this.allowRedirect){
+		if (!this.allowRedirect) {
 			this.confirmarCancelamento(next);
 		} else {
 			next();
