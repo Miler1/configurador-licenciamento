@@ -207,7 +207,7 @@
 							v-row
 								v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
 									a#QA-limpar-dados-taxa-licenciamento.d-flex.flex-row.align-center.justify-end(@click="clearTaxaLicenciamento")
-										v-icon mdi-delete
+										v-icon fa-eraser
 										span Limpar dados
 								
 									v-btn#QA-btn-adicionar-taxa-licenciamento(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
