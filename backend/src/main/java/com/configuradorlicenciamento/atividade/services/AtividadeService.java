@@ -15,7 +15,6 @@ import com.configuradorlicenciamento.tipologia.repositories.TipologiaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,6 +64,36 @@ public class AtividadeService implements IAtividadeService {
         atividadeRepository.save(atividade);
 
         return atividade;
+
+    }
+
+    @Override
+    public Atividade editar(AtividadeDispensavelDTO.RelacaoCnaeTipologia atividadeDispensavelDTO, Atividade atividade) {
+
+        Optional<AtividadeCnae> atividadeCnae = atividadeCnaeRepository.findById(atividadeDispensavelDTO.getCnae().getId());
+
+        Optional<Tipologia> tipologia = tipologiaRepository.findById(atividadeDispensavelDTO.getTipologia().getId());
+
+        PotencialPoluidor potencialPoluidor = potencialPoluidorRepository.findByCodigo("I");
+
+        List<TipoAtividade> tiposAtividades = tipoAtividadeRepository.findAll();
+
+        atividade.setNome(atividadeCnae.get().getNome());
+        atividade.setTipologia(tipologia.get());
+        atividade.setGeoLinha(true);
+        atividade.setGeoPonto(true);
+        atividade.setGeoPoligono(true);
+        atividade.setCodigo("0000");
+        atividade.setPotencialPoluidor(potencialPoluidor);
+        atividade.setAtivo(true);
+        atividade.setDentroEmpreendimento(false);
+        atividade.setV1(false);
+        atividade.setTiposAtividades(tiposAtividades);
+
+        atividadeRepository.save(atividade);
+
+        return atividade;
+
     }
 
 }

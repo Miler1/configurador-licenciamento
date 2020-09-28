@@ -4,6 +4,10 @@ export default {
 
 	cadastrarAtividadeDispensavel: async (atividadeDispensavel) => ApiService.post('tipoCaracterizacaoAtividade/atividadeDispensavel/salvar', atividadeDispensavel ),
 
+	editarAtividadeDispensavel: async (atividadeDispensavel) => ApiService.post('tipoCaracterizacaoAtividade/atividadeDispensavel/editar', atividadeDispensavel ),
+
+	ativarDesativarAtividadeDispensavel: async (idAtividadeDispensavel) => ApiService.post('tipoCaracterizacaoAtividade/atividadeDispensavel/ativarDesativar/' + idAtividadeDispensavel ),
+
 	listarAtividadeDispensavel: async (parametrosFiltro) => {
 		
 		if (parametrosFiltro) {
@@ -20,6 +24,8 @@ export default {
 			return ApiService.post('tipoCaracterizacaoAtividade/atividadeDispensavel/listar/?page=0&size=10&sort=dataCadastro,desc', {});
 		}
 
-	}
+	},
+
+	findById: async (idAtividadeDispensavel) => ApiService.get('tipoCaracterizacaoAtividade/atividadeDispensavel/findById/' + idAtividadeDispensavel )
 
 };

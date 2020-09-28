@@ -256,7 +256,7 @@ export default {
 					AtividadeCnaeService.editar(item)
 						.then(() => {
 
-							if(!item.ativo) {
+							if (!item.ativo) {
 								snackbar.alert(SUCCESS_MESSAGES.cnae.desativar, snackbar.type.SUCCESS);
 							} else {
 								snackbar.alert(SUCCESS_MESSAGES.cnae.ativar, snackbar.type.SUCCESS);

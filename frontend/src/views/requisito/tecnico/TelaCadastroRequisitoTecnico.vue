@@ -613,7 +613,7 @@ export default {
 
 	mounted() {
 
-		if(this.$route.params.idRequisito) {
+		if (this.$route.params.idRequisito) {
 			this.labelBotaoCadastrarEditar = "Editar";
 			this.iconBotaoCadastrarEditar = "mdi-pencil";
 			this.isCadastro = false;
@@ -634,11 +634,13 @@ export default {
 	},
 
 	beforeRouteLeave(to, from, next) {
-		if(!this.allowRedirect){
+
+		if (!this.allowRedirect) {
 			this.confirmarCancelamento(next);
 		} else {
 			next();
 		}
+
 	}
 
 };
