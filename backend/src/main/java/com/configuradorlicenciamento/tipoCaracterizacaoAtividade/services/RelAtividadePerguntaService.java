@@ -26,7 +26,7 @@ public class RelAtividadePerguntaService implements IRelAtividadePerguntaService
     @Override
     public void salvar(Atividade atividade, List<PerguntaDTO> perguntas) {
 
-        IntStream.range(0, perguntas.size()).forEach( index -> {
+        IntStream.range(0, perguntas.size()).forEach(index -> {
 
             Optional<Pergunta> pergunta = perguntaRepository.findById(perguntas.get(index).getId());
 
@@ -37,4 +37,24 @@ public class RelAtividadePerguntaService implements IRelAtividadePerguntaService
         });
 
     }
+
+    @Override
+    public void editar(Atividade atividade, List<PerguntaDTO> perguntas) {
+
+        List<RelAtividadePergunta> relAtividadePerguntaList = relAtividadePerguntaRepository.findByAtividade(atividade);
+
+        relAtividadePerguntaList.forEach(atividadePergunta -> relAtividadePerguntaRepository.delete(atividadePergunta));
+
+        IntStream.range(0, perguntas.size()).forEach(index -> {
+
+            Optional<Pergunta> pergunta = perguntaRepository.findById(perguntas.get(index).getId());
+
+            RelAtividadePergunta relAtividadePergunta = new RelAtividadePergunta(atividade, pergunta.get(), (index + 1));
+
+            relAtividadePerguntaRepository.save(relAtividadePergunta);
+
+        });
+
+    }
+
 }

@@ -1,9 +1,7 @@
 package com.configuradorlicenciamento.tipoCaracterizacaoAtividade.dtos;
 
 import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeDTO;
-import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.pergunta.dtos.PerguntaDTO;
-import com.configuradorlicenciamento.taxaLicenciamento.dtos.TaxaLicenciamentoDTO;
 import com.configuradorlicenciamento.tipologia.dtos.TipologiaDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
@@ -18,6 +16,10 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AtividadeDispensavelDTO {
 
+    private Integer id;
+
+    private Integer idTipoCaracterizacaoAtividade;
+
     @NotNull(message = "{validacao.notnull}")
     @NotBlank(message = "{validacao.notBlank}")
     private List<RelacaoCnaeTipologia> cnaesTipologia;
@@ -30,6 +32,8 @@ public class AtividadeDispensavelDTO {
     @Getter
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class RelacaoCnaeTipologia {
+
+        private Integer id;
 
         @NotNull(message = "{validacao.notnull}")
         @NotBlank(message = "{validacao.notBlank}")

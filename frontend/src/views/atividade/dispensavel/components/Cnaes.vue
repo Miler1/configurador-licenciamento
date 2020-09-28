@@ -70,10 +70,9 @@
 										:options="optionsForaMunicipio",
 										@changeOption="relacaoCnaeTipologia.foraMunicipio = $event"
 									)
-
 							v-row
 								v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
-									a#QA-limpar-dados-atividade-dispensavel-cnae.d-flex.flex-row.align-center.justify-end(@click="clearForm")
+									a#QA-limpar-dados-atividade-dispensavel-cnae.d-flex.flex-row.align-center.justify-end(@click="clearCnae")
 										v-icon mdi-delete
 										span Limpar dados
 								
@@ -189,11 +188,7 @@ export default {
 
 		},
 
-		clearForm() {
-
-			if (!this.isInclusao) {
-				this.isInclusao = true;
-			}
+		clearCnae() {
 
 			this.relacaoCnaeTipologia.cnaes = [];
 			this.relacaoCnaeTipologia.tipologia = null;
@@ -233,7 +228,7 @@ export default {
 					if (dadosExistentes.length === 0) {
 
 						this.cnaesTipologia.push(...dadosInclusao);
-						this.clearForm();
+						this.clearCnae();
 
 					} else {
 						this.erroIncluirCnaeTipologia(dadosExistentes);
@@ -253,7 +248,7 @@ export default {
 
 						this.indexItemEdicao = null;
 						this.isInclusao = true;
-						this.clearForm();
+						this.clearCnae();
 
 					} else {
 						this.erroIncluirCnaeTipologia(dadosExistentes);
@@ -346,7 +341,7 @@ export default {
 			this.indexItemEdicao = this.cnaesTipologia.indexOf(item);
 			this.isInclusao = false;
 
-			var that = this;
+			const that = this;
 
 			setTimeout(function() {
 
@@ -386,6 +381,7 @@ export default {
 
 			});
 		},
+
 		selecionarCnae() {
 
 			this.relacaoCnaeTipologia.cnaes.forEach(cnae => {
@@ -396,28 +392,7 @@ export default {
 
 	},
 
-	created(){
-
-		// atividadeCnaeService.buscarCnaesAtivos()
-		// 	.then((response) => {
-		// 		console.log(response.data);
-		// 		this.cnaes = response.data;
-
-		// 		this.cnaes.forEach(cnae => {
-
-		// 			if (cnae.codigo === '6421200') {console.log("codigocnae: ", cnae.codigo);}
-		// 			cnae.textoExibicao = cnae.codigo + ' - ' + cnae.nome;
-		// 		});
-		// 	});
-
-		// tipologiaService.buscarTipologiasAtivas()
-		// 	.then((response) => {
-		// 		this.tipologias = response.data;
-		// 	});
-
-	},
-
-	mounted() {
+	created() {
 
 		atividadeCnaeService.buscarCnaesAtivos()
 			.then((response) => {
@@ -435,6 +410,13 @@ export default {
 				this.tipologias = response.data;
 			});
 
+	},
+
+	mounted() {
+
+		if (this.$route.params.idAtividadeDispensavel) {
+			this.isInclusao = false;
+		}
 	}
 
 };

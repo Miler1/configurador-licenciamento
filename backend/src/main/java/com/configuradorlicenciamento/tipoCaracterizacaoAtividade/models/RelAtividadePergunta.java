@@ -1,9 +1,9 @@
 package com.configuradorlicenciamento.tipoCaracterizacaoAtividade.models;
 
 import com.configuradorlicenciamento.atividade.models.Atividade;
-import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.pergunta.models.Pergunta;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
+@Getter
 @NoArgsConstructor
 @Table(schema = GlobalReferences.ESQUEMA, name = "rel_atividade_pergunta")
 public class RelAtividadePergunta implements Serializable {
@@ -34,8 +35,11 @@ public class RelAtividadePergunta implements Serializable {
     private Integer ordem;
 
     public RelAtividadePergunta(Atividade atividade, Pergunta pergunta, Integer ordem) {
+
         this.atividade = atividade;
         this.pergunta = pergunta;
         this.ordem = ordem;
+
     }
+
 }

@@ -39,36 +39,50 @@ const routes = [
 					return 'cnae';
 				}
 			},
+
+			// CNAE
 			{
 				path: 'cnae',
 				name: 'Cnae',
 				component: () => import('@/views/cnae/Cnae.vue')
 			},
+
+			// LICENÇA
 			{
 				path: 'licenca',
 				name: 'Licenca',
 				component: () => import('@/views/licenca/Licenca.vue')
 			},
+
+			// TIPOLOGIA
 			{
 				path: 'tipologia',
 				name: 'Tipologia',
 				component: () => import('@/views/tipologia/Tipologia.vue')
 			},
+
+			// PARÂMETRO
 			{
 				path: 'parametro',
 				name: 'Parametro',
 				component: () => import('@/views/parametro/Parametro.vue')
 			},
+
+			// DOCUMENTO
 			{
 				path: 'documentos',
 				name: 'Documentos',
 				component: () => import('@/views/documento/Documento.vue')
 			},
+
+			// TAXA ADMINISTRATIVA
 			{	
 				path: 'taxa-administrativa',
 				name: 'TaxaAdministrativa',
 				component: () => import('@/views/taxa/TaxaAdministrativa.vue')
 			},
+
+			// TAXA LICENCIAMENTO
 			{	path: 'taxa-licenciamento',
 				name: 'TaxaLicenciamento',
 				component: () => import('@/views/taxa/TaxaLicenciamento.vue')
@@ -83,11 +97,15 @@ const routes = [
 				name: 'EditarTaxaLicenciamento',
 				component: () => import('@/views/taxa/TelaCadastroTaxaLicenciamento.vue')
 			},
+
+			// REQUISITO ADMINISTRATIVO
 			{
 				path: 'requisitos-administrativos',
 				name: 'requisitos-administrativos',
 				component: () => import('@/views/requisito/administrativo/RequisitoAdministrativo.vue')
-			},	
+			},
+
+			// REQUISITO TÉCNICO
 			{
 				path: 'requisitos-tecnicos',
 				name: 'RequisitosTecnicos',
@@ -103,6 +121,8 @@ const routes = [
 				name: 'EditarRequisitosTecnicos',
 				component: () => import('@/views/requisito/tecnico/TelaCadastroRequisitoTecnico.vue')
 			},
+
+			// ATIVIDADE DISPENSÁVEL
 			{
 				path: 'perguntas',
 				name: 'Pergunta',
@@ -118,6 +138,13 @@ const routes = [
 				name: 'CadastrarAtividadeDispensavel',
 				component: () => import('@/views/atividade/dispensavel/TelaCadastro.vue')
 			},
+			{
+				path: 'cnaes-dispensaveis/editar/:idAtividadeDispensavel',
+				name: 'EditarAtividadeDispensavel',
+				component: () => import('@/views/atividade/dispensavel/TelaCadastro.vue')
+			},
+
+			// UNDERCONSTRUCTION
 			{ 
 				path: '*', 
 				component: () => import('@/views/UnderConstruction.vue') 
@@ -151,6 +178,7 @@ router.beforeEach((to, from, next) => {
 	}
 
 	next();
+
 });
 
 function BuscaUsuarioLogado(next) {

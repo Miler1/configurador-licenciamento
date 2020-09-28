@@ -87,7 +87,7 @@ public class RequisitoTecnicoController extends DefaultController {
     }
 
     @GetMapping(value = "/relatorio")
-    public void relatorioCSV (HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void relatorioCSV(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
@@ -102,7 +102,7 @@ public class RequisitoTecnicoController extends DefaultController {
 
     @GetMapping(value = "/findById/{idRequisito}")
     public ResponseEntity<RequisitoTecnicoEdicaoDTO> findById(HttpServletRequest request,
-                                                        @PathVariable("idRequisito") Integer idRequisito) throws Exception {
+                                                              @PathVariable("idRequisito") Integer idRequisito) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
