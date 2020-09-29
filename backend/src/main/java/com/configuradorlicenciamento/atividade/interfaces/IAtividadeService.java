@@ -6,4 +6,7 @@ import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.dtos.AtividadeD
 public interface IAtividadeService {
 
     Atividade salvar(AtividadeDispensavelDTO.RelacaoCnaeTipologia atividadeDispensavelDTO);
+
+    Atividade editar(AtividadeDispensavelDTO.RelacaoCnaeTipologia atividadeDispensavelDTO, Atividade atividade);
+
 }

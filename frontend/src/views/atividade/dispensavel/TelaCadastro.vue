@@ -1,51 +1,53 @@
 <template lang="pug">
 
 #tela-cadastro-atividade-dispensavel
-	div.pb-7
-		div.stepper-container
-			v-stepper(v-model="passo", alt-labels=true)
-				v-stepper-header(flat)
-					template(v-for="(passo, index) in passos")
-						v-stepper-step(
-							:key="`passo${index}-${passo.titulo}`",
-							:complete="passo.completo",
-							:step="index + 1",
-							:editable="false"
-							color="#84A98C"
-						)
-							span {{passo.titulo}}
 
-						v-divider(v-if="index !== passos.length - 1", :key="Math.random()")
-		
-		PassoCnaes(v-if="passo == 1",
-			:cnaesTipologia="atividadeDispensavel.cnaesTipologia"
-			:erro="erros[0]")
+	div.stepper-container
+		v-stepper(v-model="passo", alt-labels=true)
+			v-stepper-header(flat)
+				template(v-for="(passo, index) in passos")
+					v-stepper-step(
+						:key="`passo${index}-${passo.titulo}`",
+						:complete="passo.completo",
+						:step="index + 1",
+						:editable="false"
+						color="#84A98C"
+					)
+						span {{passo.titulo}}
 
-		PassoPerguntas(v-if="passo == 2",
-			:atividadeDispensavel="atividadeDispensavel",
-			:erro="erros[1]")
+					v-divider(v-if="index !== passos.length - 1", :key="Math.random()")
 
-		Resumo(v-if="passo == 3",
-			:atividadeDispensavel="atividadeDispensavel")
+		span.step-indicator Etapa {{passo}} de {{passos.length}}
+	
+	PassoCnaes(v-if="passo == 1",
+		:cnaesTipologia="atividadeDispensavel.cnaesTipologia",
+		:erro="erros[0]")
 
-		v-row.pt-6.px-7
-			v-col#form-actions.d-flex.justify-space-between(cols="12", md="12", flex=1)
-				v-btn#QA-btn-cancelar-atividade-dispensavel.align-self-start(@click="cancelar", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
-					v-icon mdi-close
-					span Cancelar
+	PassoPerguntas(v-if="passo == 2",
+		:perguntas="atividadeDispensavel.perguntas",
+		:erro="erros[1]")
 
-				div.right-buttons
-					v-btn#QA-btn-rascunho-atividade-dispensavel(@click="salvarRascunho", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
-						v-icon mdi-content-save
-						span Salvar
+	Resumo(v-if="passo == 3",
+		:atividadeDispensavel="atividadeDispensavel")
 
-					v-btn#QA-btn-voltar-atividade-dispensavel.ml-2(:disabled="passo === 1", @click="previousStep", outlined, :min-width="buttonMinWidth", large, color="#84A98C")
-						v-icon mdi-arrow-left
-						span Voltar
+	v-row.pa-7
+		v-col#form-actions.d-flex.justify-space-between(cols="12", md="12", flex=1)
+			v-btn#QA-btn-cancelar-atividade-dispensavel.align-self-start(@click="cancelar", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
+				v-icon mdi-close
+				span Cancelar
 
-					v-btn#QA-btn-proximo-cadastrar-atividade-dispensavel.ml-2.btn-cadastrar(@click="nextOrSubmit", :min-width="buttonMinWidth", large)
-						v-icon(color="white") {{nextButtonDecider().icon}}
-						span {{nextButtonDecider().text}}
+			div
+				v-btn#QA-btn-rascunho-atividade-dispensavel(v-show="false", @click="salvarRascunho", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
+					v-icon mdi-content-save
+					span Salvar
+
+				v-btn#QA-btn-voltar-atividade-dispensavel.ml-2(v-show="passo != 1", :disabled="passo === 1", @click="previousStep", outlined, :min-width="buttonMinWidth", large, color="#84A98C")
+					v-icon mdi-arrow-left
+					span Voltar
+
+				v-btn#QA-btn-proximo-cadastrar-atividade-dispensavel.ml-2.btn-cadastrar(@click="nextOrSubmit", :min-width="buttonMinWidth", large)
+					v-icon(color="white") {{nextButtonDecider().icon}}
+					span {{nextButtonDecider().text}}
 
 
 </template>
@@ -72,7 +74,6 @@ export default {
 	data: () => {
 
 		return {
-
 			passo: 1,
 			passos: [
 				{
@@ -113,7 +114,8 @@ export default {
 
 			this.prepararDados();
 
-			if(this.validar()){
+			if (this.validar()) {
+
 				TipoCaracterizacaoAtividadeService.cadastrarAtividadeDispensavel(this.atividadeDispensavel)
 					.then(() => {
 						this.handleSuccess();
@@ -121,19 +123,38 @@ export default {
 					.catch(error => {
 						this.handleError(error);
 					});
+
+			}
+
+		},
+
+		editar() {
+
+			this.prepararDados();
+
+			if (this.validar()) {
+
+				TipoCaracterizacaoAtividadeService.editarAtividadeDispensavel(this.atividadeDispensavel)
+					.then( () => {
+						this.handleSuccess(true);
+					})
+					.catch(error => {
+						this.handleError(error, true);
+					});
+
 			}
 
 		},
 
 		prepararDados() {
+
 			this.atividadeDispensavel.cnaesTipologia.forEach(cnaeTipologia => {
+
 				cnaeTipologia.foraMunicipio = cnaeTipologia.foraMunicipio === 'true' ? true : false;
 				delete cnaeTipologia.cnae.textoExibicao;
-			});
-		},
 
-		editar() {
-			alert("Editando esse rolê que já tava salvo :D");
+			});
+
 		},
 
 		salvarRascunho() {
@@ -146,8 +167,11 @@ export default {
 
 		nextStep() {
 
-			if(this.validar()) {
+			if (this.validar()) {
+
 				this.passo += 1;
+				window.scrollTo(0,0);
+
 			}
 
 		},
@@ -156,11 +180,13 @@ export default {
 
 			let possivel = true;
 
-			for(let i = 0; i < this.passo; i++){
+			for (let i = 0; i < this.passo; i++) {
 
-				if(!this.passos[i].validar()){
+				if (!this.passos[i].validar()) {
+
 					possivel = false;
 					this.erros[i].invalido = true;
+
 				}
 
 			}
@@ -170,16 +196,21 @@ export default {
 		},
 
 		previousStep() {
-			if(this.passo > 1){
+
+			if (this.passo > 1) {
+
 				this.passo -= 1;
+				window.scrollTo(0,0);
+
 			}
+
 		},
 
 		nextOrSubmit() {
 
-			if(this.lastStep()){
+			if (this.lastStep()) {
 
-				if(this.isCadastro){
+				if (this.isCadastro) {
 					this.cadastrar();
 				} else {
 					this.editar();
@@ -203,6 +234,7 @@ export default {
 				text: lastStep ? (this.isCadastro ? "Cadastrar" : "Editar") : "Próxima",
 				icon: lastStep ? (this.isCadastro ? "mdi-plus" : "mdi-pencil") : "mdi-arrow-right"
 			};
+
 		},
 
 		validarCnaesTipologias() {
@@ -210,7 +242,7 @@ export default {
 			let cnaesTipologias = this.atividadeDispensavel.cnaesTipologia;
 			let valido = this.passos[0].completo = cnaesTipologias && cnaesTipologias.length > 0;
 
-			if(!valido) {
+			if (!valido) {
 				snackbar.alert(ERROR_MESSAGES.atividadeDispensavel.cnaes.avancarEtapa);
 			}
 
@@ -223,7 +255,7 @@ export default {
 			let perguntas = this.atividadeDispensavel.perguntas;
 			let valido = this.passos[1].completo = perguntas && perguntas.length > 0;
 
-			if(!valido){
+			if (!valido) {
 				snackbar.alert(ERROR_MESSAGES.atividadeDispensavel.perguntas.avancarEtapa);
 			}
 
@@ -235,7 +267,7 @@ export default {
 
 			this.$fire({
 
-				title: '<p class="title-modal-confirm">Confirmar cancelamento </p>',
+				title: '<p class="title-modal-confirm">Confirmar cancelamento - CNAEs dispensáveis </p>',
 
 				html: this.isCadastro ?
 					`<p class="message-modal-confirm">Ao cancelar o cadastro, todas as informações serão perdidas.</p>
@@ -269,8 +301,9 @@ export default {
 
 		handleError(error, edicao = false) {
 
+			console.log(error.message);
+
 			let message = edicao ? ERROR_MESSAGES.requisitoAdministrativo.editar : ERROR_MESSAGES.requisitoAdministrativo.cadastro;
-			message += error.message;
 
 			snackbar.alert(message);
 
@@ -294,9 +327,20 @@ export default {
 
 		},
 
+		prepararDadosParaEdicao(atividadeDispensavel) {
+
+			this.atividadeDispensavel = atividadeDispensavel;
+
+			this.atividadeDispensavel.cnaesTipologia.forEach(cnaeTipologia => {
+				cnaeTipologia.foraMunicipio = cnaeTipologia.foraMunicipio ? 'true' : 'false';
+			});
+
+		}
+
 	},
 
-	created(){
+	created() {
+
 	},
 
 	mounted() {
@@ -305,11 +349,25 @@ export default {
 		this.passos[1].validar = this.validarPerguntas;
 		this.passos[2].validar = () => true;
 
+		if (this.$route.params.idAtividadeDispensavel) {
+
+			this.isCadastro = false;
+
+			TipoCaracterizacaoAtividadeService.findById(this.$route.params.idAtividadeDispensavel)
+				.then((response) => {
+					this.prepararDadosParaEdicao(response.data);
+				})
+				.catch(erro => {
+
+				});
+
+		}
+
 	},
 
 	beforeRouteLeave(to, from, next) {
 
-		if(!this.allowRedirect){
+		if (!this.allowRedirect) {
 			this.confirmarCancelamento(next);
 		} else {
 			next();
@@ -327,8 +385,17 @@ export default {
 
 .stepper-container {
 
+	padding-top: 28px;
 	padding-left: 20%;
 	padding-right: 20%;
+	text-align: center;
+
+	.step-indicator {
+		color:rgba(0, 0, 0, 0.87);
+		font-size: 14px;
+		text-rendering: optimizeLegibility;
+		font-weight: bold;
+	}
 
 	.v-stepper {
 		box-shadow: unset;
@@ -336,6 +403,61 @@ export default {
 
 	.v-stepper__header {
 		box-shadow: unset;
+	}
+
+	.v-stepper__step {
+
+		.v-stepper__step__step {
+
+			width: 32px;
+			height: 32px;
+
+		}
+
+	}
+
+	.v-divider {
+		margin: 40px -66px 0 !important;
+	}
+
+	.v-stepper__step--complete {
+
+		.v-stepper__step__step {
+
+			.v-icon {
+				color: rgb(132, 169, 140);
+			}
+
+			background-color: white !important;
+			border-color: rgb(132, 169, 140);
+			border: 1px solid;
+
+		}
+
+	}
+
+	.v-stepper__step--active {
+
+		.v-stepper__step__step {
+
+			.v-icon {
+				color:white;
+			}
+
+			background-color: rgb(132, 169, 140) !important;
+
+		}
+
+	}
+
+	.v-stepper__step--active {
+
+		.v-stepper__label {
+			text-shadow: none;
+			color: #0b0b0b;
+			font-weight: bold;
+		}
+
 	}
 
 }

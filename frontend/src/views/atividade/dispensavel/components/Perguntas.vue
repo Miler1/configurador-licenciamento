@@ -1,61 +1,61 @@
 <template lang="pug">
 
 #step-cnaes-atividade-dispensavel-pergunta
-	div.pb-7
-		v-expansion-panels.pa-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
-			v-expansion-panel
-				v-expansion-panel-header
-					div.d-flex.flex-row.align-center.justify-start
-						span.align-baseline Perguntas
-					template(v-slot:actions)
-						v-icon
-				v-expansion-panel-content
-					v-form(ref="requisito")
-						v-container.pa-0
-							v-row
-								v-col(cols="12", md="12")
-									v-label Pergunta
-									v-autocomplete#QA-select-atividade-dispensavel-pergunta(
-										outlined,
-										dense,
-										color="#E0E0E0",
-										:placeholder="placeholderSelect",
-										item-color="grey darken-3",
-										v-model="pergunta",
-										:items="perguntasDisponiveis",
-										item-text="texto",
-										:error-messages="errorMessage(pergunta)",
-										no-data-text="Nenhuma pergunta encontrada",
-										@click.native="resetErrorMessage",
-										required,
-										return-object=true
-									)
 
-							v-row
-								v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
-									a#QA-limpar-dados-requisito-tecnico.d-flex.flex-row.align-center.justify-end(@click="clearPergunta")
-										v-icon mdi-delete
-										span Limpar dados
+	v-expansion-panels.pa-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
+		v-expansion-panel
+			v-expansion-panel-header
+				div.d-flex.flex-row.align-center.justify-start
+					span.align-baseline {{ isInclusao ? 'Adição de ' : 'Editar ' }}  pergunta
+				template(v-slot:actions)
+					v-icon
+			v-expansion-panel-content
+				v-form(ref="requisito")
+					v-container.pa-0
+						v-row
+							v-col(cols="12", md="12")
+								v-label Pergunta
+								v-autocomplete#QA-select-atividade-dispensavel-pergunta(
+									outlined,
+									dense,
+									color="#E0E0E0",
+									:placeholder="placeholderSelect",
+									item-color="grey darken-3",
+									v-model="pergunta",
+									:items="perguntasDisponiveis",
+									item-text="texto",
+									:error-messages="errorMessage(pergunta)",
+									no-data-text="Nenhuma pergunta encontrada",
+									@click.native="resetErrorMessage",
+									required,
+									return-object=true
+								)
 
-									v-btn#QA-btn-adicionar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
-										v-icon mdi-plus
-										span Adicionar
+						v-row
+							v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
+								a#QA-limpar-dados-requisito-tecnico.d-flex.flex-row.align-center.justify-end(@click="clearPergunta")
+									v-icon.pr-1 fa-eraser
+									span Limpar dados
 
-									v-btn#QA-btn-editar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="!isInclusao")
-										v-icon mdi-pencil
-										span Editar
+								v-btn#QA-btn-adicionar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
+									v-icon mdi-plus
+									span Adicionar
 
-		GridListagemInclusao.px-7(
-			:tituloListagem="tituloListagem",
-			:headers="headerListagem",
-			:dadosListagem="atividadeDispensavel.perguntas",
-			:editarItem="editarItem",
-			:excluirItem="excluirItem",
-			:labelNoData="labelNoData",
-			:placeholderPesquisa="placeholderPesquisa",
-			:tituloTooltip="tituloTooltip",
-			:labelNoResultset="semResultados"
-		)
+								v-btn#QA-btn-editar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="!isInclusao")
+									v-icon mdi-pencil
+									span Editar
+
+	GridListagemInclusao.px-7(
+		:tituloListagem="tituloListagem",
+		:headers="headerListagem",
+		:dadosListagem="perguntas",
+		:editarItem="editarItem",
+		:excluirItem="excluirItem",
+		:labelNoData="labelNoData",
+		:placeholderPesquisa="placeholderPesquisa",
+		:tituloTooltip="tituloTooltip",
+		:labelNoResultset="semResultados"
+	)
 
 </template>
 
@@ -71,6 +71,17 @@ export default {
 
 	components: {
 		GridListagemInclusao
+	},
+
+	props: {
+
+		perguntas: {
+			type: [Array]
+		},
+		erro: {
+			type: [Object]
+		}
+
 	},
 	
 	data: () => {
@@ -92,7 +103,7 @@ export default {
 			tituloTooltip: "pergunta",
 			placeholderSelect: "Selecione",
 			errorMessageEmpty: true,
-			tituloListagem: "Listagem de perguntas adicionadas para esta atividade",
+			tituloListagem: "Listagem de perguntas adicionadas",
 			placeholderPesquisa: "Pesquisar pela pergunta ou respostas esperadas",
 			labelNoData: 'Não existem perguntas adicionadas.',
 			semResultados: 'Nenhuma pergunta encontrada com a pesquisa informada.',
@@ -105,6 +116,30 @@ export default {
 
 	methods: {
 
+		incluirDados() {
+
+			if (this.pergunta) {
+
+				if (this.isInclusao) {
+
+					this.perguntas.push(this.pergunta);
+					this.clearPergunta();
+
+				} else {
+
+					this.perguntas.splice(this.indexItemEdicao, 1, this.pergunta);
+
+					this.indexItemEdicao = null;
+					this.clearPergunta();
+
+				}
+
+			} else {
+				this.errorMessageEmpty = false;
+			}
+
+		},
+
 		editarItem(item) {
 
 			window.scrollTo(0,0);
@@ -113,7 +148,8 @@ export default {
 
 			this.pergunta = item;
 
-			this.indexItemEdicao = this.atividadeDispensavel.perguntas.indexOf(item);
+			this.indexItemEdicao = this.perguntas.indexOf(item);
+
 			this.isInclusao = false;
 
 		},
@@ -126,13 +162,13 @@ export default {
 			modal.mensagem = `Ao remover a pergunta, ela não estará mais vinculada nesse(s) CNAE(s) dispensável(eis).`;
 			modal.textoConfirmacao = `Tem certeza que deseja remover a pergunta? Esta opção pode ser desfeita a qualquer momento ao adicioná-la novamente.`;
 
-			modal.textoConfirmar = `Confirmar`;
+			modal.textoConfirmar = `Remover`;
 			modal.textoCancelar = `Cancelar`;
 
 			modal.acao = () => {
 
-				let indexItemExclusao = this.atividadeDispensavel.perguntas.indexOf(item);
-				this.atividadeDispensavel.perguntas.splice(indexItemExclusao, 1);
+				let indexItemExclusao = this.perguntas.indexOf(item);
+				this.perguntas.splice(indexItemExclusao, 1);
 				this.filtrarPerguntasDisponiveis();
 
 			};
@@ -166,31 +202,6 @@ export default {
 
 		},
 
-		incluirDados() {
-
-			if (this.pergunta) {
-
-				if (this.isInclusao) {
-
-					this.atividadeDispensavel.perguntas.push(this.pergunta);
-					this.clearPergunta();
-
-				} else {
-
-					this.atividadeDispensavel.perguntas.splice(this.indexItemEdicao, 1, this.pergunta);
-
-					this.indexItemEdicao = null;
-					this.isInclusao = true;
-					this.clearPergunta();
-
-				}
-
-			} else {
-				this.errorMessageEmpty = false;
-			}
-
-		},
-
 		modalConfirmacao(conteudo) {
 
 			let modal = {};
@@ -216,7 +227,7 @@ export default {
 			this.$fire(modal)
 				.then((result) => {
 
-					if(result.value) {
+					if (result.value) {
 						conteudo.acao();
 					}
 
@@ -232,7 +243,7 @@ export default {
 
 				let exists = false;
 
-				that.atividadeDispensavel.perguntas.forEach(element => {
+				that.perguntas.forEach(element => {
 					exists = element.id === item.id ? true : exists;
 				});
 
@@ -240,60 +251,59 @@ export default {
 
 			});
 
-		}
-
-	},
-
-	computed: {
-
-	},
-
-	props: {
-
-		atividadeDispensavel: {
-			type: [Object]
 		},
-		erro: {
-			type: [Object]
-		}
 
-	},
+		prepararLabelRespostasEsperadas(arrayDePerguntas) {
 
-	created(){
-	},
+			arrayDePerguntas.forEach((pergunta) => {
 
-	mounted() {
+				let primeiro = true;
 
-		perguntaService.listarPerguntasAtivas()
-			.then(resposta => {
-				this.perguntasCadastradas = resposta.data;
+				pergunta.respostasEsperadas = "";
 
-				this.perguntasCadastradas.forEach((pergunta) => {
+				pergunta.respostas.forEach((resposta , index) => {
 
-					pergunta.respostasEsperadas = "";
-					let primeiro = true;
+					if (resposta.permiteLicenciamento){
 
-					pergunta.respostas.forEach((resposta , index) => {
-
-						if(resposta.permiteLicenciamento){
-
-							if(!primeiro){
-								pergunta.respostasEsperadas += " / ";
-							}
-
-							pergunta.respostasEsperadas += resposta.texto;
-							primeiro = false;
-
+						if (!primeiro) {
+							pergunta.respostasEsperadas += " / ";
 						}
 
-					});
+						pergunta.respostasEsperadas += resposta.texto;
+						primeiro = false;
+
+					}
 
 				});
 
+			});
+		}
+
+	},
+
+	created() {
+
+		perguntaService.listarPerguntasAtivas()
+			.then(resposta => {
+
+				this.perguntasCadastradas = resposta.data;
+
+				this.prepararLabelRespostasEsperadas(this.perguntasCadastradas);
 				this.filtrarPerguntasDisponiveis();
+
 			});
 
-	}
+	},
+
+	mounted() {
+		
+		if (this.$route.params.idAtividadeDispensavel) {
+
+			this.prepararLabelRespostasEsperadas(this.perguntas);
+			this.isCadastro = false;
+
+		}
+	},
 
 };
 
@@ -317,4 +327,5 @@ export default {
 	color:white;
 	background: #65afef;
 }
+
 </style>

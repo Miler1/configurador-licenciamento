@@ -1,21 +1,20 @@
 <template lang="pug">
 
-#step-cnaes-atividade-dispensavel-Resumo
-	div.pb-7
-	
-		GridListagemInclusao.px-7(
-			:tituloListagem="tituloListagemCnae",
-			:headers="headerCnae",
-			:dadosListagem="atividadeDispensavel.cnaesTipologia",
-			:inputPesquisa="inputPesquisa"
-		)
+#step-cnaes-atividade-dispensavel-Resumo.pt-7
 
-		GridListagemInclusao.px-7.pt-15(
-			:tituloListagem="tituloListagemPergunta",
-			:headers="headerPergunta",
-			:dadosListagem="atividadeDispensavel.perguntas",
-			:inputPesquisa="inputPesquisa"
-		)
+	GridListagemInclusao.px-7(
+		:tituloListagem="tituloListagemCnae",
+		:headers="headerCnae",
+		:dadosListagem="atividadeDispensavel.cnaesTipologia",
+		:inputPesquisa="inputPesquisa"
+	)
+
+	GridListagemInclusao.px-7.pt-7(
+		:tituloListagem="tituloListagemPergunta",
+		:headers="headerPergunta",
+		:dadosListagem="atividadeDispensavel.perguntas",
+		:inputPesquisa="inputPesquisa"
+	)
 
 </template>
 

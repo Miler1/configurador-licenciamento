@@ -115,9 +115,9 @@ public class AtividadeCnaeService implements IAtividadeCnaeService {
     }
 
     @Override
-    public List<AtividadeCnae> findAtivos() {
+    public List<AtividadeCnae> findAtivosNaoVinculados() {
 
-        return atividadeCnaeRepository.findByAtivoOrderByCodigo(true);
+        return atividadeCnaeRepository.findAllWithDescriptionQuery();
 
     }
 

@@ -102,7 +102,7 @@
 							v-row
 								v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
 									a#QA-limpar-dados-requisito-tecnico.d-flex.flex-row.align-center.justify-end(@click="clearRequisito")
-										v-icon mdi-delete
+										v-icon.pr-1 fa-eraser
 										span Limpar dados
 								
 									v-btn#QA-btn-adicionar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
@@ -415,6 +415,7 @@ export default {
 			});
 
 			return this.requisitoTecnico;
+
 		},
 
 		handleError(error, edicao = false) {
@@ -423,6 +424,7 @@ export default {
 			message += error.message;
 
 			snackbar.alert(message);
+
 		},
 
 		handleSuccess(edicao = false) {
@@ -451,7 +453,7 @@ export default {
 				}
 
 			});
-			console.log(licencas);
+
 			let message = ERROR_MESSAGES.requisitoTecnico.adicionar + "Já existe um requisito técnico com o mesmo " +
 				"documento: " + this.grupoRequisito.documento.nome + " e " +
 				"Tipo(s) de licença(s): " + licencasExistentes;
@@ -480,6 +482,7 @@ export default {
 		},
 
 		checkFormVinculacao() {
+
 			return this.grupoRequisito.documento
 				&& this.grupoRequisito.documento != ''
 				&& this.grupoRequisito.licencas
@@ -496,7 +499,7 @@ export default {
 
 			this.$fire({
 
-				title: '<p class="title-modal-confirm">Confirmar cancelamento </p>',
+				title: '<p class="title-modal-confirm">Confirmar cancelamento - Grupo de requisito técnico</p>',
 
 				html: this.isCadastro ?
 					`<p class="message-modal-confirm">Ao cancelar o cadastro, todas as informações serão perdidas.</p>
@@ -576,6 +579,7 @@ export default {
 					this.dadosListagem = this.dadosListagem.filter(
 						dado => dado.documento.nome != item.documento.nome || dado.licenca.sigla != item.licenca.sigla
 					);
+
 				}
 
 			});		
@@ -609,11 +613,12 @@ export default {
 			.then((response) => {
 				this.licencas = response.data;
 			});
+
 	},
 
 	mounted() {
 
-		if(this.$route.params.idRequisito) {
+		if (this.$route.params.idRequisito) {
 			this.labelBotaoCadastrarEditar = "Editar";
 			this.iconBotaoCadastrarEditar = "mdi-pencil";
 			this.isCadastro = false;
@@ -634,11 +639,13 @@ export default {
 	},
 
 	beforeRouteLeave(to, from, next) {
-		if(!this.allowRedirect){
+
+		if (!this.allowRedirect) {
 			this.confirmarCancelamento(next);
 		} else {
 			next();
 		}
+
 	}
 
 };

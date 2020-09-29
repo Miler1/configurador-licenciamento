@@ -207,7 +207,7 @@
 							v-row
 								v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
 									a#QA-limpar-dados-taxa-licenciamento.d-flex.flex-row.align-center.justify-end(@click="clearTaxaLicenciamento")
-										v-icon mdi-delete
+										v-icon.pr-1 fa-eraser
 										span Limpar dados
 								
 									v-btn#QA-btn-adicionar-taxa-licenciamento(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
@@ -726,7 +726,7 @@ export default {
 
 			this.$fire({
 
-				title: '<p class="title-modal-confirm">Confirmar cancelamento </p>',
+				title: '<p class="title-modal-confirm">Confirmar cancelamento - Tabela de taxas de licenciamento</p>',
 
 				html: this.isCadastro ?
 					`<p class="message-modal-confirm">Ao cancelar o cadastro, todas as informações serão perdidas.</p>
