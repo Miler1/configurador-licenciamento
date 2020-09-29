@@ -4,12 +4,12 @@
 	div.pb-7
 		v-expansion-panels.pa-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
 			v-expansion-panel
-				v-expansion-panel-header
+				v-expansion-panel-header(v-show="indexItemEdicao != null || isCadastro")
 					div.d-flex.flex-row.align-center.justify-start
 						span.align-baseline {{ isInclusao ? 'Adição de ' : 'Editar ' }}  relação CNAE / Tipologia
 					template(v-slot:actions)
 						v-icon
-				v-expansion-panel-content
+				v-expansion-panel-content(v-show="indexItemEdicao != null || isCadastro")
 					v-form(ref="atividadeDispensavelCnaeTipologia")
 						v-container.pa-0
 							v-row
@@ -73,7 +73,7 @@
 							v-row
 								v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
 									a#QA-limpar-dados-atividade-dispensavel-cnae.d-flex.flex-row.align-center.justify-end(@click="clearCnae")
-										v-icon fa-eraser
+										v-icon.pr-1 fa-eraser
 										span Limpar dados
 								
 									v-btn#QA-btn-adicionar-atividade-dispensavel-cnae(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
@@ -93,7 +93,8 @@
 			:labelNoData="labelNoData",
 			:placeholderPesquisa="placeholderPesquisa",
 			:tituloTooltip="tituloTooltip",
-			:labelNoResultset="semResultados"
+			:labelNoResultset="semResultados",
+			:exibirIconeRemover="exibirIconeRemover"
 		)
 
 </template>
@@ -124,7 +125,7 @@ export default {
 		},
 		erro: {
 			type: [Object]
-		}
+		},
 
 	},
 	
@@ -135,6 +136,7 @@ export default {
 				panel: [0],
 				readonly: true,
 			},
+			exibirIconeRemover: true,
 			placeholder: "Digite aqui...",
 			placeholderSelect: "Selecione",
 			placeholderSelectCnae: "Selecione um ou mais",
@@ -195,6 +197,7 @@ export default {
 			this.relacaoCnaeTipologia.foraMunicipio = null;
 			this.$refs.toggleOptionsForaMunicipio.clearModel();
 			this.resetErrorMessage();
+			this.indexItemEdicao = null;
 
 		},
 
@@ -334,6 +337,7 @@ export default {
 			this.relacaoCnaeTipologia.tipologia = item.tipologia;
 			this.relacaoCnaeTipologia.cnaes = [];
 			this.relacaoCnaeTipologia.cnaes.push(item.cnae);
+			this.relacaoCnaeTipologia.cnaes.forEach( cnae => cnae.textoExibicao = cnae.codigo + ' - ' + cnae.nome);
 			this.relacaoCnaeTipologia.foraMunicipio = item.foraMunicipio;
 
 			this.indexItemEdicao = this.cnaesTipologia.indexOf(item);
@@ -378,6 +382,7 @@ export default {
 				}
 
 			});
+
 		},
 
 		selecionarCnae() {
@@ -392,7 +397,7 @@ export default {
 
 	created() {
 
-		atividadeCnaeService.buscarCnaesAtivos()
+		atividadeCnaeService.buscarCnaesAtivosNaoVinculados()
 			.then((response) => {
 
 				this.cnaes = response.data;
@@ -408,6 +413,15 @@ export default {
 				this.tipologias = response.data;
 			});
 
+		if (this.$route.params.idAtividadeDispensavel) {
+
+			this.exibirIconeRemover = false;
+			this.isCadastro = false;
+
+		}else{
+			this.isCadastro = true;
+		}
+
 	},
 
 	mounted() {
@@ -415,6 +429,7 @@ export default {
 		if (this.$route.params.idAtividadeDispensavel) {
 			this.isInclusao = false;
 		}
+
 	}
 
 };

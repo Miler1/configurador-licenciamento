@@ -118,7 +118,7 @@ public class TipoCaracterizacaoAtividadeService implements ITipoCaracterizacaoAt
                 .setLicenciamentoDeclaratorio(false)
                 .setLicenciamentoSimplificado(false)
                 .setUsuarioLicencimento(usuarioLicenciamento)
-                .setAtivo(true)
+                .setAtivo(tipoCaracterizacaoAtividadeSalvo.get().getAtivo())
                 .build();
 
         tipoCaracterizacaoAtividadeRepository.delete(tipoCaracterizacaoAtividadeSalvo.get());

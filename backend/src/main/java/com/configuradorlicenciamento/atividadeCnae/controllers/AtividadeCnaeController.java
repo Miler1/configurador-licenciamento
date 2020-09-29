@@ -88,12 +88,12 @@ public class AtividadeCnaeController extends DefaultController {
 
     }
 
-    @GetMapping(value = "/buscarCnaesAtivos")
-    public ResponseEntity<List<AtividadeCnae>> buscarCnaesAtivos(HttpServletRequest request) throws Exception {
+    @GetMapping(value = "/buscarCnaesAtivosNaoVinculados")
+    public ResponseEntity<List<AtividadeCnae>> buscarCnaesAtivosNaoVinculados(HttpServletRequest request) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        List<AtividadeCnae> cnaeAtivos = atividadeCnaeService.findAtivos();
+        List<AtividadeCnae> cnaeAtivos = atividadeCnaeService.findAtivosNaoVinculados();
 
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())

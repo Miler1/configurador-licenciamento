@@ -6,7 +6,7 @@
 			v-expansion-panel
 				v-expansion-panel-header
 					div.d-flex.flex-row.align-center.justify-start
-						span.align-baseline {{ isInclusao ? 'Adição de ' : 'Editar ' }}  perguntas
+						span.align-baseline {{ isInclusao ? 'Adição de ' : 'Editar ' }}  pergunta
 					template(v-slot:actions)
 						v-icon
 				v-expansion-panel-content
@@ -34,7 +34,7 @@
 							v-row
 								v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
 									a#QA-limpar-dados-requisito-tecnico.d-flex.flex-row.align-center.justify-end(@click="clearPergunta")
-										v-icon fa-eraser
+										v-icon.pr-1 fa-eraser
 										span Limpar dados
 
 									v-btn#QA-btn-adicionar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
@@ -103,7 +103,7 @@ export default {
 			tituloTooltip: "pergunta",
 			placeholderSelect: "Selecione",
 			errorMessageEmpty: true,
-			tituloListagem: "Listagem de perguntas adicionadas para esta atividade",
+			tituloListagem: "Listagem de perguntas adicionadas",
 			placeholderPesquisa: "Pesquisar pela pergunta ou respostas esperadas",
 			labelNoData: 'Não existem perguntas adicionadas.',
 			semResultados: 'Nenhuma pergunta encontrada com a pesquisa informada.',
@@ -162,7 +162,7 @@ export default {
 			modal.mensagem = `Ao remover a pergunta, ela não estará mais vinculada nesse(s) CNAE(s) dispensável(eis).`;
 			modal.textoConfirmacao = `Tem certeza que deseja remover a pergunta? Esta opção pode ser desfeita a qualquer momento ao adicioná-la novamente.`;
 
-			modal.textoConfirmar = `Confirmar`;
+			modal.textoConfirmar = `Remover`;
 			modal.textoCancelar = `Cancelar`;
 
 			modal.acao = () => {
