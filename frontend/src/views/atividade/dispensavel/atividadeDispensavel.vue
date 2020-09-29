@@ -38,7 +38,7 @@ export default {
 
 	data: () => {
 		return {
-			tituloAba: "CNAE dispensado",
+			tituloAba: "CNAE dispensável",
 			tituloListagem: "Listagem de CNAEs dispensáveis cadastrados",
 			placeholderPesquisa: "Pesquisar pelo código ou nome do CNAE",
 			headerListagem: HEADER,
