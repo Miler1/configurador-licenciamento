@@ -51,7 +51,7 @@ public class TipoCaracterizacaoAtividadeController extends DefaultController {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        TipoCaracterizacaoAtividade tipoCaracterizacaoAtividade= tipoCaracterizacaoAtividadeService.editar(request, atividadeDispensavelDTO);
+        TipoCaracterizacaoAtividade tipoCaracterizacaoAtividade = tipoCaracterizacaoAtividadeService.editar(request, atividadeDispensavelDTO);
 
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
