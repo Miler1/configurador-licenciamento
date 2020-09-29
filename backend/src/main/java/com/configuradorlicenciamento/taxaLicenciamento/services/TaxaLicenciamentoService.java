@@ -1,5 +1,6 @@
 package com.configuradorlicenciamento.taxaLicenciamento.services;
 
+import com.configuradorlicenciamento.configuracao.exceptions.ConflictException;
 import com.configuradorlicenciamento.licenca.models.Licenca;
 import com.configuradorlicenciamento.licenca.repositories.LicencaRepository;
 import com.configuradorlicenciamento.porteEmpreendimento.models.PorteEmpreendimento;
@@ -15,9 +16,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TaxaLicenciamentoService implements ITaxaLicenciamentoService {
+
+    public static final String TAXA_VINCULADA = "É necessário desvincular a taxa antes de deletá-la";
 
     @Autowired
     TaxaLicenciamentoRepository taxaLicenciamentoRepository;
@@ -34,9 +38,9 @@ public class TaxaLicenciamentoService implements ITaxaLicenciamentoService {
     @Override
     public void salvar(List<TaxaLicenciamentoDTO> listTaxasLicenciamento, CodigoTaxaLicenciamento codigoTaxaLicenciamento) {
 
-        listTaxasLicenciamento.forEach(taxaLicenciamentoDTO -> {
-            taxaLicenciamentoRepository.save(montaObjetoParaSalvar(taxaLicenciamentoDTO, codigoTaxaLicenciamento));
-        });
+        listTaxasLicenciamento.forEach(taxaLicenciamentoDTO ->
+                taxaLicenciamentoRepository.save(montaObjetoParaSalvar(taxaLicenciamentoDTO, codigoTaxaLicenciamento))
+        );
 
     }
 
@@ -45,13 +49,27 @@ public class TaxaLicenciamentoService implements ITaxaLicenciamentoService {
 
         List<TaxaLicenciamento> taxasLicenciamento = taxaLicenciamentoRepository.findByCodigo(codigoTaxaLicenciamento);
 
-        taxasLicenciamento.forEach(taxaLicenciamento ->
-                taxaLicenciamentoRepository.delete(taxaLicenciamento)
-        );
+        taxasLicenciamento.forEach(taxaLicenciamento -> {
+            if (taxasLicenciamentoDTO.stream().noneMatch(taxaLicenciamentoDTO ->
+                    taxaLicenciamento.getId().equals(taxaLicenciamentoDTO.getId())
+            )) {
 
-        taxasLicenciamentoDTO.forEach(tipoLicencaGrupoDocumentoDTO ->
-                taxaLicenciamentoRepository.save(montaObjetoParaSalvar(tipoLicencaGrupoDocumentoDTO, codigoTaxaLicenciamento))
-        );
+                try {
+                    taxaLicenciamentoRepository.delete(taxaLicenciamento);
+                } catch (Exception e) {
+                    throw new ConflictException(TAXA_VINCULADA);
+                }
+
+            }
+        });
+
+        taxasLicenciamentoDTO.forEach(taxaLicenciamentoDTO -> {
+            if (taxaLicenciamentoDTO.getId() != null) {
+                taxaLicenciamentoRepository.save(montaObjetoParaEditar(taxaLicenciamentoDTO, codigoTaxaLicenciamento));
+            } else {
+                taxaLicenciamentoRepository.save(montaObjetoParaSalvar(taxaLicenciamentoDTO, codigoTaxaLicenciamento));
+            }
+        });
 
     }
 
@@ -60,7 +78,8 @@ public class TaxaLicenciamentoService implements ITaxaLicenciamentoService {
         return taxaLicenciamentoRepository.findByCodigo(codigoTaxaLicenciamento);
     }
 
-    public TaxaLicenciamento montaObjetoParaSalvar(TaxaLicenciamentoDTO tDTO, CodigoTaxaLicenciamento codigoTaxaLicenciamento) {
+    public TaxaLicenciamento montaObjetoParaSalvar(TaxaLicenciamentoDTO tDTO, CodigoTaxaLicenciamento
+            codigoTaxaLicenciamento) {
 
         PorteEmpreendimento porteEmpreendimento = porteEmpreendimentoRepository.findById(tDTO.getIdPorteEmpreendimento()).orElseThrow(RuntimeException::new);
 
@@ -74,6 +93,29 @@ public class TaxaLicenciamentoService implements ITaxaLicenciamentoService {
                 .setPorteEmpreendimento(porteEmpreendimento)
                 .setPotencialPoluidor(potencialPoluidor)
                 .build();
+
+    }
+
+    public TaxaLicenciamento montaObjetoParaEditar(TaxaLicenciamentoDTO taxaLicenciamentoDTO, CodigoTaxaLicenciamento
+            codigoTaxaLicenciamento) {
+
+        PorteEmpreendimento porteEmpreendimento = porteEmpreendimentoRepository.findById(taxaLicenciamentoDTO.getIdPorteEmpreendimento()).orElseThrow(RuntimeException::new);
+
+        PotencialPoluidor potencialPoluidor = potencialPoluidorRepository.findById(taxaLicenciamentoDTO.getIdPotencialPoluidor()).orElseThrow(RuntimeException::new);
+
+        Licenca licenca = licencaRepository.findById(taxaLicenciamentoDTO.getIdTipoLicenca()).orElseThrow(RuntimeException::new);
+
+        Optional<TaxaLicenciamento> taxaLicenciamentoSalvo = taxaLicenciamentoRepository.findById(taxaLicenciamentoDTO.getId())
+                .map(taxaLicenciamento -> {
+                    taxaLicenciamento.setCodigo(codigoTaxaLicenciamento);
+                    taxaLicenciamento.setPorteEmpreendimento(porteEmpreendimento);
+                    taxaLicenciamento.setLicenca(licenca);
+                    taxaLicenciamento.setPotencialPoluidor(potencialPoluidor);
+                    taxaLicenciamento.setValor(taxaLicenciamentoDTO.getValor());
+                    return taxaLicenciamento;
+                });
+
+        return taxaLicenciamentoSalvo.get();
 
     }
 

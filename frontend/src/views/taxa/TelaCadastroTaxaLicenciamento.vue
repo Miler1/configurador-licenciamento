@@ -522,7 +522,7 @@ export default {
 		getDadosItem(licenca) {
 
 			let dadoListagem = {};
-
+			dadoListagem.id = this.valor.id;
 			dadoListagem.porteEmpreendimento = this.valor.porteEmpreendimento;
 			dadoListagem.potencialPoluidor = this.valor.potencialPoluidor;
 			dadoListagem.licenca = licenca;
@@ -578,7 +578,7 @@ export default {
 		},
 
 		editar() {
-
+			
 			TaxaLicenciamentoService.editar(this.prepararParaSalvar())
 				.then(() => {
 					this.handleSuccess(true);
@@ -598,7 +598,8 @@ export default {
 			this.taxaLicenciamento.listTaxasLicenciamento = [];
 
 			this.dadosListagem.forEach(dado => {
-
+				
+				dadoListagem.id = dado.id;
 				dadoListagem.idPorteEmpreendimento = dado.porteEmpreendimento.id;
 				dadoListagem.idPotencialPoluidor = dado.potencialPoluidor.id;
 				dadoListagem.idTipoLicenca = dado.licenca.id;
@@ -765,6 +766,7 @@ export default {
 		editarItem(item) {
 
 			window.scrollTo(0,0);
+			this.valor.id = item.id;
 			this.valor.porteEmpreendimento = item.porteEmpreendimento;
 			this.valor.potencialPoluidor = item.potencialPoluidor;
 			this.valor.licencas = [];
@@ -841,18 +843,18 @@ export default {
 				reverseButtons: true
 
 			}).then((result) => {
-
+				
 				if (result.value) {
 
 					let indexItemExclusao = this.dadosListagem.indexOf(item);
 					this.dadosListagem.splice(indexItemExclusao, 1);
-
+					
 				}
 
 			});
 
 		},
-		
+
 		isFormula(valor) {
 
 			const regex = /[^0-9\.]/;
