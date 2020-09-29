@@ -1,6 +1,6 @@
 package com.configuradorlicenciamento.pergunta.services;
 
-import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
+import com.configuradorlicenciamento.configuracao.exceptions.ConflictException;
 import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.pergunta.dtos.PerguntaCsv;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
@@ -50,7 +50,7 @@ public class PerguntaService implements IPerguntaService {
         specification = specification.and(PerguntaSpecification.matchTitulo(perguntaDTO.getTexto()));
 
         if(!perguntaRepository.findAll(specification).isEmpty()){
-            throw new ConstraintUniqueViolationException("Já existe uma pergunta com o mesmo título.");
+            throw new ConflictException("Já existe uma pergunta com o mesmo título.");
         }
 
         Pergunta pergunta = new Pergunta.PerguntaBuilder(perguntaDTO)
@@ -82,7 +82,7 @@ public class PerguntaService implements IPerguntaService {
                     specification = specification.and(PerguntaSpecification.matchTitulo(perguntaDTO.getTexto()));
 
                     if(!perguntaRepository.findAll(specification).isEmpty() && !pergunta.getTexto().equals(perguntaDTO.getTexto())) {
-                        throw new ConstraintUniqueViolationException("Já existe uma pergunta com o mesmo título.");
+                        throw new ConflictException("Já existe uma pergunta com o mesmo título.");
                     }
 
                     pergunta.setTexto(perguntaDTO.getTexto());

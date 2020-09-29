@@ -7,6 +7,8 @@ import lombok.Getter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TaxaLicenciamentoDTO {
 
+    private Integer id;
+
     private Integer idTipoLicenca;
 
     private Integer idPorteEmpreendimento;
