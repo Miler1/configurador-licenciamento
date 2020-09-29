@@ -18,7 +18,7 @@
 						v-divider(v-if="index !== passos.length - 1", :key="Math.random()")
 		
 		PassoCnaes(v-if="passo == 1",
-			:cnaesTipologia="atividadeDispensavel.cnaesTipologia"
+			:cnaesTipologia="atividadeDispensavel.cnaesTipologia",
 			:erro="erros[0]")
 
 		PassoPerguntas(v-if="passo == 2",
@@ -338,6 +338,7 @@ export default {
 	},
 
 	created() {
+
 	},
 
 	mounted() {
