@@ -51,7 +51,7 @@ public class TaxaLicenciamentoService implements ITaxaLicenciamentoService {
 
         taxasLicenciamento.forEach(taxaLicenciamento -> {
             if (taxasLicenciamentoDTO.stream().noneMatch(taxaLicenciamentoDTO ->
-                    taxaLicenciamentoDTO.getId() != null && taxaLicenciamentoDTO.getId().equals(taxaLicenciamento.getId())
+                    taxaLicenciamento.getId().equals(taxaLicenciamentoDTO.getId())
             )) {
 
                 try {
