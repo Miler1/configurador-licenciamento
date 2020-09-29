@@ -1,53 +1,53 @@
 <template lang="pug">
 
 #tela-cadastro-atividade-dispensavel
-	div.pb-7
-		div.stepper-container
-			v-stepper(v-model="passo", alt-labels=true)
-				v-stepper-header(flat)
-					template(v-for="(passo, index) in passos")
-						v-stepper-step(
-							:key="`passo${index}-${passo.titulo}`",
-							:complete="passo.completo",
-							:step="index + 1",
-							:editable="false"
-							color="#84A98C"
-						)
-							span {{passo.titulo}}
 
-						v-divider(v-if="index !== passos.length - 1", :key="Math.random()")
+	div.stepper-container
+		v-stepper(v-model="passo", alt-labels=true)
+			v-stepper-header(flat)
+				template(v-for="(passo, index) in passos")
+					v-stepper-step(
+						:key="`passo${index}-${passo.titulo}`",
+						:complete="passo.completo",
+						:step="index + 1",
+						:editable="false"
+						color="#84A98C"
+					)
+						span {{passo.titulo}}
 
-			span.step-indicator Etapa {{passo}} de {{passos.length}}
-		
-		PassoCnaes(v-if="passo == 1",
-			:cnaesTipologia="atividadeDispensavel.cnaesTipologia",
-			:erro="erros[0]")
+					v-divider(v-if="index !== passos.length - 1", :key="Math.random()")
 
-		PassoPerguntas(v-if="passo == 2",
-			:perguntas="atividadeDispensavel.perguntas",
-			:erro="erros[1]")
+		span.step-indicator Etapa {{passo}} de {{passos.length}}
+	
+	PassoCnaes(v-if="passo == 1",
+		:cnaesTipologia="atividadeDispensavel.cnaesTipologia",
+		:erro="erros[0]")
 
-		Resumo(v-if="passo == 3",
-			:atividadeDispensavel="atividadeDispensavel")
+	PassoPerguntas(v-if="passo == 2",
+		:perguntas="atividadeDispensavel.perguntas",
+		:erro="erros[1]")
 
-		v-row.pt-6.px-7
-			v-col#form-actions.d-flex.justify-space-between(cols="12", md="12", flex=1)
-				v-btn#QA-btn-cancelar-atividade-dispensavel.align-self-start(@click="cancelar", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
-					v-icon mdi-close
-					span Cancelar
+	Resumo(v-if="passo == 3",
+		:atividadeDispensavel="atividadeDispensavel")
 
-				div
-					v-btn#QA-btn-rascunho-atividade-dispensavel(v-show="false", @click="salvarRascunho", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
-						v-icon mdi-content-save
-						span Salvar
+	v-row.pa-7
+		v-col#form-actions.d-flex.justify-space-between(cols="12", md="12", flex=1)
+			v-btn#QA-btn-cancelar-atividade-dispensavel.align-self-start(@click="cancelar", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
+				v-icon mdi-close
+				span Cancelar
 
-					v-btn#QA-btn-voltar-atividade-dispensavel.ml-2(v-show="passo != 1", :disabled="passo === 1", @click="previousStep", outlined, :min-width="buttonMinWidth", large, color="#84A98C")
-						v-icon mdi-arrow-left
-						span Voltar
+			div
+				v-btn#QA-btn-rascunho-atividade-dispensavel(v-show="false", @click="salvarRascunho", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
+					v-icon mdi-content-save
+					span Salvar
 
-					v-btn#QA-btn-proximo-cadastrar-atividade-dispensavel.ml-2.btn-cadastrar(@click="nextOrSubmit", :min-width="buttonMinWidth", large)
-						v-icon(color="white") {{nextButtonDecider().icon}}
-						span {{nextButtonDecider().text}}
+				v-btn#QA-btn-voltar-atividade-dispensavel.ml-2(v-show="passo != 1", :disabled="passo === 1", @click="previousStep", outlined, :min-width="buttonMinWidth", large, color="#84A98C")
+					v-icon mdi-arrow-left
+					span Voltar
+
+				v-btn#QA-btn-proximo-cadastrar-atividade-dispensavel.ml-2.btn-cadastrar(@click="nextOrSubmit", :min-width="buttonMinWidth", large)
+					v-icon(color="white") {{nextButtonDecider().icon}}
+					span {{nextButtonDecider().text}}
 
 
 </template>

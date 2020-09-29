@@ -59,6 +59,7 @@
 										item-color="grey darken-3",
 										v-model="valor.porteEmpreendimento",
 										:items="portesEmpreendimento",
+										:filter="searchInput"
 										item-text="nome",
 										:error-messages="errorMessage( valor.porteEmpreendimento, true )",
 										@click.native="resetErrorMessage",
@@ -76,6 +77,7 @@
 										item-color="grey darken-3",
 										v-model="valor.potencialPoluidor",
 										:items="potenciaispoluidores",
+										:filter="searchInput",
 										item-text="nome",
 										:error-messages="errorMessage( valor.potencialPoluidor, true )",
 										@click.native="resetErrorMessage",
@@ -93,6 +95,7 @@
 										item-color="#84A98C",
 										v-model="valor.licencas",
 										:items="licencas",
+										:filter="searchInput",
 										item-text="sigla",
 										:error-messages="errorMessage( valor.licencas, true )",
 										no-data-text="Nenhum tipo de licença encontrado",
@@ -159,6 +162,7 @@
 										:placeholder="placeholderSelect",
 										item-color="grey darken-3",
 										:items="parametros",
+										:filter="searchInput",
 										item-text="codigo",
 										v-model="searchResult",
 										:search-input.sync="searchInput"
@@ -914,6 +918,19 @@ export default {
 			});
 
 		},
+
+		filtroSelect(item, query, itemText) {
+
+			query = this.normalizer(query);
+			itemText = itemText ? this.normalizer(itemText) : itemText;
+
+			return itemText.toLocaleLowerCase().indexOf(query.toLocaleLowerCase()) > -1;
+
+		},
+
+		normalizer(string) {
+			return string.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+		}
 
 	},
 

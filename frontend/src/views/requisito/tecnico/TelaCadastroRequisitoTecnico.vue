@@ -59,6 +59,7 @@
 										item-color="grey darken-3",
 										v-model="grupoRequisito.documento",
 										:items="documentos",
+										:filter="filtroSelect"
 										item-text="nome",
 										:error-messages="errorMessage( grupoRequisito.documento, true )",
 										no-data-text="Nenhum documento encontrado",
@@ -76,6 +77,7 @@
 										item-color="#84A98C",
 										v-model="grupoRequisito.licencas",
 										:items="licencas",
+										:filtro="filtroSelect"
 										item-text="sigla",
 										:error-messages="errorMessage(validarArray(grupoRequisito.licencas), true )",
 										no-data-text="Nenhum tipo de licença encontrado",
@@ -599,6 +601,19 @@ export default {
 				dado.obrigatorio = dado.obrigatorio ? 'true' : 'false';
 			});
 
+		},
+
+		filtroSelect(item, query, itemText) {
+
+			query = this.normalizer(query);
+			itemText = itemText ? this.normalizer(itemText) : itemText;
+
+			return itemText.toLocaleLowerCase().indexOf(query.toLocaleLowerCase()) > -1;
+
+		},
+
+		normalizer(string) {
+			return string.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 		}
 	},
 

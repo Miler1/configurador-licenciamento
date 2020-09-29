@@ -1,101 +1,103 @@
 <template lang="pug">
 
 #step-cnaes-atividade-dispensavel-cnae
-	div.pb-7
-		v-expansion-panels.pa-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
-			v-expansion-panel
-				v-expansion-panel-header(v-show="indexItemEdicao != null || isCadastro")
-					div.d-flex.flex-row.align-center.justify-start
-						span.align-baseline {{ isInclusao ? 'Adição de ' : 'Editar ' }}  relação CNAE / Tipologia
-					template(v-slot:actions)
-						v-icon
-				v-expansion-panel-content(v-show="indexItemEdicao != null || isCadastro")
-					v-form(ref="atividadeDispensavelCnaeTipologia")
-						v-container.pa-0
-							v-row
-								v-col(cols="12", md="4")
-									v-label CNAE
-									v-autocomplete#QA-select-atividade-dispensavel-cnae(
-										outlined,
-										dense,
-										color="#E0E0E0",
-										:placeholder="placeholderSelectCnae",
-										item-color="#84A98C",
-										v-model="relacaoCnaeTipologia.cnaes",
-										:items="cnaes",
-										item-text="textoExibicao",
-										:error-messages="errorMessage(relacaoCnaeTipologia.cnaes)",
-										no-data-text="Nenhum CNAE encontrado",
-										@click.native="resetErrorMessage",
-										required,
-										multiple=true,
-										return-object=true
-										chips=true,
-										deletable-chips=true,
-										:disabled="!isInclusao",
-									)
-										template(v-slot:selection="data")
-											v-chip(
-												:key="JSON.stringify(data.item)"
-												v-bind="data.attrs"
-												:input-value="data.selected"
-												:disabled="data.disabled"
-												close=true
-												@click:close="data.parent.selectItem(data.item)"
-											)
-												| {{ data.item.codigo }}
-								v-col(cols="12", md="4")
-									v-label Tipologia
-									v-autocomplete#QA-select-atividade-dispensavel-tipologia(
-										outlined,
-										dense,
-										color="#E0E0E0",
-										:placeholder="placeholderSelect",
-										item-color="grey darken-3",
-										v-model="relacaoCnaeTipologia.tipologia",
-										:items="tipologias",
-										item-text="nome",
-										:error-messages="errorMessage(relacaoCnaeTipologia.tipologia)",
-										no-data-text="Nenhuma tipologia encontrada",
-										@click.native="resetErrorMessage",
-										required,
-										return-object=true
-									)
-								v-col(cols="12", md="4")
-									ToggleOptions(
-										ref="toggleOptionsForaMunicipio",
-										labelOption="Atividade fora do município",
-										idToggle="QA-btn-toggle-fora-municipio",
-										:errorMessage="errorMessage",
-										:options="optionsForaMunicipio",
-										@changeOption="relacaoCnaeTipologia.foraMunicipio = $event"
-									)
-							v-row
-								v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
-									a#QA-limpar-dados-atividade-dispensavel-cnae.d-flex.flex-row.align-center.justify-end(@click="clearCnae")
-										v-icon.pr-1 fa-eraser
-										span Limpar dados
-								
-									v-btn#QA-btn-adicionar-atividade-dispensavel-cnae(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
-										v-icon mdi-plus
-										span Adicionar
-								
-									v-btn#QA-btn-editar-atividade-dispensavel-cnae(@click="incluirDados", large, outlined, color="#84A98C", v-if="!isInclusao")
-										v-icon mdi-pencil
-										span Editar
-		
-		GridListagemInclusao.px-7(
-			:tituloListagem="tituloListagem",
-			:headers="headerListagem",
-			:dadosListagem="cnaesTipologia",
-			:editarItem="editarItem",
-			:excluirItem="excluirItem",
-			:labelNoData="labelNoData",
-			:placeholderPesquisa="placeholderPesquisa",
-			:tituloTooltip="tituloTooltip",
-			:labelNoResultset="semResultados",
-			:exibirIconeRemover="exibirIconeRemover"
-		)
+
+	v-expansion-panels.pa-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
+		v-expansion-panel
+			v-expansion-panel-header(v-show="indexItemEdicao != null || isCadastro")
+				div.d-flex.flex-row.align-center.justify-start
+					span.align-baseline {{ isInclusao ? 'Adição de ' : 'Editar ' }}  relação CNAE / Tipologia
+				template(v-slot:actions)
+					v-icon
+			v-expansion-panel-content(v-show="indexItemEdicao != null || isCadastro")
+				v-form(ref="atividadeDispensavelCnaeTipologia")
+					v-container.pa-0
+						v-row
+							v-col(cols="12", md="4")
+								v-label CNAE
+								v-autocomplete#QA-select-atividade-dispensavel-cnae(
+									outlined,
+									dense,
+									color="#E0E0E0",
+									:placeholder="placeholderSelectCnae",
+									item-color="#84A98C",
+									v-model="relacaoCnaeTipologia.cnaes",
+									:items="cnaes",
+									:filter="filtroSelect",
+									item-text="textoExibicao",
+									:error-messages="errorMessage(relacaoCnaeTipologia.cnaes)",
+									no-data-text="Nenhum CNAE encontrado",
+									@click.native="resetErrorMessage",
+									required,
+									multiple=true,
+									return-object=true
+									chips=true,
+									deletable-chips=true,
+									:disabled="!isInclusao",
+								)
+									template(v-slot:selection="data")
+										v-chip(
+											:key="JSON.stringify(data.item)"
+											v-bind="data.attrs"
+											:input-value="data.selected"
+											:disabled="data.disabled"
+											close=true
+											@click:close="data.parent.selectItem(data.item)"
+										)
+											| {{ data.item.codigo }}
+							v-col(cols="12", md="4")
+								v-label Tipologia
+								v-autocomplete#QA-select-atividade-dispensavel-tipologia(
+									outlined,
+									dense,
+									color="#E0E0E0",
+									:placeholder="placeholderSelect",
+									item-color="grey darken-3",
+									v-model="relacaoCnaeTipologia.tipologia",
+									:items="tipologias",
+									:filter="filtroSelect",
+									item-text="nome",
+									:error-messages="errorMessage(relacaoCnaeTipologia.tipologia)",
+									no-data-text="Nenhuma tipologia encontrada",
+									@click.native="resetErrorMessage",
+									required,
+									return-object=true
+								)
+							v-col(cols="12", md="4")
+								ToggleOptions(
+									ref="toggleOptionsForaMunicipio",
+									labelOption="Atividade fora do município",
+									idToggle="QA-btn-toggle-fora-municipio",
+									:errorMessage="errorMessage",
+									:options="optionsForaMunicipio",
+									@changeOption="relacaoCnaeTipologia.foraMunicipio = $event"
+								)
+						v-row
+							v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
+								a#QA-limpar-dados-atividade-dispensavel-cnae.d-flex.flex-row.align-center.justify-end(@click="clearCnae")
+									v-icon.pr-1 fa-eraser
+									span Limpar dados
+
+								v-btn#QA-btn-adicionar-atividade-dispensavel-cnae(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
+									v-icon mdi-plus
+									span Adicionar
+
+								v-btn#QA-btn-editar-atividade-dispensavel-cnae(@click="incluirDados", large, outlined, color="#84A98C", v-if="!isInclusao")
+									v-icon mdi-pencil
+									span Editar
+
+	GridListagemInclusao.px-7(
+		:tituloListagem="tituloListagem",
+		:headers="headerListagem",
+		:dadosListagem="cnaesTipologia",
+		:editarItem="editarItem",
+		:excluirItem="excluirItem",
+		:labelNoData="labelNoData",
+		:placeholderPesquisa="placeholderPesquisa",
+		:tituloTooltip="tituloTooltip",
+		:labelNoResultset="semResultados",
+		:exibirIconeRemover="exibirIconeRemover"
+	)
 
 </template>
 
@@ -150,6 +152,7 @@ export default {
 			labelNoData: 'Não existem relações CNAEs / tipologias adicionadas.',
 			headerListagem: HEADER,
 			errorMessageEmptyInclusao: true,
+			indexItemEdicao: null,
 			relacaoCnaeTipologia: {
 				cnaes: [],
 				tipologia: null,
@@ -391,7 +394,21 @@ export default {
 				cnae.textoExibicao = cnae.codigo;
 			});
 
+		},
+
+		filtroSelect(item, query, itemText) {
+
+			query = this.normalizer(query);
+			itemText = itemText ? this.normalizer(itemText) : itemText;
+
+			return itemText.toLocaleLowerCase().indexOf(query.toLocaleLowerCase()) > -1;
+
+		},
+
+		normalizer(string) {
+			return string.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 		}
+
 
 	},
 
