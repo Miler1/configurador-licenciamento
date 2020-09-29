@@ -415,6 +415,7 @@ export default {
 			});
 
 			return this.requisitoTecnico;
+
 		},
 
 		handleError(error, edicao = false) {
@@ -423,6 +424,7 @@ export default {
 			message += error.message;
 
 			snackbar.alert(message);
+
 		},
 
 		handleSuccess(edicao = false) {
@@ -451,7 +453,7 @@ export default {
 				}
 
 			});
-			console.log(licencas);
+
 			let message = ERROR_MESSAGES.requisitoTecnico.adicionar + "Já existe um requisito técnico com o mesmo " +
 				"documento: " + this.grupoRequisito.documento.nome + " e " +
 				"Tipo(s) de licença(s): " + licencasExistentes;
@@ -480,6 +482,7 @@ export default {
 		},
 
 		checkFormVinculacao() {
+
 			return this.grupoRequisito.documento
 				&& this.grupoRequisito.documento != ''
 				&& this.grupoRequisito.licencas
@@ -576,6 +579,7 @@ export default {
 					this.dadosListagem = this.dadosListagem.filter(
 						dado => dado.documento.nome != item.documento.nome || dado.licenca.sigla != item.licenca.sigla
 					);
+
 				}
 
 			});		
@@ -609,6 +613,7 @@ export default {
 			.then((response) => {
 				this.licencas = response.data;
 			});
+
 	},
 
 	mounted() {
