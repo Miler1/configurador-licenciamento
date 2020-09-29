@@ -18,7 +18,7 @@
 						v-divider(v-if="index !== passos.length - 1", :key="Math.random()")
 		
 		PassoCnaes(v-if="passo == 1",
-			:cnaesTipologia="atividadeDispensavel.cnaesTipologia"
+			:cnaesTipologia="atividadeDispensavel.cnaesTipologia",
 			:erro="erros[0]")
 
 		PassoPerguntas(v-if="passo == 2",
@@ -35,7 +35,7 @@
 					span Cancelar
 
 				div
-					v-btn#QA-btn-rascunho-atividade-dispensavel(v-show="isCadastro", @click="salvarRascunho", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
+					v-btn#QA-btn-rascunho-atividade-dispensavel(v-show="false", @click="salvarRascunho", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
 						v-icon mdi-content-save
 						span Salvar
 
@@ -166,7 +166,10 @@ export default {
 		nextStep() {
 
 			if (this.validar()) {
+
 				this.passo += 1;
+				window.scrollTo(0,0);
+
 			}
 
 		},
@@ -193,7 +196,10 @@ export default {
 		previousStep() {
 
 			if (this.passo > 1) {
+
 				this.passo -= 1;
+				window.scrollTo(0,0);
+
 			}
 
 		},
@@ -332,6 +338,7 @@ export default {
 	},
 
 	created() {
+
 	},
 
 	mounted() {

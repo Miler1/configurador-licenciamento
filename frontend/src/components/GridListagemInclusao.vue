@@ -45,7 +45,7 @@
 						v-icon.mr-2(small @click='editarItem(item)', v-on='on', color='#9EBAA4')
 							| mdi-pencil
 					span Editar {{tituloTooltip}}
-				v-tooltip(bottom)
+				v-tooltip(bottom, v-if="exibirIconeRemover")
 					template(v-slot:activator="{ on, attrs }")
 						v-icon(small @click='excluirItem(item)', v-on='on', color='#F56C6C')
 							|  mdi-delete
@@ -129,7 +129,11 @@ export default {
 		inputPesquisa: {
 			type: [Boolean],
 			default: true
-		}
+		},
+		exibirIconeRemover: {
+			type: [Boolean],
+			default: true
+		},
 
 	}
 
