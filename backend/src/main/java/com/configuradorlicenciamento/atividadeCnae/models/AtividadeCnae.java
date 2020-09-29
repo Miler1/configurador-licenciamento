@@ -3,7 +3,9 @@ package com.configuradorlicenciamento.atividadeCnae.models;
 import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeCsv;
 import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeDTO;
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
+import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.models.TipoCaracterizacaoAtividade;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,6 +14,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -41,6 +44,10 @@ public class AtividadeCnae implements Serializable {
     @ManyToOne
     @JoinColumn(name = "id_usuario_licenciamento", referencedColumnName = "id")
     private UsuarioLicenciamento usuarioLicenciamento;
+
+    @OneToMany(mappedBy="atividadeCnae")
+    @JsonBackReference
+    private List<TipoCaracterizacaoAtividade> tipoCaracterizacaoAtividadeList;
 
     public AtividadeCnae(AtividadeCnaeBuilder builder) {
         this.nome = builder.nome;
