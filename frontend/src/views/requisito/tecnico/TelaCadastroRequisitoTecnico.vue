@@ -102,7 +102,7 @@
 							v-row
 								v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
 									a#QA-limpar-dados-requisito-tecnico.d-flex.flex-row.align-center.justify-end(@click="clearRequisito")
-										v-icon fa-eraser
+										v-icon.pr-1 fa-eraser
 										span Limpar dados
 								
 									v-btn#QA-btn-adicionar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
