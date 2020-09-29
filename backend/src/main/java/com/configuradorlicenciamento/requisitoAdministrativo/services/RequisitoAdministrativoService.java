@@ -1,7 +1,7 @@
 package com.configuradorlicenciamento.requisitoAdministrativo.services;
 
 import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
-import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
+import com.configuradorlicenciamento.configuracao.exceptions.ConflictException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 
 import com.configuradorlicenciamento.documento.models.Documento;
@@ -76,7 +76,7 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
         if(licencasExistentes.isEmpty()){
             requisitoAdministrativoRepository.saveAll(requisitoAdministrativoList);
         } else {
-            throw new ConstraintUniqueViolationException(REQUISITO_ADMINISTRATIVO_EXISTENTE + tratarLicencasParaErro(licencasExistentes));
+            throw new ConflictException(REQUISITO_ADMINISTRATIVO_EXISTENTE + tratarLicencasParaErro(licencasExistentes));
         }
 
         return requisitoAdministrativoList;
@@ -112,7 +112,7 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
             List<RequisitoAdministrativo> alreadyExistents = requisitoAdministrativoRepository.findAll(RequisitoAdministrativoSpecification.documentoAndLicenca(novoDocumento.getId(), requisitoAdministrativo.getLicenca().getId(), requisitoAdministrativo.getTipoPessoa()));
 
             if (alreadyExistents.size() > 1 || !alreadyExistents.isEmpty() && !alreadyExistents.get(0).getId().equals(requisitoAdministrativo.getId())) {
-                throw new ConstraintUniqueViolationException(REQUISITO_ADMINISTRATIVO_EXISTENTE);
+                throw new ConflictException(REQUISITO_ADMINISTRATIVO_EXISTENTE);
             }
         }
 

@@ -1,7 +1,7 @@
 package com.configuradorlicenciamento.taxaLicenciamento.services;
 
 import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
-import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
+import com.configuradorlicenciamento.configuracao.exceptions.ConflictException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.historicoConfigurador.interfaces.IHistoricoConfiguradorService;
@@ -16,6 +16,7 @@ import com.configuradorlicenciamento.taxaLicenciamento.interfaces.ITaxaLicenciam
 import com.configuradorlicenciamento.taxaLicenciamento.models.CodigoTaxaLicenciamento;
 import com.configuradorlicenciamento.taxaLicenciamento.models.TaxaLicenciamento;
 import com.configuradorlicenciamento.taxaLicenciamento.repositories.CodigoTaxaLicenciamentoRepository;
+import com.configuradorlicenciamento.taxaLicenciamento.repositories.TaxaLicenciamentoRepository;
 import com.configuradorlicenciamento.taxaLicenciamento.specifications.CodigoTaxaLicenciamentoSpecification;
 import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLicenciamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,9 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
 
     @Autowired
     CodigoTaxaLicenciamentoRepository codigoTaxaLicenciamentoRepository;
+
+    @Autowired
+    TaxaLicenciamentoRepository taxaLicenciamentoRepository;
 
     @Autowired
     UsuarioLicenciamentoRepository usuarioLicenciamentoRepository;
@@ -55,7 +59,7 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
         boolean existeCodigo = codigoTaxaLicenciamentoRepository.existsByCodigo(codigo);
 
         if (existeCodigo) {
-            throw new ConstraintUniqueViolationException(TAXA_EXISTENTE);
+            throw new ConflictException(TAXA_EXISTENTE);
         }
 
         CodigoTaxaLicenciamento codigoTaxaLicenciamento =
@@ -90,7 +94,7 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
             CodigoTaxaLicenciamento codigoTaxaLicenciamento = codigoTaxaLicenciamentoRepository.findByCodigo(codigo);
 
             if (codigoTaxaLicenciamento != null && !codigoTaxaLicenciamento.getId().equals(codigoTaxaLicenciamentoDTO.getId())) {
-                throw new ConstraintUniqueViolationException(TAXA_EXISTENTE);
+                throw new ConflictException(TAXA_EXISTENTE);
             }
 
         }

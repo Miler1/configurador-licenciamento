@@ -19,8 +19,8 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return handleException(ex, request, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(ConstraintUniqueViolationException.class)
-    public final ResponseEntity<ExceptionResponse> handleConflictException(ConstraintUniqueViolationException ex, WebRequest request) {
+    @ExceptionHandler(ConflictException.class)
+    public final ResponseEntity<ExceptionResponse> handleConflictException(ConflictException ex, WebRequest request) {
         return handleException(ex, request, HttpStatus.CONFLICT);
     }
 
