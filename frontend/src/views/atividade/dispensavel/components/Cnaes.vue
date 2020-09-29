@@ -392,7 +392,7 @@ export default {
 
 	created() {
 
-		atividadeCnaeService.buscarCnaesAtivos()
+		atividadeCnaeService.buscarCnaesAtivosNaoVinculados()
 			.then((response) => {
 
 				this.cnaes = response.data;
