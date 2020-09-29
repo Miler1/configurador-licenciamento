@@ -1,61 +1,61 @@
 <template lang="pug">
 
 #step-cnaes-atividade-dispensavel-pergunta
-	div.pb-7
-		v-expansion-panels.pa-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
-			v-expansion-panel
-				v-expansion-panel-header
-					div.d-flex.flex-row.align-center.justify-start
-						span.align-baseline {{ isInclusao ? 'Adição de ' : 'Editar ' }}  pergunta
-					template(v-slot:actions)
-						v-icon
-				v-expansion-panel-content
-					v-form(ref="requisito")
-						v-container.pa-0
-							v-row
-								v-col(cols="12", md="12")
-									v-label Pergunta
-									v-autocomplete#QA-select-atividade-dispensavel-pergunta(
-										outlined,
-										dense,
-										color="#E0E0E0",
-										:placeholder="placeholderSelect",
-										item-color="grey darken-3",
-										v-model="pergunta",
-										:items="perguntasDisponiveis",
-										item-text="texto",
-										:error-messages="errorMessage(pergunta)",
-										no-data-text="Nenhuma pergunta encontrada",
-										@click.native="resetErrorMessage",
-										required,
-										return-object=true
-									)
 
-							v-row
-								v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
-									a#QA-limpar-dados-requisito-tecnico.d-flex.flex-row.align-center.justify-end(@click="clearPergunta")
-										v-icon.pr-1 fa-eraser
-										span Limpar dados
+	v-expansion-panels.pa-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
+		v-expansion-panel
+			v-expansion-panel-header
+				div.d-flex.flex-row.align-center.justify-start
+					span.align-baseline {{ isInclusao ? 'Adição de ' : 'Editar ' }}  pergunta
+				template(v-slot:actions)
+					v-icon
+			v-expansion-panel-content
+				v-form(ref="requisito")
+					v-container.pa-0
+						v-row
+							v-col(cols="12", md="12")
+								v-label Pergunta
+								v-autocomplete#QA-select-atividade-dispensavel-pergunta(
+									outlined,
+									dense,
+									color="#E0E0E0",
+									:placeholder="placeholderSelect",
+									item-color="grey darken-3",
+									v-model="pergunta",
+									:items="perguntasDisponiveis",
+									item-text="texto",
+									:error-messages="errorMessage(pergunta)",
+									no-data-text="Nenhuma pergunta encontrada",
+									@click.native="resetErrorMessage",
+									required,
+									return-object=true
+								)
 
-									v-btn#QA-btn-adicionar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
-										v-icon mdi-plus
-										span Adicionar
+						v-row
+							v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
+								a#QA-limpar-dados-requisito-tecnico.d-flex.flex-row.align-center.justify-end(@click="clearPergunta")
+									v-icon.pr-1 fa-eraser
+									span Limpar dados
 
-									v-btn#QA-btn-editar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="!isInclusao")
-										v-icon mdi-pencil
-										span Editar
+								v-btn#QA-btn-adicionar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
+									v-icon mdi-plus
+									span Adicionar
 
-		GridListagemInclusao.px-7(
-			:tituloListagem="tituloListagem",
-			:headers="headerListagem",
-			:dadosListagem="perguntas",
-			:editarItem="editarItem",
-			:excluirItem="excluirItem",
-			:labelNoData="labelNoData",
-			:placeholderPesquisa="placeholderPesquisa",
-			:tituloTooltip="tituloTooltip",
-			:labelNoResultset="semResultados"
-		)
+								v-btn#QA-btn-editar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="!isInclusao")
+									v-icon mdi-pencil
+									span Editar
+
+	GridListagemInclusao.px-7(
+		:tituloListagem="tituloListagem",
+		:headers="headerListagem",
+		:dadosListagem="perguntas",
+		:editarItem="editarItem",
+		:excluirItem="excluirItem",
+		:labelNoData="labelNoData",
+		:placeholderPesquisa="placeholderPesquisa",
+		:tituloTooltip="tituloTooltip",
+		:labelNoResultset="semResultados"
+	)
 
 </template>
 
