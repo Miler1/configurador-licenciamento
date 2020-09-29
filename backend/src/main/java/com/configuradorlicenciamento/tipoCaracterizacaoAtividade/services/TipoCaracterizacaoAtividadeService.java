@@ -7,6 +7,7 @@ import com.configuradorlicenciamento.atividadeCnae.repositories.AtividadeCnaeRep
 import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.pergunta.models.Pergunta;
+import com.configuradorlicenciamento.pergunta.repositories.PerguntaRepository;
 import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.dtos.AtividadeDispensavelCsv;
 import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.dtos.AtividadeDispensavelDTO;
 import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.dtos.AtividadeDispensavelEdicaoDTO;
@@ -52,6 +53,9 @@ public class TipoCaracterizacaoAtividadeService implements ITipoCaracterizacaoAt
 
     @Autowired
     IRelAtividadePerguntaService relAtividadePerguntaService;
+
+    @Autowired
+    PerguntaRepository perguntaRepository;
 
     @Override
     public List<TipoCaracterizacaoAtividade> salvarAtividadeDispensavel(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO) {
@@ -114,7 +118,7 @@ public class TipoCaracterizacaoAtividadeService implements ITipoCaracterizacaoAt
                 .setLicenciamentoDeclaratorio(false)
                 .setLicenciamentoSimplificado(false)
                 .setUsuarioLicencimento(usuarioLicenciamento)
-                .setAtivo(true)
+                .setAtivo(tipoCaracterizacaoAtividadeSalvo.get().getAtivo())
                 .build();
 
         tipoCaracterizacaoAtividadeRepository.delete(tipoCaracterizacaoAtividadeSalvo.get());
@@ -200,7 +204,8 @@ public class TipoCaracterizacaoAtividadeService implements ITipoCaracterizacaoAt
 
         List<Pergunta> perguntas = new ArrayList<>();
 
-        relAtividadePerguntas.forEach(atividadePergunta -> perguntas.add(atividadePergunta.getPergunta()));
+        relAtividadePerguntas.forEach(atividadePergunta -> perguntas.add(
+                perguntaRepository.findById(atividadePergunta.getPergunta().getId()).get()));
 
         return new AtividadeDispensavelEdicaoDTO(
                 tipoCaracterizacaoAtividade.getId(),
