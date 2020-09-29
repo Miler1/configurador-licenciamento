@@ -4,7 +4,7 @@
 
 	v-expansion-panels.pa-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
 		v-expansion-panel
-			v-expansion-panel-header
+			v-expansion-panel-header(v-show="indexItemEdicao != null || isCadastro")
 				div.d-flex.flex-row.align-center.justify-start
 					span.align-baseline {{ isInclusao ? 'Adição de ' : 'Editar ' }}  relação CNAE / Tipologia
 				template(v-slot:actions)

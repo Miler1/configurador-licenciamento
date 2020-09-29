@@ -1,6 +1,7 @@
 <template lang="pug">
 
 #tela-cadastro-atividade-dispensavel
+
 	div.stepper-container
 		v-stepper(v-model="passo", alt-labels=true)
 			v-stepper-header(flat)
@@ -16,6 +17,8 @@
 
 					v-divider(v-if="index !== passos.length - 1", :key="Math.random()")
 
+		span.step-indicator Etapa {{passo}} de {{passos.length}}
+	
 	PassoCnaes(v-if="passo == 1",
 		:cnaesTipologia="atividadeDispensavel.cnaesTipologia",
 		:erro="erros[0]")
@@ -45,6 +48,7 @@
 				v-btn#QA-btn-proximo-cadastrar-atividade-dispensavel.ml-2.btn-cadastrar(@click="nextOrSubmit", :min-width="buttonMinWidth", large)
 					v-icon(color="white") {{nextButtonDecider().icon}}
 					span {{nextButtonDecider().text}}
+
 
 </template>
 
@@ -381,8 +385,17 @@ export default {
 
 .stepper-container {
 
+	padding-top: 28px;
 	padding-left: 20%;
 	padding-right: 20%;
+	text-align: center;
+
+	.step-indicator {
+		color:rgba(0, 0, 0, 0.87);
+		font-size: 14px;
+		text-rendering: optimizeLegibility;
+		font-weight: bold;
+	}
 
 	.v-stepper {
 		box-shadow: unset;
@@ -390,6 +403,61 @@ export default {
 
 	.v-stepper__header {
 		box-shadow: unset;
+	}
+
+	.v-stepper__step {
+
+		.v-stepper__step__step {
+
+			width: 32px;
+			height: 32px;
+
+		}
+
+	}
+
+	.v-divider {
+		margin: 40px -66px 0 !important;
+	}
+
+	.v-stepper__step--complete {
+
+		.v-stepper__step__step {
+
+			.v-icon {
+				color: rgb(132, 169, 140);
+			}
+
+			background-color: white !important;
+			border-color: rgb(132, 169, 140);
+			border: 1px solid;
+
+		}
+
+	}
+
+	.v-stepper__step--active {
+
+		.v-stepper__step__step {
+
+			.v-icon {
+				color:white;
+			}
+
+			background-color: rgb(132, 169, 140) !important;
+
+		}
+
+	}
+
+	.v-stepper__step--active {
+
+		.v-stepper__label {
+			text-shadow: none;
+			color: #0b0b0b;
+			font-weight: bold;
+		}
+
 	}
 
 }
