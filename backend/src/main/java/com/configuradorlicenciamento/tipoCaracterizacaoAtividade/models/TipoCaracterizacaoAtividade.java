@@ -5,6 +5,7 @@ import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.dtos.AtividadeDispensavelCsv;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -34,6 +35,7 @@ public class TipoCaracterizacaoAtividade implements Serializable {
     @NotNull(message = "{validacao.notnull}")
     @ManyToOne
     @JoinColumn(name = "id_atividade_cnae", referencedColumnName = "id")
+    @JsonManagedReference
     private AtividadeCnae atividadeCnae;
 
     @NotNull(message = "{validacao.notnull}")

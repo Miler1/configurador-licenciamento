@@ -267,7 +267,7 @@ export default {
 
 			this.$fire({
 
-				title: '<p class="title-modal-confirm">Confirmar cancelamento </p>',
+				title: '<p class="title-modal-confirm">Confirmar cancelamento - CNAEs dispensáveis </p>',
 
 				html: this.isCadastro ?
 					`<p class="message-modal-confirm">Ao cancelar o cadastro, todas as informações serão perdidas.</p>
