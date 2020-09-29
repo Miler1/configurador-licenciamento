@@ -23,6 +23,7 @@
 									item-color="#84A98C",
 									v-model="relacaoCnaeTipologia.cnaes",
 									:items="cnaes",
+									:filter="filtroSelect",
 									item-text="textoExibicao",
 									:error-messages="errorMessage(relacaoCnaeTipologia.cnaes)",
 									no-data-text="Nenhum CNAE encontrado",
@@ -54,6 +55,7 @@
 									item-color="grey darken-3",
 									v-model="relacaoCnaeTipologia.tipologia",
 									:items="tipologias",
+									:filter="filtroSelect",
 									item-text="nome",
 									:error-messages="errorMessage(relacaoCnaeTipologia.tipologia)",
 									no-data-text="Nenhuma tipologia encontrada",
@@ -392,7 +394,21 @@ export default {
 				cnae.textoExibicao = cnae.codigo;
 			});
 
+		},
+
+		filtroSelect(item, query, itemText) {
+
+			query = this.normalizer(query);
+			itemText = itemText ? this.normalizer(itemText) : itemText;
+
+			return itemText.toLocaleLowerCase().indexOf(query.toLocaleLowerCase()) > -1;
+
+		},
+
+		normalizer(string) {
+			return string.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 		}
+
 
 	},
 
