@@ -87,6 +87,7 @@ public class AtividadeService implements IAtividadeService {
         atividade.setPotencialPoluidor(potencialPoluidor);
         atividade.setAtivo(true);
         atividade.setDentroEmpreendimento(false);
+        atividade.setDentroMunicipio(!atividadeDispensavelDTO.getForaMunicipio());
         atividade.setV1(false);
         atividade.setTiposAtividades(tiposAtividades);
 
