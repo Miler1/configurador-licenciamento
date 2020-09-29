@@ -16,7 +16,6 @@ import com.configuradorlicenciamento.taxaLicenciamento.interfaces.ITaxaLicenciam
 import com.configuradorlicenciamento.taxaLicenciamento.models.CodigoTaxaLicenciamento;
 import com.configuradorlicenciamento.taxaLicenciamento.models.TaxaLicenciamento;
 import com.configuradorlicenciamento.taxaLicenciamento.repositories.CodigoTaxaLicenciamentoRepository;
-import com.configuradorlicenciamento.taxaLicenciamento.repositories.TaxaLicenciamentoRepository;
 import com.configuradorlicenciamento.taxaLicenciamento.specifications.CodigoTaxaLicenciamentoSpecification;
 import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLicenciamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +34,6 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
 
     @Autowired
     CodigoTaxaLicenciamentoRepository codigoTaxaLicenciamentoRepository;
-
-    @Autowired
-    TaxaLicenciamentoRepository taxaLicenciamentoRepository;
 
     @Autowired
     UsuarioLicenciamentoRepository usuarioLicenciamentoRepository;
