@@ -23,6 +23,7 @@
 									item-color="grey darken-3",
 									v-model="pergunta",
 									:items="perguntasDisponiveis",
+									:filter="filtroSelect",
 									item-text="texto",
 									:error-messages="errorMessage(pergunta)",
 									no-data-text="Nenhuma pergunta encontrada",
@@ -277,6 +278,19 @@ export default {
 				});
 
 			});
+		},
+
+		filtroSelect(item, query, itemText) {
+
+			query = this.normalizer(query);
+			itemText = itemText ? this.normalizer(itemText) : itemText;
+
+			return itemText.toLocaleLowerCase().indexOf(query.toLocaleLowerCase()) > -1;
+
+		},
+
+		normalizer(string) {
+			return string.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 		}
 
 	},

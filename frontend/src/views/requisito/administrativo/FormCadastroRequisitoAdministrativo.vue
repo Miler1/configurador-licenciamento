@@ -13,6 +13,7 @@
 						item-color="grey darken-3",
 						v-model="requisitoAdministrativo.documento",
 						:items="documentos",
+						:filter="filtroSelect",
 						item-text="nome",
 						:error-messages="errorMessage(requisitoAdministrativo.documento)",
 						no-data-text="Nenhum documento encontrado",
@@ -147,6 +148,19 @@ export default {
 				return array;
 
 			return Array.isArray(array) && array.length > 0;
+		},
+
+		filtroSelect(item, query, itemText) {
+
+			query = this.normalizer(query);
+			itemText = itemText ? this.normalizer(itemText) : itemText;
+
+			return itemText.toLocaleLowerCase().indexOf(query.toLocaleLowerCase()) > -1;
+
+		},
+
+		normalizer(string) {
+			return string.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 		}
 
 	},
