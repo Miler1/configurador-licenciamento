@@ -196,6 +196,7 @@ export default {
 		clearPergunta() {
 
 			this.pergunta = null;
+			this.isInclusao = true;
 			this.filtrarPerguntasDisponiveis();
 			this.resetErrorMessage();
 
@@ -250,6 +251,32 @@ export default {
 
 			});
 
+		},
+
+		prepararLabelRespostasEsperadas(arrayDePerguntas) {
+
+			arrayDePerguntas.forEach((pergunta) => {
+
+				let primeiro = true;
+
+				pergunta.respostasEsperadas = "";
+
+				pergunta.respostas.forEach((resposta , index) => {
+
+					if (resposta.permiteLicenciamento){
+
+						if (!primeiro) {
+							pergunta.respostasEsperadas += " / ";
+						}
+
+						pergunta.respostasEsperadas += resposta.texto;
+						primeiro = false;
+
+					}
+
+				});
+
+			});
 		}
 
 	},
@@ -261,29 +288,7 @@ export default {
 
 				this.perguntasCadastradas = resposta.data;
 
-				this.perguntasCadastradas.forEach((pergunta) => {
-
-					let primeiro = true;
-
-					pergunta.respostasEsperadas = "";
-
-					pergunta.respostas.forEach((resposta , index) => {
-
-						if (resposta.permiteLicenciamento){
-
-							if (!primeiro) {
-								pergunta.respostasEsperadas += " / ";
-							}
-
-							pergunta.respostasEsperadas += resposta.texto;
-							primeiro = false;
-
-						}
-
-					});
-
-				});
-
+				this.prepararLabelRespostasEsperadas(this.perguntasCadastradas);
 				this.filtrarPerguntasDisponiveis();
 
 			});
@@ -293,7 +298,10 @@ export default {
 	mounted() {
 		
 		if (this.$route.params.idAtividadeDispensavel) {
-			this.isInclusao = false;
+
+			this.prepararLabelRespostasEsperadas(this.perguntas);
+			this.isCadastro = false;
+
 		}
 	},
 
