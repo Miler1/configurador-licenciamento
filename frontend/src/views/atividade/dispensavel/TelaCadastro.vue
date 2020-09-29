@@ -166,7 +166,10 @@ export default {
 		nextStep() {
 
 			if (this.validar()) {
+
 				this.passo += 1;
+				window.scrollTo(0,0);
+
 			}
 
 		},
@@ -193,7 +196,10 @@ export default {
 		previousStep() {
 
 			if (this.passo > 1) {
+
 				this.passo -= 1;
+				window.scrollTo(0,0);
+
 			}
 
 		},
