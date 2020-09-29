@@ -35,7 +35,7 @@
 					span Cancelar
 
 				div
-					v-btn#QA-btn-rascunho-atividade-dispensavel(v-show="isCadastro", @click="salvarRascunho", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
+					v-btn#QA-btn-rascunho-atividade-dispensavel(v-show="false", @click="salvarRascunho", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
 						v-icon mdi-content-save
 						span Salvar
 
