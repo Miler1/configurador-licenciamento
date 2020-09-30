@@ -147,7 +147,7 @@ import RequisitoTecnicoService from '@/services/requisitoTecnico.service';
 import GridListagemInclusao from '@/components/GridListagemInclusao';
 import snackbar from '@/services/snack.service';
 import { HEADER } from '@/utils/dadosHeader/ListagemRequisitoTecnicoInclusao';
-import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
+import { SUCCESS_MESSAGES, ERROR_MESSAGES, WARNING_MESSAGES } from '@/utils/helpers/messages-utils';
 import ToggleOptions from "@/components/ToggleOptions";
 
 export default {
@@ -474,12 +474,22 @@ export default {
 
 		checkForm() {
 
-			return this.requisitoTecnico.codigo
+			if (this.requisitoTecnico.codigo
 				&& this.requisitoTecnico.codigo != ''
 				&& this.requisitoTecnico.descricao
-				&& this.requisitoTecnico.descricao != ''
-				&& this.dadosListagem
-				&& this.dadosListagem.length > 0;
+				&& this.requisitoTecnico.descricao != '') {
+
+				if (!this.dadosListagem || this.dadosListagem.length === 0) {
+
+					snackbar.alert(WARNING_MESSAGES.requisitoTecnico, snackbar.type.WARN);
+
+					return false;
+
+				}
+
+				return true;
+
+			}
 
 		},
 
