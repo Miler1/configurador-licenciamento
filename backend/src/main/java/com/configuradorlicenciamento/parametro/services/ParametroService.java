@@ -1,6 +1,6 @@
 package com.configuradorlicenciamento.parametro.services;
 
-import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
+import com.configuradorlicenciamento.configuracao.exceptions.ConflictException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.parametro.dtos.ParametroCsv;
@@ -47,7 +47,7 @@ public class ParametroService implements IParametroService {
         boolean existeCodigo = parametroRepository.existsByCodigo(parametroDTO.getCodigo());
 
         if (existeCodigo) {
-            throw new ConstraintUniqueViolationException(PARAMETRO_EXISTENTE);
+            throw new ConflictException(PARAMETRO_EXISTENTE);
         }
 
         Parametro parametro = new Parametro.ParametroBuilder(parametroDTO)
@@ -78,7 +78,7 @@ public class ParametroService implements IParametroService {
             Parametro parametroExistente = parametroRepository.findByCodigo(codigo);
 
             if (parametroExistente != null && !parametroDTO.getId().equals(parametroExistente.getId())) {
-                throw new ConstraintUniqueViolationException(PARAMETRO_EXISTENTE);
+                throw new ConflictException(PARAMETRO_EXISTENTE);
             }
 
         }

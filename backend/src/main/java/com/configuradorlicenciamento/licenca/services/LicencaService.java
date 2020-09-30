@@ -1,6 +1,6 @@
 package com.configuradorlicenciamento.licenca.services;
 
-import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
+import com.configuradorlicenciamento.configuracao.exceptions.ConflictException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.licenca.dtos.LicencaCsv;
@@ -46,7 +46,7 @@ public class LicencaService implements ILicencaService {
         boolean existeSigla = licencaRepository.existsBySigla(licencaDTO.getSigla());
 
         if (existeSigla) {
-            throw new ConstraintUniqueViolationException(LICENCA_EXISTENTE);
+            throw new ConflictException(LICENCA_EXISTENTE);
         }
 
         Licenca licenca = new Licenca.LicencaBuilder(licencaDTO)
@@ -77,7 +77,7 @@ public class LicencaService implements ILicencaService {
             Licenca licencaExistente = licencaRepository.findBySigla(sigla);
 
             if (licencaExistente != null && !licencaDTO.getId().equals(licencaExistente.getId())) {
-                throw new ConstraintUniqueViolationException(LICENCA_EXISTENTE);
+                throw new ConflictException(LICENCA_EXISTENTE);
             }
 
         }

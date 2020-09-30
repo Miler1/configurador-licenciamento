@@ -1,6 +1,6 @@
 package com.configuradorlicenciamento.taxaAdministrativa.services;
 
-import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
+import com.configuradorlicenciamento.configuracao.exceptions.ConflictException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.taxaAdministrativa.dtos.TaxaAdministrativaCsv;
 import com.configuradorlicenciamento.taxaAdministrativa.dtos.TaxaAdministrativaDTO;
@@ -41,7 +41,7 @@ public class TaxaAdministrativaService implements ITaxaAdministrativaService {
         boolean existeAno = taxaAdministrativaRepository.existsByAno(taxaAdministrativaDTO.getAno());
 
         if (existeAno) {
-            throw new ConstraintUniqueViolationException(TAXA_EXISTENTE);
+            throw new ConflictException(TAXA_EXISTENTE);
         }
 
         Object login = request.getSession().getAttribute("login");
@@ -71,7 +71,7 @@ public class TaxaAdministrativaService implements ITaxaAdministrativaService {
             TaxaAdministrativa taxaExistente = taxaAdministrativaRepository.findByAno(ano);
 
             if (taxaExistente != null && !taxaAdministrativaDTO.getId().equals(taxaExistente.getId())) {
-                throw new ConstraintUniqueViolationException(TAXA_EXISTENTE);
+                throw new ConflictException(TAXA_EXISTENTE);
             }
 
         }
