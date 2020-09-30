@@ -95,12 +95,12 @@ export default {
 		},
 
 		ativarDesativarItem(item) {
-
+			console.log(item.atividadeCnae);
 			this.$fire({
 
 				title: item.ativo ?
-					'<p class="title-modal-confirm">Desativar CNAE dispensável - ' + item.atividadeCnae.codigo+ '</p>' :
-					'<p class="title-modal-confirm">Ativar CNAE dispensável - ' + item.atividadeCnae.codigo+ '</p>',
+					'<p class="title-modal-confirm">Desativar CNAE dispensável - ' + item.atividadeCnae.nome+ '</p>' :
+					'<p class="title-modal-confirm">Ativar CNAE dispensável - ' + item.atividadeCnae.nome+ '</p>',
 
 				html: item.ativo ?
 					`<p class="message-modal-confirm">Ao desativar o CNAE dispensável, ele não estará mais disponível no sistema.</p>
