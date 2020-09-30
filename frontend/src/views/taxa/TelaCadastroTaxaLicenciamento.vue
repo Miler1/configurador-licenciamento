@@ -671,22 +671,11 @@ export default {
 
 			if (this.isCadastro) {
 
-				if (this.taxaLicenciamento.codigo
+				return this.taxaLicenciamento.codigo
 					&& this.taxaLicenciamento.codigo != ''
 					&& this.taxaLicenciamento.descricao
-					&& this.taxaLicenciamento.descricao != '') {
-
-					if (!this.dadosListagem || this.dadosListagem.length === 0) {
-
-						snackbar.alert(WARNING_MESSAGES.taxaLicenciamento, snackbar.type.WARN);
-
-						return false;
-
-					}
-
-					return true;
-
-				}
+					&& this.taxaLicenciamento.descricao != ''
+					&& this.checkDadosLisagem();
 
 			}
 
@@ -694,10 +683,23 @@ export default {
 				&& this.taxaLicenciamento.codigo != ''
 				&& this.taxaLicenciamento.descricao
 				&& this.taxaLicenciamento.descricao != ''
+				&& this.checkDadosLisagem()
 				&& this.justificativa
-				&& this.justificativa != ''
-				&& this.dadosListagem
-				&& this.dadosListagem.length > 0;
+				&& this.justificativa != '';
+
+		},
+
+		checkDadosLisagem() {
+
+			if (!this.dadosListagem || this.dadosListagem.length === 0) {
+
+				snackbar.alert(WARNING_MESSAGES.taxaLicenciamento, snackbar.type.WARN);
+
+				return false;
+
+			}
+
+			return true;
 
 		},
 
