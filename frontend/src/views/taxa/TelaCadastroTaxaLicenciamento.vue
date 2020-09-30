@@ -271,7 +271,7 @@ import PorteEmpreendimentoService from '@/services/porteEmpreendimento.service';
 import PotencialPoluidorService from '@/services/potencialPoluidor.service';
 import ParametroService from '@/services/parametro.service';
 import TaxaLicenciamentoService from '@/services/taxaLicenciamento.service.js';
-import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
+import { SUCCESS_MESSAGES, ERROR_MESSAGES, WARNING_MESSAGES } from '@/utils/helpers/messages-utils';
 import ToggleOptions from "@/components/ToggleOptions";
 
 export default {
@@ -670,12 +670,22 @@ export default {
 
 			if (this.isCadastro) {
 
-				return this.taxaLicenciamento.codigo
+				if (this.taxaLicenciamento.codigo
 					&& this.taxaLicenciamento.codigo != ''
 					&& this.taxaLicenciamento.descricao
-					&& this.taxaLicenciamento.descricao != ''
-					&& this.dadosListagem
-					&& this.dadosListagem.length > 0;
+					&& this.taxaLicenciamento.descricao != '') {
+
+					if (!this.dadosListagem || this.dadosListagem.length === 0) {
+
+						snackbar.alert(WARNING_MESSAGES.taxaLicenciamento, snackbar.type.WARN);
+
+						return false;
+
+					}
+
+					return true;
+
+				}
 
 			}
 
