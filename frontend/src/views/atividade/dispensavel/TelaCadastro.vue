@@ -112,7 +112,7 @@ export default {
 		cadastrar(){
 
 			this.prepararDados();
-			console.log(this.atividadeDispensavel);
+
 			if (this.validar()) {
 
 				TipoCaracterizacaoAtividadeService.cadastrarAtividadeDispensavel(this.atividadeDispensavel)
@@ -130,7 +130,7 @@ export default {
 		editar() {
 
 			this.prepararDados();
-			console.log(this.atividadeDispensavel);
+
 			if (this.validar()) {
 
 				TipoCaracterizacaoAtividadeService.editarAtividadeDispensavel(this.atividadeDispensavel)
