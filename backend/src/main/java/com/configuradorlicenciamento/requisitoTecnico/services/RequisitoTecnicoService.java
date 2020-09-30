@@ -1,7 +1,7 @@
 package com.configuradorlicenciamento.requisitoTecnico.services;
 
 import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
-import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
+import com.configuradorlicenciamento.configuracao.exceptions.ConflictException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.requisitoTecnico.dtos.RequisitoTecnicoDTO;
@@ -47,9 +47,8 @@ public class RequisitoTecnicoService implements IRequisitoTecnicoService {
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
         requisitoTecnicoDTO.setCodigo(StringUtil.tratarEspacos(requisitoTecnicoDTO.getCodigo()));
-
-        if (!requisitoTecnicoRepository.findByCodigo(requisitoTecnicoDTO.getCodigo()).isEmpty()) {
-            throw new ConstraintUniqueViolationException("Já existe um grupo com o mesmo código.");
+        if(!requisitoTecnicoRepository.findByCodigo(requisitoTecnicoDTO.getCodigo()).isEmpty()){
+            throw new ConflictException("Já existe um grupo com o mesmo código.");
         }
 
         RequisitoTecnico requisitoTecnico = new RequisitoTecnico.RequisitoTecnicoBuilder(requisitoTecnicoDTO)
@@ -76,8 +75,8 @@ public class RequisitoTecnicoService implements IRequisitoTecnicoService {
 
         List<RequisitoTecnico> existentes = requisitoTecnicoRepository.findByCodigo(requisitoTecnicoDTO.getCodigo());
 
-        if (!existentes.isEmpty() && !existentes.get(0).getId().equals(requisitoTecnicoDTO.getId())) {
-            throw new ConstraintUniqueViolationException("Já existe um grupo com o mesmo código.");
+        if(!existentes.isEmpty() && !existentes.get(0).getId().equals(requisitoTecnicoDTO.getId())){
+            throw new ConflictException("Já existe um grupo com o mesmo código.");
         }
 
         RequisitoTecnico requisitoTecnicosalvo = requisitoTecnicoRepository.findById(requisitoTecnicoDTO.getId())
