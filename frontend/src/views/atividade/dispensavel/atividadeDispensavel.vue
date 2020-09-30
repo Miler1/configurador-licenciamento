@@ -40,7 +40,7 @@ export default {
 		return {
 			tituloAba: "CNAE dispensável",
 			tituloListagem: "Listagem de CNAEs dispensáveis cadastrados",
-			placeholderPesquisa: "Pesquisar pelo código ou nome do CNAE",
+			placeholderPesquisa: "Pesquisar pelo código ou nome do CNAE dispensável",
 			headerListagem: HEADER,
 			dadosListagem: {},
 			parametrosFiltro: {
