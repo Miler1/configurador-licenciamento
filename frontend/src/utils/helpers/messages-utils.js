@@ -98,11 +98,11 @@ const ERROR_MESSAGES = {
 
 		cnaes: {
 			adicionarValores: ER_BASE + 'adicionar a relação CNAE/Tipologia. ',
-			avancarEtapa: 'Não foi possível avançar a etapa. É necessário adicionar pelo menos uma relação. ',
+			avancarEtapa: 'Aviso! Para avançar de etapa, é necessário adicionar ao menos uma relação CNAE / tipologia. ',
 		},
 
 		perguntas: {
-			avancarEtapa: 'Não foi possível avançar a etapa. É necessário adicionar pelo menos uma pergunta. ',
+			avancarEtapa: 'Aviso! Para avançar de etapa, é necessário adicionar ao menos uma pergunta. ',
 		},
 
 	},

@@ -243,7 +243,7 @@ export default {
 			let valido = this.passos[0].completo = cnaesTipologias && cnaesTipologias.length > 0;
 
 			if (!valido) {
-				snackbar.alert(ERROR_MESSAGES.atividadeDispensavel.cnaes.avancarEtapa);
+				snackbar.alert(ERROR_MESSAGES.atividadeDispensavel.cnaes.avancarEtapa, snackbar.type.WARN);
 			}
 
 			return valido;
@@ -256,7 +256,7 @@ export default {
 			let valido = this.passos[1].completo = perguntas && perguntas.length > 0;
 
 			if (!valido) {
-				snackbar.alert(ERROR_MESSAGES.atividadeDispensavel.perguntas.avancarEtapa);
+				snackbar.alert(ERROR_MESSAGES.atividadeDispensavel.perguntas.avancarEtapa, snackbar.type.WARN);
 			}
 
 			return valido;
