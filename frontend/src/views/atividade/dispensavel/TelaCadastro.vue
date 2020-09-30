@@ -425,7 +425,7 @@ export default {
 		.v-stepper__step__step {
 
 			.v-icon {
-				color: rgb(132, 169, 140);
+				color: rgb(132, 169, 140) !important;
 			}
 
 			background-color: white !important;
@@ -441,7 +441,7 @@ export default {
 		.v-stepper__step__step {
 
 			.v-icon {
-				color:white;
+				color:white !important;
 			}
 
 			background-color: rgb(132, 169, 140) !important;
