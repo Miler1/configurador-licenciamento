@@ -195,6 +195,7 @@ export default {
 
 		clearCnae() {
 
+			this.isInclusao = true;
 			this.relacaoCnaeTipologia.cnaes = [];
 			this.relacaoCnaeTipologia.tipologia = null;
 			this.relacaoCnaeTipologia.foraMunicipio = null;
