@@ -339,6 +339,13 @@ export default {
 			this.relacaoCnaeTipologia.cnaes.push(item.cnae);
 			this.relacaoCnaeTipologia.foraMunicipio = item.foraMunicipio;
 
+			if (!this.isCadastro) {
+
+				item.cnae.textoExibicao = item.cnae.codigo + ' - ' + item.cnae.nome;
+				this.cnaes.push(item.cnae);
+
+			}
+
 			this.indexItemEdicao = this.cnaesTipologia.indexOf(item);
 			this.isInclusao = false;
 

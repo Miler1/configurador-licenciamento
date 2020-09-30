@@ -332,6 +332,7 @@ export default {
 
 			this.atividadeDispensavel.cnaesTipologia.forEach(cnaeTipologia => {
 				cnaeTipologia.foraMunicipio = cnaeTipologia.foraMunicipio ? 'true' : 'false';
+				cnaeTipologia.textoExibicao = cnaeTipologia.codigo + ' - ' + cnaeTipologia.nome;
 			});
 
 		}
