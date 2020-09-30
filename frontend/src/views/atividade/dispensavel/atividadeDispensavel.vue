@@ -95,7 +95,7 @@ export default {
 		},
 
 		ativarDesativarItem(item) {
-			console.log(item.atividadeCnae);
+
 			this.$fire({
 
 				title: item.ativo ?
