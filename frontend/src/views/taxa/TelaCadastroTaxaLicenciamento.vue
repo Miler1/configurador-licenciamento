@@ -159,7 +159,7 @@
 										outlined,
 										dense,
 										color="#E0E0E0",
-										:placeholder="placeholderSelect",
+										:placeholder="Selecione para adicionar na equação",
 										item-color="grey darken-3",
 										:items="parametros",
 										:filter="searchInput",
