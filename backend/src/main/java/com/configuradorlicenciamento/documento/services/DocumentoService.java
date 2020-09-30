@@ -3,7 +3,7 @@ package com.configuradorlicenciamento.documento.services;
 import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.documento.dtos.DocumentoCsv;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
-import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
+import com.configuradorlicenciamento.configuracao.exceptions.ConflictException;
 import com.configuradorlicenciamento.documento.dtos.DocumentoDTO;
 import com.configuradorlicenciamento.documento.interfaces.IDocumentoService;
 import com.configuradorlicenciamento.documento.models.Documento;
@@ -46,7 +46,7 @@ public class DocumentoService implements IDocumentoService {
         boolean nomeExistente = documentoRepository.existsByNome(documentoDTO.getNome());
 
         if (nomeExistente) {
-            throw new ConstraintUniqueViolationException(DOCUMENTO_EXISTENTE);
+            throw new ConflictException(DOCUMENTO_EXISTENTE);
         }
 
         Documento documento = new Documento.DocumentoBuilder(documentoDTO)
@@ -117,7 +117,7 @@ public class DocumentoService implements IDocumentoService {
 
             if (documentoExistente != null && !documentoDTO.getId().equals(documentoExistente.getId())) {
 
-                throw new ConstraintUniqueViolationException(DOCUMENTO_EXISTENTE);
+                throw new ConflictException(DOCUMENTO_EXISTENTE);
             }
 
         }

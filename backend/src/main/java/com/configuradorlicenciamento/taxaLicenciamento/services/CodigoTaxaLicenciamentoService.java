@@ -1,7 +1,7 @@
 package com.configuradorlicenciamento.taxaLicenciamento.services;
 
 import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
-import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
+import com.configuradorlicenciamento.configuracao.exceptions.ConflictException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.historicoConfigurador.interfaces.IHistoricoConfiguradorService;
@@ -55,7 +55,7 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
         boolean existeCodigo = codigoTaxaLicenciamentoRepository.existsByCodigo(codigo);
 
         if (existeCodigo) {
-            throw new ConstraintUniqueViolationException(TAXA_EXISTENTE);
+            throw new ConflictException(TAXA_EXISTENTE);
         }
 
         CodigoTaxaLicenciamento codigoTaxaLicenciamento =
@@ -90,7 +90,7 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
             CodigoTaxaLicenciamento codigoTaxaLicenciamento = codigoTaxaLicenciamentoRepository.findByCodigo(codigo);
 
             if (codigoTaxaLicenciamento != null && !codigoTaxaLicenciamento.getId().equals(codigoTaxaLicenciamentoDTO.getId())) {
-                throw new ConstraintUniqueViolationException(TAXA_EXISTENTE);
+                throw new ConflictException(TAXA_EXISTENTE);
             }
 
         }

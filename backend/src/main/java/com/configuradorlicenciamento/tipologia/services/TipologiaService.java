@@ -1,8 +1,6 @@
 package com.configuradorlicenciamento.tipologia.services;
 
-import br.ufla.lemaf.beans.pessoa.Tipo;
-import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
-import com.configuradorlicenciamento.configuracao.exceptions.ConstraintUniqueViolationException;
+import com.configuradorlicenciamento.configuracao.exceptions.ConflictException;
 import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.tipologia.dtos.TipologiaCsv;
@@ -51,7 +49,7 @@ public class TipologiaService implements ITipologiaService {
         boolean codigoExistente = tipologiaRepository.existsByCodigo(tipologia.getCodigo());
 
         if (codigoExistente) {
-            throw new ConstraintUniqueViolationException(TIPOLOGIA_EXISTENTE);
+            throw new ConflictException(TIPOLOGIA_EXISTENTE);
         }
 
         tipologiaRepository.save(tipologia);
@@ -90,7 +88,7 @@ public class TipologiaService implements ITipologiaService {
                 Tipologia tipologiaExistente = tipologiaRepository.findByCodigo(tipologia.getCodigo());
 
                 if (tipologiaExistente != null && !tipologia.getId().equals(tipologiaExistente.getId())) {
-                    throw new ConstraintUniqueViolationException(TIPOLOGIA_EXISTENTE);
+                    throw new ConflictException(TIPOLOGIA_EXISTENTE);
                 }
             }
         }
