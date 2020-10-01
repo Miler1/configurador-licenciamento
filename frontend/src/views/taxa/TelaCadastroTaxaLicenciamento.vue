@@ -159,7 +159,7 @@
 										outlined,
 										dense,
 										color="#E0E0E0",
-										:placeholder="Selecione para adicionar na equação",
+										:placeholder="placeholderSelectParametro",
 										item-color="grey darken-3",
 										:items="parametros",
 										:filter="searchInput",
@@ -315,6 +315,7 @@ export default {
 			placeholder: "Digite aqui...",
 			placeholderSelect: "Selecione",
 			placeholderSelectLicenca: "Selecione um ou mais",
+			placeholderSelectParametro: "Selecione para adicionar na equação",
 			portesEmpreendimento: [],
 			potenciaispoluidores: [],
 			licencas: [],
@@ -670,22 +671,11 @@ export default {
 
 			if (this.isCadastro) {
 
-				if (this.taxaLicenciamento.codigo
+				return this.taxaLicenciamento.codigo
 					&& this.taxaLicenciamento.codigo != ''
 					&& this.taxaLicenciamento.descricao
-					&& this.taxaLicenciamento.descricao != '') {
-
-					if (!this.dadosListagem || this.dadosListagem.length === 0) {
-
-						snackbar.alert(WARNING_MESSAGES.taxaLicenciamento, snackbar.type.WARN);
-
-						return false;
-
-					}
-
-					return true;
-
-				}
+					&& this.taxaLicenciamento.descricao != ''
+					&& this.checkDadosLisagem();
 
 			}
 
@@ -693,10 +683,23 @@ export default {
 				&& this.taxaLicenciamento.codigo != ''
 				&& this.taxaLicenciamento.descricao
 				&& this.taxaLicenciamento.descricao != ''
+				&& this.checkDadosLisagem()
 				&& this.justificativa
-				&& this.justificativa != ''
-				&& this.dadosListagem
-				&& this.dadosListagem.length > 0;
+				&& this.justificativa != '';
+
+		},
+
+		checkDadosLisagem() {
+
+			if (!this.dadosListagem || this.dadosListagem.length === 0) {
+
+				snackbar.alert(WARNING_MESSAGES.taxaLicenciamento, snackbar.type.WARN);
+
+				return false;
+
+			}
+
+			return true;
 
 		},
 
