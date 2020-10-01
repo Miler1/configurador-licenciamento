@@ -1,7 +1,6 @@
 <template lang="pug">
 
 #tela-cadastro-atividade-dispensavel
-
 	div.stepper-container
 		v-stepper(v-model="passo", alt-labels=true)
 			v-stepper-header(flat)
@@ -16,8 +15,6 @@
 						span {{passo.titulo}}
 
 					v-divider(v-if="index !== passos.length - 1", :key="Math.random()")
-
-		span.step-indicator Etapa {{passo}} de {{passos.length}}
 	
 	PassoCnaes(v-if="passo == 1",
 		:cnaesTipologia="atividadeDispensavel.cnaesTipologia",
@@ -30,9 +27,12 @@
 	Resumo(v-if="passo == 3",
 		:atividadeDispensavel="atividadeDispensavel")
 
-	v-row.pa-7
+	div.d-flex.justify-center.alignt-center.step-indicator.pt-5
+		span Etapa {{passo}} de {{passos.length}}
+
+	v-row.pa-7.pt-2.pb-7
 		v-col#form-actions.d-flex.justify-space-between(cols="12", md="12", flex=1)
-			v-btn#QA-btn-cancelar-atividade-dispensavel.align-self-start(@click="cancelar", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
+			v-btn#QA-btn-cancelar-atividade-dispensavel(@click="cancelar", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
 				v-icon mdi-close
 				span Cancelar
 
@@ -48,7 +48,6 @@
 				v-btn#QA-btn-proximo-cadastrar-atividade-dispensavel.ml-2.btn-cadastrar(@click="nextOrSubmit", :min-width="buttonMinWidth", large)
 					v-icon(color="white") {{nextButtonDecider().icon}}
 					span {{nextButtonDecider().text}}
-
 
 </template>
 
@@ -332,7 +331,7 @@ export default {
 			this.atividadeDispensavel = atividadeDispensavel;
 
 			this.atividadeDispensavel.cnaesTipologia.forEach(cnaeTipologia => {
-				cnaeTipologia.foraMunicipio = cnaeTipologia.foraMunicipio ? 'true' : 'false';
+				cnaeTipologia.foraMunicipio = cnaeTipologia.foraMunicipio ? 'false' : 'true';
 			});
 
 		}
@@ -340,14 +339,6 @@ export default {
 	},
 
 	created() {
-
-	},
-
-	mounted() {
-
-		this.passos[0].validar = this.validarCnaesTipologias;
-		this.passos[1].validar = this.validarPerguntas;
-		this.passos[2].validar = () => true;
 
 		if (this.$route.params.idAtividadeDispensavel) {
 
@@ -357,11 +348,19 @@ export default {
 				.then((response) => {
 					this.prepararDadosParaEdicao(response.data);
 				})
-				.catch(erro => {
-
+				.catch(error => {
+					console.log(error.message);
 				});
 
 		}
+
+	},
+
+	mounted() {
+
+		this.passos[0].validar = this.validarCnaesTipologias;
+		this.passos[1].validar = this.validarPerguntas;
+		this.passos[2].validar = () => true;
 
 	},
 
@@ -383,19 +382,23 @@ export default {
 
 @import "../../../assets/css/variaveis.less";
 
-.stepper-container {
 
-	padding-top: 28px;
-	padding-left: 20%;
-	padding-right: 20%;
-	text-align: center;
+#tela-cadastro-atividade-dispensavel {
 
 	.step-indicator {
-		color:rgba(0, 0, 0, 0.87);
+		color: @text-color;
 		font-size: 14px;
 		text-rendering: optimizeLegibility;
 		font-weight: bold;
 	}
+
+}
+
+.stepper-container {
+	padding-top: 28px;
+	padding-left: 20%;
+	padding-right: 20%;
+	text-align: center;
 
 	.v-stepper {
 		box-shadow: unset;
@@ -408,10 +411,8 @@ export default {
 	.v-stepper__step {
 
 		.v-stepper__step__step {
-
 			width: 32px;
 			height: 32px;
-
 		}
 
 	}
@@ -453,8 +454,8 @@ export default {
 	.v-stepper__step--active {
 
 		.v-stepper__label {
-			text-shadow: none;
-			color: #0b0b0b;
+			text-shadow: none !important;
+			color: @text-color !important;
 			font-weight: bold;
 		}
 

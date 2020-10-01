@@ -195,6 +195,7 @@ export default {
 
 		clearCnae() {
 
+			this.isInclusao = true;
 			this.relacaoCnaeTipologia.cnaes = [];
 			this.relacaoCnaeTipologia.tipologia = null;
 			this.relacaoCnaeTipologia.foraMunicipio = null;
@@ -253,7 +254,6 @@ export default {
 						this.cnaesTipologia.splice(this.indexItemEdicao, 1, dadosInclusao);
 
 						this.indexItemEdicao = null;
-						this.isInclusao = true;
 						this.clearCnae();
 
 					} else {
@@ -284,18 +284,15 @@ export default {
 
 			let validacao = true;
 
-			this.cnaesTipologia.forEach(
-				(dado, index) => {
+			this.cnaesTipologia.forEach((dado, index) => {
 
-					if (dado.cnae.id === cnae.id
-						&& (this.isInclusao || this.indexItemEdicao != index)) {
+				if (dado.cnae.id === cnae.id
+					&& (this.isInclusao || this.indexItemEdicao != index)) {
 
-						validacao = false;
-					}
-
+					validacao = false;
 				}
-	
-			);
+
+			});
 
 			return validacao;
 
@@ -340,8 +337,14 @@ export default {
 			this.relacaoCnaeTipologia.tipologia = item.tipologia;
 			this.relacaoCnaeTipologia.cnaes = [];
 			this.relacaoCnaeTipologia.cnaes.push(item.cnae);
-			this.relacaoCnaeTipologia.cnaes.forEach( cnae => cnae.textoExibicao = cnae.codigo + ' - ' + cnae.nome);
 			this.relacaoCnaeTipologia.foraMunicipio = item.foraMunicipio;
+
+			if (!this.isCadastro) {
+
+				item.cnae.textoExibicao = item.cnae.codigo + ' - ' + item.cnae.nome;
+				this.cnaes.push(item.cnae);
+
+			}
 
 			this.indexItemEdicao = this.cnaesTipologia.indexOf(item);
 			this.isInclusao = false;
@@ -409,7 +412,6 @@ export default {
 			return string.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 		}
 
-
 	},
 
 	created() {
@@ -419,9 +421,7 @@ export default {
 
 				this.cnaes = response.data;
 
-				this.cnaes.forEach(cnae => {
-					cnae.textoExibicao = cnae.codigo + ' - ' + cnae.nome;
-				});
+				this.cnaes.forEach(cnae => cnae.textoExibicao = cnae.codigo + ' - ' + cnae.nome);
 
 			});
 

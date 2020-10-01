@@ -159,7 +159,7 @@
 										outlined,
 										dense,
 										color="#E0E0E0",
-										:placeholder="placeholderSelect",
+										:placeholder="placeholderSelectParametro",
 										item-color="grey darken-3",
 										:items="parametros",
 										:filter="searchInput",
@@ -271,7 +271,7 @@ import PorteEmpreendimentoService from '@/services/porteEmpreendimento.service';
 import PotencialPoluidorService from '@/services/potencialPoluidor.service';
 import ParametroService from '@/services/parametro.service';
 import TaxaLicenciamentoService from '@/services/taxaLicenciamento.service.js';
-import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
+import { SUCCESS_MESSAGES, ERROR_MESSAGES, WARNING_MESSAGES } from '@/utils/helpers/messages-utils';
 import ToggleOptions from "@/components/ToggleOptions";
 
 export default {
@@ -315,6 +315,7 @@ export default {
 			placeholder: "Digite aqui...",
 			placeholderSelect: "Selecione",
 			placeholderSelectLicenca: "Selecione um ou mais",
+			placeholderSelectParametro: "Selecione para adicionar na equação",
 			portesEmpreendimento: [],
 			potenciaispoluidores: [],
 			licencas: [],
@@ -674,8 +675,7 @@ export default {
 					&& this.taxaLicenciamento.codigo != ''
 					&& this.taxaLicenciamento.descricao
 					&& this.taxaLicenciamento.descricao != ''
-					&& this.dadosListagem
-					&& this.dadosListagem.length > 0;
+					&& this.checkDadosLisagem();
 
 			}
 
@@ -683,10 +683,23 @@ export default {
 				&& this.taxaLicenciamento.codigo != ''
 				&& this.taxaLicenciamento.descricao
 				&& this.taxaLicenciamento.descricao != ''
+				&& this.checkDadosLisagem()
 				&& this.justificativa
-				&& this.justificativa != ''
-				&& this.dadosListagem
-				&& this.dadosListagem.length > 0;
+				&& this.justificativa != '';
+
+		},
+
+		checkDadosLisagem() {
+
+			if (!this.dadosListagem || this.dadosListagem.length === 0) {
+
+				snackbar.alert(WARNING_MESSAGES.taxaLicenciamento, snackbar.type.WARN);
+
+				return false;
+
+			}
+
+			return true;
 
 		},
 

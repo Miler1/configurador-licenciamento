@@ -40,7 +40,7 @@ export default {
 		return {
 			tituloAba: "CNAE dispensável",
 			tituloListagem: "Listagem de CNAEs dispensáveis cadastrados",
-			placeholderPesquisa: "Pesquisar pelo código ou nome do CNAE",
+			placeholderPesquisa: "Pesquisar pelo código ou nome do CNAE dispensável",
 			headerListagem: HEADER,
 			dadosListagem: {},
 			parametrosFiltro: {
@@ -99,8 +99,8 @@ export default {
 			this.$fire({
 
 				title: item.ativo ?
-					'<p class="title-modal-confirm">Desativar CNAE dispensável - ' + item.atividadeCnae.codigo+ '</p>' :
-					'<p class="title-modal-confirm">Ativar CNAE dispensável - ' + item.atividadeCnae.codigo+ '</p>',
+					'<p class="title-modal-confirm">Desativar CNAE dispensável - ' + item.atividadeCnae.nome+ '</p>' :
+					'<p class="title-modal-confirm">Ativar CNAE dispensável - ' + item.atividadeCnae.nome+ '</p>',
 
 				html: item.ativo ?
 					`<p class="message-modal-confirm">Ao desativar o CNAE dispensável, ele não estará mais disponível no sistema.</p>

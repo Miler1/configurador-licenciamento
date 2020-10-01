@@ -171,7 +171,15 @@ const SUCCESS_MESSAGES = {
 	
 };
 
+const WARNING_MESSAGES = {
+
+	taxaLicenciamento: "Aviso! Para cadastrar, é necessário adicionar ao menos uma taxa de licenciamento. ",
+	requisitoTecnico: "Aviso! Para cadastrar, é necessário adicionar ao menos um requisito técnico. ",
+
+};
+
 export {
 	ERROR_MESSAGES,
-	SUCCESS_MESSAGES
+	SUCCESS_MESSAGES,
+	WARNING_MESSAGES
 };
