@@ -2,7 +2,7 @@
 
 #step-cnaes-atividade-dispensavel-cnae
 
-	v-expansion-panels.pa-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
+	v-expansion-panels.pb-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
 		v-expansion-panel
 			v-expansion-panel-header(v-show="indexItemEdicao != null || isCadastro")
 				div.d-flex.flex-row.align-center.justify-start
@@ -86,7 +86,7 @@
 									v-icon mdi-pencil
 									span Editar
 
-	GridListagemInclusao.px-7(
+	GridListagemInclusao(
 		:tituloListagem="tituloListagem",
 		:headers="headerListagem",
 		:dadosListagem="cnaesTipologia",
