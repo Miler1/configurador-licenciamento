@@ -1,12 +1,8 @@
 <template lang="pug">
 
-#tela-cadastro-atividade-dispensavel.pa-7
+#tela-cadastro-atividade-dispensavel.px-7.pb-7
 
 	v-row
-
-		v-col.py-0(cols="12")
-
-			.tituloAcao {{isCadastro ? 'Cadastro de CNAEs dispensáveis' : 'Editar CNAE dispensável'}}
 
 		v-col(cols="12")#stepper-container
 
@@ -24,7 +20,11 @@
 
 						v-divider(v-if="index !== passos.length - 1", :key="Math.random()")
 
-		v-col(cols="12")
+		v-col.py-0(cols="12")
+
+			.tituloAcao {{isCadastro ? 'Cadastro de CNAEs dispensáveis' : 'Editar CNAE dispensável'}}
+
+		v-col.pt-7(cols="12")
 
 			PassoCnaes(
 				v-if="passo == 1",
