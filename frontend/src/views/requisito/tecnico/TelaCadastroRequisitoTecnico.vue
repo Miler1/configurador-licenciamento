@@ -1,141 +1,137 @@
 <template lang="pug">
 
-#tela-cadastro-requisito-tecnico
-	div.pb-7
-		v-expansion-panels.pa-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
-			v-expansion-panel
-				v-expansion-panel-header
-					div.d-flex.flex-row.align-center.justify-start
-						span.align-baseline Grupo de requisito técnico
-					template(v-slot:actions)
-						v-icon
-				v-expansion-panel-content
-					v-form(ref="requisito")
-						v-container.pa-0
-							v-row
-								v-col(cols="12", md="3")
-									v-label Código
-									v-text-field#QA-input-requisito-tecnico-codigo(
-										outlined,
-										color="#E0E0E0",
-										:placeholder="placeholder",
-										v-model="requisitoTecnico.codigo",
-										@click.native="resetErrorMessage",
-										@input="v => {requisitoTecnico.codigo = v.toUpperCase()}",
-										:error-messages="errorMessage( requisitoTecnico.codigo, false )",
-										required,
-										dense
-									)
-								v-col(cols="12", md="9")
-									v-label Descrição
-									v-text-field#QA-input-requisito-tecnico-descricao(
-										outlined,
-										color="#E0E0E0",
-										:placeholder="placeholder",
-										v-model="requisitoTecnico.descricao",
-										@click.native="resetErrorMessage",
-										:error-messages="errorMessage( requisitoTecnico.descricao, false )",
-										required,
-										dense
-									)
+#tela-cadastro-requisito-tecnico.pa-7
 
-			v-expansion-panel
-				v-expansion-panel-header
-					div.d-flex.flex-row.align-center.justify-start
-						span.align-baseline {{ isInclusao ? 'Adição de ' : 'Editar ' }}  requisito técnico para solicitação de licenciamento
-					template(v-slot:actions)
-						v-icon
-				v-expansion-panel-content
-					v-form(ref="requisitolist")
-						v-container.pa-0
-							v-row
-								v-col(cols="12", md="9")
-									v-label Documento
-									v-autocomplete#QA-select-requisito-tecnico-documento(
-										outlined,
-										dense,
-										color="#E0E0E0",
-										:placeholder="placeholderSelect",
-										item-color="grey darken-3",
-										v-model="grupoRequisito.documento",
-										:items="documentos",
-										:filter="filtroSelect"
-										item-text="nome",
-										:error-messages="errorMessage( grupoRequisito.documento, true )",
-										no-data-text="Nenhum documento encontrado",
-										@click.native="resetErrorMessage",
-										required,
-										return-object=true
-									)
-								v-col(cols="12", md="3")
-									v-label Tipos de licenças
-									v-autocomplete#QA-select-requisito-tecnico-licenca(
-										outlined,
-										dense,
-										color="#E0E0E0",
-										:placeholder="placeholderSelectLicenca",
-										item-color="#84A98C",
-										v-model="grupoRequisito.licencas",
-										:items="licencas",
-										:filtro="filtroSelect"
-										item-text="sigla",
-										:error-messages="errorMessage(validarArray(grupoRequisito.licencas), true )",
-										no-data-text="Nenhum tipo de licença encontrado",
-										@click.native="resetErrorMessage",
-										required,
-										return-object=true,
-										multiple=true
-										chips=true,
-										deletable-chips=true
-										:disabled="!isInclusao"
-									)
-							v-row
-								v-col.d-flex.flex-column(cols="12", md="5")
+	.tituloAcao {{isCadastro ? 'Cadastro de' : 'Editar'}} grupo de requisito técnico
 
-									ToggleOptions(
-										ref="toggleOptionsTipoRequisito",
-										labelOption="Tipo do requisito",
-										idToggle="QA-btn-toggle-requisito-tecnico",
-										:errorMessage="errorMessage",
-										:options="optionsTipoRequisito",
-										@changeOption="grupoRequisito.obrigatorio = $event"
-									)
+	v-expansion-panels.py-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
+		v-expansion-panel
+			v-expansion-panel-header
+				div.d-flex.flex-row.align-center.justify-start
+					span.align-baseline Grupo de requisito técnico
+				template(v-slot:actions)
+					v-icon
+			v-expansion-panel-content
+				v-form(ref="requisito")
+					v-container.pa-0
+						v-row
+							v-col(cols="12", md="3")
+								v-label Código
+								v-text-field#QA-input-requisito-tecnico-codigo(
+									outlined,
+									color="#E0E0E0",
+									:placeholder="placeholder",
+									v-model="requisitoTecnico.codigo",
+									@click.native="resetErrorMessage",
+									@input="v => {requisitoTecnico.codigo = v.toUpperCase()}",
+									:error-messages="errorMessage( requisitoTecnico.codigo, false )",
+									required,
+									dense
+								)
+							v-col(cols="12", md="9")
+								v-label Descrição
+								v-text-field#QA-input-requisito-tecnico-descricao(
+									outlined,
+									color="#E0E0E0",
+									:placeholder="placeholder",
+									v-model="requisitoTecnico.descricao",
+									@click.native="resetErrorMessage",
+									:error-messages="errorMessage( requisitoTecnico.descricao, false )",
+									required,
+									dense
+								)
+		v-expansion-panel
+			v-expansion-panel-header
+				div.d-flex.flex-row.align-center.justify-start
+					span.align-baseline {{ isInclusao ? 'Adição de ' : 'Editar ' }}  requisito técnico para solicitação de licenciamento
+				template(v-slot:actions)
+					v-icon
+			v-expansion-panel-content
+				v-form(ref="requisitolist")
+					v-container.pa-0
+						v-row
+							v-col(cols="12", md="9")
+								v-label Documento
+								v-autocomplete#QA-select-requisito-tecnico-documento(
+									outlined,
+									dense,
+									color="#E0E0E0",
+									:placeholder="placeholderSelect",
+									item-color="grey darken-3",
+									v-model="grupoRequisito.documento",
+									:items="documentos",
+									:filter="filtroSelect"
+									item-text="nome",
+									:error-messages="errorMessage( grupoRequisito.documento, true )",
+									no-data-text="Nenhum documento encontrado",
+									@click.native="resetErrorMessage",
+									required,
+									return-object=true
+								)
+							v-col(cols="12", md="3")
+								v-label Tipos de licenças
+								v-autocomplete#QA-select-requisito-tecnico-licenca(
+									outlined,
+									dense,
+									color="#E0E0E0",
+									:placeholder="placeholderSelectLicenca",
+									item-color="#84A98C",
+									v-model="grupoRequisito.licencas",
+									:items="licencas",
+									:filtro="filtroSelect"
+									item-text="sigla",
+									:error-messages="errorMessage(validarArray(grupoRequisito.licencas), true )",
+									no-data-text="Nenhum tipo de licença encontrado",
+									@click.native="resetErrorMessage",
+									required,
+									return-object=true,
+									multiple=true
+									chips=true,
+									deletable-chips=true
+									:disabled="!isInclusao"
+								)
+						v-row
+							v-col.d-flex.flex-column(cols="12", md="5")
+								ToggleOptions(
+									ref="toggleOptionsTipoRequisito",
+									labelOption="Tipo do requisito",
+									idToggle="QA-btn-toggle-requisito-tecnico",
+									:errorMessage="errorMessage",
+									:options="optionsTipoRequisito",
+									@changeOption="grupoRequisito.obrigatorio = $event"
+								)
+						v-row
+							v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
+								a#QA-limpar-dados-requisito-tecnico.d-flex.flex-row.align-center.justify-end(@click="clearRequisito")
+									v-icon.pr-1 fa-eraser
+									span Limpar dados
+								v-btn#QA-btn-adicionar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
+									v-icon mdi-plus
+									span Adicionar
+								v-btn#QA-btn-editar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="!isInclusao")
+									v-icon mdi-pencil
+									span Editar
 
-							v-row
-								v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
-									a#QA-limpar-dados-requisito-tecnico.d-flex.flex-row.align-center.justify-end(@click="clearRequisito")
-										v-icon.pr-1 fa-eraser
-										span Limpar dados
-								
-									v-btn#QA-btn-adicionar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
-										v-icon mdi-plus
-										span Adicionar
-								
-									v-btn#QA-btn-editar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="!isInclusao")
-										v-icon mdi-pencil
-										span Editar
+	GridListagemInclusao(
+		:tituloListagem="tituloListagem",
+		:headers="headerListagem",
+		:dadosListagem="dadosListagem",
+		:editarItem="editarItem",
+		:excluirItem="excluirItem",
+		:labelNoData="labelNoData",
+		:placeholderPesquisa="placeholderPesquisa",
+		:tituloTooltip="tituloTooltip",
+		:labelNoResultset="semResultados"
+	)
 
-		GridListagemInclusao.px-7(
-			:tituloListagem="tituloListagem",
-			:headers="headerListagem",
-			:dadosListagem="dadosListagem",
-			:editarItem="editarItem",
-			:excluirItem="excluirItem",
-			:labelNoData="labelNoData",
-			:placeholderPesquisa="placeholderPesquisa",
-			:tituloTooltip="tituloTooltip",
-			:labelNoResultset="semResultados"
-		)
-
-		v-row.pt-6.px-7
-			v-col#form-actions.d-flex.justify-space-between(cols="12", md="12")
-				v-btn#QA-btn-cancelar-requisito-tecnico(@click="cancelar", outlined, large, color="#84A98C")
-					v-icon mdi-close
-					span Cancelar
-
-				v-btn#QA-btn-cadastrar-requisito-tecnico.btn-cadastrar(@click="submit", large)
-					v-icon(color="white") {{iconBotaoCadastrarEditar}}
-					span {{labelBotaoCadastrarEditar}}
+	v-row.pt-6
+		v-col#form-actions.d-flex.justify-space-between(cols="12", md="12")
+			v-btn#QA-btn-cancelar-requisito-tecnico(@click="cancelar", outlined, large, color="#84A98C")
+				v-icon mdi-close
+				span Cancelar
+			v-btn#QA-btn-cadastrar-requisito-tecnico.btn-cadastrar(@click="submit", large)
+				v-icon(color="white") {{iconBotaoCadastrarEditar}}
+				span {{labelBotaoCadastrarEditar}}
 
 </template>
 
@@ -680,6 +676,10 @@ export default {
 <style lang="less">
 
 @import "../../../assets/css/variaveis.less";
+
+.tituloAcao {
+	font-size: 22px;
+}
 
 .v-expansion-panel-header {
 	background-color: @bg-header;

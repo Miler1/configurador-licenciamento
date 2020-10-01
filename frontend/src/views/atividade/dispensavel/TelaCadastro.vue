@@ -1,37 +1,56 @@
 <template lang="pug">
 
-#tela-cadastro-atividade-dispensavel
-	div.stepper-container
-		v-stepper(v-model="passo", alt-labels=true)
-			v-stepper-header(flat)
-				template(v-for="(passo, index) in passos")
-					v-stepper-step(
-						:key="`passo${index}-${passo.titulo}`",
-						:complete="passo.completo",
-						:step="index + 1",
-						:editable="false"
-						color="#84A98C"
-					)
-						span {{passo.titulo}}
+#tela-cadastro-atividade-dispensavel.pa-7
 
-					v-divider(v-if="index !== passos.length - 1", :key="Math.random()")
-	
-	PassoCnaes(v-if="passo == 1",
-		:cnaesTipologia="atividadeDispensavel.cnaesTipologia",
-		:erro="erros[0]")
+	v-row
 
-	PassoPerguntas(v-if="passo == 2",
-		:perguntas="atividadeDispensavel.perguntas",
-		:erro="erros[1]")
+		v-col.py-0(cols="12")
 
-	Resumo(v-if="passo == 3",
-		:atividadeDispensavel="atividadeDispensavel")
+			.tituloAcao {{isCadastro ? 'Cadastro de CNAEs dispensáveis' : 'Editar CNAE dispensável'}}
 
-	div.d-flex.justify-center.alignt-center.step-indicator.pt-5
+		v-col(cols="12")#stepper-container
+
+			v-stepper(v-model="passo", alt-labels=true)
+				v-stepper-header(flat)
+					template(v-for="(passo, index) in passos")
+						v-stepper-step(
+							:key="`passo${index}-${passo.titulo}`",
+							:complete="passo.completo",
+							:step="index + 1",
+							:editable="false"
+							color="#84A98C"
+						)
+							span {{passo.titulo}}
+
+						v-divider(v-if="index !== passos.length - 1", :key="Math.random()")
+
+		v-col(cols="12")
+
+			PassoCnaes(
+				v-if="passo == 1",
+				:cnaesTipologia="atividadeDispensavel.cnaesTipologia",
+				:erro="erros[0]"
+			)
+
+			PassoPerguntas(
+				v-if="passo == 2",
+				:perguntas="atividadeDispensavel.perguntas",
+				:erro="erros[1]"
+			)
+
+			Resumo(
+				v-if="passo == 3",
+				:atividadeDispensavel="atividadeDispensavel"
+			)
+
+	v-row.justify-center.alignt-center.step-indicator.pt-5.pb-2
+
 		span Etapa {{passo}} de {{passos.length}}
 
-	v-row.pa-7.pt-2.pb-7
+	v-row
+
 		v-col#form-actions.d-flex.justify-space-between(cols="12", md="12", flex=1)
+
 			v-btn#QA-btn-cancelar-atividade-dispensavel(@click="cancelar", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
 				v-icon mdi-close
 				span Cancelar
@@ -385,6 +404,10 @@ export default {
 
 #tela-cadastro-atividade-dispensavel {
 
+	.tituloAcao {
+		font-size: 22px;
+	}
+
 	.step-indicator {
 		color: @text-color;
 		font-size: 14px;
@@ -392,103 +415,92 @@ export default {
 		font-weight: bold;
 	}
 
-}
+	#stepper-container {
+		padding-left: 20%;
+		padding-right: 20%;
+		text-align: center;
 
-.stepper-container {
-	padding-top: 28px;
-	padding-left: 20%;
-	padding-right: 20%;
-	text-align: center;
-
-	.v-stepper {
-		box-shadow: unset;
-	}
-
-	.v-stepper__header {
-		box-shadow: unset;
-	}
-
-	.v-stepper__step {
-
-		.v-stepper__step__step {
-			width: 32px;
-			height: 32px;
+		.v-stepper {
+			box-shadow: unset;
 		}
 
-	}
+		.v-stepper__header {
+			box-shadow: unset;
+		}
 
-	.v-divider {
-		margin: 40px -66px 0 !important;
-	}
+		.v-stepper__step {
 
-	.v-stepper__step--complete {
-
-		.v-stepper__step__step {
-
-			.v-icon {
-				color: rgb(132, 169, 140) !important;
+			.v-stepper__step__step {
+				width: 32px;
+				height: 32px;
 			}
-
-			background-color: white !important;
-			border-color: rgb(132, 169, 140);
-			border: 1px solid;
-
 		}
 
-	}
+		.v-divider {
+			margin: 40px -66px 0 !important;
+		}
 
-	.v-stepper__step--active {
+		.v-stepper__step--complete {
 
-		.v-stepper__step__step {
+			.v-stepper__step__step {
+				background-color: white !important;
+				border-color: rgb(132, 169, 140);
+				border: 1px solid;
 
-			.v-icon {
-				color:white !important;
+				.v-icon {
+					color: rgb(132, 169, 140) !important;
+				}
 			}
+		}
 
-			background-color: rgb(132, 169, 140) !important;
+		.v-stepper__step--active {
 
+			.v-stepper__step__step {
+				background-color: rgb(132, 169, 140) !important;
+
+				.v-icon {
+					color:white !important;
+				}
+			}
+		}
+
+		.v-stepper__step--active {
+
+			.v-stepper__label {
+				text-shadow: none !important;
+				color: @text-color !important;
+				font-weight: bold;
+			}
 		}
 
 	}
 
-	.v-stepper__step--active {
+	#form-actions {
 
-		.v-stepper__label {
-			text-shadow: none !important;
-			color: @text-color !important;
-			font-weight: bold;
+		padding: 0 12px;
+
+		a {
+			margin-right: 20px;
+
+			.v-icon, span {
+				color: @red;
+			}
 		}
 
-	}
+		.v-btn {
+			font-size: 16px;
+			text-transform: none !important;
+		}
 
-}
+		.v-icon {
+			font-size: 20px !important;
+		}
 
-#form-actions {
-
-	padding: 0 12px;
-
-	a {
-		margin-right: 20px;
-
-		.v-icon, span {
-			color: @red;
+		.btn-cadastrar {
+			background-color: @green-primary !important;
+			color: @bg-text-field !important;
 		}
 	}
-
-	.v-btn {
-		font-size: 16px;
-		text-transform: none !important;
-	}
-
-	.v-icon {
-		font-size: 20px !important;
-	}
-
-	.btn-cadastrar {
-		background-color: @green-primary !important;
-		color: @bg-text-field !important;
-	}
-
 }
 
 </style>
