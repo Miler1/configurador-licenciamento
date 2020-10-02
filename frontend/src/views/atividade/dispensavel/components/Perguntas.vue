@@ -180,7 +180,7 @@ export default {
 		errorMessage(item) {
 
 			if (this.erro.invalido && this.pergunta) {
-				return 'Adicione os itens primeiro.';
+				return 'Adicione a pergunta primeiro';
 			}
 
 			return (this.errorMessageEmpty || item) && !this.erro.invalido ? '' : 'Obrigatório';
