@@ -58,7 +58,7 @@
 								item-color="grey darken-3",
 								v-model="valor.porteEmpreendimento",
 								:items="portesEmpreendimento",
-								:filter="searchInput"
+								:filter="filtroSelect"
 								item-text="nome",
 								:error-messages="errorMessage( valor.porteEmpreendimento, true )",
 								@click.native="resetErrorMessage",
@@ -76,7 +76,7 @@
 								item-color="grey darken-3",
 								v-model="valor.potencialPoluidor",
 								:items="potenciaispoluidores",
-								:filter="searchInput",
+								:filter="filtroSelect"
 								item-text="nome",
 								:error-messages="errorMessage( valor.potencialPoluidor, true )",
 								@click.native="resetErrorMessage",
@@ -94,7 +94,7 @@
 								item-color="#84A98C",
 								v-model="valor.licencas",
 								:items="licencas",
-								:filter="searchInput",
+								:filter="filtroSelect"
 								item-text="sigla",
 								:error-messages="errorMessage( valor.licencas, true )",
 								no-data-text="Nenhum tipo de licença encontrado",
@@ -157,7 +157,7 @@
 								:placeholder="placeholderSelectParametro",
 								item-color="grey darken-3",
 								:items="parametros",
-								:filter="searchInput",
+								:filter="filtroSelect"
 								item-text="codigo",
 								v-model="searchResult",
 								:search-input.sync="searchInput"
@@ -668,7 +668,7 @@ export default {
 					&& this.taxaLicenciamento.codigo != ''
 					&& this.taxaLicenciamento.descricao
 					&& this.taxaLicenciamento.descricao != ''
-					&& this.checkDadosLisagem();
+					&& this.checkDadosListagem();
 
 			}
 
@@ -676,13 +676,13 @@ export default {
 				&& this.taxaLicenciamento.codigo != ''
 				&& this.taxaLicenciamento.descricao
 				&& this.taxaLicenciamento.descricao != ''
-				&& this.checkDadosLisagem()
+				&& this.checkDadosListagem()
 				&& this.justificativa
 				&& this.justificativa != '';
 
 		},
 
-		checkDadosLisagem() {
+		checkDadosListagem() {
 
 			if (!this.dadosListagem || this.dadosListagem.length === 0) {
 
