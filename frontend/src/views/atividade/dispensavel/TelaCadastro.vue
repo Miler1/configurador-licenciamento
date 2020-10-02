@@ -3,7 +3,6 @@
 #tela-cadastro-atividade-dispensavel.px-7.pb-7
 
 	v-row
-
 		v-col(cols="12")#stepper-container
 
 			v-stepper(v-model="passo", alt-labels=true)
@@ -20,11 +19,11 @@
 
 						v-divider(v-if="index !== passos.length - 1", :key="Math.random()")
 
-		v-col.py-0(cols="12")
+		v-col(cols="12")
 
 			.tituloAcao {{isCadastro ? 'Cadastro de CNAEs dispensáveis' : 'Editar CNAE dispensável'}}
 
-		v-col.pt-7(cols="12")
+		v-col.py-0(cols="12")
 
 			PassoCnaes(
 				v-if="passo == 1",
@@ -43,12 +42,12 @@
 				:atividadeDispensavel="atividadeDispensavel"
 			)
 
-	v-row.justify-center.alignt-center.step-indicator.pt-5.pb-2
+	v-row
+		v-col.d-flex.justify-center.alignt-center.step-indicator
 
-		span Etapa {{passo}} de {{passos.length}}
+			span Etapa {{passo}} de {{passos.length}}
 
 	v-row
-
 		v-col#form-actions.d-flex.justify-space-between(cols="12", md="12", flex=1)
 
 			v-btn#QA-btn-cancelar-atividade-dispensavel(@click="cancelar", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
