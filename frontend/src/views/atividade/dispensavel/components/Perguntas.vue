@@ -2,7 +2,7 @@
 
 #step-cnaes-atividade-dispensavel-pergunta
 
-	v-expansion-panels.pa-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
+	v-expansion-panels.pb-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
 		v-expansion-panel
 			v-expansion-panel-header
 				div.d-flex.flex-row.align-center.justify-start
@@ -46,7 +46,7 @@
 									v-icon mdi-pencil
 									span Editar
 
-	GridListagemInclusao.px-7(
+	GridListagemInclusao(
 		:tituloListagem="tituloListagem",
 		:headers="headerListagem",
 		:dadosListagem="perguntas",
@@ -180,7 +180,7 @@ export default {
 		errorMessage(item) {
 
 			if (this.erro.invalido && this.pergunta) {
-				return 'Adicione os itens primeiro.';
+				return 'Adicione a pergunta primeiro';
 			}
 
 			return (this.errorMessageEmpty || item) && !this.erro.invalido ? '' : 'Obrigatório';

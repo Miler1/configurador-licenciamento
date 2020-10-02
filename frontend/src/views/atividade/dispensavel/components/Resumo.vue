@@ -1,15 +1,15 @@
 <template lang="pug">
 
-#step-cnaes-atividade-dispensavel-Resumo.pt-7
+#step-cnaes-atividade-dispensavel-Resumo
 
-	GridListagemInclusao.px-7(
+	GridListagemInclusao.pb-7(
 		:tituloListagem="tituloListagemCnae",
 		:headers="headerCnae",
 		:dadosListagem="atividadeDispensavel.cnaesTipologia",
 		:inputPesquisa="inputPesquisa"
 	)
 
-	GridListagemInclusao.px-7.pt-7(
+	GridListagemInclusao(
 		:tituloListagem="tituloListagemPergunta",
 		:headers="headerPergunta",
 		:dadosListagem="atividadeDispensavel.perguntas",
