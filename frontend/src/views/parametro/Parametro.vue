@@ -73,7 +73,7 @@ export default {
 			parametrosFiltro: {
 				pagina: 0,
 				itemsPorPagina: 10,
-				tipoOrdenacao: 'dataCadastro,desc',
+				tipoOrdenacao: 'codigo,asc',
 				stringPesquisa: ''
 			},
 			dadosPanel: {
@@ -115,7 +115,7 @@ export default {
 
 			this.parametrosFiltro.pagina = 0;
 			this.parametrosFiltro.itemsPorPagina = 10;
-			this.parametrosFiltro.tipoOrdenacao = 'dataCadastro,desc';
+			this.parametrosFiltro.tipoOrdenacao = 'codigo,asc';
 			this.parametrosFiltro.stringPesquisa = '';
 
 		},

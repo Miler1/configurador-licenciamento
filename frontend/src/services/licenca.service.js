@@ -13,13 +13,13 @@ export default {
 			return ApiService.post(`licenca/listar/?
 						page=${parametrosFiltro.pagina > 0 ? parametrosFiltro.pagina : 0}
 						&size=${parametrosFiltro.itemsPorPagina > 0 ? parametrosFiltro.itemsPorPagina : 10}
-						&sort=${parametrosFiltro.tipoOrdenacao ? parametrosFiltro.tipoOrdenacao : 'dataCadastro,asc'}`,
+						&sort=${parametrosFiltro.tipoOrdenacao ? parametrosFiltro.tipoOrdenacao : 'sigla,asc'}`,
 
 			parametrosFiltro
 			);
 
 		} else {
-			return ApiService.post('licenca/listar/?page=0&size=10&sort=dataCadastro,asc', {});
+			return ApiService.post('licenca/listar/?page=0&size=10&sort=sigla,asc', {});
 		}
 
 	},
