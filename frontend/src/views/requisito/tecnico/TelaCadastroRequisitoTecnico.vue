@@ -4,7 +4,7 @@
 
 	.tituloAcao {{isCadastro ? 'Cadastro de' : 'Editar'}} grupo de requisito técnico
 
-	v-expansion-panels.py-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
+	v-expansion-panels.pt-3.pb-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
 		v-expansion-panel
 			v-expansion-panel-header
 				div.d-flex.flex-row.align-center.justify-start

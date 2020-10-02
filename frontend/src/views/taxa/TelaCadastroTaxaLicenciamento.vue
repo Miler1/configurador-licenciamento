@@ -4,7 +4,7 @@
 
 	.tituloAcao {{isCadastro ? 'Cadastro de' : 'Editar'}} tabela de taxas de licenciamento
 
-	v-expansion-panels.py-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
+	v-expansion-panels.pt-3.pb-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
 		v-expansion-panel
 			v-expansion-panel-header
 				div.d-flex.flex-row.align-center.justify-start
@@ -39,7 +39,6 @@
 								required,
 								dense
 							)
-
 		v-expansion-panel
 			v-expansion-panel-header
 				div.d-flex.flex-row.align-center.justify-start
@@ -107,7 +106,6 @@
 								deletable-chips=true
 								:disabled="!isInclusao"
 							)
-
 					v-row
 						v-col.d-flex.flex-column(cols="12", md="5")
 							ToggleOptions(
@@ -118,7 +116,6 @@
 								:options="optionsTipoTaxa",
 								@changeOption="tipoTaxa = $event"
 							)
-
 					v-row.borda-campo(v-show="tipoTaxa === 'fixo'")
 						v-col(cols="12", md="3")
 							v-label Valor
@@ -133,7 +130,6 @@
 								required,
 								dense
 							)
-
 					v-row.borda-campo(v-show="tipoTaxa === 'formula'")
 						v-col(cols="12", md="4")
 							v-label Equação da fórmula
@@ -206,20 +202,19 @@
 										v-btn(outlined, fab, small, v-on='on', @click="AdicionaOperadorFormula(')')")
 											h3 )
 									span Fim do grupo [)]
+					v-row
+						v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
+							a#QA-limpar-dados-taxa-licenciamento.d-flex.flex-row.align-center.justify-end(@click="clearTaxaLicenciamento")
+								v-icon.pr-1 fa-eraser
+								span Limpar dados
 
-						v-row
-							v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
-								a#QA-limpar-dados-taxa-licenciamento.d-flex.flex-row.align-center.justify-end(@click="clearTaxaLicenciamento")
-									v-icon.pr-1 fa-eraser
-									span Limpar dados
+							v-btn#QA-btn-adicionar-taxa-licenciamento(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
+								v-icon mdi-plus
+								span Adicionar
 
-								v-btn#QA-btn-adicionar-taxa-licenciamento(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
-									v-icon mdi-plus
-									span Adicionar
-
-								v-btn#QA-btn-editar-taxa-licenciamento(@click="incluirDados", large, outlined, color="#84A98C", v-if="!isInclusao")
-									v-icon mdi-pencil
-									span Editar
+							v-btn#QA-btn-editar-taxa-licenciamento(@click="incluirDados", large, outlined, color="#84A98C", v-if="!isInclusao")
+								v-icon mdi-pencil
+								span Editar
 
 	GridListagemInclusao(
 		:tituloListagem="tituloListagem",
