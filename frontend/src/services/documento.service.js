@@ -11,11 +11,11 @@ export default {
 			return ApiService.post(`documento/listar/?
 						page=${documentosFiltro.pagina > 0 ? documentosFiltro.pagina : 0}
 						&size=${documentosFiltro.itemsPorPagina > 0 ? documentosFiltro.itemsPorPagina : 10}
-						&sort=${documentosFiltro.tipoOrdenacao ? documentosFiltro.tipoOrdenacao : 'dataCadastro,asc'}`,
+						&sort=${documentosFiltro.tipoOrdenacao ? documentosFiltro.tipoOrdenacao : 'nome,asc'}`,
 						documentosFiltro
 			);
 		}else {
-			return ApiService.post('documento/listar/?page=0&size=10&sort=dataCadastro,asc', {});
+			return ApiService.post('documento/listar/?page=0&size=10&sort=nome,asc', {});
 		}
 	},
 
