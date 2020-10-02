@@ -1,262 +1,260 @@
 <template lang="pug">
   
-#tela-cadastro-taxa-licenciamento
-	div.pb-7
-		v-expansion-panels.pa-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
-			v-expansion-panel
-				v-expansion-panel-header
-					div.d-flex.flex-row.align-center.justify-start
-						span.align-baseline Tabela de taxas de licenciamento
-					template(v-slot:actions)
-						v-icon
-				v-expansion-panel-content
-					v-form(ref="taxaLicenciamento")
-						v-container.pa-0
-							v-row
-								v-col(cols="12", md="3")
-									v-label Código
-									v-text-field#QA-input-taxa-licenciamento-codigo(
-										outlined,
-										color="#E0E0E0",
-										:placeholder="placeholder",
-										v-model="taxaLicenciamento.codigo",
-										@click.native="resetErrorMessage",
-										@input="v => {taxaLicenciamento.codigo = v.toUpperCase()}",
-										:error-messages="errorMessage( taxaLicenciamento.codigo, false )",
-										required,
-										dense
-									)
-								v-col(cols="12", md="9")
-									v-label Descrição
-									v-text-field#QA-input-taxa-licenciamento-descricao(
-										outlined,
-										color="#E0E0E0",
-										:placeholder="placeholder",
-										v-model="taxaLicenciamento.descricao",
-										@click.native="resetErrorMessage",
-										:error-messages="errorMessage( taxaLicenciamento.descricao, false )",
-										required,
-										dense
-									)
+#tela-cadastro-taxa-licenciamento.pa-7
 
-			v-expansion-panel
-				v-expansion-panel-header
-					div.d-flex.flex-row.align-center.justify-start
-						span.align-baseline {{ isInclusao ? 'Adição de ' : 'Editar ' }} taxa de licenciamento
-					template(v-slot:actions)
-						v-icon
-				v-expansion-panel-content
-					v-form(ref="taxaLicenciamentolist")
-						v-container.pa-0
-							v-row
-								v-col(cols="12", md="4")
-									v-label Porte do empreendimento
-									v-autocomplete#QA-select-taxa-licenciamento-porte-mpreendimento(
-										outlined,
-										dense,
-										color="#E0E0E0",
-										:placeholder="placeholderSelect",
-										item-color="grey darken-3",
-										v-model="valor.porteEmpreendimento",
-										:items="portesEmpreendimento",
-										:filter="searchInput"
-										item-text="nome",
-										:error-messages="errorMessage( valor.porteEmpreendimento, true )",
-										@click.native="resetErrorMessage",
-										required,
-										return-object=true,
-										no-data-text="Nenhum porte do empreendimento encontrado"
-									)
-								v-col(cols="12", md="4")
-									v-label PPD
-									v-autocomplete#QA-select-taxa-licenciamento-potencial-poluidor(
-										outlined,
-										dense,
-										color="#E0E0E0",
-										:placeholder="placeholderSelect",
-										item-color="grey darken-3",
-										v-model="valor.potencialPoluidor",
-										:items="potenciaispoluidores",
-										:filter="searchInput",
-										item-text="nome",
-										:error-messages="errorMessage( valor.potencialPoluidor, true )",
-										@click.native="resetErrorMessage",
-										required,
-										return-object=true,
-										no-data-text="Nenhum PPD encontrado"
-									)
-								v-col(cols="12", md="4")
-									v-label Tipos de licenças
-									v-autocomplete#QA-select-taxa-licenciamento-licenca(
-										outlined,
-										dense,
-										color="#E0E0E0",
-										:placeholder="placeholderSelectLicenca",
-										item-color="#84A98C",
-										v-model="valor.licencas",
-										:items="licencas",
-										:filter="searchInput",
-										item-text="sigla",
-										:error-messages="errorMessage( valor.licencas, true )",
-										no-data-text="Nenhum tipo de licença encontrado",
-										@click.native="resetErrorMessage",
-										required,
-										return-object=true,
-										multiple=true
-										chips=true,
-										deletable-chips=true
-										:disabled="!isInclusao"
-									)
+	.tituloAcao {{isCadastro ? 'Cadastro de' : 'Editar'}} tabela de taxas de licenciamento
 
-							v-row
-								v-col.d-flex.flex-column(cols="12", md="5")
+	v-expansion-panels.py-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
+		v-expansion-panel
+			v-expansion-panel-header
+				div.d-flex.flex-row.align-center.justify-start
+					span.align-baseline Tabela de taxas de licenciamento
+				template(v-slot:actions)
+					v-icon
+			v-expansion-panel-content
+				v-form(ref="taxaLicenciamento")
+					v-row
+						v-col(cols="12", md="3")
+							v-label Código
+							v-text-field#QA-input-taxa-licenciamento-codigo(
+								outlined,
+								color="#E0E0E0",
+								:placeholder="placeholder",
+								v-model="taxaLicenciamento.codigo",
+								@click.native="resetErrorMessage",
+								@input="v => {taxaLicenciamento.codigo = v.toUpperCase()}",
+								:error-messages="errorMessage( taxaLicenciamento.codigo, false )",
+								required,
+								dense
+							)
+						v-col(cols="12", md="9")
+							v-label Descrição
+							v-text-field#QA-input-taxa-licenciamento-descricao(
+								outlined,
+								color="#E0E0E0",
+								:placeholder="placeholder",
+								v-model="taxaLicenciamento.descricao",
+								@click.native="resetErrorMessage",
+								:error-messages="errorMessage( taxaLicenciamento.descricao, false )",
+								required,
+								dense
+							)
 
-									ToggleOptions(
-										ref="toggleOptionsTipoTaxa",
-										labelOption="Tipo de taxa",
-										idToggle="QA-btn-toggle-taxa-licenciamento",
-										:errorMessage="errorMessage",
-										:options="optionsTipoTaxa",
-										@changeOption="tipoTaxa = $event"
-									)
-							
-							v-row.borda-campo(v-show="tipoTaxa === 'fixo'")
-								v-col(cols="12", md="3")
-									v-label Valor
-									v-text-field#QA-input-taxa-licenciamento-valor-fixo.large-error-line(
-										v-money="money"
-										outlined,
-										color="#E0E0E0",
-										:placeholder="placeholder",
-										v-model.lazy="valor.valor",
-										@click.native="resetErrorMessage",
-										:error-messages="errorMessage( valor.valor, true )",
-										required,
-										dense
-									)
+		v-expansion-panel
+			v-expansion-panel-header
+				div.d-flex.flex-row.align-center.justify-start
+					span.align-baseline {{ isInclusao ? 'Adição de ' : 'Editar ' }} taxa de licenciamento
+				template(v-slot:actions)
+					v-icon
+			v-expansion-panel-content
+				v-form(ref="taxaLicenciamentolist")
+					v-row
+						v-col(cols="12", md="4")
+							v-label Porte do empreendimento
+							v-autocomplete#QA-select-taxa-licenciamento-porte-mpreendimento(
+								outlined,
+								dense,
+								color="#E0E0E0",
+								:placeholder="placeholderSelect",
+								item-color="grey darken-3",
+								v-model="valor.porteEmpreendimento",
+								:items="portesEmpreendimento",
+								:filter="filtroSelect"
+								item-text="nome",
+								:error-messages="errorMessage( valor.porteEmpreendimento, true )",
+								@click.native="resetErrorMessage",
+								required,
+								return-object=true,
+								no-data-text="Nenhum porte do empreendimento encontrado"
+							)
+						v-col(cols="12", md="4")
+							v-label PPD
+							v-autocomplete#QA-select-taxa-licenciamento-potencial-poluidor(
+								outlined,
+								dense,
+								color="#E0E0E0",
+								:placeholder="placeholderSelect",
+								item-color="grey darken-3",
+								v-model="valor.potencialPoluidor",
+								:items="potenciaispoluidores",
+								:filter="filtroSelect"
+								item-text="nome",
+								:error-messages="errorMessage( valor.potencialPoluidor, true )",
+								@click.native="resetErrorMessage",
+								required,
+								return-object=true,
+								no-data-text="Nenhum PPD encontrado"
+							)
+						v-col(cols="12", md="4")
+							v-label Tipos de licenças
+							v-autocomplete#QA-select-taxa-licenciamento-licenca(
+								outlined,
+								dense,
+								color="#E0E0E0",
+								:placeholder="placeholderSelectLicenca",
+								item-color="#84A98C",
+								v-model="valor.licencas",
+								:items="licencas",
+								:filter="filtroSelect"
+								item-text="sigla",
+								:error-messages="errorMessage( valor.licencas, true )",
+								no-data-text="Nenhum tipo de licença encontrado",
+								@click.native="resetErrorMessage",
+								required,
+								return-object=true,
+								multiple=true
+								chips=true,
+								deletable-chips=true
+								:disabled="!isInclusao"
+							)
 
-							v-row.borda-campo(v-show="tipoTaxa === 'formula'")
-								v-col(cols="12", md="4")
-									v-label Equação da fórmula
-										v-tooltip(top, left, max-width=400)
-											template(v-slot:activator="{ on, attrs }")
-												v-icon.information.ml-1.mb-1(v-bind="attrs", v-on="on") mdi-information
-											span Utilize apenas ponto para separar os números monetários e decimais.
-									v-text-field#QA-input-taxa-licenciamento-valor-formula(
-										outlined,
-										color="#E0E0E0",
-										placeholder="Ex.: 1252.50 + (0.4 * AU) + 100",
-										v-model.lazy="valor.formula",
-										@click.native="resetErrorMessage",
-										:error-messages="errorMessage( valor.formula, true, true)",
-										required,
-										dense,
-										ref="formula"
-									)
-								v-col(cols="12", md="4")
-									v-label Parâmetro
-									v-autocomplete#QA-select-taxa-licenciamento-parametro(
-										outlined,
-										dense,
-										color="#E0E0E0",
-										:placeholder="placeholderSelectParametro",
-										item-color="grey darken-3",
-										:items="parametros",
-										:filter="searchInput",
-										item-text="codigo",
-										v-model="searchResult",
-										:search-input.sync="searchInput"
-										@change="adicionarParamentro",
-										no-data-text="Nenhum parâmetro encontrado"
-									)
-								v-col(cols="12", md="4")
-									v-label Operadores
-									div
-										v-tooltip(bottom)
-											template(v-slot:activator="{ on, attrs }")
-												v-btn.mr-2(outlined, fab, small, v-on='on', @click="AdicionaOperadorFormula('+')")
-													v-icon mdi-plus
-											span Adicionar [+]
+					v-row
+						v-col.d-flex.flex-column(cols="12", md="5")
+							ToggleOptions(
+								ref="toggleOptionsTipoTaxa",
+								labelOption="Tipo de taxa",
+								idToggle="QA-btn-toggle-taxa-licenciamento",
+								:errorMessage="errorMessage",
+								:options="optionsTipoTaxa",
+								@changeOption="tipoTaxa = $event"
+							)
 
-										v-tooltip(bottom)
-											template(v-slot:activator="{ on, attrs }")
-												v-btn.mr-2(outlined, fab, small, v-on='on', @click="AdicionaOperadorFormula('-')")
-													v-icon mdi-minus
-											span Subtrair [-]
+					v-row.borda-campo(v-show="tipoTaxa === 'fixo'")
+						v-col(cols="12", md="3")
+							v-label Valor
+							v-text-field#QA-input-taxa-licenciamento-valor-fixo.large-error-line(
+								v-money="money"
+								outlined,
+								color="#E0E0E0",
+								:placeholder="placeholder",
+								v-model.lazy="valor.valor",
+								@click.native="resetErrorMessage",
+								:error-messages="errorMessage( valor.valor, true )",
+								required,
+								dense
+							)
 
-										v-tooltip(bottom)
-											template(v-slot:activator="{ on, attrs }")
-												v-btn.mr-2(outlined, fab, small, v-on='on', @click="AdicionaOperadorFormula('*')")
-													v-icon mdi-close
-											span Multiplicar [*]
+					v-row.borda-campo(v-show="tipoTaxa === 'formula'")
+						v-col(cols="12", md="4")
+							v-label Equação da fórmula
+								v-tooltip(top, left, max-width=400)
+									template(v-slot:activator="{ on, attrs }")
+										v-icon.information.ml-1.mb-1(v-bind="attrs", v-on="on") mdi-information
+									span Utilize apenas ponto para separar os números monetários e decimais.
+							v-text-field#QA-input-taxa-licenciamento-valor-formula(
+								outlined,
+								color="#E0E0E0",
+								placeholder="Ex.: 1252.50 + (0.4 * AU) + 100",
+								v-model.lazy="valor.formula",
+								@click.native="resetErrorMessage",
+								:error-messages="errorMessage( valor.formula, true, true)",
+								required,
+								dense,
+								ref="formula"
+							)
+						v-col(cols="12", md="4")
+							v-label Parâmetro
+							v-autocomplete#QA-select-taxa-licenciamento-parametro(
+								outlined,
+								dense,
+								color="#E0E0E0",
+								:placeholder="placeholderSelectParametro",
+								item-color="grey darken-3",
+								:items="parametros",
+								:filter="filtroSelect"
+								item-text="codigo",
+								v-model="searchResult",
+								:search-input.sync="searchInput"
+								@change="adicionarParamentro",
+								no-data-text="Nenhum parâmetro encontrado"
+							)
+						v-col(cols="12", md="4")
+							v-label Operadores
+							div
+								v-tooltip(bottom)
+									template(v-slot:activator="{ on, attrs }")
+										v-btn.mr-2(outlined, fab, small, v-on='on', @click="AdicionaOperadorFormula('+')")
+											v-icon mdi-plus
+									span Adicionar [+]
 
-										v-tooltip(bottom)
-											template(v-slot:activator="{ on, attrs }")
-												v-btn.mr-2(outlined, fab, small, v-on='on', @click="AdicionaOperadorFormula('/')")
-													v-icon mdi-division
-											span Dividir [/]
+								v-tooltip(bottom)
+									template(v-slot:activator="{ on, attrs }")
+										v-btn.mr-2(outlined, fab, small, v-on='on', @click="AdicionaOperadorFormula('-')")
+											v-icon mdi-minus
+									span Subtrair [-]
 
-										v-tooltip(bottom)
-											template(v-slot:activator="{ on, attrs }")
-												v-btn.mr-2(outlined, fab, small, v-on='on', @click="AdicionaOperadorFormula('(')")
-													h3 (
-											span Início do grupo [(]
+								v-tooltip(bottom)
+									template(v-slot:activator="{ on, attrs }")
+										v-btn.mr-2(outlined, fab, small, v-on='on', @click="AdicionaOperadorFormula('*')")
+											v-icon mdi-close
+									span Multiplicar [*]
 
-										v-tooltip(bottom)
-											template(v-slot:activator="{ on, attrs }")
-												v-btn(outlined, fab, small, v-on='on', @click="AdicionaOperadorFormula(')')")
-													h3 )
-											span Fim do grupo [)]
-								
-							v-row
-								v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
-									a#QA-limpar-dados-taxa-licenciamento.d-flex.flex-row.align-center.justify-end(@click="clearTaxaLicenciamento")
-										v-icon.pr-1 fa-eraser
-										span Limpar dados
-								
-									v-btn#QA-btn-adicionar-taxa-licenciamento(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
-										v-icon mdi-plus
-										span Adicionar
-								
-									v-btn#QA-btn-editar-taxa-licenciamento(@click="incluirDados", large, outlined, color="#84A98C", v-if="!isInclusao")
-										v-icon mdi-pencil
-										span Editar
+								v-tooltip(bottom)
+									template(v-slot:activator="{ on, attrs }")
+										v-btn.mr-2(outlined, fab, small, v-on='on', @click="AdicionaOperadorFormula('/')")
+											v-icon mdi-division
+									span Dividir [/]
 
-		GridListagemInclusao.px-7(
-			:tituloListagem="tituloListagem",
-			:headers="headerListagem",
-			:dadosListagem="dadosListagem",
-			:editarItem="editarItem",
-			:excluirItem="excluirItem",
-			:labelNoData="labelNoData",
-			:placeholderPesquisa="placeholderPesquisa",
-			:tituloTooltip="tituloTooltip",
-			:labelNoResultset="semResultados"
-		)
+								v-tooltip(bottom)
+									template(v-slot:activator="{ on, attrs }")
+										v-btn.mr-2(outlined, fab, small, v-on='on', @click="AdicionaOperadorFormula('(')")
+											h3 (
+									span Início do grupo [(]
 
-		v-row.pt-5.px-7#row-justificativa(v-show="!isCadastro")
-			v-col.py-0(cols="12")
-				v-label Justificativa
-				v-textarea#QA-input-taxa-licenciamento-justificativa(
-					outlined,
-					color="#E0E0E0",
-					rows="3",
-					auto-grow
-					v-model="justificativa",
-					:error-messages="errorMessage(justificativa, false, false)",
-					@click.native="resetErrorMessage",
-					required,
-				)
+								v-tooltip(bottom)
+									template(v-slot:activator="{ on, attrs }")
+										v-btn(outlined, fab, small, v-on='on', @click="AdicionaOperadorFormula(')')")
+											h3 )
+									span Fim do grupo [)]
 
-		v-row.pt-6.px-7
-			v-col#form-actions.d-flex.justify-space-between(cols="12", md="12")
-				v-btn#QA-btn-cancelar-taxa-licenciamento(@click="cancelar", outlined, large, color="#84A98C")
-					v-icon mdi-close
-					span Cancelar
+						v-row
+							v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
+								a#QA-limpar-dados-taxa-licenciamento.d-flex.flex-row.align-center.justify-end(@click="clearTaxaLicenciamento")
+									v-icon.pr-1 fa-eraser
+									span Limpar dados
 
-				v-btn#QA-btn-cadastrar-taxa-licenciamento.btn-cadastrar(@click="submit", large)
-					v-icon(color="white") {{iconBotaoCadastrarEditar}}
-					span {{labelBotaoCadastrarEditar}}
+								v-btn#QA-btn-adicionar-taxa-licenciamento(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
+									v-icon mdi-plus
+									span Adicionar
+
+								v-btn#QA-btn-editar-taxa-licenciamento(@click="incluirDados", large, outlined, color="#84A98C", v-if="!isInclusao")
+									v-icon mdi-pencil
+									span Editar
+
+	GridListagemInclusao(
+		:tituloListagem="tituloListagem",
+		:headers="headerListagem",
+		:dadosListagem="dadosListagem",
+		:editarItem="editarItem",
+		:excluirItem="excluirItem",
+		:labelNoData="labelNoData",
+		:placeholderPesquisa="placeholderPesquisa",
+		:tituloTooltip="tituloTooltip",
+		:labelNoResultset="semResultados"
+	)
+
+	v-row.pt-5#row-justificativa(v-show="!isCadastro")
+		v-col.py-0(cols="12")
+			v-label Justificativa
+			v-textarea#QA-input-taxa-licenciamento-justificativa(
+				outlined,
+				color="#E0E0E0",
+				rows="3",
+				auto-grow
+				v-model="justificativa",
+				:error-messages="errorMessage(justificativa, false, false)",
+				@click.native="resetErrorMessage",
+				required,
+			)
+
+	v-row.pt-6
+		v-col#form-actions.d-flex.justify-space-between(cols="12", md="12")
+			v-btn#QA-btn-cancelar-taxa-licenciamento(@click="cancelar", outlined, large, color="#84A98C")
+				v-icon mdi-close
+				span Cancelar
+			v-btn#QA-btn-cadastrar-taxa-licenciamento.btn-cadastrar(@click="submit", large)
+				v-icon(color="white") {{iconBotaoCadastrarEditar}}
+				span {{labelBotaoCadastrarEditar}}
 
 </template>
 
@@ -675,7 +673,7 @@ export default {
 					&& this.taxaLicenciamento.codigo != ''
 					&& this.taxaLicenciamento.descricao
 					&& this.taxaLicenciamento.descricao != ''
-					&& this.checkDadosLisagem();
+					&& this.checkDadosListagem();
 
 			}
 
@@ -683,13 +681,13 @@ export default {
 				&& this.taxaLicenciamento.codigo != ''
 				&& this.taxaLicenciamento.descricao
 				&& this.taxaLicenciamento.descricao != ''
-				&& this.checkDadosLisagem()
+				&& this.checkDadosListagem()
 				&& this.justificativa
 				&& this.justificativa != '';
 
 		},
 
-		checkDadosLisagem() {
+		checkDadosListagem() {
 
 			if (!this.dadosListagem || this.dadosListagem.length === 0) {
 
@@ -1014,6 +1012,10 @@ export default {
 <style lang="less">
 
 @import "../../assets/css/variaveis.less";
+
+.tituloAcao {
+	font-size: 22px;
+}
 
 .v-expansion-panel-header {
 	background-color: @bg-header;
