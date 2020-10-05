@@ -131,7 +131,7 @@ const routes = [
 			{
 				path: 'cnaes-dispensaveis',
 				name: 'cnaesDispensaveis',
-				component: () => import('@/views/atividade/dispensavel/atividadeDispensavel.vue')
+				component: () => import('@/views/atividade/dispensavel/AtividadeDispensavel.vue')
 			},
 			{
 				path: 'cnaes-dispensaveis/cadastrar',
@@ -143,17 +143,17 @@ const routes = [
 				name: 'EditarAtividadeDispensavel',
 				component: () => import('@/views/atividade/dispensavel/TelaCadastro.vue')
 			},
-			{
-				path: 'atividades-licenciaveis',
-				name: 'CadastrarAtividadeLicenciavel',
-				component: () => import('@/views/atividade/licenciavel/TelaCadastro.vue')
-			},
 
-			// ATIVIDADE LICENCIÁVEL
+			// ATIVIDADE LICENCIÁVEL 
 			{
 				path: 'atividades-licenciaveis',
 				name: 'atividadesLicenciaveis',
-				component: () => import('@/views/atividade/licenciavel/atividadeLicenciavel.vue')
+				component: () => import('@/views/atividade/licenciavel/AtividadeLicenciavel.vue')
+			},
+			{
+				path: 'atividades-licenciaveis/cadastrar',
+				name: 'CadastrarAtividadeLicenciavel',
+				component: () => import('@/views/atividade/licenciavel/TelaCadastro.vue')
 			},
 
 			// UNDERCONSTRUCTION
