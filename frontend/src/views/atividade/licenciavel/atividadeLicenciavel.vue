@@ -116,7 +116,7 @@ export default {
 		},
 
 		abrirTelaCadastro() {
-			this.$router.push({name: 'CadastrarAtividadeLicenciavel'});
+			// this.$router.push({name: 'CadastrarAtividadeLicenciavel'});
 		},
 
 		editarItem(item) {
