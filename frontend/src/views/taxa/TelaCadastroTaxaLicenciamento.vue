@@ -978,6 +978,10 @@ export default {
 			TaxaLicenciamentoService.findById(this.$route.params.idTaxaLicenciamento)
 
 				.then((response) => {
+					console.log(response.data.taxasLicenciamento);
+					response.data.taxasLicenciamento.sort((a,b) => (a.licenca.nome.toLowerCase().localeCompare(b.licenca.nome.toLowerCase())));
+					response.data.taxasLicenciamento.sort((a,b) => (a.porteEmpreendimento.nome.toLowerCase().localeCompare(b.porteEmpreendimento.nome.toLowerCase())));
+					response.data.taxasLicenciamento.sort((a,b) => (a.potencialPoluidor.nome.toLowerCase().localeCompare(b.potencialPoluidor.nome.toLowerCase())));
 					this.prepararDadosParaEdicao(response.data);
 				})
 				.catch((error) => {
