@@ -60,7 +60,7 @@ export default {
 					{ title: 'Requisito técnico', path: '/home/requisitos-tecnicos' }
 				],
 			},
-			{ title: 'Atividades licenciáveis', icon: {vuetify: true, value: 'mdi-account-multiple-plus'}, path: '/home/atividades-licenciaveis'},
+			{ title: 'Atividades licenciáveis', icon: {vuetify: true, value: 'mdi-account-multiple-plus'}, model: true, path: '/home/atividades-licenciaveis'},
 			{ title: 'Atividades dispensáveis', icon: {vuetify: true, value: 'mdi-account-multiple-remove'}, model: true,
 				children: [
 					{ title: 'Perguntas', path: '/home/perguntas' },
