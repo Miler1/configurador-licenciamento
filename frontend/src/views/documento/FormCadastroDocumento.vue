@@ -19,7 +19,7 @@
 				v-tooltip(top, left, max-width=400)
 					template(v-slot:activator="{ on, attrs }")
 						v-icon.information.ml-1(v-bind="attrs", v-on="on") mdi-information
-					span Este é o nome que será exibido para o usuário e técnico quando for realizado o upload deste documento.
+					span Este é o nome que será exibido na tela para o solicitante quando for realizado o upload deste documento.
 				v-text-field#QA-input-documento-nome-exibicao(
 					outlined,
 					color="#E0E0E0",

@@ -143,6 +143,11 @@ const routes = [
 				name: 'EditarAtividadeDispensavel',
 				component: () => import('@/views/atividade/dispensavel/TelaCadastro.vue')
 			},
+			{
+				path: 'atividades-licenciaveis',
+				name: 'CadastrarAtividadeLicenciavel',
+				component: () => import('@/views/atividade/licenciavel/TelaCadastro.vue')
+			},
 
 			// ATIVIDADE LICENCIÁVEL
 			{

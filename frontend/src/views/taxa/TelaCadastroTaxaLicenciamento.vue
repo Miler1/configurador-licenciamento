@@ -136,7 +136,7 @@
 								v-tooltip(top, left, max-width=400)
 									template(v-slot:activator="{ on, attrs }")
 										v-icon.information.ml-1.mb-1(v-bind="attrs", v-on="on") mdi-information
-									span Utilize apenas ponto para separar os números monetários e decimais.
+									span Utilize apenas ponto para separar os números monetários e/ou decimais. Você pode adicionar parâmetros e/ou operadores utilizando os campos auxiliares ao lado ou utilizando o teclado também.
 							v-text-field#QA-input-taxa-licenciamento-valor-formula(
 								outlined,
 								color="#E0E0E0",
