@@ -627,11 +627,13 @@ export default {
 
 		DocumentoService.buscarDocumentosAtivos()
 			.then((response) => {
+				response.data.sort((a,b) => (a.nome > b.nome) ? 1 : ((b.nome > a.nome) ? -1 : 0));
 				this.documentos = response.data;
 			});
 
 		LicencaService.findAll()
 			.then((response) => {
+				response.data.sort((a,b) => (a.sigla > b.sigla) ? 1 : ((b.sigla > a.sigla) ? -1 : 0));
 				this.licencas = response.data;
 			});
 

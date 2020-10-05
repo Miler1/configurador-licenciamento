@@ -15,13 +15,13 @@ export default {
 			return ApiService.post(`requisitoTecnico/listar/?
 						page=${parametrosFiltro.pagina > 0 ? parametrosFiltro.pagina : 0}
 						&size=${parametrosFiltro.itemsPorPagina > 0 ? parametrosFiltro.itemsPorPagina : 10}
-						&sort=${parametrosFiltro.tipoOrdenacao ? parametrosFiltro.tipoOrdenacao : 'dataCadastro,desc'}`,
+						&sort=${parametrosFiltro.tipoOrdenacao ? parametrosFiltro.tipoOrdenacao : 'codigo,asc'}`,
 
 			parametrosFiltro
 			);
 
 		} else {
-			return ApiService.post('requisitoTecnico/listar/?page=0&size=10&sort=dataCadastro,desc', {});
+			return ApiService.post('requisitoTecnico/listar/?page=0&size=10&sort=codigo,asc', {});
 		}
 
 	},
