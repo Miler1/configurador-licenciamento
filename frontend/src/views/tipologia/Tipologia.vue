@@ -64,7 +64,7 @@ export default {
 			parametrosFiltro: {
 				pagina: 0,
 				itemsPorPagina: 10,
-				tipoOrdenacao: 'dataCadastro,desc',
+				tipoOrdenacao: 'nome,asc',
 				stringPesquisa: ''
 			},
 			errorMessageEmpty: true,
