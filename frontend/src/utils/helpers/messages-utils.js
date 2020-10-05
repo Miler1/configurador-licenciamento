@@ -107,6 +107,16 @@ const ERROR_MESSAGES = {
 
 	},
 
+	atividadeLicenciavel: {
+
+		cadastro: ER_BASE + 'cadastrar a atividade licenciável. ',
+		editar: ER_BASE + 'editar a atividade licenciável. ',
+		listagem: ER_BASE + 'listar as atividades licenciáveis. ',
+		ativar: ER_BASE + 'ativar a atividade licenciável. ',
+		desativar: ER_BASE + 'desativar a atividade licenciável. ',
+		desativarErro: "Não foi possível inativar o registro. Ele se encontra vinculado a uma atividade ativa no sistema. ",
+	}
+
 };
 
 const SUCCESS_MESSAGES = {
@@ -167,6 +177,11 @@ const SUCCESS_MESSAGES = {
 	atividadeDispensavel: {
 		ativar: 'Sucesso! O CNAE dispensável foi ativado.',
 		desativar: 'Sucesso! O CNAE dispensável foi desativado.',
+	},
+
+	atividadeLicenciavel: {
+		ativar: 'Sucesso! A atividade licenciável foi ativada.',
+		desativar: 'Sucesso! A atividade licenciável foi desativada.',
 	},
 	
 };
