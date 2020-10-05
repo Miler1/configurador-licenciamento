@@ -1,21 +1,52 @@
 <template lang="pug">
-	#under-construction
-		v-icon mdi-account-hard-hat
-		h1 Página em desenvolvimento!
+
+	#step-atividade-licenciavel-resumo
+
+		UnderConstruction()
+
 </template>
 
-<style lang="less" scoped>
+<script>
 
-#under-construction {
-	margin-top: 20%;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	color: #9E9E9E;
-}
-.v-icon	{
-	font-size: 100px !important;
-}
+import UnderConstruction from '@/views/UnderConstruction.vue';
+
+export default {
+
+	name:'Resumo',
+
+	components: {
+		UnderConstruction
+	},
+
+	props: {
+
+	},
+	
+	data: () => {
+
+		return {
+
+		};
+
+	},
+
+	methods: {
+
+		//SOME METHODS HERE
+
+	},
+
+	created(){
+	},
+
+	mounted() {
+
+	}
+
+};
+
+</script>
+
+<style lang="less">
 
 </style>
