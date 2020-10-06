@@ -627,13 +627,13 @@ export default {
 
 		DocumentoService.buscarDocumentosAtivos()
 			.then((response) => {
-				response.data.sort((a,b) => (a.nome > b.nome) ? 1 : ((b.nome > a.nome) ? -1 : 0));
+				response.data.sort((a,b) => (a.nome.toLowerCase().localeCompare(b.nome.toLowerCase())));
 				this.documentos = response.data;
 			});
 
 		LicencaService.findAll()
 			.then((response) => {
-				response.data.sort((a,b) => (a.sigla > b.sigla) ? 1 : ((b.sigla > a.sigla) ? -1 : 0));
+				response.data.sort((a,b) => (a.sigla.toLowerCase().localeCompare(b.sigla.toLowerCase())));
 				this.licencas = response.data;
 			});
 
@@ -649,6 +649,7 @@ export default {
 			RequisitoTecnicoService.findById(this.$route.params.idRequisito)
 
 				.then((response) => {
+					response.data.tipoLicencaGrupoDocumentoList.sort((a,b) => (a.documento.nome.toLowerCase().localeCompare(b.documento.nome.toLowerCase())));
 					this.prepararDadosParaEdicao(response.data);
 				})
 				.catch((error) => {
