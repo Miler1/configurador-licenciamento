@@ -3,7 +3,7 @@ const HEADER = [
 	{ text: 'Nome', value: 'nome'},
 	{ text: 'Tipologia', value: 'tipologia.nome'},
 	{ text: 'Parâmetros', value: 'parametros', width: '150px'},
-	{ text: 'Tipos de licenças', value: 'tiposLicencas', width: '150px'},
+	{ text: 'Tipos de licenças', value: 'tiposLicencas', width: '160px'},
 	{ text: 'Status', value: 'ativo', width: '145px'},
 	{ text: 'Ações', value: 'actions', sortable: false, align: 'center', width: '100px'},
 ];
