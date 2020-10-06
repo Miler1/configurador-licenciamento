@@ -38,7 +38,7 @@ export default {
 
 	data: () => {
 		return {
-			tituloAba: "atividade",
+			tituloAba: "atividade licenciável",
 			tituloListagem: "Listagem de atividades licenciáveis cadastradas",
 			placeholderPesquisa: "Pesquise pelo código ou nome da atividade licenciável",
 			headerListagem: HEADER,
