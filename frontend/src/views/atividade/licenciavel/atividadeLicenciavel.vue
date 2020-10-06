@@ -120,7 +120,7 @@ export default {
 		},
 
 		editarItem(item) {
-			// this.$router.push({name: 'EditarAtividadeLicenciavel', params: { idAtividadeDispensavel: item.id }});
+			this.$router.push({name: 'EditarAtividadeLicenciavel', params: { idAtividadeLicenciavel: item.id }});
 		},
 
 		ativarDesativarItem(item) {
