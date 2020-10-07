@@ -22,7 +22,7 @@
 <script>
 
 import GridListagem from '@/components/GridListagem';
-// import RelatorioService from '@/services/relatorio.service';
+import RelatorioService from '@/services/relatorio.service';
 import AtividadeService from '@/services/atividade.service';
 import snackbar from '@/services/snack.service';
 import { HEADER } from '@/utils/dadosHeader/ListagemAtividadeLicenciavelHeader';
@@ -38,7 +38,7 @@ export default {
 
 	data: () => {
 		return {
-			tituloAba: "atividade",
+			tituloAba: "atividade licenciável",
 			tituloListagem: "Listagem de atividades licenciáveis cadastradas",
 			placeholderPesquisa: "Pesquise pelo código ou nome da atividade licenciável",
 			headerListagem: HEADER,
@@ -56,7 +56,7 @@ export default {
 	methods: {
 
 		gerarRelatorio() {
-			// RelatorioService.baixarRelatorio("/tipoCaracterizacaoAtividade/atividadeLicenciavel/relatorio");
+			RelatorioService.baixarRelatorio("/atividadeLicenciavel/relatorio");
 		},
 
 		updatePagination(parametrosFiltro) {
