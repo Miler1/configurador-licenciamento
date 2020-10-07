@@ -144,6 +144,23 @@ const routes = [
 				component: () => import('@/views/atividade/dispensavel/TelaCadastro.vue')
 			},
 
+			// ATIVIDADE LICENCIÁVEL
+			{
+				path: 'atividades-licenciaveis',
+				name: 'atividadesLicenciaveis',
+				component: () => import('@/views/atividade/licenciavel/atividadeLicenciavel.vue')
+			},
+			{
+				path: 'atividades-licenciaveis/cadastrar',
+				name: 'CadastrarAtividadeLicenciavel',
+				component: () => import('@/views/atividade/licenciavel/TelaCadastro.vue')
+			},
+			{
+				path: 'atividades-licenciaveis/editar/:idAtividadeLicenciavel',
+				name: 'EditarAtividadeLicenciavel',
+				component: () => import('@/views/atividade/licenciavel/TelaCadastro.vue')
+			},
+
 			// UNDERCONSTRUCTION
 			{ 
 				path: '*', 

@@ -1,20 +1,28 @@
 package com.configuradorlicenciamento.atividade.services;
 
+import com.configuradorlicenciamento.atividade.dtos.AtividadeLicenciavelCsv;
 import com.configuradorlicenciamento.atividade.interfaces.IAtividadeService;
 import com.configuradorlicenciamento.atividade.models.Atividade;
 import com.configuradorlicenciamento.atividade.models.TipoAtividade;
 import com.configuradorlicenciamento.atividade.repositories.AtividadeRepository;
 import com.configuradorlicenciamento.atividade.repositories.TipoAtividadeRepository;
+import com.configuradorlicenciamento.atividade.specifications.AtividadeSpecification;
 import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.atividadeCnae.repositories.AtividadeCnaeRepository;
+import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.potencialPoluidor.models.PotencialPoluidor;
 import com.configuradorlicenciamento.potencialPoluidor.repositories.PotencialPoluidorRepository;
 import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.dtos.AtividadeDispensavelDTO;
 import com.configuradorlicenciamento.tipologia.models.Tipologia;
 import com.configuradorlicenciamento.tipologia.repositories.TipologiaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -93,6 +101,55 @@ public class AtividadeService implements IAtividadeService {
         atividadeRepository.save(atividade);
 
         return atividade;
+
+    }
+
+    @Override
+    public Page<Atividade> listarAtividadesLicenciaveis(Pageable pageable, FiltroPesquisa filtro) {
+
+        Specification<Atividade> specification = preparaFiltroAtividadeLicenciavel(filtro);
+
+        return atividadeRepository.findAll(specification, pageable);
+
+    }
+
+    @Override
+    public List<AtividadeLicenciavelCsv> listarAtividadesLicenciaveisParaCsv() {
+
+        List<Atividade> tiposAtividade = listarAtividadesLicenciaveis();
+        List<AtividadeLicenciavelCsv> dtos = new ArrayList<>();
+
+        for (Atividade tipoAtividade : tiposAtividade) {
+            dtos.add(tipoAtividade.preparaAtividadeLicenciavelParaCsv());
+        }
+
+        return dtos;
+
+    }
+
+    @Override
+    public List<Atividade> listarAtividadesLicenciaveis() {
+
+        Specification<Atividade> specification = Specification.where(AtividadeSpecification.padrao()
+                .and(AtividadeSpecification.filtrarAtividadesLicenciaveis()));
+
+        return atividadeRepository.findAll(specification, Sort.by("id"));
+
+    }
+
+    private Specification<Atividade> preparaFiltroAtividadeLicenciavel(FiltroPesquisa filtro) {
+
+        Specification<Atividade> specification = Specification.where(AtividadeSpecification.padrao()
+                .and(AtividadeSpecification.filtrarAtividadesLicenciaveis()));
+
+        if (filtro.getStringPesquisa() != null) {
+
+            specification = specification.and(AtividadeSpecification.atividadeNome(filtro.getStringPesquisa())
+                    .or(AtividadeSpecification.atividadeCodigo(filtro.getStringPesquisa())));
+
+        }
+
+        return specification;
 
     }
 

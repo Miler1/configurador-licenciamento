@@ -1,11 +1,14 @@
 package com.configuradorlicenciamento.atividade.models;
 
-import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
+import com.configuradorlicenciamento.atividade.dtos.AtividadeLicenciavelCsv;
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
+import com.configuradorlicenciamento.licenca.models.Licenca;
 import com.configuradorlicenciamento.potencialPoluidor.models.PotencialPoluidor;
 import com.configuradorlicenciamento.requisitoTecnico.models.RequisitoTecnico;
+import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.dtos.AtividadeDispensavelCsv;
 import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.dtos.AtividadeDispensavelDTO;
 import com.configuradorlicenciamento.tipologia.models.Tipologia;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -78,6 +81,16 @@ public class Atividade implements Serializable {
             {@JoinColumn(name = "id_tipo_atividade")})
     private List<TipoAtividade> tiposAtividades;
 
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinTable(schema = GlobalReferences.ESQUEMA, name = "rel_atividade_tipo_licenca", joinColumns =
+            {@JoinColumn(name = "id_atividade")}, inverseJoinColumns =
+            {@JoinColumn(name = "id_tipo_licenca")})
+    private List<Licenca> tiposLicencas;
+
+    @OneToMany(mappedBy="atividade")
+    @JsonManagedReference
+    private List<RelAtividadeParametroAtividade> parametros;
+
     public Atividade(AtividadeBuilder atividadeBuilder) {
         this.nome = atividadeBuilder.nome;
         this.codigo = atividadeBuilder.codigo;
@@ -95,6 +108,8 @@ public class Atividade implements Serializable {
         this.tiposAtividades = atividadeBuilder.tiposAtividades;
     }
 
+    public AtividadeLicenciavelCsv preparaAtividadeLicenciavelParaCsv() { return new AtividadeLicenciavelCsv(this); }
+
     public static class AtividadeBuilder {
 
         private String nome;
@@ -111,8 +126,6 @@ public class Atividade implements Serializable {
         private RequisitoTecnico requisitoTecnico;
         private Boolean v1;
         private List<TipoAtividade> tiposAtividades;
-
-        public AtividadeBuilder() {};
 
         public AtividadeBuilder(AtividadeDispensavelDTO.RelacaoCnaeTipologia atividadeDispensavelDTO) {
             this.dentroMunicipio = !atividadeDispensavelDTO.getForaMunicipio();
