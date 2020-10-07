@@ -1,5 +1,6 @@
 package com.configuradorlicenciamento.atividade.services;
 
+import com.configuradorlicenciamento.atividade.dtos.AtividadeLicenciavelCsv;
 import com.configuradorlicenciamento.atividade.interfaces.IAtividadeService;
 import com.configuradorlicenciamento.atividade.models.Atividade;
 import com.configuradorlicenciamento.atividade.models.TipoAtividade;
@@ -17,9 +18,11 @@ import com.configuradorlicenciamento.tipologia.repositories.TipologiaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -107,6 +110,30 @@ public class AtividadeService implements IAtividadeService {
         Specification<Atividade> specification = preparaFiltroAtividadeLicenciavel(filtro);
 
         return atividadeRepository.findAll(specification, pageable);
+
+    }
+
+    @Override
+    public List<AtividadeLicenciavelCsv> listarAtividadesLicenciaveisParaCsv() {
+
+        List<Atividade> tiposAtividade = listarAtividadesLicenciaveis();
+        List<AtividadeLicenciavelCsv> dtos = new ArrayList<>();
+
+        for (Atividade tipoAtividade : tiposAtividade) {
+            dtos.add(tipoAtividade.preparaAtividadeLicenciavelParaCsv());
+        }
+
+        return dtos;
+
+    }
+
+    @Override
+    public List<Atividade> listarAtividadesLicenciaveis() {
+
+        Specification<Atividade> specification = Specification.where(AtividadeSpecification.padrao()
+                .and(AtividadeSpecification.filtrarAtividadesLicenciaveis()));
+
+        return atividadeRepository.findAll(specification, Sort.by("id"));
 
     }
 

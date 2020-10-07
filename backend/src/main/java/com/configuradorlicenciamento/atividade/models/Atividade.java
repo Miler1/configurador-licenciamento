@@ -1,9 +1,11 @@
 package com.configuradorlicenciamento.atividade.models;
 
+import com.configuradorlicenciamento.atividade.dtos.AtividadeLicenciavelCsv;
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.licenca.models.Licenca;
 import com.configuradorlicenciamento.potencialPoluidor.models.PotencialPoluidor;
 import com.configuradorlicenciamento.requisitoTecnico.models.RequisitoTecnico;
+import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.dtos.AtividadeDispensavelCsv;
 import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.dtos.AtividadeDispensavelDTO;
 import com.configuradorlicenciamento.tipologia.models.Tipologia;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -106,6 +108,8 @@ public class Atividade implements Serializable {
         this.tiposAtividades = atividadeBuilder.tiposAtividades;
     }
 
+    public AtividadeLicenciavelCsv preparaAtividadeLicenciavelParaCsv() { return new AtividadeLicenciavelCsv(this); }
+
     public static class AtividadeBuilder {
 
         private String nome;
@@ -122,8 +126,6 @@ public class Atividade implements Serializable {
         private RequisitoTecnico requisitoTecnico;
         private Boolean v1;
         private List<TipoAtividade> tiposAtividades;
-
-        public AtividadeBuilder() {};
 
         public AtividadeBuilder(AtividadeDispensavelDTO.RelacaoCnaeTipologia atividadeDispensavelDTO) {
             this.dentroMunicipio = !atividadeDispensavelDTO.getForaMunicipio();
