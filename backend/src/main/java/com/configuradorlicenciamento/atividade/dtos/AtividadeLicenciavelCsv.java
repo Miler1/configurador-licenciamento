@@ -10,6 +10,7 @@ import lombok.Getter;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.IntStream;
 
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -17,27 +18,35 @@ public class AtividadeLicenciavelCsv implements Serializable {
 
     @CsvBindByName(column = "Código")
     @CsvBindByPosition(position = 0)
-    private String codigo;
+    private final String codigo;
 
     @CsvBindByName(column = "Nome")
     @CsvBindByPosition(position = 1)
-    private String nome;
+    private final String nome;
 
     @CsvBindByName(column = "Tipologia")
     @CsvBindByPosition(position = 2)
-    private String tipologia;
+    private final String tipologia;
 
     @CsvBindByName(column = "Parâmetros")
     @CsvBindByPosition(position = 3)
-    private String parametros;
+    private final String parametros;
 
-    @CsvBindByName(column = "Tipos de licença")
+    @CsvBindByName(column = "Tipos de licenças")
     @CsvBindByPosition(position = 4)
-    private String tiposLicencas;
+    private final String tiposLicencas;
 
     @CsvBindByName(column = "Status")
     @CsvBindByPosition(position = 5)
-    private String ativo;
+    private final String ativo;
+
+    @CsvBindByName(column = "Data de cadastro")
+    @CsvBindByPosition(position = 6)
+    private String dataCadastro;
+
+    @CsvBindByName(column = "Usuário")
+    @CsvBindByPosition(position = 7)
+    private String usuarioLicenciamento;
 
     public AtividadeLicenciavelCsv(Atividade atividade) {
 
@@ -50,34 +59,32 @@ public class AtividadeLicenciavelCsv implements Serializable {
 
     }
 
-    private String tratarParametrosParaCsv(List<RelAtividadeParametroAtividade> parametrosExistentes){
+    private String tratarParametrosParaCsv(List<RelAtividadeParametroAtividade> parametrosExistentes) {
 
         StringBuilder parametros = new StringBuilder();
 
-        for(int i = 0; i < parametrosExistentes.size(); i++){
-
-            parametros.append(parametrosExistentes.get(i).getParametro().getCodigo());
-
-            if(i != parametrosExistentes.size() - 1){
-                parametros.append(" - ");
-            }
-        }
+        IntStream.range(0, parametrosExistentes.size())
+                .forEach(idx -> {
+                    parametros.append(parametrosExistentes.get(idx).getParametro().getCodigo());
+                    if (idx != parametrosExistentes.size() - 1) {
+                        parametros.append(" - ");
+                    }
+                });
 
         return parametros.toString();
     }
 
-    private String tratarLicencasParaCsv(List<Licenca> licencasExistentes){
+    private String tratarLicencasParaCsv(List<Licenca> licencasExistentes) {
 
         StringBuilder licencas = new StringBuilder();
 
-        for(int i = 0; i < licencasExistentes.size(); i++){
-
-            licencas.append(licencasExistentes.get(i).getSigla());
-
-            if(i != licencasExistentes.size() - 1){
-                licencas.append(" - ");
-            }
-        }
+        IntStream.range(0, licencasExistentes.size())
+                .forEach(idx -> {
+                    licencas.append(licencasExistentes.get(idx).getSigla());
+                    if (idx != licencasExistentes.size() - 1) {
+                        licencas.append(" - ");
+                    }
+                });
 
         return licencas.toString();
     }

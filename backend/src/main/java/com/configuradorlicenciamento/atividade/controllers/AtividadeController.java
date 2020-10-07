@@ -31,8 +31,8 @@ public class AtividadeController extends DefaultController {
 
     @PostMapping(value = "listar")
     public ResponseEntity<Page<Atividade>> listarAtividadesLicenciaveis(HttpServletRequest request,
-                                                                                          @PageableDefault(size = 20) Pageable pageable,
-                                                                                          @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
+                                                                        @PageableDefault(size = 20) Pageable pageable,
+                                                                        @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
@@ -45,7 +45,7 @@ public class AtividadeController extends DefaultController {
     }
 
     @GetMapping(value = "relatorio")
-    public void relatorioCSV (HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void relatorioCSV(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
