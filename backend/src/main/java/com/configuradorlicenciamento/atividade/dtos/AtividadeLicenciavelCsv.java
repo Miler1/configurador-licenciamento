@@ -10,7 +10,6 @@ import lombok.Getter;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.stream.IntStream;
 
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -40,14 +39,6 @@ public class AtividadeLicenciavelCsv implements Serializable {
     @CsvBindByPosition(position = 5)
     private final String ativo;
 
-    @CsvBindByName(column = "Data de cadastro")
-    @CsvBindByPosition(position = 6)
-    private String dataCadastro;
-
-    @CsvBindByName(column = "Usuário")
-    @CsvBindByPosition(position = 7)
-    private String usuarioLicenciamento;
-
     public AtividadeLicenciavelCsv(Atividade atividade) {
 
         this.codigo = atividade.getCodigo();
@@ -61,32 +52,35 @@ public class AtividadeLicenciavelCsv implements Serializable {
 
     private String tratarParametrosParaCsv(List<RelAtividadeParametroAtividade> parametrosExistentes) {
 
-        StringBuilder parametros = new StringBuilder();
+        StringBuilder listaparametros = new StringBuilder();
 
-        IntStream.range(0, parametrosExistentes.size())
-                .forEach(idx -> {
-                    parametros.append(parametrosExistentes.get(idx).getParametro().getCodigo());
-                    if (idx != parametrosExistentes.size() - 1) {
-                        parametros.append(" - ");
-                    }
-                });
+        for (int i = 0; i < parametrosExistentes.size(); i++) {
 
-        return parametros.toString();
+            listaparametros.append(parametrosExistentes.get(i).getParametro().getCodigo());
+
+            if (i != parametrosExistentes.size() - 1) {
+                listaparametros.append(" - ");
+            }
+        }
+
+
+        return listaparametros.toString();
     }
 
     private String tratarLicencasParaCsv(List<Licenca> licencasExistentes) {
 
-        StringBuilder licencas = new StringBuilder();
+        StringBuilder listalicencas = new StringBuilder();
 
-        IntStream.range(0, licencasExistentes.size())
-                .forEach(idx -> {
-                    licencas.append(licencasExistentes.get(idx).getSigla());
-                    if (idx != licencasExistentes.size() - 1) {
-                        licencas.append(" - ");
-                    }
-                });
+        for (int i = 0; i < licencasExistentes.size(); i++) {
 
-        return licencas.toString();
+            listalicencas.append(licencasExistentes.get(i).getSigla());
+
+            if (i != licencasExistentes.size() - 1) {
+                listalicencas.append(" - ");
+            }
+        }
+
+        return listalicencas.toString();
     }
 
 }
