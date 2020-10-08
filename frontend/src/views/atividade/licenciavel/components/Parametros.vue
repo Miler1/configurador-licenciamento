@@ -147,7 +147,7 @@
 									:disabled="disableParametros(2)"
 								)
 
-								v-label Descrição da unidade do parâmetro 2
+								v-label Descrição da unidade do parâmetro 2 
 								i (Opcional)
 								v-tooltip(top, left, max-width=400)
 									template(v-slot:activator="{ on, attrs }")
