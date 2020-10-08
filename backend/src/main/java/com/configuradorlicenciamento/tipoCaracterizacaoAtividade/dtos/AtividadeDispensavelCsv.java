@@ -1,6 +1,5 @@
 package com.configuradorlicenciamento.tipoCaracterizacaoAtividade.dtos;
 
-import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.configuracao.utils.DateUtil;
 import com.configuradorlicenciamento.entradaUnica.services.EntradaUnicaWS;
 import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.models.TipoCaracterizacaoAtividade;

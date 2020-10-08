@@ -19,6 +19,10 @@
 
 						v-divider(v-if="index !== passos.length - 1", :key="Math.random()")
 
+		v-col(cols="12")
+
+			.tituloAcao {{isCadastro ? 'Cadastro de atividade licenciável' : 'Editar atividade licenciável'}}
+
 		v-col.py-0(cols="12")
 
 			PassoAtividades(
@@ -51,13 +55,13 @@
 				span Cancelar
 
 			div
-				v-btn#QA-btn-rascunho-atividade-licenciavel(v-show="false", @click="salvarRascunho", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
-					v-icon mdi-content-save
-					span Salvar
-
 				v-btn#QA-btn-voltar-atividade-licenciavel.ml-2(v-show="passo != 1", :disabled="passo === 1", @click="previousStep", outlined, :min-width="buttonMinWidth", large, color="#84A98C")
 					v-icon mdi-arrow-left
 					span Voltar
+
+				v-btn#QA-btn-rascunho-atividade-licenciavel.ml-2(v-show="true", @click="salvarRascunho", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
+					v-icon mdi-floppy
+					span Salvar
 
 				v-btn#QA-btn-proximo-cadastrar-atividade-licenciavel.ml-2.btn-cadastrar(@click="nextOrSubmit", :min-width="buttonMinWidth", large)
 					v-icon(color="white") {{nextButtonDecider().icon}}
@@ -261,17 +265,16 @@ export default {
 
 	created() {
 
-		if (this.$route.params.idAtividadeDispensavel) {
+		if (this.$route.params.idAtividadeLicenciavel) {
 
 			this.isCadastro = false;
-
-			TipoCaracterizacaoAtividadeService.findById(this.$route.params.idAtividadeDispensavel)
-				.then((response) => {
-					this.prepararDadosParaEdicao(response.data);
-				})
-				.catch(error => {
-					console.log(error.message);
-				});
+			// TipoCaracterizacaoAtividadeService.findById(this.$route.params.idAtividadeLicenciavel)
+			// 	.then((response) => {
+			// 		this.prepararDadosParaEdicao(response.data);
+			// 	})
+			// 	.catch(error => {
+			// 		console.log(error.message);
+			// 	});
 
 		}
 
