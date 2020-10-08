@@ -27,7 +27,7 @@
 
 			PassoAtividades(
 				v-if="passo == 1",
-				:atividades="atividadeLicenciavel.atividades",
+				:atividades="atividadeLicenciavel.atividade",
 				:erro="erros[0]"
 			)
 
@@ -111,7 +111,8 @@ export default {
 				{ invalido: false }
 			],
 			atividadeLicenciavel: {
-
+				atividade: {},
+				parametros: []
 			},
 			allowRedirect: false,
 			isCadastro: true,
@@ -305,7 +306,6 @@ export default {
 
 @import "../../../assets/css/variaveis.less";
 
-
 #tela-cadastro-atividade-licenciavel {
 
 	.tituloAcao {
@@ -405,6 +405,25 @@ export default {
 			color: @bg-text-field !important;
 		}
 	}
+}
+
+.v-expansion-panel-header {
+	background-color: @bg-header;
+	color: @text-color;
+	cursor: default;
+	font-size: 18px !important;
+	height: 70px;
+	padding: 0 20px;
+
+	.v-btn {
+		font-size: 16px;
+		text-transform: none !important;
+	}
+
+	.v-icon {
+		font-size: 20px !important;
+	}
+
 }
 
 </style>
