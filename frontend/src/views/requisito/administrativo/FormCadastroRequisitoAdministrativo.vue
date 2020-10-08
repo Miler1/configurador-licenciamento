@@ -97,13 +97,13 @@ export default {
 					idOption: "QA-btn-requisito-administrativo-pessoa-fisica",
 					value: "PF",
 					label: "Física",
-					width: "140px"
+					width: "130px"
 				},
 				{
 					idOption: "QA-btn-requisito-administrativo-pessoa-juridica",
 					value: "PJ",
 					label: "Jurídica",
-					width: "140px"
+					width: "130px"
 				}
 			],
 			optionsRequisitoAdm:[

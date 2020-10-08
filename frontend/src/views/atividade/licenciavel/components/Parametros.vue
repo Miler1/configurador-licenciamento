@@ -5,7 +5,7 @@
 	.cabecalho.pl-4.mb-7.rounded
 		v-row
 			v-col(cols="12", md="3")
-				v-label Codigo da Atividade
+				v-label Código da atividade
 				p.label-atividade 2102
 			v-col(cols="12", md="9")
 				v-label Atividade
@@ -55,7 +55,7 @@
 									return-object=true
 								)
 
-								v-label Descrição da unidade do parâmetro 
+								v-label Descrição da unidade do parâmetro 1 
 								i (Opcional)
 								v-tooltip(top, left, max-width=400)
 									template(v-slot:activator="{ on, attrs }")
@@ -110,8 +110,8 @@
 											type="number",
 											v-model="valor.maximo",
 											@click.native="resetErrorMessage",
-											:placeholder="validaValoresLimites(index, 'MAXIMO') ? 'Inderteminado': ''",
-											:error-messages="errorMessage(valor.maximo)",
+											:placeholder="validaValoresLimites(index, 'MAXIMO') ? 'Indeterminado': ''",
+											:error-messages="errorMessage(parametro1.descricaoUnidade)",
 											:disabled="disableParametros(1, index, 'MAXIMO')"
 											required,
 											dense,
@@ -147,7 +147,7 @@
 									:disabled="disableParametros(2)"
 								)
 
-								v-label Descrição da unidade do parâmetro 
+								v-label Descrição da unidade do parâmetro 2 
 								i (Opcional)
 								v-tooltip(top, left, max-width=400)
 									template(v-slot:activator="{ on, attrs }")
@@ -203,8 +203,8 @@
 											v-model.number="valor.maximo",
 											type="number",
 											@click.native="resetErrorMessage",
-											:placeholder="validaValoresLimites(index, 'MAXIMO') ? 'Inderteminado': ''"
-											:error-messages="errorMessage(valor.maximo)",
+											:placeholder="validaValoresLimites(index, 'MAXIMO') ? 'Indeterminado': ''"
+											:error-messages="errorMessage(parametro1.descricaoUnidade)",
 											:disabled="disableParametros(2, index, 'MAXIMO')",
 											required,
 											dense,
@@ -323,11 +323,13 @@ export default {
 					idOption: "QA-btn-atividade-licenciavel-parametro-simples",
 					value: "SIMPLES",
 					label: "Simples",
+					width: "130px"
 				},
 				{
 					idOption: "QA-btn-atividade-licenciavel-parametro-composto",
 					value: "COMPOSTO",
-					label: "Composto"
+					label: "Composto",
+					width: "130px"
 				}
 			]
 
