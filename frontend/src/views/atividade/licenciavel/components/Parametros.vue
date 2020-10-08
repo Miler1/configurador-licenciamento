@@ -322,11 +322,13 @@ export default {
 					idOption: "QA-btn-atividade-licenciavel-parametro-simples",
 					value: "SIMPLES",
 					label: "Simples",
+					width: "130px"
 				},
 				{
 					idOption: "QA-btn-atividade-licenciavel-parametro-composto",
 					value: "COMPOSTO",
-					label: "Composto"
+					label: "Composto",
+					width: "130px"
 				}
 			]
 
