@@ -74,6 +74,8 @@
 import PassoAtividades from '@/views/atividade/licenciavel/components/Atividades.vue';
 import PassoParametros from '@/views/atividade/licenciavel/components/Parametros.vue';
 import Resumo from '@/views/atividade/licenciavel/components/Resumo.vue';
+import snackbar from '@/services/snack.service';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/utils/helpers/messages-utils';
 
 export default {
 
@@ -145,12 +147,31 @@ export default {
 
 		nextStep() {
 
-			this.passo += 1;
-			window.scrollTo(0,0);
+			if (this.validar()) {
+
+				this.passo += 1;
+				window.scrollTo(0,0);
+
+			}
 
 		},
 
 		validar() {
+
+			let possivel = true;
+
+			for (let i = 0; i < this.passo; i++) {
+
+				if (!this.passos[i].validar()) {
+
+					possivel = false;
+					this.erros[i].invalido = true;
+
+				}
+
+			}
+
+			return possivel;
 
 		},
 
@@ -198,9 +219,32 @@ export default {
 
 		validarCnaesTipologias() {
 
+			return true;
+
 		},
 
-		validarPerguntas() {
+		validarParametros() {
+
+			let parametros = this.atividadeLicenciavel.parametros;
+			let valido = this.passos[1].completo = parametros && parametros.length > 0;
+
+			if (!valido) {
+				snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.parametros.avancarEtapa, snackbar.type.WARN);
+
+				return valido;
+			}
+
+			parametros.forEach(parametro => {
+				if(!parametro.porte) {
+					valido = false;
+				}
+			});
+
+			if (!valido) {
+				snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.parametros.avancarEtapaPorte, snackbar.type.WARN);
+			}
+
+			return valido;
 
 		},
 
@@ -283,7 +327,7 @@ export default {
 	mounted() {
 
 		this.passos[0].validar = this.validarCnaesTipologias;
-		this.passos[1].validar = this.validarPerguntas;
+		this.passos[1].validar = this.validarParametros;
 		this.passos[2].validar = () => true;
 
 	},

@@ -31,7 +31,7 @@
 									:options="optionsTipoParametro",
 									@changeOption="tipoParametro = $event"
 									:change="changeOption",
-									:disabled="parametros.length > 0"
+									:disabled="parametros.length > 0 && isInclusao"
 								)
 
 						v-row
@@ -85,7 +85,7 @@
 											v-model="valor.minimo",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MINIMO') ? '0': ''",
-											:error-messages="errorMessage(parametro1.descricaoUnidade)",
+											:error-messages="errorMessage(valor.minimo, index, 'MINIMO')",
 											:disabled="disableParametros(1, index, 'MINIMO')"
 											required,
 											dense,
@@ -96,7 +96,7 @@
 											label="Limite inferior incluso",
 											color="#84A98C",
 											@click="changeLimite(1, index, 'MINIMO')",
-											:error-messages="errorMessage(parametro1.descricaoUnidade)",
+											:error-messages="errorMessage(valor.limiteInferiorIncluso, index, 'MINIMO')",
 											:disabled="disableParametros(1, index, 'MINIMO')",
 											hide-details="auto"
 										)
@@ -122,7 +122,7 @@
 											label="Limite superior incluso",
 											color="#84A98C",
 											@click="changeLimite(1, index, 'MAXIMO')",
-											:error-messages="errorMessage(parametro1.descricaoUnidade)",
+											:error-messages="errorMessage(valor.limiteSuperiorIncluso)",
 											:disabled="disableParametros(1, index, 'MAXIMO')",
 											hide-details="auto"
 										)
@@ -174,10 +174,11 @@
 											outlined,
 											color="#E0E0E0",
 											v-model="valor.minimo",
+											v-model.number="valor.minimo",
 											type="number",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MINIMO') ? '0': ''",
-											:error-messages="errorMessage(parametro1.descricaoUnidade)",
+											:error-messages="errorMessage(valor.minimo)",
 											:disabled="disableParametros(2, index, 'MINIMO')",
 											required,
 											dense,
@@ -188,7 +189,7 @@
 											label="Limite inferior incluso",
 											color="#84A98C",
 											@click="changeLimite(2, index, 'MINIMO')",
-											:error-messages="errorMessage(parametro1.descricaoUnidade)",
+											:error-messages="errorMessage(valor.limiteInferiorIncluso)",
 											:disabled="disableParametros(2, index, 'MINIMO')",
 											hide-details="auto"
 										)
@@ -199,7 +200,7 @@
 										v-text-field.mb-0#QA-input-descricao-unidade(
 											outlined,
 											color="#E0E0E0",
-											v-model="valor.maximo",
+											v-model.number="valor.maximo",
 											type="number",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MAXIMO') ? 'Indeterminado': ''"
@@ -214,7 +215,7 @@
 											label="Limite superior incluso",
 											color="#84A98C",
 											@click="changeLimite(2, index, 'MAXIMO')",
-											:error-messages="errorMessage(parametro1.descricaoUnidade)",
+											:error-messages="errorMessage(valor.limiteSuperiorIncluso)",
 											:disabled="disableParametros(2, index, 'MAXIMO')",
 											hide-details="auto"
 										)
@@ -303,7 +304,7 @@ export default {
 			inputPesquisa: false,
 			hideFooter: true,
 			itemsPerPage: 20,
-			headerListagem: HEADER,
+			headerListagem: [... HEADER],
 
 			parametro1: {
 				parametro: null,
@@ -398,6 +399,9 @@ export default {
 				return;
 			}
 
+			let parametrosAnterior = [... this.parametros];
+			this.parametros.length = 0;
+
 			let dadoParametro = {
 				parametro1: null,
 				valorMinimoParametro1: null,
@@ -416,24 +420,32 @@ export default {
 
 			if(this.isParametroSimples()) {
 				
-				this.parametro1.valores.forEach(valor => {
+				this.parametro1.valores.forEach((valor, index) => {
 
 					dadoParametro.parametro1 = this.parametro1.parametro;
 					dadoParametro.valorMinimoParametro1 = valor.minimo;
 					dadoParametro.valorMaximoParametro1 = valor.maximo;
 					dadoParametro.limiteInferiorInclusoParametro1 = valor.limiteInferiorIncluso;
 					dadoParametro.limiteSuperiorInclusoParametro1 = valor.limiteSuperiorIncluso;
+
+					if(!this.isInclusao && parametrosAnterior.length === 4) {
+
+						dadoParametro.porte = parametrosAnterior[index].porte;
+						dadoParametro.licenciamentoMunicipal = parametrosAnterior[index].licenciamentoMunicipal;
+						dadoParametro.repasseOutroOrgao = parametrosAnterior[index].repasseOutroOrgao;
+
+					}
 
 					this.parametros.push({... dadoParametro});
 
 				});
 
-				this.headerListagem = HEADER;
+				this.headerListagem = [... HEADER];
 				this.headerListagem.splice(3,3);
 
 			} else {
 
-				this.parametro1.valores.forEach(valor => {
+				this.parametro1.valores.forEach((valor, index1) => {
 
 					dadoParametro.parametro1 = this.parametro1.parametro;
 					dadoParametro.valorMinimoParametro1 = valor.minimo;
@@ -441,7 +453,7 @@ export default {
 					dadoParametro.limiteInferiorInclusoParametro1 = valor.limiteInferiorIncluso;
 					dadoParametro.limiteSuperiorInclusoParametro1 = valor.limiteSuperiorIncluso;
 
-					this.parametro2.valores.forEach(valor => {
+					this.parametro2.valores.forEach((valor, index2) => {
 
 						dadoParametro.parametro2 = this.parametro2.parametro;
 						dadoParametro.valorMinimoParametro2 = valor.minimo;
@@ -449,20 +461,31 @@ export default {
 						dadoParametro.limiteInferiorInclusoParametro2 = valor.limiteInferiorIncluso;
 						dadoParametro.limiteSuperiorInclusoParametro2 = valor.limiteSuperiorIncluso;
 
+						if(!this.isInclusao && parametrosAnterior.length === 16) {
+
+							dadoParametro.porte = parametrosAnterior[(index1*4) + index2].porte;
+							dadoParametro.licenciamentoMunicipal = parametrosAnterior[(index1*4) + index2].licenciamentoMunicipal;
+							dadoParametro.repasseOutroOrgao = parametrosAnterior[(index1*4) + index2].repasseOutroOrgao;
+
+						}
+
 						this.parametros.push({... dadoParametro});
 
 					});
 
 				});
 
-				this.headerListagem = HEADER;
+				this.headerListagem = [... HEADER];
 
 			}
+
+			this.isInclusao = true;
 		
 		},
 
 		editarParametros() {
-			this.parametros = [];
+			this.isInclusao = false;
+			window.scrollTo(0,0);
 		},
 
 		filtroSelect(item, query, itemText) {
@@ -488,7 +511,7 @@ export default {
 
 		disableParametros(numeroParametro, index, tipo) {
 
-			if(this.parametros.length > 0) {
+			if(this.parametros.length > 0 && this.isInclusao) {
 				return true;
 			}
 

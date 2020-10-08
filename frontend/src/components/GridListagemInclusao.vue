@@ -44,10 +44,10 @@
 				v-select(:items="dadosSelect", item-text="nome", return-object, v-model="props.item.porte", hide-details="auto")
 
 			template(v-slot:item.licenciamentoMunicipal='{ item }')
-				v-simple-checkbox(v-model="item.licenciamentoMunicipal")
+				v-simple-checkbox(v-model="item.licenciamentoMunicipal", color="#84A98C",)
 
 			template(v-slot:item.repasseOutroOrgao='{ item }')
-				v-simple-checkbox(v-model="item.repasseOutroOrgao")
+				v-simple-checkbox(v-model="item.repasseOutroOrgao", color="#84A98C",)
 
 			template(v-slot:item.actions='{ item }')
 				v-tooltip(bottom)
