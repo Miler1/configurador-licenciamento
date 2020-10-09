@@ -308,7 +308,7 @@ export default {
 			labelTooltipDescricao: 'Esta é a descrição do campo parâmetro que será exibida para o solicitante ao informar o valor.',
 
 			tituloListagem: "Listagem de relações parâmetros / portes adicionadas",
-			labelNoData: 'Não existem relações parâmetros / portes  adicionadas.',
+			labelNoData: 'Não existem relações parâmetros / portes adicionadas.',
 			inputPesquisa: false,
 			hideFooter: true,
 			itemsPerPage: 20,
