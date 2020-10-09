@@ -82,6 +82,8 @@
 											outlined,
 											color="#E0E0E0",
 											type="number",
+											oninput="validity.valid||(value='');",
+											min="0",
 											v-model="valor.minimo",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MINIMO') ? '0': ''",
@@ -108,6 +110,8 @@
 											outlined,
 											color="#E0E0E0",
 											type="number",
+											oninput="validity.valid||(value='');",
+											min="0",
 											v-model="valor.maximo",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MAXIMO') ? 'Indeterminado': ''",
@@ -176,6 +180,8 @@
 											v-model="valor.minimo",
 											v-model.number="valor.minimo",
 											type="number",
+											oninput="validity.valid||(value='');",
+											min="0",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MINIMO') ? '0': ''",
 											:error-messages="errorMessage(valor.minimo)",
@@ -202,6 +208,8 @@
 											color="#E0E0E0",
 											v-model.number="valor.maximo",
 											type="number",
+											oninput="validity.valid||(value='');",
+											min="0",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MAXIMO') ? 'Indeterminado': ''"
 											:error-messages="errorMessage(parametro1.descricaoUnidade)",
@@ -585,7 +593,7 @@ export default {
 
 	created(){
 
-		ParametroService.findAll()
+		ParametroService.findAtivos()
 			.then((response) => {
 
 				this.parametrosDisponiveis = response.data;
@@ -603,8 +611,6 @@ export default {
 	},
 
 	mounted() {
-		this.$refs.toggleAtividadeLicenciavelParametro.setModel(this.optionsTipoParametro[0].value);
-		this.tipoParametro = this.optionsTipoParametro[0].value;
 
 		let valor = {
 			minimo: null,

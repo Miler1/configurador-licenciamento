@@ -88,12 +88,12 @@ public class ParametroController extends DefaultController {
 
     }
 
-    @GetMapping(value = "/findAll")
-    public ResponseEntity<List<Parametro>> findAll(HttpServletRequest request) throws Exception {
+    @GetMapping(value = "/findAtivos")
+    public ResponseEntity<List<Parametro>> findAtivos(HttpServletRequest request) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        List<Parametro> parametros = parametroService.listarParametros();
+        List<Parametro> parametros = parametroService.findAtivos();
 
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
