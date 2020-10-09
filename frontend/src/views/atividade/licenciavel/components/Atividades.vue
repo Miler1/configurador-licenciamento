@@ -99,9 +99,12 @@
 								color="#E0E0E0",
 								:placeholder="placeholderSelect",
 								item-color="grey darken-3",
+								v-model="relacaoAtividadeTipologiaCnae.setor",
+								:items="setores",
 								:filter="filtroSelect"
-								item-text="nome",
+								item-text="sigla",
 								:error-messages="errorMessage( relacaoAtividadeTipologiaCnae.setor, true )",
+								@input="v => {dados.setor = relacaoAtividadeTipologiaCnae.setor}",
 								@click.native="resetErrorMessage",
 								required,
 								return-object=true,
@@ -308,6 +311,7 @@ import PotencialPoluidorService from '@/services/potencialPoluidor.service';
 import atividadeCnaeService from '@/services/atividadeCnae.service';
 import RequisitoTecnicoService from '@/services/requisitoTecnico.service';
 import TaxaLicenciamentoService from '@/services/taxaLicenciamento.service';
+import EntradaUnicaWSService from '@/services/entradaUnica.service';
 import { HEADER } from '@/utils/dadosHeader/ListagemAtividadeCnaeInclusaoHeader';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
 import snackbar from '@/services/snack.service';
@@ -357,6 +361,7 @@ export default {
 			tipologias: [],
 			requisitosTecnicos: [],
 			taxasLicenciamento: [],
+			setores: [],
 			isInclusao: true,
 			isInclusaoCnae: true,
 			tituloListagem: "Listagem de CNAEs relacionados com a atividade",
@@ -679,6 +684,12 @@ export default {
 				this.taxasLicenciamento = response.data;
 
 				this.taxasLicenciamento.forEach(taxalicenciamento => taxalicenciamento.textoExibicao = taxalicenciamento.codigo + ' - ' + taxalicenciamento.descricao);
+			});
+
+		EntradaUnicaWSService.findSetores()
+			.then((response) => {
+				console.log(response.data);
+				this.setores = response.data;
 			});
 
 		if (this.$route.params.idAtividadeLicenciavel) {
