@@ -24,6 +24,7 @@
 				:customFilter='customFilter'
 				:items-per-page='itemsPerPage'
 				:footer-props='footerProps'
+				:hide-default-footer="hideFooter"
 				:no-results-text='labelNoResultset'
 			)
 
@@ -38,6 +39,15 @@
 					| {{parseFloat(item.valor) !== 0 ? parseFloat(item.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2}) : 'Isento'}}
 				span(v-else)
 					| {{item.valor}}
+
+			template(v-slot:item.porte='props')
+				v-select(:items="dadosSelect", item-text="nome", return-object, v-model="props.item.porte", hide-details="auto")
+
+			template(v-slot:item.licenciamentoMunicipal='{ item }')
+				v-simple-checkbox(v-model="item.licenciamentoMunicipal", color="#84A98C",)
+
+			template(v-slot:item.repasseOutroOrgao='{ item }')
+				v-simple-checkbox(v-model="item.repasseOutroOrgao", color="#84A98C",)
 
 			template(v-slot:item.actions='{ item }')
 				v-tooltip(bottom)
@@ -66,7 +76,6 @@ export default {
 	data: () => ({
 
 		stringPesquisa: null,
-		itemsPerPage: 10,
 		footerProps: {
 
 			itemsPerPageText: 'Resultados por página',
@@ -134,6 +143,17 @@ export default {
 			type: [Boolean],
 			default: true
 		},
+		hideFooter: {
+			type: [Boolean],
+			default: false
+		},
+		itemsPerPage: {
+			type: [Number],
+			default: 10
+		},
+		dadosSelect: {
+			type: [Array]
+		}
 
 	}
 

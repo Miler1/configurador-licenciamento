@@ -959,7 +959,7 @@ export default {
 				this.licencas = response.data;
 			});
 
-		ParametroService.findAll()
+		ParametroService.findAtivos()
 			.then((response) => {
 				this.parametros = response.data;
 			});

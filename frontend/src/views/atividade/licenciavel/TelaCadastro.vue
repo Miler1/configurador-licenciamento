@@ -100,7 +100,7 @@ export default {
 					validar: null
 				},
 				{
-					titulo: "Parâmetros",
+					titulo: "Parâmetros / Portes",
 					completo: false,
 					validar: null
 				},
@@ -243,9 +243,32 @@ export default {
 
 			return valido;
 
+			return true;
+
 		},
 
 		validarParametros() {
+
+			let parametros = this.atividadeLicenciavel.parametros;
+			let valido = this.passos[1].completo = parametros && parametros.length > 0;
+
+			if (!valido) {
+				snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.parametros.avancarEtapa, snackbar.type.WARN);
+
+				return valido;
+			}
+
+			parametros.forEach(parametro => {
+				if(!parametro.porte) {
+					valido = false;
+				}
+			});
+
+			if (!valido) {
+				snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.parametros.avancarEtapaPorte, snackbar.type.WARN);
+			}
+
+			return valido;
 
 			return false;
 			
@@ -359,7 +382,6 @@ export default {
 
 @import "../../../assets/css/variaveis.less";
 
-
 #tela-cadastro-atividade-licenciavel {
 
 	.tituloAcao {
@@ -459,6 +481,25 @@ export default {
 			color: @bg-text-field !important;
 		}
 	}
+}
+
+.v-expansion-panel-header {
+	background-color: @bg-header;
+	color: @text-color;
+	cursor: default;
+	font-size: 18px !important;
+	height: 70px;
+	padding: 0 20px;
+
+	.v-btn {
+		font-size: 16px;
+		text-transform: none !important;
+	}
+
+	.v-icon {
+		font-size: 20px !important;
+	}
+
 }
 
 </style>

@@ -119,8 +119,12 @@ const ERROR_MESSAGES = {
 		atividades: {
 			adicionarValores: ER_BASE + 'adicionar a relação Atividade/CNAE. ',
 			avancarEtapa: 'Aviso! Para avançar de etapa, é necessário adicionar ao menos uma atividade. ',
-		}
+		},
 
+		parametros: {
+			avancarEtapa: 'Aviso! Para avançar de etapa, é necessário adicionar o(s) parâmetro(s) e os intevalos e selecionar os portes. ',
+			avancarEtapaPorte: 'Aviso! Para avançar de etapa, é necessário selecionar os portes em todas as relações. '
+		},
 	}
 
 };

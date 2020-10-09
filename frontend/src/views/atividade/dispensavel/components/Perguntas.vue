@@ -10,7 +10,7 @@
 				template(v-slot:actions)
 					v-icon
 			v-expansion-panel-content
-				v-form(ref="requisito")
+				v-form(ref="atividadeDispensavelPergunta")
 					v-container.pa-0
 						v-row
 							v-col(cols="12", md="12")
