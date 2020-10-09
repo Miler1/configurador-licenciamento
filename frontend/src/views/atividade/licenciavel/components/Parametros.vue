@@ -611,8 +611,6 @@ export default {
 	},
 
 	mounted() {
-		this.$refs.toggleAtividadeLicenciavelParametro.setModel(this.optionsTipoParametro[0].value);
-		this.tipoParametro = this.optionsTipoParametro[0].value;
 
 		let valor = {
 			minimo: null,
