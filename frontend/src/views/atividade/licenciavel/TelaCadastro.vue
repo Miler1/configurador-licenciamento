@@ -97,7 +97,7 @@ export default {
 					validar: null
 				},
 				{
-					titulo: "Parâmetros",
+					titulo: "Parâmetros / Portes",
 					completo: false,
 					validar: null
 				},
