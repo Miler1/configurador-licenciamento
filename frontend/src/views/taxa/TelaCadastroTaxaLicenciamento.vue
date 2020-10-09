@@ -963,7 +963,7 @@ export default {
 		ParametroService.findAtivos()
 			.then((response) => {
 				this.parametros = response.data;
-				this.parametrosDisponiveis.forEach(parametro => parametro.textoExibicao = parametro.codigo + ' - ' + parametro.nome);
+				this.parametros.forEach(parametro => parametro.textoExibicao = parametro.codigo + ' - ' + parametro.nome);
 			});
 
 	},
