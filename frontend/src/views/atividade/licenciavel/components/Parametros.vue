@@ -258,7 +258,7 @@
 			v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
 				v-btn#QA-btn-editar-atividade-dispensavel-cnae(@click="editarParametros", large, outlined, color="#84A98C", v-if="parametros.length > 0")
 					v-icon mdi-pencil
-					span Editar
+					span Editar intervalos
 
 </template>
 
