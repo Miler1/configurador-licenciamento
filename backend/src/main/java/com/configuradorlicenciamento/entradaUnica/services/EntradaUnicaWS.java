@@ -72,13 +72,7 @@ public class EntradaUnicaWS extends CadastroUnificadoPessoaService {
 			return false;
 		}
 
-		Boolean statusCadastroUnificado = statusAplicacao(VariaveisAmbientes.entradaUnicaCadastroUnificado() + "/versao");
-
-		if(!statusCadastroUnificado) {
-			return false;
-		}
-
-		return true;
+		return statusAplicacao(VariaveisAmbientes.entradaUnicaCadastroUnificado() + "/versao");
 
 	}
 
@@ -89,15 +83,33 @@ public class EntradaUnicaWS extends CadastroUnificadoPessoaService {
 			WSHttpClientRequest request = new WSHttpClientRequest(MGAHttpClient.TPRequest.GET, urlAplicacao, 10000);
 			WSHttpResponse response = request.execute();
 
-			if(response.getStatus() == HttpStatus.OK.value()) {
-				return true;
-			}
-
-			return false;
+			return response.getStatus() == HttpStatus.OK.value();
 
 		} catch(Exception e) {
 			return false;
 		}
+
+	}
+
+	public static String findSetores() {
+
+		String urlFindSetor = VariaveisAmbientes.entradaUnicaCadastroUnificado() + "/public/setores/buscaSetores";
+
+		try {
+
+			WSHttpClientRequest request = new WSHttpClientRequest(MGAHttpClient.TPRequest.GET, urlFindSetor, 10000);
+
+			WSHttpResponse response = request.execute();
+
+			return response.getBody();
+
+		} catch (Exception e) {
+
+			System.out.println(e.getMessage());
+
+		}
+
+		return "";
 
 	}
 
