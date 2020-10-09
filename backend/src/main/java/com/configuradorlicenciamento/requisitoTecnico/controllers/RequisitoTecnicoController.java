@@ -5,6 +5,7 @@ import com.configuradorlicenciamento.configuracao.controllers.DefaultController;
 import com.configuradorlicenciamento.configuracao.enums.Acao;
 import com.configuradorlicenciamento.configuracao.utils.DateUtil;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
+import com.configuradorlicenciamento.documento.models.Documento;
 import com.configuradorlicenciamento.requisitoTecnico.dtos.RequisitoTecnicoDTO;
 import com.configuradorlicenciamento.configuracao.utils.csv.CustomMappingStrategy;
 import com.configuradorlicenciamento.requisitoTecnico.dtos.RequisitoTecnicoCsv;
@@ -22,6 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/requisitoTecnico")
@@ -111,6 +114,19 @@ public class RequisitoTecnicoController extends DefaultController {
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
                 .body(requisitoTecnicoDTO);
+
+    }
+
+    @GetMapping(value = "/buscarRequisitosAtivos")
+    public ResponseEntity<List<RequisitoTecnico>> findAll(HttpServletRequest request) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        List<RequisitoTecnico> requisitosTecnicoAtivos = requisitoTecnicoService.findAtivos();
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(requisitosTecnicoAtivos);
 
     }
 

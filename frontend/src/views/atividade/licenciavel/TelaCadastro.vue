@@ -27,7 +27,8 @@
 
 			PassoAtividades(
 				v-if="passo == 1",
-				:atividades="atividadeLicenciavel.atividades",
+				:cnaesAtividade="atividadeLicenciavel.cnaesAtividade",
+				:dados="atividadeLicenciavel.dados",
 				:erro="erros[0]"
 			)
 
@@ -73,7 +74,11 @@
 
 import PassoAtividades from '@/views/atividade/licenciavel/components/Atividades.vue';
 import PassoParametros from '@/views/atividade/licenciavel/components/Parametros.vue';
+import AtividadeService from '@/services/atividade.service';
+import TipoCaracterizacaoAtividadeService from '@/services/tipoCaracterizacaoAtividade.service';
 import Resumo from '@/views/atividade/licenciavel/components/Resumo.vue';
+import snackbar from '@/services/snack.service';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/utils/helpers/messages-utils';
 
 export default {
 
@@ -111,7 +116,21 @@ export default {
 				{ invalido: false }
 			],
 			atividadeLicenciavel: {
-
+				cnaesAtividade: [],
+				dados: {
+					codigoAtividade: null,
+					nomeAtividade: null,
+					tipologia: null,
+					licencas: [],
+					potencialPoluidor: null,
+					setor: null,
+					localizacaoAtividade: null,
+					foraEmpreendimento: null,
+					geometria: null,
+					requisitosTecnicos: null,
+					taxasLicenciamento: null
+				},
+				parametros: []
 			},
 			allowRedirect: false,
 			isCadastro: true,
@@ -122,7 +141,7 @@ export default {
 
 	methods: {
 
-		cadastrar(){
+		cadastrar() {
 
 		},
 
@@ -144,13 +163,29 @@ export default {
 
 		nextStep() {
 
-			this.passo += 1;
-			window.scrollTo(0,0);
+			if (this.validar()) {
+				this.passo += 1;
+				window.scrollTo(0,0);
+			}
 
 		},
 
 		validar() {
 
+			let possivel = true;
+
+			for (let i = 0; i < this.passo; i++) {
+
+				if (!this.passos[i].validar()) {
+
+					possivel = false;
+					this.erros[i].invalido = true;
+
+				}
+
+			}
+
+			return possivel;
 		},
 
 		previousStep() {
@@ -195,12 +230,25 @@ export default {
 
 		},
 
-		validarCnaesTipologias() {
+		validarCnaesAtividades() {
+			console.log('validarCnaesAtividades');
+			console.log(this.atividadeLicenciavel);
+			let cnaesAtividades = this.atividadeLicenciavel.cnaesAtividade;
+			let codigoAtividade = this.atividadeLicenciavel.codigoAtividade;
+			let valido = this.passos[0].completo = cnaesAtividades && cnaesAtividades.length > 0;
+
+			if (!valido) {
+				snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.atividades.avancarEtapa, snackbar.type.WARN);
+			}
+
+			return valido;
 
 		},
 
-		validarPerguntas() {
+		validarParametros() {
 
+			return false;
+			
 		},
 
 		confirmarCancelamento(next) {
@@ -210,7 +258,7 @@ export default {
 				title: '<p class="title-modal-confirm">Confirmar cancelamento - Atividade licenciável</p>',
 
 				html: this.isCadastro ?
-					`<p class="message-modal-confirm">Ao cancelar o cadastro, todas as informações serão perdidas.</p>
+					`<p class="message-modal-confirm">Ao cancelar o cadastro desta atividade, Todas as informações que não foram salvas serão descartadas.</p>
 					<p class="message-modal-confirm">
 						<b>Tem certeza que deseja cancelar o cadastro? Esta opção não poderá ser desfeita e todas as informações serão perdidas.</b>
 					</p>` :
@@ -258,6 +306,12 @@ export default {
 
 		prepararDadosParaEdicao(atividadeLicenciavel) {
 
+			this.atividadeLicenciavel = atividadeLicenciavel;
+
+			this.atividadeLicenciavel.cnaesTipologia.forEach(cnaeTipologia => {
+				cnaeTipologia.foraMunicipio = cnaeTipologia.foraMunicipio ? 'false' : 'true';
+			});
+
 		}
 
 	},
@@ -267,7 +321,7 @@ export default {
 		if (this.$route.params.idAtividadeLicenciavel) {
 
 			this.isCadastro = false;
-			// TipoCaracterizacaoAtividadeService.findById(this.$route.params.idAtividadeLicenciavel)
+			// AtividadeService.findById(this.$route.params.idAtividadeLicenciavel)
 			// 	.then((response) => {
 			// 		this.prepararDadosParaEdicao(response.data);
 			// 	})
@@ -281,10 +335,10 @@ export default {
 
 	mounted() {
 
-		this.passos[0].validar = this.validarCnaesTipologias;
-		this.passos[1].validar = this.validarPerguntas;
+		this.passos[0].validar = this.validarCnaesAtividades;
+		this.passos[1].validar = this.validarParametros;
 		this.passos[2].validar = () => true;
-
+		
 	},
 
 	beforeRouteLeave(to, from, next) {

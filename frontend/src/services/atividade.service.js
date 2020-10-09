@@ -19,6 +19,8 @@ export default {
 			return ApiService.post('atividadeLicenciavel/listar/?page=0&size=10&sort=nome,asc', {});
 		}
 
-	}
+	},
+
+	findById: async (idAtividade) => ApiService.get('atividadeLicenciavel/findById/' + idAtividade )
 
 };

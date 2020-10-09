@@ -29,4 +29,6 @@ public interface ICodigoTaxaLicenciamentoService {
 
     CodigoTaxaLicenciamentoEdicaoDTO findById(Integer codigoTaxaLicenciamento);
 
+    List<CodigoTaxaLicenciamento> findAtivos();
+
 }

@@ -13,6 +13,7 @@ import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciame
 import com.configuradorlicenciamento.taxaLicenciamento.interfaces.ICodigoTaxaLicenciamentoService;
 import com.configuradorlicenciamento.taxaLicenciamento.models.CodigoTaxaLicenciamento;
 import com.configuradorlicenciamento.taxaLicenciamento.dtos.CodigoTaxaLicenciamentoDTO;
+import com.configuradorlicenciamento.tipologia.models.Tipologia;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -114,6 +115,19 @@ public class CodigoTaxaLicenciamentoController extends DefaultController {
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
                 .body(codigoTaxaLicenciamentoEdicaoDTO);
+
+    }
+
+    @GetMapping(value = "/buscarTaxasAtivas")
+    public ResponseEntity<List<CodigoTaxaLicenciamento>> buscarTaxasAtivas(HttpServletRequest request) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        List<CodigoTaxaLicenciamento> codigoTaxaLicenciamentoAtivas = codigoTaxaLicenciamentoService.findAtivos();
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(codigoTaxaLicenciamentoAtivas);
 
     }
 

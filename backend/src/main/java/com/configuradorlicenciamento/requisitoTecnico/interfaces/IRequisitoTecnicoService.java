@@ -25,4 +25,7 @@ public interface IRequisitoTecnicoService {
     List<RequisitoTecnicoCsv> listarDocumentoParaCsv();
 
     RequisitoTecnicoEdicaoDTO findById(Integer idRequisito);
+
+    List<RequisitoTecnico> findAtivos();
+
 }
