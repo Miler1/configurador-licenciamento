@@ -158,6 +158,7 @@
 								item-color="grey darken-3",
 								:items="parametros",
 								:filter="filtroSelect"
+								item-text="textoExibicao",
 								item-text="codigo",
 								v-model="searchResult",
 								:search-input.sync="searchInput"
@@ -962,6 +963,7 @@ export default {
 		ParametroService.findAtivos()
 			.then((response) => {
 				this.parametros = response.data;
+				this.parametros.forEach(parametro => parametro.textoExibicao = parametro.codigo + ' - ' + parametro.nome);
 			});
 
 	},
