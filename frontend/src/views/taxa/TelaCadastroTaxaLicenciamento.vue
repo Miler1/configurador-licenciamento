@@ -159,7 +159,6 @@
 								:items="parametros",
 								:filter="filtroSelect"
 								item-text="textoExibicao",
-								item-text="codigo",
 								v-model="searchResult",
 								:search-input.sync="searchInput"
 								@change="adicionarParamentro",
