@@ -585,7 +585,7 @@ export default {
 
 	created(){
 
-		ParametroService.findAll()
+		ParametroService.findAtivos()
 			.then((response) => {
 
 				this.parametrosDisponiveis = response.data;

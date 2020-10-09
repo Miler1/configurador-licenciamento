@@ -24,6 +24,6 @@ export default {
 
 	},
 
-	findAll: async () => ApiService.get(`parametro/findAll`)
+	findAtivos: async () => ApiService.get(`parametro/findAtivos`)
 
 };

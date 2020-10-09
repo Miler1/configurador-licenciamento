@@ -5,11 +5,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ParametroRepository extends JpaRepository<Parametro, Integer>, JpaSpecificationExecutor<Parametro> {
 
     Boolean existsByCodigo(String codigo);
 
     Parametro findByCodigo(String codigo);
+
+    List<Parametro> findByAtivoOrderByCodigo(Boolean ativo);
 
 }

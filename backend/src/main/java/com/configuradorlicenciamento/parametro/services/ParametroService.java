@@ -141,4 +141,9 @@ public class ParametroService implements IParametroService {
         return parametroRepository.findAll(Sort.by("codigo"));
     }
 
+    @Override
+    public List<Parametro> findAtivos() {
+        return parametroRepository.findByAtivoOrderByCodigo(true);
+    }
+
 }
