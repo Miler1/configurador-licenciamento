@@ -82,9 +82,7 @@
 										v-text-field#QA-input-descricao-unidade(
 											outlined,
 											color="#E0E0E0",
-											type="number",
-											oninput="validity.valid||(value='');",
-											precision="2",
+											v-money="money"
 											min="0",
 											v-model="valor.minimo",
 											@click.native="resetErrorMessage",
@@ -111,9 +109,8 @@
 										v-text-field#QA-input-descricao-unidade(
 											outlined,
 											color="#E0E0E0",
-											type="number",
-											oninput="validity.valid||(value='');",
 											min="0",
+											v-money="index === 3 ? '' : money"
 											v-model="valor.maximo",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MAXIMO') ? 'Indeterminado': ''",
@@ -181,7 +178,7 @@
 											color="#E0E0E0",
 											v-model="valor.minimo",
 											type="number",
-											oninput="validity.valid||(value='');",
+											v-money="money"
 											min="0",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MINIMO') ? '0': ''",
@@ -209,7 +206,7 @@
 											color="#E0E0E0",
 											v-model="valor.maximo",
 											type="number",
-											oninput="validity.valid||(value='');",
+											v-money="money"
 											min="0",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MAXIMO') ? 'Indeterminado': ''"
@@ -271,6 +268,7 @@ import ToggleOptions from "@/components/ToggleOptions";
 import { HEADER } from '@/utils/dadosHeader/ListagemRelacaoParametroPorteInclusao';
 import ParametroService from '@/services/parametro.service';
 import PorteEmpreendimento from '@/services/porteEmpreendimento.service';
+import { VMoney } from 'v-money';
 
 export default {
 
@@ -280,6 +278,8 @@ export default {
 		GridListagemInclusao,
 		ToggleOptions
 	},
+
+	directives: {money: VMoney},
 
 	props: {
 
@@ -315,6 +315,12 @@ export default {
 			hideFooter: true,
 			itemsPerPage: 20,
 			headerListagem: [... HEADER],
+
+			money: {
+				decimal: ',',
+				thousands: '.',
+				precision: 2,
+			},
 
 			parametro1: {
 				parametro: null,
@@ -371,6 +377,10 @@ export default {
 					return (this.errorMessageEmpty || (item || parametro.valores[index+1].limiteInferiorIncluso)) ? '' : 'Obrigatório';
 				}
 			} else {
+
+				if(!this.errorMessageEmpty && item === '0,00'){
+					return 'Obrigatório';
+				}
 				if(tipo === 'MINIMO' && item){
 					return (this.errorMessageEmpty || (item && (item === parametro.valores[index-1].maximo))) ? '' : 'O valor mínimo do intervalo atual deve ser igual ao valor máximo do intervalo anterior!';
 				}
