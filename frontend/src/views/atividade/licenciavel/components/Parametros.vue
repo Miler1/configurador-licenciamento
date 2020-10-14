@@ -89,7 +89,7 @@
 											v-model="valor.minimo",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MINIMO') ? '0': ''",
-											:error-messages="errorMessage(valor.minimo)",
+											:error-messages="errorMessage(valor.minimo, null, 1, index, 'MINIMO', false)",
 											:disabled="disableParametros(1, index, 'MINIMO')"
 											required,
 											dense,
@@ -100,7 +100,7 @@
 											label="Limite inferior incluso",
 											color="#84A98C",
 											@click="changeLimite(1, index, 'MINIMO')",
-											:error-messages="errorMessage(valor.limiteInferiorIncluso)",
+											:error-messages="errorMessage(valor.limiteInferiorIncluso, null, 1, index, 'MINIMO', true)",
 											:disabled="disableParametros(1, index, 'MINIMO')",
 											hide-details="auto"
 										)
@@ -117,7 +117,7 @@
 											v-model="valor.maximo",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MAXIMO') ? 'Indeterminado': ''",
-											:error-messages="errorMessage(valor.maximo)",
+											:error-messages="errorMessage(valor.maximo, null, 1, index, 'MAXIMO', false)",
 											:disabled="disableParametros(1, index, 'MAXIMO')"
 											required,
 											dense,
@@ -128,7 +128,7 @@
 											label="Limite superior incluso",
 											color="#84A98C",
 											@click="changeLimite(1, index, 'MAXIMO')",
-											:error-messages="errorMessage(valor.limiteSuperiorIncluso)",
+											:error-messages="errorMessage(valor.limiteSuperiorIncluso, null, 1, index, 'MAXIMO', true)",
 											:disabled="disableParametros(1, index, 'MAXIMO')",
 											hide-details="auto"
 										)
@@ -185,7 +185,7 @@
 											min="0",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MINIMO') ? '0': ''",
-											:error-messages="errorMessage(valor.minimo)",
+											:error-messages="errorMessage(valor.minimo, null, 2, index, 'MINIMO', false)",
 											:disabled="disableParametros(2, index, 'MINIMO')",
 											required,
 											dense,
@@ -196,7 +196,7 @@
 											label="Limite inferior incluso",
 											color="#84A98C",
 											@click="changeLimite(2, index, 'MINIMO')",
-											:error-messages="errorMessage(valor.limiteInferiorIncluso)",
+											:error-messages="errorMessage(valor.limiteInferiorIncluso, null, 2, index, 'MINIMO', true)",
 											:disabled="disableParametros(2, index, 'MINIMO')",
 											hide-details="auto"
 										)
@@ -213,7 +213,7 @@
 											min="0",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MAXIMO') ? 'Indeterminado': ''"
-											:error-messages="errorMessage(valor.maximo)",
+											:error-messages="errorMessage(valor.maximo, null, 2, index, 'MAXIMO', false)",
 											:disabled="disableParametros(2, index, 'MAXIMO')",
 											required,
 											dense,
@@ -224,7 +224,7 @@
 											label="Limite superior incluso",
 											color="#84A98C",
 											@click="changeLimite(2, index, 'MAXIMO')",
-											:error-messages="errorMessage(valor.limiteSuperiorIncluso)",
+											:error-messages="errorMessage(valor.limiteSuperiorIncluso, null, 2, index, 'MAXIMO', true)",
 											:disabled="disableParametros(2, index, 'MAXIMO')",
 											hide-details="auto"
 										)
@@ -349,7 +349,33 @@ export default {
 
 	methods: {
 
-		errorMessage(item) {
+		errorMessage(item, isInclusao, numeroParametro, index, tipo, check) {
+
+			if(this.validaValoresLimites(index, tipo)){
+				return '';
+			}
+
+			let parametro = null;
+
+			if(numeroParametro === 1) {
+				parametro = this.parametro1;
+			} else {
+				parametro = this.parametro2;
+			}
+
+			if(check){
+				if(tipo === 'MINIMO'){
+					return (this.errorMessageEmpty || (item || parametro.valores[index-1].limiteSuperiorIncluso)) ? '' : 'Obrigatório';
+				}
+				if(tipo === 'MAXIMO'){
+					return (this.errorMessageEmpty || (item || parametro.valores[index+1].limiteInferiorIncluso)) ? '' : 'Obrigatório';
+				}
+			} else {
+				if(tipo === 'MINIMO' && item){
+					return (this.errorMessageEmpty || (item && (item === parametro.valores[index-1].maximo))) ? '' : 'O valor mínimo do intervalo atual deve ser igual ao valor máximo do intervalo anterior!';
+				}
+			}
+
 			return (this.errorMessageEmpty || item) ? '' : 'Obrigatório';
 		},
 
@@ -650,6 +676,9 @@ export default {
 					this.parametro2.valores.push({... valor});
 
 				});
+				
+				this.headerListagem = [... HEADER];
+				this.headerListagem.splice(3,3);
 
 			} else {
 
