@@ -676,6 +676,9 @@ export default {
 					this.parametro2.valores.push({... valor});
 
 				});
+				
+				this.headerListagem = [... HEADER];
+				this.headerListagem.splice(3,3);
 
 			} else {
 
