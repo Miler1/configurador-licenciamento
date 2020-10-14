@@ -27,6 +27,7 @@
 									ref="toggleAtividadeLicenciavelParametro",
 									labelOption="Tipo de parâmetro",
 									idToggle="QA-btn-toggle-atividade-licenciavel-parametro",
+									:class="{disable:parametros.length > 0}"
 									:errorMessage="errorMessage",
 									:options="optionsTipoParametro",
 									@changeOption="tipoParametro = $event"
@@ -35,7 +36,7 @@
 								)
 
 						v-row
-							v-col(cols="12", md="6")
+							v-col(cols="12", :md="isParametroSimples() ? '12': '6'", v-if="isParametroSimples() || isParametroComposto()")
 								v-label Parâmetro 1
 								v-autocomplete#QA-select-parametro-1(
 									outlined,
@@ -132,7 +133,7 @@
 											hide-details="auto"
 										)
 
-							v-col(cols="12", md="6", v-if='true')
+							v-col(cols="12", md="6", v-if='isParametroComposto()')
 								v-label Parâmetro 2
 								v-autocomplete#QA-select-parametro-2(
 									outlined,
@@ -179,7 +180,6 @@
 											outlined,
 											color="#E0E0E0",
 											v-model="valor.minimo",
-											v-model.number="valor.minimo",
 											type="number",
 											oninput="validity.valid||(value='');",
 											min="0",
@@ -207,7 +207,7 @@
 										v-text-field.mb-0#QA-input-descricao-unidade(
 											outlined,
 											color="#E0E0E0",
-											v-model.number="valor.maximo",
+											v-model="valor.maximo",
 											type="number",
 											oninput="validity.valid||(value='');",
 											min="0",
@@ -516,7 +516,13 @@ export default {
 		},
 
 		isParametroSimples() {
+			console.log('SIMPLES: ', this.tipoParametro);
 			return this.tipoParametro === 'SIMPLES';
+		},
+
+		isParametroComposto() {
+			console.log('COMPOSTO: ', this.tipoParametro);
+			return this.tipoParametro === 'COMPOSTO';
 		},
 
 		validaValoresLimites(index, tipo) {
@@ -773,6 +779,13 @@ export default {
 	span {
 		color: gray !important;
 	}
+}
+.disable{
+
+	#QA-btn-toggle-atividade-licenciavel-parametro{
+		cursor: not-allowed !important;
+	}
+
 }
 
 </style>
