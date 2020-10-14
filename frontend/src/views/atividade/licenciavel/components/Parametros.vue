@@ -384,6 +384,9 @@ export default {
 				if(tipo === 'MINIMO' && item){
 					return (this.errorMessageEmpty || (item && (item === parametro.valores[index-1].maximo))) ? '' : 'O valor mínimo do intervalo atual deve ser igual ao valor máximo do intervalo anterior!';
 				}
+				if(tipo === 'MAXIMO' && item){
+					return (this.errorMessageEmpty || (item && (item > parametro.valores[index].minimo))) ? '' : 'O valor máximo não deve ser menor ou igual ao valor mínimo no intervalo atual!';
+				}
 			}
 
 			return (this.errorMessageEmpty || item) ? '' : 'Obrigatório';
@@ -425,6 +428,7 @@ export default {
 				if(!parametro.valores[i].maximo
 					|| !parametro.valores[i + 1].minimo
 					|| parametro.valores[i].maximo !== parametro.valores[i + 1].minimo
+					|| parametro.valores[i].maximo <= parametro.valores[i].minimo
 					|| (!parametro.valores[i + 1].limiteInferiorIncluso && !parametro.valores[i].limiteSuperiorIncluso)) {
 
 					valido = false;
