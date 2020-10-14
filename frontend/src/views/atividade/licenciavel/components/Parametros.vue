@@ -57,7 +57,7 @@
 								)
 
 								v-label Descrição da unidade do parâmetro 1 
-								i (Opcional)
+									i (Opcional)
 								v-tooltip(top, left, max-width=400)
 									template(v-slot:activator="{ on, attrs }")
 										v-icon.information.ml-1(v-bind="attrs", v-on="on") mdi-information
@@ -89,7 +89,7 @@
 											v-model="valor.minimo",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MINIMO') ? '0': ''",
-											:error-messages="errorMessage(valor.minimo, index, 'MINIMO')",
+											:error-messages="errorMessage(valor.minimo)",
 											:disabled="disableParametros(1, index, 'MINIMO')"
 											required,
 											dense,
@@ -100,7 +100,7 @@
 											label="Limite inferior incluso",
 											color="#84A98C",
 											@click="changeLimite(1, index, 'MINIMO')",
-											:error-messages="errorMessage(valor.limiteInferiorIncluso, index, 'MINIMO')",
+											:error-messages="errorMessage(valor.limiteInferiorIncluso)",
 											:disabled="disableParametros(1, index, 'MINIMO')",
 											hide-details="auto"
 										)
@@ -154,7 +154,7 @@
 								)
 
 								v-label Descrição da unidade do parâmetro 2 
-								i (Opcional)
+									i (Opcional)
 								v-tooltip(top, left, max-width=400)
 									template(v-slot:activator="{ on, attrs }")
 										v-icon.information.ml-1(v-bind="attrs", v-on="on") mdi-information
@@ -251,7 +251,8 @@
 		:inputPesquisa="inputPesquisa",
 		:hideFooter="hideFooter",
 		:itemsPerPage="itemsPerPage",
-		:dadosSelect="portesEmpreendimento"
+		:dadosSelect="portesEmpreendimento",
+		:errorMessage="errorMessageValido"
 	)
 
 	v-container.pa-0.mt-5
@@ -349,13 +350,11 @@ export default {
 	methods: {
 
 		errorMessage(item) {
+			return (this.errorMessageEmpty || item) ? '' : 'Obrigatório';
+		},
 
-			// if (this.erro.invalido && this.pergunta) {
-			// 	return 'Adicione a pergunta primeiro';
-			// }
-
-			return (this.errorMessageEmpty || item) && !this.erro.invalido ? '' : 'Obrigatório';
-
+		errorMessageValido(item) {
+			return (!this.erro.invalido || item) ? '' : 'Obrigatório';
 		},
 
 		resetErrorMessage() {
@@ -516,12 +515,10 @@ export default {
 		},
 
 		isParametroSimples() {
-			console.log('SIMPLES: ', this.tipoParametro);
 			return this.tipoParametro === 'SIMPLES';
 		},
 
 		isParametroComposto() {
-			console.log('COMPOSTO: ', this.tipoParametro);
 			return this.tipoParametro === 'COMPOSTO';
 		},
 
@@ -629,6 +626,7 @@ export default {
 			if(this.parametros.length === 4) {
 
 				this.$refs.toggleAtividadeLicenciavelParametro.setModel(this.optionsTipoParametro[0].value);
+				this.tipoParametro = this.optionsTipoParametro[0].value;
 
 				this.parametro1.parametro = this.parametros[0].parametro1;
 				this.parametro1.descricaoUnidade = this.parametros[0].descricaoUnidade1; 
@@ -656,6 +654,7 @@ export default {
 			} else {
 
 				this.$refs.toggleAtividadeLicenciavelParametro.setModel(this.optionsTipoParametro[1].value);
+				this.tipoParametro = this.optionsTipoParametro[1].value;
 
 				this.parametro1.parametro = this.parametros[0].parametro1;
 				this.parametro1.descricaoUnidade = this.parametros[0].descricaoUnidade1;
