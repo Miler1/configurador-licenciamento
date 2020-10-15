@@ -82,9 +82,10 @@
 										v-text-field#QA-input-descricao-unidade(
 											outlined,
 											color="#E0E0E0",
-											v-money="money"
+											v-money="money",
 											min="0",
-											v-model="valor.minimo",
+											ref="valorminimo",
+											v-model.lazy="valor.minimo",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MINIMO') ? '0': ''",
 											:error-messages="errorMessage(valor.minimo, null, 1, index, 'MINIMO', false)",
@@ -110,8 +111,9 @@
 											outlined,
 											color="#E0E0E0",
 											min="0",
+											ref="valormaximo",
 											v-money="index === 3 ? '' : money"
-											v-model="valor.maximo",
+											v-model.lazy="valor.maximo",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MAXIMO') ? 'Indeterminado': ''",
 											:error-messages="errorMessage(valor.maximo, null, 1, index, 'MAXIMO', false)",
@@ -176,10 +178,11 @@
 										v-text-field#QA-input-descricao-unidade(
 											outlined,
 											color="#E0E0E0",
-											v-model="valor.minimo",
+											v-model.lazy="valor.minimo",
 											type="number",
 											v-money="money"
 											min="0",
+											ref="valorminimo",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MINIMO') ? '0': ''",
 											:error-messages="errorMessage(valor.minimo, null, 2, index, 'MINIMO', false)",
@@ -204,10 +207,11 @@
 										v-text-field.mb-0#QA-input-descricao-unidade(
 											outlined,
 											color="#E0E0E0",
-											v-model="valor.maximo",
+											v-model.lazy="valor.maximo",
 											type="number",
 											v-money="money"
 											min="0",
+											ref="valormaximo",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MAXIMO') ? 'Indeterminado': ''"
 											:error-messages="errorMessage(valor.maximo, null, 2, index, 'MAXIMO', false)",
@@ -319,7 +323,7 @@ export default {
 			money: {
 				decimal: ',',
 				thousands: '.',
-				precision: 2,
+				precision: 2
 			},
 
 			parametro1: {
@@ -584,6 +588,7 @@ export default {
 		},
 
 		limparDados() {
+			this.$refs.toggleAtividadeLicenciavelParametro.clearModel();
 			if(this.parametros.length === 0) {
 				this.clearParametro(this.parametro1);
 				this.clearParametro(this.parametro2);
@@ -606,10 +611,16 @@ export default {
 		clearParametro(parametro) {
 			parametro.parametro = null;
 			parametro.descricaoUnidade = null;
-			parametro.valores.forEach(valor => this.resetaDadosValores(valor));
+			parametro.valores.forEach((valor, index) => this.resetaDadosValores(valor, index));
 		},
 
-		resetaDadosValores(valor) {
+		resetaDadosValores(valor, i) {
+
+			if (this.$refs.valorminimo != undefined || this.$refs.valormaximo != undefined) {
+				this.$refs.valorminimo[i].$el.getElementsByTagName('input')[0].value = 0;
+				this.$refs.valormaximo[i].$el.getElementsByTagName('input')[0].value = 0;
+			}
+
 			valor.minimo = null;
 			valor.maximo = null;
 			valor.limiteInferiorIncluso = null;
