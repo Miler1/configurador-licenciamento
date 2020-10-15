@@ -129,17 +129,11 @@ export default {
 					requisitosTecnicos: null,
 					taxasLicenciamento: null,
 					selectedLocalizacao: [],
-					selectedGeometria: [
-						{
-							ponto: false
-						},
-						{
-							linha: false
-						},
-						{
-							poligono: false
-						}
-					]
+					selectedGeometria: {
+						ponto: false,
+						linha: false,
+						poligono: false
+					}
 				},
 				parametros: []
 			},
@@ -255,7 +249,7 @@ export default {
 				dados.setor &&
 				dados.selectedLocalizacao && dados.selectedLocalizacao.length > 0 &&
 				dados.foraEmpreendimento != null &&
-				dados.selectedGeometria && dados.selectedGeometria.length > 0 && (!dados.selectedGeometria[0].ponto || !dados.selectedGeometria[1].linha || !dados.selectedGeometria[2].poligono) &&
+				(dados.selectedGeometria.ponto || dados.selectedGeometria.linha || dados.selectedGeometria.poligono) &&
 				dados.requisitosTecnicos != null &&
 				dados.taxasLicenciamento != null;
 

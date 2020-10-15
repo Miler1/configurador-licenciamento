@@ -158,7 +158,7 @@
 								v-label Geometria da atividade
 							div
 								v-checkbox.mt-0.mr-8.d-inline-flex(
-									v-model="dados.selectedGeometria[0].ponto",
+									v-model="dados.selectedGeometria.ponto",
 									label="Ponto",
 									value="true",
 									color="#84A98C",
@@ -168,7 +168,7 @@
 									:error-messages="errorMessageGeometria(dados.selectedGeometria)",
 								)
 								v-checkbox.mt-0.mr-8.d-inline-flex(
-									v-model="dados.selectedGeometria[1].linha",
+									v-model="dados.selectedGeometria.linha",
 									label="Linha",
 									value="true",
 									color="#84A98C",
@@ -179,7 +179,7 @@
 									:hide-details="setDetails(dados.selectedGeometria, 0)"
 								)
 								v-checkbox.mt-0.d-inline-flex(
-									v-model="dados.selectedGeometria[2].poligono",
+									v-model="dados.selectedGeometria.poligono",
 									label="Polígono",
 									value="true",
 									color="#84A98C",
@@ -438,16 +438,8 @@ export default {
 
 		errorMessageGeometria(value) {
 
-			if (Array.isArray(value)) {
-
-				if (this.erro.invalido) {
-
-					if (!value[0].ponto && !value[1].linha && !value[2].poligono) {
-						return 'Obrigatório';
-					}
-
-				}
-
+			if (!value.ponto && !value.linha && !value.poligono) {
+				return 'Obrigatório';
 			}
 
 		},
