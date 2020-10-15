@@ -4,8 +4,8 @@ import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoun
 import com.configuradorlicenciamento.configuracao.exceptions.ConflictException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.configuracao.utils.StringUtil;
-import com.configuradorlicenciamento.requisitoTecnico.dtos.RequisitoTecnicoDTO;
 import com.configuradorlicenciamento.requisitoTecnico.dtos.RequisitoTecnicoCsv;
+import com.configuradorlicenciamento.requisitoTecnico.dtos.RequisitoTecnicoDTO;
 import com.configuradorlicenciamento.requisitoTecnico.dtos.RequisitoTecnicoEdicaoDTO;
 import com.configuradorlicenciamento.requisitoTecnico.interfaces.IRequisitoTecnicoService;
 import com.configuradorlicenciamento.requisitoTecnico.interfaces.ITipoLicencaGrupoDocumentoService;
@@ -23,8 +23,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -47,7 +47,7 @@ public class RequisitoTecnicoService implements IRequisitoTecnicoService {
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
         requisitoTecnicoDTO.setCodigo(StringUtil.tratarEspacos(requisitoTecnicoDTO.getCodigo()));
-        if(!requisitoTecnicoRepository.findByCodigo(requisitoTecnicoDTO.getCodigo()).isEmpty()){
+        if (!requisitoTecnicoRepository.findByCodigo(requisitoTecnicoDTO.getCodigo()).isEmpty()) {
             throw new ConflictException("Já existe um grupo com o mesmo código.");
         }
 
@@ -75,7 +75,7 @@ public class RequisitoTecnicoService implements IRequisitoTecnicoService {
 
         List<RequisitoTecnico> existentes = requisitoTecnicoRepository.findByCodigo(requisitoTecnicoDTO.getCodigo());
 
-        if(!existentes.isEmpty() && !existentes.get(0).getId().equals(requisitoTecnicoDTO.getId())){
+        if (!existentes.isEmpty() && !existentes.get(0).getId().equals(requisitoTecnicoDTO.getId())) {
             throw new ConflictException("Já existe um grupo com o mesmo código.");
         }
 
@@ -157,6 +157,11 @@ public class RequisitoTecnicoService implements IRequisitoTecnicoService {
 
         return new RequisitoTecnicoEdicaoDTO(requisitoTecnico, tipoLicencaGrupoDocumentoList);
 
+    }
+
+    @Override
+    public List<RequisitoTecnico> findAtivos() {
+        return requisitoTecnicoRepository.findByAtivo(true);
     }
 
 }
