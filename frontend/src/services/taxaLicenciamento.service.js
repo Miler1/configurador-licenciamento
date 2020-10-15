@@ -26,6 +26,8 @@ export default {
 			return ApiService.post('codigoTaxaLicenciamento/listar/?page=0&size=10&sort=codigo', {});
 		}
 
-	}
+	},
+
+	buscarCodigoTaxasLicenciamentoAtivas: async () => ApiService.get(`codigoTaxaLicenciamento/buscarTaxasAtivas`),
 
 };
