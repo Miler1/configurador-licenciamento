@@ -12,4 +12,6 @@ public interface RequisitoTecnicoRepository extends JpaRepository<RequisitoTecni
 
     List<RequisitoTecnico> findByCodigo(String codigo);
 
+    List<RequisitoTecnico> findByAtivo(Boolean ativo);
+
 }

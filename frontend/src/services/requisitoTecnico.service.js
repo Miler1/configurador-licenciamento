@@ -26,6 +26,8 @@ export default {
 
 	},
 
-	findById: async (idRequisito) => ApiService.get('requisitoTecnico/findById/' + idRequisito )
+	findById: async (idRequisito) => ApiService.get('requisitoTecnico/findById/' + idRequisito ),
+
+	buscarRequisitosTecnicosAtivos: async () => ApiService.get(`requisitoTecnico/buscarRequisitosAtivos`)
 
 };
