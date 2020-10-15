@@ -22,4 +22,5 @@ public interface IParametroService {
 
    Parametro editar(HttpServletRequest request, ParametroDTO parametroDTO);
 
+   List<Parametro> findAtivos();
 }

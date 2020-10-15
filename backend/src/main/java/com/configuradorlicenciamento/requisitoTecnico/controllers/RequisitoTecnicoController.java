@@ -5,9 +5,9 @@ import com.configuradorlicenciamento.configuracao.controllers.DefaultController;
 import com.configuradorlicenciamento.configuracao.enums.Acao;
 import com.configuradorlicenciamento.configuracao.utils.DateUtil;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
-import com.configuradorlicenciamento.requisitoTecnico.dtos.RequisitoTecnicoDTO;
 import com.configuradorlicenciamento.configuracao.utils.csv.CustomMappingStrategy;
 import com.configuradorlicenciamento.requisitoTecnico.dtos.RequisitoTecnicoCsv;
+import com.configuradorlicenciamento.requisitoTecnico.dtos.RequisitoTecnicoDTO;
 import com.configuradorlicenciamento.requisitoTecnico.dtos.RequisitoTecnicoEdicaoDTO;
 import com.configuradorlicenciamento.requisitoTecnico.interfaces.IRequisitoTecnicoService;
 import com.configuradorlicenciamento.requisitoTecnico.models.RequisitoTecnico;
@@ -19,9 +19,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/requisitoTecnico")
@@ -111,6 +112,19 @@ public class RequisitoTecnicoController extends DefaultController {
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
                 .body(requisitoTecnicoDTO);
+
+    }
+
+    @GetMapping(value = "/buscarRequisitosAtivos")
+    public ResponseEntity<List<RequisitoTecnico>> findAtivos(HttpServletRequest request) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        List<RequisitoTecnico> requisitosTecnicoAtivos = requisitoTecnicoService.findAtivos();
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(requisitosTecnicoAtivos);
 
     }
 

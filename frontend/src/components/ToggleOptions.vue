@@ -16,7 +16,8 @@
 				:color="color",
 				:value="option.value",
 				:width="option.width ? option.width : '100px'",
-				:height="option.height ? option.height : '40px'"
+				:height="option.height ? option.height : '40px'",
+				:disabled="disabled"
 			) 
 				span {{option.label}}
 	v-col.d-flex.pa-0
@@ -49,6 +50,10 @@ export default {
 		},
 		change: {
 			type: [Function]
+		},
+		disabled: {
+			type: [Boolean],
+			default: false
 		}
 	},
 
@@ -61,7 +66,7 @@ export default {
 	methods: {
 		changeModel() {
 			if(this.change) {
-				this.change();
+				this.change(this.modelToggle);
 			}
 			this.$emit('changeOption', this.modelToggle);
 		},
