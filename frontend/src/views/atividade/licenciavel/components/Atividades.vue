@@ -19,9 +19,8 @@
 								color="#E0E0E0",
 								:placeholder="placeholder",
 								@click.native="resetErrorMessage",
-								v-model="relacaoAtividadeTipologiaCnae.codigoAtividade",
-								:error-messages="errorMessage(relacaoAtividadeTipologiaCnae.codigoAtividade)",
-								@input="v => {dados.codigoAtividade = relacaoAtividadeTipologiaCnae.codigoAtividade}",
+								v-model="dados.codigoAtividade",
+								:error-messages="errorMessage(dados.codigoAtividade)",
 								required,
 								dense
 							)
@@ -32,9 +31,8 @@
 								color="#E0E0E0",
 								:placeholder="placeholder",
 								@click.native="resetErrorMessage",
-								v-model="relacaoAtividadeTipologiaCnae.nomeAtividade",
-								:error-messages="errorMessage(relacaoAtividadeTipologiaCnae.nomeAtividade)",
-								@input="v => {dados.nomeAtividade = relacaoAtividadeTipologiaCnae.nomeAtividade}",
+								v-model="dados.nomeAtividade",
+								:error-messages="errorMessage(dados.nomeAtividade)",
 								required,
 								dense
 							)
@@ -47,12 +45,11 @@
 								color="#E0E0E0",
 								:placeholder="placeholderSelect",
 								item-color="grey darken-3",
-								v-model="relacaoAtividadeTipologiaCnae.tipologia",
+								v-model="dados.tipologia",
 								:items="tipologias",
 								:filter="filtroSelect",
 								item-text="nome",
-								:error-messages="errorMessage(relacaoAtividadeTipologiaCnae.tipologia)",
-								@input="v => {dados.tipologia = relacaoAtividadeTipologiaCnae.tipologia}",
+								:error-messages="errorMessage(dados.tipologia)",
 								no-data-text="Nenhuma tipologia encontrada",
 								@click.native="resetErrorMessage",
 								required,
@@ -66,20 +63,18 @@
 								color="#E0E0E0",
 								:placeholder="placeholderSelectLicenca",
 								item-color="#84A98C",
-								v-model="relacaoAtividadeTipologiaCnae.licencas",
+								v-model="dados.licencas",
 								:items="licencas",
 								:filter="filtroSelect",
 								item-text="sigla",
-								:error-messages="errorMessage(relacaoAtividadeTipologiaCnae.licencas)",
-								@input="v => {dados.licencas = relacaoAtividadeTipologiaCnae.licencas}",
+								:error-messages="errorMessage(dados.licencas)",
 								no-data-text="Nenhuma licença encontrada",
 								@click.native="resetErrorMessage",
 								required,
 								multiple=true,
 								return-object=true
 								chips=true,
-								deletable-chips=true,
-								:disabled="!isInclusao",
+								deletable-chips=true
 							)
 								template(v-slot:selection="data")
 									v-chip(
@@ -99,12 +94,11 @@
 								color="#E0E0E0",
 								:placeholder="placeholderSelect",
 								item-color="grey darken-3",
-								v-model="relacaoAtividadeTipologiaCnae.setor",
+								v-model="dados.setor",
 								:items="setores",
 								:filter="filtroSelect"
 								item-text="sigla",
-								:error-messages="errorMessage( relacaoAtividadeTipologiaCnae.setor, true )",
-								@input="v => {dados.setor = relacaoAtividadeTipologiaCnae.setor}",
+								:error-messages="errorMessage( dados.setor, true )",
 								@click.native="resetErrorMessage",
 								required,
 								return-object=true,
@@ -118,12 +112,11 @@
 								color="#E0E0E0",
 								:placeholder="placeholderSelect",
 								item-color="grey darken-3",
-								v-model="relacaoAtividadeTipologiaCnae.potencialPoluidor",
+								v-model="dados.potencialPoluidor",
 								:items="potenciaispoluidores",
 								:filter="filtroSelect"
 								item-text="nome",
-								:error-messages="errorMessage( relacaoAtividadeTipologiaCnae.potencialPoluidor, true )",
-								@input="v => {dados.potencialPoluidor = relacaoAtividadeTipologiaCnae.potencialPoluidor}",
+								:error-messages="errorMessage( dados.potencialPoluidor, true )",
 								@click.native="resetErrorMessage",
 								required,
 								return-object=true,
@@ -135,53 +128,66 @@
 								v-label Localização da atividade
 							div
 								v-checkbox.mt-0.mr-8.d-inline-flex(
+									v-model="dados.selectedLocalizacao",
 									label="Zona Urbana",
+									value="ZONA URBANA",
 									color="#84A98C",
 									@click="resetErrorMessage",
-									:error-messages="errorMessage(relacaoAtividadeTipologiaCnae.localizacaoAtividade)",
-									@input="v => {dados.localizacaoAtividade = relacaoAtividadeTipologiaCnae.localizacaoAtividade}",
+									:error-messages="errorMessage(dados.selectedLocalizacao)"
 								)
 								v-checkbox.mt-0.d-inline-flex(
+									v-model="dados.selectedLocalizacao",
 									label="Zona Rural",
+									value="ZONA RURAL",
 									color="#84A98C",
 									@click="resetErrorMessage",
-									:error-messages="errorMessage(relacaoAtividadeTipologiaCnae.localizacaoAtividade)",
-									@input="v => {dados.localizacaoAtividade = relacaoAtividadeTipologiaCnae.localizacaoAtividade}",
+									:error-messages="errorMessage(dados.selectedLocalizacao)",
+									:hide-details="setDetails(dados.selectedGeometria, 0)"
 								)
 						v-col(cols="12", md="4")
 							ToggleOptions(
-								ref="toggleOptionsForaMunicipio",
+								ref="toggleOptionsForaEmpreendimento",
 								labelOption="Atividade fora do empreendimento",
-								idToggle="QA-btn-toggle-fora-municipio",
+								idToggle="QA-btn-toggle-fora-empreendimento",
 								:errorMessage="errorMessage",
-								:options="optionsForaMunicipio",
-								@changeOption="relacaoAtividadeTipologiaCnae.foraMunicipio = $event"
-								@input="v => {dados.foraMunicipio = relacaoAtividadeTipologiaCnae.foraMunicipio}",
+								:options="optionsForaEmpreendimento",
+								@changeOption="dados.foraEmpreendimento = $event",
 							)
 						v-col(cols="12", md="4")
 							div.mb-2
 								v-label Geometria da atividade
 							div
 								v-checkbox.mt-0.mr-8.d-inline-flex(
+									v-model="dados.selectedGeometria[0].ponto",
 									label="Ponto",
+									value="true",
 									color="#84A98C",
 									@click="resetErrorMessage",
-									:error-messages="errorMessage(relacaoAtividadeTipologiaCnae.geometria)",
-									@input="v => {dados.geometria = relacaoAtividadeTipologiaCnae.geometria}",
+									v-bind:false-value="false",
+	  								v-bind:true-value="true",
+									:error-messages="errorMessageGeometria(dados.selectedGeometria)",
 								)
 								v-checkbox.mt-0.mr-8.d-inline-flex(
+									v-model="dados.selectedGeometria[1].linha",
 									label="Linha",
+									value="true",
 									color="#84A98C",
 									@click="resetErrorMessage",
-									:error-messages="errorMessage(relacaoAtividadeTipologiaCnae.geometria)",
-									@input="v => {dados.geometria = relacaoAtividadeTipologiaCnae.geometria}",
+									v-bind:false-value="false",
+	  								v-bind:true-value="true",
+									:error-messages="errorMessageGeometria(dados.selectedGeometria)",
+									:hide-details="setDetails(dados.selectedGeometria, 0)"
 								)
 								v-checkbox.mt-0.d-inline-flex(
+									v-model="dados.selectedGeometria[2].poligono",
 									label="Polígono",
+									value="true",
 									color="#84A98C",
 									@click="resetErrorMessage",
-									:error-messages="errorMessage(relacaoAtividadeTipologiaCnae.geometria)"
-									@input="v => {dados.geometria = relacaoAtividadeTipologiaCnae.geometria}",
+									v-bind:false-value="false",
+	  								v-bind:true-value="true",
+									:error-messages="errorMessageGeometria(dados.selectedGeometria)"
+									:hide-details="setDetails(dados.selectedGeometria, 1)"
 								)
 		v-expansion-panel
 			v-expansion-panel-header
@@ -200,11 +206,11 @@
 								color="#E0E0E0",
 								:placeholder="placeholderSelectCnae",
 								item-color="#84A98C",
-								v-model="relacaoAtividadeTipologiaCnae.cnaes",
+								v-model="dados.cnaes",
 								:items="cnaes",
 								:filter="filtroSelect",
 								item-text="textoExibicao",
-								:error-messages="errorMessageCnae(relacaoAtividadeTipologiaCnae.cnaes)",
+								:error-messages="errorMessageCnae(cnaesAtividade)",
 								no-data-text="Nenhum CNAE encontrado",
 								@click.native="resetErrorMessage",
 								required,
@@ -212,7 +218,7 @@
 								return-object=true
 								chips=true,
 								deletable-chips=true,
-								:disabled="!isInclusaoCnae"
+								:disabled="!isInclusao"
 							)
 								template(v-slot:selection="data")
 									v-chip(
@@ -230,10 +236,10 @@
 								a#QA-limpar-dados-requisito-tecnico.d-flex.flex-row.align-center.justify-end(@click="clearCnae")
 									v-icon.pr-1 fa-eraser
 									span Limpar dados
-								v-btn#QA-btn-adicionar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusaoCnae")
+								v-btn#QA-btn-adicionar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
 									v-icon mdi-plus
 									span Adicionar
-								v-btn#QA-btn-editar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="!isInclusaoCnae")
+								v-btn#QA-btn-editar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="!isInclusao")
 									v-icon mdi-pencil
 									span Editar
 
@@ -268,12 +274,12 @@
 								color="#E0E0E0",
 								:placeholder="placeholderSelect",
 								item-color="grey darken-3",
-								v-model="relacaoAtividadeTipologiaCnae.requisitosTecnicos",
+								v-model="dados.requisitosTecnicos",
 								:items="requisitosTecnicos",
 								:filter="filtroSelect",
 								item-text="textoExibicao",
-								:error-messages="errorMessage(relacaoAtividadeTipologiaCnae.requisitosTecnicos)",
-								@input="v => {dados.requisitosTecnicos = relacaoAtividadeTipologiaCnae.requisitosTecnicos}",
+								:error-messages="errorMessage(dados.requisitosTecnicos)",
+								@input="v => {dados.requisitosTecnicos = dados.requisitosTecnicos}",
 								no-data-text="Nenhuma requisito técnico",
 								@click.native="resetErrorMessage",
 								required,
@@ -287,12 +293,12 @@
 								color="#E0E0E0",
 								:placeholder="placeholderSelect",
 								item-color="grey darken-3",
-								v-model="relacaoAtividadeTipologiaCnae.taxasLicenciamento",
+								v-model="dados.taxasLicenciamento",
 								:items="taxasLicenciamento",
 								:filter="filtroSelect",
 								item-text="textoExibicao",
-								:error-messages="errorMessage(relacaoAtividadeTipologiaCnae.taxasLicenciamento)",
-								@input="v => {dados.taxasLicenciamento = relacaoAtividadeTipologiaCnae.taxasLicenciamento}",
+								:error-messages="errorMessage(dados.taxasLicenciamento)",
+								@input="v => {dados.taxasLicenciamento = dados.taxasLicenciamento}",
 								no-data-text="Nenhuma taxa de licenciamento encontrada",
 								@click.native="resetErrorMessage",
 								required,
@@ -335,7 +341,7 @@ export default {
 		},
 		erro: {
 			type: [Object]
-		},
+		}
 
 	},
 	
@@ -363,37 +369,23 @@ export default {
 			taxasLicenciamento: [],
 			setores: [],
 			isInclusao: true,
-			isInclusaoCnae: true,
 			tituloListagem: "Listagem de CNAEs relacionados com a atividade",
 			labelNoData: 'Não existem atividades relacionadas.',
 			headerListagem: HEADER,
 			errorMessageEmptyInclusao: true,
-			errorMessageEmptyInclusaoCnae: true,
 			indexItemEdicao: null,
-			relacaoAtividadeTipologiaCnae: {
-				codigoAtividade: null,
-				nomeAtividade: null,
-				cnaes: [],
-				potencialPoluidor: null,
-				tipologia: null,
-				licencas: [],
-				setor: null,
-				localizacaoAtividade: null,
-				foraMunicipio: null,
-				geometria: null,
-				requisitosTecnicos: null,
-				taxasLicenciamento: null,
-			},
-			optionsForaMunicipio: [
+			optionsForaEmpreendimento: [
 				{
 					idOption: "QA-btn-atividade-licenciavel-fora-sim",
 					value: "true",
 					label: "Sim",
+					width: "150px"
 				},
 				{
 					idOption: "QA-btn-atividade-licenciavel-fora-nao",
 					value: "false",
 					label: "Não",
+					width: "150px"
 				}
 			],
 		};
@@ -402,9 +394,9 @@ export default {
 	methods: {
 
 		checkFormVinculacao() {
-			console.log(this.relacaoAtividadeTipologiaCnae);
-			return this.relacaoAtividadeTipologiaCnae.cnaes
-				&& this.relacaoAtividadeTipologiaCnae.cnaes.length > 0;
+
+			return this.dados.cnaes
+				&& this.dados.cnaes.length > 0;
 		},
 
 		filtroSelect(item, query, itemText) {
@@ -420,9 +412,49 @@ export default {
 			return string.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 		},
 
+		setDetails(lista, index){
+			return lista.length-1 !== index;
+		},
+
 		errorMessage(value) {
-			
+
 			if (Array.isArray(value)) {
+
+				if (this.erro.invalido && value.length === 0) {
+					return 'Obrigatório';
+				} else {
+					return '';
+				}
+
+			}
+
+			if (this.erro.invalido && value == null) {
+				return 'Obrigatório';
+			} else {
+				return '';
+			}
+
+		},
+
+		errorMessageGeometria(value) {
+
+			if (Array.isArray(value)) {
+
+				if (this.erro.invalido) {
+
+					if (!value[0].ponto && !value[1].linha && !value[2].poligono) {
+						return 'Obrigatório';
+					}
+
+				}
+
+			}
+
+		},
+
+		errorMessageCnae(value) {
+
+			if (Array.isArray(value)){
 
 				if (!this.isInclusao) {
 					return 'Este campo não permite ser editado';
@@ -432,31 +464,12 @@ export default {
 
 			}
 
-			return (this.errorMessageEmptyInclusao && !this.erro.invalido) || value ? '' : 'Obrigatório';
-
-		},
-
-		errorMessageCnae(value) {
-
-			if (Array.isArray(value)) {
-
-				if (!this.isInclusaoCnae) {
-					return 'Este campo não permite ser editado';
-				} else if ((!this.errorMessageEmptyInclusaoCnae || this.erro.invalido) && value.length === 0) {
-					return 'Obrigatório';
-				}
-
-			}
-
-			return (this.errorMessageEmptyInclusaoCnae && !this.erro.invalido) || value ? '' : 'Obrigatório';
-			
 		},
 
 		clearCnae() {
 
 			this.isInclusao = true;
-			this.isInclusaoCnae = true;
-			this.relacaoAtividadeTipologiaCnae.cnaes = [];
+			this.dados.cnaes = [];
 			this.resetErrorMessage();
 			this.indexItemEdicao = null;
 
@@ -465,7 +478,6 @@ export default {
 		resetErrorMessage() {
 
 			this.errorEtapaCnaes = true;
-			this.errorMessageEmptyInclusaoCnae = true;
 			this.errorMessageEmptyInclusao = true;
 			this.erro.invalido = false;
 			
@@ -480,7 +492,7 @@ export default {
 
 				if (this.isInclusao) {
 					
-					this.relacaoAtividadeTipologiaCnae.cnaes.forEach(cnae => {
+					this.dados.cnaes.forEach(cnae => {
 
 						if (!this.validarValoresAdicionados(cnae)) {
 							dadosExistentes.push(cnae.codigo);
@@ -501,13 +513,13 @@ export default {
 
 				} else {
 
-					if (!this.validarValoresAdicionados(this.relacaoAtividadeTipologiaCnae.cnaes[0])) {
+					if (!this.validarValoresAdicionados(this.dados.cnaes[0])) {
 						dadosExistentes.push(this.valor.licencas[0].sigla);
 					}
 
 					if (dadosExistentes.length === 0 ) {
 
-						dadosInclusao = this.getDadosItem(this.relacaoAtividadeTipologiaCnae.cnaes[0]);
+						dadosInclusao = this.getDadosItem(this.dados.cnaes[0]);
 
 						this.cnaesAtividade.splice(this.indexItemEdicao, 1, dadosInclusao);
 
@@ -521,7 +533,7 @@ export default {
 				}
 
 			} else {
-				this.errorMessageEmptyInclusaoCnae = false;
+				this.errorMessageEmptyInclusao = false;
 			}
 			
 		},
@@ -530,10 +542,8 @@ export default {
 
 			let dadoListagem = {};
 			
-			dadoListagem.tipologia = this.relacaoAtividadeTipologiaCnae.tipologia;
 			dadoListagem.cnae = cnae;
-			dadoListagem.foraMunicipio = this.relacaoAtividadeTipologiaCnae.foraMunicipio;
-			console.log(this.relacaoAtividadeTipologiaCnae);
+
 			return dadoListagem;
 
 		},
@@ -545,7 +555,7 @@ export default {
 			this.cnaesAtividade.forEach((dado, index) => {
 
 				if (dado.cnae.id === cnae.id
-					&& (this.isInclusaoCnae || this.indexItemEdicao != index)) {
+					&& (this.isInclusao || this.indexItemEdicao != index)) {
 
 					validacao = false;
 				}
@@ -582,10 +592,9 @@ export default {
 		editarItem(item) {
 			
 			window.scrollTo(0,0);
-			this.relacaoAtividadeTipologiaCnae.tipologia = item.tipologia;
-			this.relacaoAtividadeTipologiaCnae.cnaes = [];
-			this.relacaoAtividadeTipologiaCnae.cnaes.push(item.cnae);
-			this.relacaoAtividadeTipologiaCnae.foraMunicipio = item.foraMunicipio;
+
+			this.dados.cnaes = [];
+			this.dados.cnaes.push(item.cnae);
 
 			if (!this.isCadastro) {
 
@@ -595,15 +604,14 @@ export default {
 			}
 
 			this.indexItemEdicao = this.cnaesAtividade.indexOf(item);
-			console.log(this.cnaesAtividade.indexOf(item));
-			this.isInclusaoCnae = false;
+
 			this.isInclusao = false;
 
 			const that = this;
 
 			setTimeout(function() {
 
-				that.$refs.toggleOptionsForaMunicipio.setModel(item.foraMunicipio);
+				that.$refs.toggleOptionsForaEmpreendimento.setModel(item.foraEmpreendimento);
 
 			}, 100);
 
@@ -688,7 +696,6 @@ export default {
 
 		EntradaUnicaWSService.findSetores()
 			.then((response) => {
-				console.log(response.data);
 				this.setores = response.data;
 			});
 
@@ -707,7 +714,6 @@ export default {
 
 		if (this.$route.params.idAtividadeDispensavel) {
 			this.isInclusao = false;
-			this.isInclusaoCnae = false;
 		}
 
 	}

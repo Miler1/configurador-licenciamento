@@ -124,11 +124,22 @@ export default {
 					licencas: [],
 					potencialPoluidor: null,
 					setor: null,
-					localizacaoAtividade: null,
 					foraEmpreendimento: null,
-					geometria: null,
+					cnaes: [],
 					requisitosTecnicos: null,
-					taxasLicenciamento: null
+					taxasLicenciamento: null,
+					selectedLocalizacao: [],
+					selectedGeometria: [
+						{
+							ponto: false
+						},
+						{
+							linha: false
+						},
+						{
+							poligono: false
+						}
+					]
 				},
 				parametros: []
 			},
@@ -231,11 +242,22 @@ export default {
 		},
 
 		validarCnaesAtividades() {
-			console.log('validarCnaesAtividades');
-			console.log(this.atividadeLicenciavel);
+
 			let cnaesAtividades = this.atividadeLicenciavel.cnaesAtividade;
-			let codigoAtividade = this.atividadeLicenciavel.codigoAtividade;
-			let valido = this.passos[0].completo = cnaesAtividades && cnaesAtividades.length > 0;
+			let dados = this.atividadeLicenciavel.dados;
+
+			let valido = this.passos[0].completo =
+				cnaesAtividades && cnaesAtividades.length > 0 &&
+				dados.codigoAtividade != null &&
+				dados.nomeAtividade != null &&
+				dados.licencas && dados.licencas.length > 0 &&
+				dados.potencialPoluidor != null &&
+				dados.setor &&
+				dados.selectedLocalizacao && dados.selectedLocalizacao.length > 0 &&
+				dados.foraEmpreendimento != null &&
+				dados.selectedGeometria && dados.selectedGeometria.length > 0 && (!dados.selectedGeometria[0].ponto || !dados.selectedGeometria[1].linha || !dados.selectedGeometria[2].poligono) &&
+				dados.requisitosTecnicos != null &&
+				dados.taxasLicenciamento != null;
 
 			if (!valido) {
 				snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.atividades.avancarEtapa, snackbar.type.WARN);
@@ -331,8 +353,8 @@ export default {
 
 			this.atividadeLicenciavel = atividadeLicenciavel;
 
-			this.atividadeLicenciavel.cnaesTipologia.forEach(cnaeTipologia => {
-				cnaeTipologia.foraMunicipio = cnaeTipologia.foraMunicipio ? 'false' : 'true';
+			this.atividadeLicenciavel.cnaesAtividade.forEach(cnaeAtividade=> {
+				cnaeAtividade.foraEmpreendimento = cnaeAtividade.foraEmpreendimento ? 'false' : 'true';
 			});
 
 		}

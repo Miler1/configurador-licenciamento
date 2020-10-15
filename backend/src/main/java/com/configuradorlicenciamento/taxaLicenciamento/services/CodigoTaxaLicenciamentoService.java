@@ -32,6 +32,8 @@ import java.util.List;
 @Service
 public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoService {
 
+    public static final String TAXA_EXISTENTE = "Já existe uma tabela com o mesmo código.";
+
     @Autowired
     CodigoTaxaLicenciamentoRepository codigoTaxaLicenciamentoRepository;
 
@@ -43,8 +45,6 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
 
     @Autowired
     IHistoricoConfiguradorService historicoConfiguradorService;
-
-    public static final String TAXA_EXISTENTE = "Já existe uma tabela com o mesmo código.";
 
     @Override
     public CodigoTaxaLicenciamento salvar(HttpServletRequest request, CodigoTaxaLicenciamentoDTO codigoTaxaLicenciamentoDTO) {

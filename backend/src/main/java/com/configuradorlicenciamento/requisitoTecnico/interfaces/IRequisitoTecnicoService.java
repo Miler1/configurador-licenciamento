@@ -1,8 +1,8 @@
 package com.configuradorlicenciamento.requisitoTecnico.interfaces;
 
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
-import com.configuradorlicenciamento.requisitoTecnico.dtos.RequisitoTecnicoDTO;
 import com.configuradorlicenciamento.requisitoTecnico.dtos.RequisitoTecnicoCsv;
+import com.configuradorlicenciamento.requisitoTecnico.dtos.RequisitoTecnicoDTO;
 import com.configuradorlicenciamento.requisitoTecnico.dtos.RequisitoTecnicoEdicaoDTO;
 import com.configuradorlicenciamento.requisitoTecnico.models.RequisitoTecnico;
 import org.springframework.data.domain.Page;
