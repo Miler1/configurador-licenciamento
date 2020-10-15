@@ -252,7 +252,7 @@
 		:errorMessage="errorMessageValido"
 	)
 
-	v-container.pa-0.mt-5
+	v-container.pa-0.mt-5(v-if="isInclusao")
 		v-row
 			v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
 				v-btn#QA-btn-editar-atividade-dispensavel-cnae(@click="editarParametros", large, outlined, color="#84A98C", v-if="parametros.length > 0")
