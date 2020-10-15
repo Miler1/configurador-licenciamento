@@ -382,10 +382,10 @@ export default {
 					return 'Obrigatório';
 				}
 				if(tipo === 'MINIMO' && item){
-					return (this.errorMessageEmpty || (item && (item === parametro.valores[index-1].maximo))) ? '' : 'O valor mínimo do intervalo atual deve ser igual ao valor máximo do intervalo anterior!';
+					return (this.errorMessageEmpty || (item && (item === parametro.valores[index-1].maximo))) ? '' : 'O valor mínimo no intervalo atual deve ser igual ao valor máximo do intervalo anterior';
 				}
 				if(tipo === 'MAXIMO' && item){
-					return (this.errorMessageEmpty || (item && (item > parametro.valores[index].minimo))) ? '' : 'O valor máximo não deve ser menor ou igual ao valor mínimo no intervalo atual!';
+					return (this.errorMessageEmpty || (item && (item > parametro.valores[index].minimo))) ? '' : 'O valor máximo deve ser maior que o valor mínimo no intervalo atual';
 				}
 			}
 
