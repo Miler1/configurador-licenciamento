@@ -34,6 +34,18 @@
 			template(v-slot:item.foraMunicipio='{ item }')
 				span {{item.foraMunicipio == "true" ? 'Sim' : 'Não'}}
 
+			template(v-slot:item.valorMinimoParametro1='{ item }')
+				span {{item.valorMinimoParametro1 == null ? '0' : item.valorMinimoParametro1}}
+
+			template(v-slot:item.valorMinimoParametro2='{ item }')
+				span {{item.valorMinimoParametro2 == null ? '0' : item.valorMinimoParametro2}}
+
+			template(v-slot:item.valorMaximoParametro1='{ item }')
+				span {{item.valorMaximoParametro1 == null ? 'Indeterminado' : item.valorMaximoParametro1}}
+
+			template(v-slot:item.valorMaximoParametro2='{ item }')
+				span {{item.valorMaximoParametro2 == null ? 'Indeterminado' : item.valorMaximoParametro2}}
+
 			template(v-slot:item.valor='{ item }')
 				span(v-if="item.tipoTaxa != 'formula'")
 					| {{parseFloat(item.valor) !== 0 ? parseFloat(item.valor).toLocaleString('pt-BR', { minimumFractionDigits: 2}) : 'Isento'}}
@@ -41,7 +53,7 @@
 					| {{item.valor}}
 
 			template(v-slot:item.porte='props')
-				v-select(:items="dadosSelect", item-text="nome", return-object, v-model="props.item.porte", hide-details="auto")
+				v-select(:items="dadosSelect", item-text="nome", return-object, v-model="props.item.porte", hide-details="auto", :error-messages="errorMessage(props.item.porte)")
 
 			template(v-slot:item.licenciamentoMunicipal='{ item }')
 				v-simple-checkbox(v-model="item.licenciamentoMunicipal", color="#84A98C",)
@@ -153,6 +165,9 @@ export default {
 		},
 		dadosSelect: {
 			type: [Array]
+		},
+		errorMessage: {
+			type: [Function]
 		}
 
 	}

@@ -15,7 +15,7 @@
 							:editable="false"
 							color="#84A98C"
 						)
-							span {{passo.titulo}}
+							span.noWrap {{passo.titulo}}
 
 						v-divider(v-if="index !== passos.length - 1", :key="Math.random()")
 
@@ -473,6 +473,10 @@ export default {
 				color: @text-color !important;
 				font-weight: bold;
 			}
+		}
+		
+		.noWrap{
+			white-space: nowrap;
 		}
 
 	}

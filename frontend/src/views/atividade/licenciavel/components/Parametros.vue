@@ -27,6 +27,7 @@
 									ref="toggleAtividadeLicenciavelParametro",
 									labelOption="Tipo de parâmetro",
 									idToggle="QA-btn-toggle-atividade-licenciavel-parametro",
+									:class="{disable:parametros.length > 0}"
 									:errorMessage="errorMessage",
 									:options="optionsTipoParametro",
 									@changeOption="tipoParametro = $event"
@@ -35,7 +36,7 @@
 								)
 
 						v-row
-							v-col(cols="12", md="6")
+							v-col(cols="12", :md="isParametroSimples() ? '12': '6'", v-if="isParametroSimples() || isParametroComposto()")
 								v-label Parâmetro 1
 								v-autocomplete#QA-select-parametro-1(
 									outlined,
@@ -56,7 +57,7 @@
 								)
 
 								v-label Descrição da unidade do parâmetro 1 
-								i (Opcional)
+									i (Opcional)
 								v-tooltip(top, left, max-width=400)
 									template(v-slot:activator="{ on, attrs }")
 										v-icon.information.ml-1(v-bind="attrs", v-on="on") mdi-information
@@ -81,14 +82,12 @@
 										v-text-field#QA-input-descricao-unidade(
 											outlined,
 											color="#E0E0E0",
-											type="number",
-											oninput="validity.valid||(value='');",
-											precision="2",
+											v-money="money"
 											min="0",
 											v-model="valor.minimo",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MINIMO') ? '0': ''",
-											:error-messages="errorMessage(valor.minimo, index, 'MINIMO')",
+											:error-messages="errorMessage(valor.minimo, null, 1, index, 'MINIMO', false)",
 											:disabled="disableParametros(1, index, 'MINIMO')"
 											required,
 											dense,
@@ -99,7 +98,7 @@
 											label="Limite inferior incluso",
 											color="#84A98C",
 											@click="changeLimite(1, index, 'MINIMO')",
-											:error-messages="errorMessage(valor.limiteInferiorIncluso, index, 'MINIMO')",
+											:error-messages="errorMessage(valor.limiteInferiorIncluso, null, 1, index, 'MINIMO', true)",
 											:disabled="disableParametros(1, index, 'MINIMO')",
 											hide-details="auto"
 										)
@@ -110,13 +109,12 @@
 										v-text-field#QA-input-descricao-unidade(
 											outlined,
 											color="#E0E0E0",
-											type="number",
-											oninput="validity.valid||(value='');",
 											min="0",
+											v-money="index === 3 ? '' : money"
 											v-model="valor.maximo",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MAXIMO') ? 'Indeterminado': ''",
-											:error-messages="errorMessage(valor.maximo)",
+											:error-messages="errorMessage(valor.maximo, null, 1, index, 'MAXIMO', false)",
 											:disabled="disableParametros(1, index, 'MAXIMO')"
 											required,
 											dense,
@@ -127,12 +125,12 @@
 											label="Limite superior incluso",
 											color="#84A98C",
 											@click="changeLimite(1, index, 'MAXIMO')",
-											:error-messages="errorMessage(valor.limiteSuperiorIncluso)",
+											:error-messages="errorMessage(valor.limiteSuperiorIncluso, null, 1, index, 'MAXIMO', true)",
 											:disabled="disableParametros(1, index, 'MAXIMO')",
 											hide-details="auto"
 										)
 
-							v-col(cols="12", md="6", v-if='true')
+							v-col(cols="12", md="6", v-if='isParametroComposto()')
 								v-label Parâmetro 2
 								v-autocomplete#QA-select-parametro-2(
 									outlined,
@@ -153,7 +151,7 @@
 								)
 
 								v-label Descrição da unidade do parâmetro 2 
-								i (Opcional)
+									i (Opcional)
 								v-tooltip(top, left, max-width=400)
 									template(v-slot:activator="{ on, attrs }")
 										v-icon.information.ml-1(v-bind="attrs", v-on="on") mdi-information
@@ -179,13 +177,12 @@
 											outlined,
 											color="#E0E0E0",
 											v-model="valor.minimo",
-											v-model.number="valor.minimo",
 											type="number",
-											oninput="validity.valid||(value='');",
+											v-money="money"
 											min="0",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MINIMO') ? '0': ''",
-											:error-messages="errorMessage(valor.minimo)",
+											:error-messages="errorMessage(valor.minimo, null, 2, index, 'MINIMO', false)",
 											:disabled="disableParametros(2, index, 'MINIMO')",
 											required,
 											dense,
@@ -196,7 +193,7 @@
 											label="Limite inferior incluso",
 											color="#84A98C",
 											@click="changeLimite(2, index, 'MINIMO')",
-											:error-messages="errorMessage(valor.limiteInferiorIncluso)",
+											:error-messages="errorMessage(valor.limiteInferiorIncluso, null, 2, index, 'MINIMO', true)",
 											:disabled="disableParametros(2, index, 'MINIMO')",
 											hide-details="auto"
 										)
@@ -207,13 +204,13 @@
 										v-text-field.mb-0#QA-input-descricao-unidade(
 											outlined,
 											color="#E0E0E0",
-											v-model.number="valor.maximo",
+											v-model="valor.maximo",
 											type="number",
-											oninput="validity.valid||(value='');",
+											v-money="money"
 											min="0",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MAXIMO') ? 'Indeterminado': ''"
-											:error-messages="errorMessage(valor.maximo)",
+											:error-messages="errorMessage(valor.maximo, null, 2, index, 'MAXIMO', false)",
 											:disabled="disableParametros(2, index, 'MAXIMO')",
 											required,
 											dense,
@@ -224,7 +221,7 @@
 											label="Limite superior incluso",
 											color="#84A98C",
 											@click="changeLimite(2, index, 'MAXIMO')",
-											:error-messages="errorMessage(valor.limiteSuperiorIncluso)",
+											:error-messages="errorMessage(valor.limiteSuperiorIncluso, null, 2, index, 'MAXIMO', true)",
 											:disabled="disableParametros(2, index, 'MAXIMO')",
 											hide-details="auto"
 										)
@@ -251,10 +248,11 @@
 		:inputPesquisa="inputPesquisa",
 		:hideFooter="hideFooter",
 		:itemsPerPage="itemsPerPage",
-		:dadosSelect="portesEmpreendimento"
+		:dadosSelect="portesEmpreendimento",
+		:errorMessage="errorMessageValido"
 	)
 
-	v-container.pa-0.mt-5
+	v-container.pa-0.mt-5(v-if="isInclusao")
 		v-row
 			v-col#form-actions.d-flex.flex-row.align-center.justify-end(cols="12", md="12")
 				v-btn#QA-btn-editar-atividade-dispensavel-cnae(@click="editarParametros", large, outlined, color="#84A98C", v-if="parametros.length > 0")
@@ -270,6 +268,7 @@ import ToggleOptions from "@/components/ToggleOptions";
 import { HEADER } from '@/utils/dadosHeader/ListagemRelacaoParametroPorteInclusao';
 import ParametroService from '@/services/parametro.service';
 import PorteEmpreendimento from '@/services/porteEmpreendimento.service';
+import { VMoney } from 'v-money';
 
 export default {
 
@@ -279,6 +278,8 @@ export default {
 		GridListagemInclusao,
 		ToggleOptions
 	},
+
+	directives: {money: VMoney},
 
 	props: {
 
@@ -315,6 +316,12 @@ export default {
 			itemsPerPage: 20,
 			headerListagem: [... HEADER],
 
+			money: {
+				decimal: ',',
+				thousands: '.',
+				precision: 2,
+			},
+
 			parametro1: {
 				parametro: null,
 				descricaoUnidade: null,
@@ -348,14 +355,45 @@ export default {
 
 	methods: {
 
-		errorMessage(item) {
+		errorMessage(item, isInclusao, numeroParametro, index, tipo, check) {
 
-			// if (this.erro.invalido && this.pergunta) {
-			// 	return 'Adicione a pergunta primeiro';
-			// }
+			if(this.validaValoresLimites(index, tipo)){
+				return '';
+			}
 
-			return (this.errorMessageEmpty || item) && !this.erro.invalido ? '' : 'Obrigatório';
+			let parametro = null;
 
+			if(numeroParametro === 1) {
+				parametro = this.parametro1;
+			} else {
+				parametro = this.parametro2;
+			}
+
+			if(check){
+				if(tipo === 'MINIMO'){
+					return (this.errorMessageEmpty || (item || parametro.valores[index-1].limiteSuperiorIncluso)) ? '' : 'Obrigatório';
+				}
+				if(tipo === 'MAXIMO'){
+					return (this.errorMessageEmpty || (item || parametro.valores[index+1].limiteInferiorIncluso)) ? '' : 'Obrigatório';
+				}
+			} else {
+
+				if(!this.errorMessageEmpty && item === '0,00'){
+					return 'Obrigatório';
+				}
+				if(tipo === 'MINIMO' && item){
+					return (this.errorMessageEmpty || (item && (item === parametro.valores[index-1].maximo))) ? '' : 'O valor mínimo do intervalo atual deve ser igual ao valor máximo do intervalo anterior!';
+				}
+				if(tipo === 'MAXIMO' && item){
+					return (this.errorMessageEmpty || (item && (item > parametro.valores[index].minimo))) ? '' : 'O valor máximo não deve ser menor ou igual ao valor mínimo no intervalo atual!';
+				}
+			}
+
+			return (this.errorMessageEmpty || item) ? '' : 'Obrigatório';
+		},
+
+		errorMessageValido(item) {
+			return (!this.erro.invalido || item) ? '' : 'Obrigatório';
 		},
 
 		resetErrorMessage() {
@@ -390,6 +428,7 @@ export default {
 				if(!parametro.valores[i].maximo
 					|| !parametro.valores[i + 1].minimo
 					|| parametro.valores[i].maximo !== parametro.valores[i + 1].minimo
+					|| parametro.valores[i].maximo <= parametro.valores[i].minimo
 					|| (!parametro.valores[i + 1].limiteInferiorIncluso && !parametro.valores[i].limiteSuperiorIncluso)) {
 
 					valido = false;
@@ -519,6 +558,10 @@ export default {
 			return this.tipoParametro === 'SIMPLES';
 		},
 
+		isParametroComposto() {
+			return this.tipoParametro === 'COMPOSTO';
+		},
+
 		validaValoresLimites(index, tipo) {
 			return (tipo === 'MINIMO' && index === 0) || (tipo === 'MAXIMO' && index === 3);
 		},
@@ -623,6 +666,7 @@ export default {
 			if(this.parametros.length === 4) {
 
 				this.$refs.toggleAtividadeLicenciavelParametro.setModel(this.optionsTipoParametro[0].value);
+				this.tipoParametro = this.optionsTipoParametro[0].value;
 
 				this.parametro1.parametro = this.parametros[0].parametro1;
 				this.parametro1.descricaoUnidade = this.parametros[0].descricaoUnidade1; 
@@ -646,10 +690,14 @@ export default {
 					this.parametro2.valores.push({... valor});
 
 				});
+				
+				this.headerListagem = [... HEADER];
+				this.headerListagem.splice(3,3);
 
 			} else {
 
 				this.$refs.toggleAtividadeLicenciavelParametro.setModel(this.optionsTipoParametro[1].value);
+				this.tipoParametro = this.optionsTipoParametro[1].value;
 
 				this.parametro1.parametro = this.parametros[0].parametro1;
 				this.parametro1.descricaoUnidade = this.parametros[0].descricaoUnidade1;
@@ -773,6 +821,13 @@ export default {
 	span {
 		color: gray !important;
 	}
+}
+.disable{
+
+	#QA-btn-toggle-atividade-licenciavel-parametro{
+		cursor: not-allowed !important;
+	}
+
 }
 
 </style>
