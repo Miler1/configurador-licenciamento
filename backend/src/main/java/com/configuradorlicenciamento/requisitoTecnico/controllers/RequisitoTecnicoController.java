@@ -116,7 +116,7 @@ public class RequisitoTecnicoController extends DefaultController {
     }
 
     @GetMapping(value = "/buscarRequisitosAtivos")
-    public ResponseEntity<List<RequisitoTecnico>> findAll(HttpServletRequest request) throws Exception {
+    public ResponseEntity<List<RequisitoTecnico>> findAtivos(HttpServletRequest request) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
