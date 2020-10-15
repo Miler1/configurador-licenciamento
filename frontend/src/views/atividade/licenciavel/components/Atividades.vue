@@ -158,7 +158,7 @@
 								v-label Geometria da atividade
 							div
 								v-checkbox.mt-0.mr-8.d-inline-flex(
-									v-model="dados.selectedGeometria[0].ponto",
+									v-model="dados.selectedGeometria[0]",
 									label="Ponto",
 									value="true",
 									color="#84A98C",
@@ -168,7 +168,7 @@
 									:error-messages="errorMessageGeometria(dados.selectedGeometria)",
 								)
 								v-checkbox.mt-0.mr-8.d-inline-flex(
-									v-model="dados.selectedGeometria[1].linha",
+									v-model="dados.selectedGeometria[1]",
 									label="Linha",
 									value="true",
 									color="#84A98C",
@@ -179,7 +179,7 @@
 									:hide-details="setDetails(dados.selectedGeometria, 0)"
 								)
 								v-checkbox.mt-0.d-inline-flex(
-									v-model="dados.selectedGeometria[2].poligono",
+									v-model="dados.selectedGeometria[2]",
 									label="Polígono",
 									value="true",
 									color="#84A98C",
@@ -420,18 +420,27 @@ export default {
 
 			if (Array.isArray(value)) {
 
-				if (this.erro.invalido && value.length === 0) {
-					return 'Obrigatório';
-				} else {
-					return '';
+				if (this.erro.invalido) {
+
+					if (value.length === 0) {
+						return 'Obrigatório';
+					} else {
+						return '';
+					}
+
 				}
 
-			}
-
-			if (this.erro.invalido && value == null) {
-				return 'Obrigatório';
 			} else {
-				return '';
+
+				if (this.erro.invalido) {
+
+					if (value == null || value === '') {
+						return 'Obrigatório';
+					} else {
+						return '';
+					}
+
+				}
 			}
 
 		},
@@ -442,7 +451,7 @@ export default {
 
 				if (this.erro.invalido) {
 
-					if (!value[0].ponto && !value[1].linha && !value[2].poligono) {
+					if (!value[0] && !value[1] && !value[2]) {
 						return 'Obrigatório';
 					}
 
