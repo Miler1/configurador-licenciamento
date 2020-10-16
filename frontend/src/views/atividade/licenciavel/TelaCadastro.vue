@@ -129,11 +129,11 @@ export default {
 					requisitosTecnicos: null,
 					taxasLicenciamento: null,
 					selectedLocalizacao: [],
-					selectedGeometria: {
-						ponto: false,
-						linha: false,
-						poligono: false
-					}
+					selectedGeometria: [
+						false,
+						false,
+						false
+					]
 				},
 				parametros: []
 			},
@@ -242,14 +242,14 @@ export default {
 
 			let valido = this.passos[0].completo =
 				cnaesAtividades && cnaesAtividades.length > 0 &&
-				dados.codigoAtividade != null &&
-				dados.nomeAtividade != null &&
+				dados.codigoAtividade != null && dados.codigoAtividade != '' &&
+				dados.nomeAtividade != null && dados.nomeAtividade != '' &&
 				dados.licencas && dados.licencas.length > 0 &&
 				dados.potencialPoluidor != null &&
 				dados.setor &&
 				dados.selectedLocalizacao && dados.selectedLocalizacao.length > 0 &&
 				dados.foraEmpreendimento != null &&
-				(dados.selectedGeometria.ponto || dados.selectedGeometria.linha || dados.selectedGeometria.poligono) &&
+				dados.selectedGeometria.some(elem => elem == true) &&
 				dados.requisitosTecnicos != null &&
 				dados.taxasLicenciamento != null;
 
@@ -258,8 +258,6 @@ export default {
 			}
 
 			return valido;
-
-			return true;
 
 		},
 
@@ -285,8 +283,6 @@ export default {
 			}
 
 			return valido;
-
-			return false;
 			
 		},
 
