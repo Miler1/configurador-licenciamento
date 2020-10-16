@@ -633,7 +633,6 @@ export default {
 
 		LicencaService.findAll()
 			.then((response) => {
-				response.data.sort((a,b) => (a.sigla.toLowerCase().localeCompare(b.sigla.toLowerCase())));
 				this.licencas = response.data;
 			});
 
