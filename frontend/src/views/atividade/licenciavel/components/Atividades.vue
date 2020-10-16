@@ -725,6 +725,8 @@ export default {
 			this.isInclusao = false;
 		}
 
+		this.$refs.toggleOptionsForaEmpreendimento.setModel(this.dados.foraEmpreendimento);
+
 	}
 
 };

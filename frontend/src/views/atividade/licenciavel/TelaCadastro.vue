@@ -259,8 +259,6 @@ export default {
 
 			return valido;
 
-			return true;
-
 		},
 
 		validarParametros() {
@@ -285,8 +283,6 @@ export default {
 			}
 
 			return valido;
-
-			return false;
 			
 		},
 
