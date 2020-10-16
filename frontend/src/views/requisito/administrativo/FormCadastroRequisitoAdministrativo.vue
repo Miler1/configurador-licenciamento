@@ -127,6 +127,7 @@ export default {
 
 		DocumentoService.buscarDocumentosAtivos()
 			.then((response) => {
+				response.data.sort((a,b) => (a.nome.toLowerCase().localeCompare(b.nome.toLowerCase())));
 				this.documentos = response.data;
 			});
 
