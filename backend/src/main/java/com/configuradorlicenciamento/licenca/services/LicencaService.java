@@ -127,6 +127,16 @@ public class LicencaService implements ILicencaService {
     }
 
     @Override
+    public List<Licenca> findAll() {
+        return licencaRepository.findAll();
+    }
+
+    @Override
+    public List<Licenca> findAllByAtivos() {
+        return licencaRepository.findByAtivo(true, Sort.by("sigla"));
+    }
+
+    @Override
     public List<LicencaCsv> listarLicencasParaCsv() {
 
         List<Licenca> licencas = listarLicencas();
@@ -137,12 +147,6 @@ public class LicencaService implements ILicencaService {
         }
 
         return dtos;
-
-    }
-
-    public List<Licenca> findAll() {
-
-        return licencaRepository.findAll();
 
     }
 

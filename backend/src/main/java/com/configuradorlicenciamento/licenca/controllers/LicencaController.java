@@ -94,7 +94,7 @@ public class LicencaController extends DefaultController {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        List<Licenca> licencas = licencaService.findAll();
+        List<Licenca> licencas = licencaService.findAllByAtivos();
 
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())

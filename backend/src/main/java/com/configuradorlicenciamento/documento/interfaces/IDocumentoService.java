@@ -4,6 +4,7 @@ import com.configuradorlicenciamento.documento.dtos.DocumentoCsv;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.documento.dtos.DocumentoDTO;
 import com.configuradorlicenciamento.documento.models.Documento;
+import com.configuradorlicenciamento.licenca.models.Licenca;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -21,4 +22,6 @@ public interface IDocumentoService {
     List<DocumentoCsv> listarDocumentoParaCsv() throws Exception;
     
     List<Documento> findAll();
+
+    List<Documento> findByAtivos();
 }

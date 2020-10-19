@@ -80,9 +80,7 @@ public class DocumentoController extends DefaultController {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        List<Documento> documentos = documentoService.findAll();
-
-        List<Documento> documentosAtivos = documentos.stream().filter(Documento::getAtivo).collect(Collectors.toList());
+        List<Documento> documentosAtivos = documentoService.findByAtivos();
 
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
