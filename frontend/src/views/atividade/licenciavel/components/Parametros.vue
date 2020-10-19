@@ -617,8 +617,8 @@ export default {
 		resetaDadosValores(valor, i) {
 
 			if (this.$refs.valorminimo != undefined || this.$refs.valormaximo != undefined) {
-				this.$refs.valorminimo[i].$el.getElementsByTagName('input')[0].value = 0;
-				this.$refs.valormaximo[i].$el.getElementsByTagName('input')[0].value = 0;
+				this.$refs.valorminimo[i].$el.querySelector('input').value = 0;
+				this.$refs.valormaximo[i].$el.querySelector('input').value = 0;
 			}
 
 			valor.minimo = null;

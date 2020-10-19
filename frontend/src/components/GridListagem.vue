@@ -197,6 +197,7 @@ export default {
 				this.parametrosFiltro.itemsPorPagina = itensPerPage;
 				this.parametrosFiltro.pagina = 0;
 				this.updatePagination(this.parametrosFiltro);
+				window.scrollTo(0, 0);
 
 			}
 
@@ -208,6 +209,7 @@ export default {
 
 				this.parametrosFiltro.pagina = page-1;
 				this.updatePagination(this.parametrosFiltro);
+				window.scrollTo(0, 0);
 
 			}
 
@@ -218,6 +220,7 @@ export default {
 			this.parametrosFiltro.pagina = 0;
 			this.parametrosFiltro.stringPesquisa = text;
 			this.updatePagination(this.parametrosFiltro);
+			window.scrollTo(0, 0);
 
 		},
 
