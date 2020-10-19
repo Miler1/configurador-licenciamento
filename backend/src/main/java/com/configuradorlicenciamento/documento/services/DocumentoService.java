@@ -102,6 +102,12 @@ public class DocumentoService implements IDocumentoService {
     }
 
     @Override
+    public List<Documento> findByAtivos() {
+        return documentoRepository.findByAtivo(true);
+    }
+
+
+    @Override
     public Documento editar (HttpServletRequest request, DocumentoDTO documentoDTO){
 
         Object login = request.getSession().getAttribute("login");

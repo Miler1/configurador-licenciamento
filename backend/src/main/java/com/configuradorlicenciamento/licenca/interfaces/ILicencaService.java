@@ -24,4 +24,6 @@ public interface ILicencaService {
 
     List<Licenca> findAll();
 
+    List<Licenca> findAllByAtivos();
+
 }

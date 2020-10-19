@@ -97,13 +97,13 @@ export default {
 					idOption: "QA-btn-requisito-administrativo-pessoa-fisica",
 					value: "PF",
 					label: "Física",
-					width: "140px"
+					width: "130px"
 				},
 				{
 					idOption: "QA-btn-requisito-administrativo-pessoa-juridica",
 					value: "PJ",
 					label: "Jurídica",
-					width: "140px"
+					width: "130px"
 				}
 			],
 			optionsRequisitoAdm:[
@@ -127,6 +127,7 @@ export default {
 
 		DocumentoService.buscarDocumentosAtivos()
 			.then((response) => {
+				response.data.sort((a,b) => (a.nome.toLowerCase().localeCompare(b.nome.toLowerCase())));
 				this.documentos = response.data;
 			});
 
