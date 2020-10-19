@@ -221,7 +221,8 @@ export default {
 		},
 
 		cancelar() {
-			this.$router.go(-1);
+			this.allowRedirect = false;
+			this.$router.push({name: 'atividadesLicenciaveis'});
 		},
 
 		nextButtonDecider() {
