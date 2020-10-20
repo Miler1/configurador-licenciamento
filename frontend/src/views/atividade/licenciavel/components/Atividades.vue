@@ -192,7 +192,7 @@
 		v-expansion-panel
 			v-expansion-panel-header
 				div.d-flex.flex-row.align-center.justify-start
-					span.align-baseline {{ isInclusao ? 'Adição de ' : 'Editar ' }}  relação Atividade/Cnae
+					span.align-baseline Adição de relação Atividade/Cnae
 				template(v-slot:actions)
 					v-icon
 			v-expansion-panel-content
@@ -217,8 +217,7 @@
 								multiple=true,
 								return-object=true
 								chips=true,
-								deletable-chips=true,
-								:disabled="!isInclusao"
+								deletable-chips=true
 							)
 								template(v-slot:selection="data")
 									v-chip(
@@ -239,21 +238,17 @@
 								v-btn#QA-btn-adicionar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
 									v-icon mdi-plus
 									span Adicionar
-								v-btn#QA-btn-editar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="!isInclusao")
-									v-icon mdi-pencil
-									span Editar
 
 	GridListagemInclusao.pb-4(
 		:tituloListagem="tituloListagem",
 		:headers="headerListagem",
 		:dadosListagem="cnaesAtividade",
-		:editarItem="editarItem",
 		:excluirItem="excluirItem",
 		:labelNoData="labelNoData",
 		:placeholderPesquisa="placeholderPesquisa",
 		:tituloTooltip="tituloTooltip",
 		:labelNoResultset="semResultados",
-		:exibirIconeRemover="exibirIconeRemover"
+		:exibirIconeEditar="exibirIconeEditar"
 	)
 	
 	v-expansion-panels(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
@@ -352,7 +347,7 @@ export default {
 				panel: [0, 1, 2],
 				readonly: true,
 			},
-			exibirIconeRemover: true,
+			exibirIconeEditar: false,
 			placeholder: "Digite aqui...",
 			placeholderSelect: "Selecione",
 			placeholderSelectCnae: "Selecione um ou mais",
@@ -465,9 +460,7 @@ export default {
 
 			if (Array.isArray(value)){
 
-				if (!this.isInclusao) {
-					return 'Este campo não permite ser editado';
-				} else if ((!this.errorMessageEmptyInclusao || this.erro.invalido) && value.length === 0) {
+				if ((!this.errorMessageEmptyInclusao || this.erro.invalido) && value.length === 0) {
 					return 'Obrigatório';
 				}
 
@@ -595,34 +588,6 @@ export default {
 				"com o(s) CNAE(s): " + dadosExistentes;
 
 			snackbar.alert(message);
-
-		},
-
-		editarItem(item) {
-			
-			window.scrollTo(0,0);
-
-			this.dados.cnaes = [];
-			this.dados.cnaes.push(item.cnae);
-
-			if (!this.isCadastro) {
-
-				item.cnae.textoExibicao = item.cnae.codigo + ' - ' + item.cnae.nome;
-				this.cnaes.push(item.cnae);
-
-			}
-
-			this.indexItemEdicao = this.cnaesAtividade.indexOf(item);
-
-			this.isInclusao = false;
-
-			const that = this;
-
-			setTimeout(function() {
-
-				that.$refs.toggleOptionsForaEmpreendimento.setModel(item.foraEmpreendimento);
-
-			}, 100);
 
 		},
 
