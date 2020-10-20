@@ -221,7 +221,8 @@ export default {
 		},
 
 		cancelar() {
-			this.$router.go(-1);
+			this.allowRedirect = false;
+			this.$router.push({name: 'atividadesLicenciaveis'});
 		},
 
 		nextButtonDecider() {
@@ -254,6 +255,7 @@ export default {
 				dados.taxasLicenciamento != null;
 
 			if (!valido) {
+				window.scrollTo(0, 0);
 				snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.atividades.avancarEtapa, snackbar.type.WARN);
 			}
 

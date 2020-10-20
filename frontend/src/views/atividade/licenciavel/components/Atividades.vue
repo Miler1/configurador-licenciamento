@@ -38,7 +38,7 @@
 							)
 					v-row
 						v-col(cols="12", md="6")
-							v-label Topologia
+							v-label Tipologia
 							v-autocomplete#QA-select-atividade-licenciavel-tipologia(
 								outlined,
 								dense,
@@ -68,7 +68,7 @@
 								:filter="filtroSelect",
 								item-text="sigla",
 								:error-messages="errorMessage(dados.licencas)",
-								no-data-text="Nenhuma licença encontrada",
+								no-data-text="Nenhum tipo de licença encontrado",
 								@click.native="resetErrorMessage",
 								required,
 								multiple=true,
@@ -192,7 +192,7 @@
 		v-expansion-panel
 			v-expansion-panel-header
 				div.d-flex.flex-row.align-center.justify-start
-					span.align-baseline {{ isInclusao ? 'Adição de ' : 'Editar ' }}  relação Atividade/Cnae
+					span.align-baseline Adição de Cnae
 				template(v-slot:actions)
 					v-icon
 			v-expansion-panel-content
@@ -210,15 +210,14 @@
 								:items="cnaes",
 								:filter="filtroSelect",
 								item-text="textoExibicao",
-								:error-messages="errorMessageCnae(cnaesAtividade)",
+								:error-messages="errorMessageCnae(dados.cnaes)",
 								no-data-text="Nenhum CNAE encontrado",
 								@click.native="resetErrorMessage",
 								required,
 								multiple=true,
 								return-object=true
 								chips=true,
-								deletable-chips=true,
-								:disabled="!isInclusao"
+								deletable-chips=true
 							)
 								template(v-slot:selection="data")
 									v-chip(
@@ -239,21 +238,17 @@
 								v-btn#QA-btn-adicionar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao")
 									v-icon mdi-plus
 									span Adicionar
-								v-btn#QA-btn-editar-requisito-tecnico(@click="incluirDados", large, outlined, color="#84A98C", v-if="!isInclusao")
-									v-icon mdi-pencil
-									span Editar
 
 	GridListagemInclusao.pb-4(
 		:tituloListagem="tituloListagem",
 		:headers="headerListagem",
 		:dadosListagem="cnaesAtividade",
-		:editarItem="editarItem",
 		:excluirItem="excluirItem",
 		:labelNoData="labelNoData",
 		:placeholderPesquisa="placeholderPesquisa",
 		:tituloTooltip="tituloTooltip",
 		:labelNoResultset="semResultados",
-		:exibirIconeRemover="exibirIconeRemover"
+		:exibirIconeEditar="exibirIconeEditar"
 	)
 	
 	v-expansion-panels(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
@@ -280,7 +275,7 @@
 								item-text="textoExibicao",
 								:error-messages="errorMessage(dados.requisitosTecnicos)",
 								@input="v => {dados.requisitosTecnicos = dados.requisitosTecnicos}",
-								no-data-text="Nenhuma requisito técnico",
+								no-data-text="Nenhum grupo de requisito técnico encontrado",
 								@click.native="resetErrorMessage",
 								required,
 								return-object=true
@@ -299,7 +294,7 @@
 								item-text="textoExibicao",
 								:error-messages="errorMessage(dados.taxasLicenciamento)",
 								@input="v => {dados.taxasLicenciamento = dados.taxasLicenciamento}",
-								no-data-text="Nenhuma taxa de licenciamento encontrada",
+								no-data-text="Nenhuma tabela de taxas de licenciamento encontrada",
 								@click.native="resetErrorMessage",
 								required,
 								return-object=true
@@ -352,14 +347,14 @@ export default {
 				panel: [0, 1, 2],
 				readonly: true,
 			},
-			exibirIconeRemover: true,
+			exibirIconeEditar: false,
 			placeholder: "Digite aqui...",
 			placeholderSelect: "Selecione",
 			placeholderSelectCnae: "Selecione um ou mais",
 			placeholderSelectLicenca: "Selecione um ou mais",
 			placeholderPesquisa:  "Pesquisar pelo código ou nome do CNAE",
-			tituloTooltip: "relação CNAE / atividade",
-			semResultados: 'Nenhuma relação CNAE / atividade encontrada com a pesquisa informada.',
+			tituloTooltip: "CNAE",
+			semResultados: 'Nenhum CNAE encontrado com a pesquisa informada.',
 			cnaes: [],
 			licencas: [],
 			potenciaispoluidores: [],
@@ -369,8 +364,8 @@ export default {
 			taxasLicenciamento: [],
 			setores: [],
 			isInclusao: true,
-			tituloListagem: "Listagem de CNAEs relacionados com a atividade",
-			labelNoData: 'Não existem atividades relacionadas.',
+			tituloListagem: "Listagem de CNAEs adicionados para esta atividade",
+			labelNoData: 'Não existem CNAEs adicionados.',
 			headerListagem: HEADER,
 			errorMessageEmptyInclusao: true,
 			indexItemEdicao: null,
@@ -379,13 +374,13 @@ export default {
 					idOption: "QA-btn-atividade-licenciavel-fora-sim",
 					value: "true",
 					label: "Sim",
-					width: "150px"
+					width: "100px"
 				},
 				{
 					idOption: "QA-btn-atividade-licenciavel-fora-nao",
 					value: "false",
 					label: "Não",
-					width: "150px"
+					width: "100px"
 				}
 			],
 		};
@@ -465,9 +460,7 @@ export default {
 
 			if (Array.isArray(value)){
 
-				if (!this.isInclusao) {
-					return 'Este campo não permite ser editado';
-				} else if ((!this.errorMessageEmptyInclusao || this.erro.invalido) && value.length === 0) {
+				if ((!this.errorMessageEmptyInclusao || this.erro.invalido) && value.length === 0) {
 					return 'Obrigatório';
 				}
 
@@ -595,34 +588,6 @@ export default {
 				"com o(s) CNAE(s): " + dadosExistentes;
 
 			snackbar.alert(message);
-
-		},
-
-		editarItem(item) {
-			
-			window.scrollTo(0,0);
-
-			this.dados.cnaes = [];
-			this.dados.cnaes.push(item.cnae);
-
-			if (!this.isCadastro) {
-
-				item.cnae.textoExibicao = item.cnae.codigo + ' - ' + item.cnae.nome;
-				this.cnaes.push(item.cnae);
-
-			}
-
-			this.indexItemEdicao = this.cnaesAtividade.indexOf(item);
-
-			this.isInclusao = false;
-
-			const that = this;
-
-			setTimeout(function() {
-
-				that.$refs.toggleOptionsForaEmpreendimento.setModel(item.foraEmpreendimento);
-
-			}, 100);
 
 		},
 
