@@ -62,7 +62,7 @@
 				v-simple-checkbox(v-model="item.repasseOutroOrgao", color="#84A98C",)
 
 			template(v-slot:item.actions='{ item }')
-				v-tooltip(bottom)
+				v-tooltip(bottom, v-if="exibirIconeEditar")
 					template(v-slot:activator="{ on, attrs }")
 						v-icon.mr-2(small @click='editarItem(item)', v-on='on', color='#9EBAA4')
 							| mdi-pencil
@@ -152,6 +152,10 @@ export default {
 			default: true
 		},
 		exibirIconeRemover: {
+			type: [Boolean],
+			default: true
+		},
+		exibirIconeEditar: {
 			type: [Boolean],
 			default: true
 		},
