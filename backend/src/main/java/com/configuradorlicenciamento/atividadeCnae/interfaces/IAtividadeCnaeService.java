@@ -25,4 +25,6 @@ public interface IAtividadeCnaeService {
 
     List<AtividadeCnae> findAtivosNaoVinculados();
 
+    List<AtividadeCnae> findAtividadesCnaesByAtivos();
+
 }
