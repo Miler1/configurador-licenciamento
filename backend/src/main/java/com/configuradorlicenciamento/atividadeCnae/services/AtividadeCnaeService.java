@@ -7,7 +7,6 @@ import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.atividadeCnae.repositories.AtividadeCnaeRepository;
 import com.configuradorlicenciamento.atividadeCnae.specifications.AtividadeCnaeSpecification;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
-import com.configuradorlicenciamento.documento.models.Documento;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLicenciamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,9 +115,12 @@ public class AtividadeCnaeService implements IAtividadeCnaeService {
 
     @Override
     public List<AtividadeCnae> findAtivosNaoVinculados() {
-
         return atividadeCnaeRepository.findAllWithDescriptionQuery();
+    }
 
+    @Override
+    public List<AtividadeCnae> findAtividadesCnaesByAtivos() {
+        return atividadeCnaeRepository.findByAtivo(true);
     }
 
 }

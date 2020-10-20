@@ -24,6 +24,8 @@ export default {
 
 	},
 
-	buscarCnaesAtivosNaoVinculados: async () => ApiService.get(`atividadeCnae/buscarCnaesAtivosNaoVinculados`)
+	buscarCnaesAtivosNaoVinculados: async () => ApiService.get(`atividadeCnae/buscarCnaesAtivosNaoVinculados`),
+
+	buscarAtividadesCnaesAtivos: async () => ApiService.get(`atividadeCnae/buscarAtividadesCnaesAtivos`)
 
 };
