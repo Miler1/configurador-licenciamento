@@ -255,6 +255,7 @@ export default {
 				dados.taxasLicenciamento != null;
 
 			if (!valido) {
+				window.scrollTo(0, 0);
 				snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.atividades.avancarEtapa, snackbar.type.WARN);
 			}
 

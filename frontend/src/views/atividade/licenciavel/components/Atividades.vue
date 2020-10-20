@@ -38,7 +38,7 @@
 							)
 					v-row
 						v-col(cols="12", md="6")
-							v-label Topologia
+							v-label Tipologia
 							v-autocomplete#QA-select-atividade-licenciavel-tipologia(
 								outlined,
 								dense,
@@ -68,7 +68,7 @@
 								:filter="filtroSelect",
 								item-text="sigla",
 								:error-messages="errorMessage(dados.licencas)",
-								no-data-text="Nenhuma licença encontrada",
+								no-data-text="Nenhum tipo de licença encontrado",
 								@click.native="resetErrorMessage",
 								required,
 								multiple=true,
@@ -192,7 +192,7 @@
 		v-expansion-panel
 			v-expansion-panel-header
 				div.d-flex.flex-row.align-center.justify-start
-					span.align-baseline Adição de relação Atividade/Cnae
+					span.align-baseline Adição de Cnae
 				template(v-slot:actions)
 					v-icon
 			v-expansion-panel-content
@@ -210,7 +210,7 @@
 								:items="cnaes",
 								:filter="filtroSelect",
 								item-text="textoExibicao",
-								:error-messages="errorMessageCnae(cnaesAtividade)",
+								:error-messages="errorMessageCnae(dados.cnaes)",
 								no-data-text="Nenhum CNAE encontrado",
 								@click.native="resetErrorMessage",
 								required,
@@ -275,7 +275,7 @@
 								item-text="textoExibicao",
 								:error-messages="errorMessage(dados.requisitosTecnicos)",
 								@input="v => {dados.requisitosTecnicos = dados.requisitosTecnicos}",
-								no-data-text="Nenhuma requisito técnico",
+								no-data-text="Nenhum grupo de requisito técnico encontrado",
 								@click.native="resetErrorMessage",
 								required,
 								return-object=true
@@ -294,7 +294,7 @@
 								item-text="textoExibicao",
 								:error-messages="errorMessage(dados.taxasLicenciamento)",
 								@input="v => {dados.taxasLicenciamento = dados.taxasLicenciamento}",
-								no-data-text="Nenhuma taxa de licenciamento encontrada",
+								no-data-text="Nenhuma tabela de taxas de licenciamento encontrada",
 								@click.native="resetErrorMessage",
 								required,
 								return-object=true
@@ -353,8 +353,8 @@ export default {
 			placeholderSelectCnae: "Selecione um ou mais",
 			placeholderSelectLicenca: "Selecione um ou mais",
 			placeholderPesquisa:  "Pesquisar pelo código ou nome do CNAE",
-			tituloTooltip: "relação CNAE / atividade",
-			semResultados: 'Nenhuma relação CNAE / atividade encontrada com a pesquisa informada.',
+			tituloTooltip: "CNAE",
+			semResultados: 'Nenhum CNAE encontrado com a pesquisa informada.',
 			cnaes: [],
 			licencas: [],
 			potenciaispoluidores: [],
@@ -364,8 +364,8 @@ export default {
 			taxasLicenciamento: [],
 			setores: [],
 			isInclusao: true,
-			tituloListagem: "Listagem de CNAEs relacionados com a atividade",
-			labelNoData: 'Não existem atividades relacionadas.',
+			tituloListagem: "Listagem de CNAEs adicionados para esta atividade",
+			labelNoData: 'Não existem CNAEs adicionados.',
 			headerListagem: HEADER,
 			errorMessageEmptyInclusao: true,
 			indexItemEdicao: null,
@@ -374,13 +374,13 @@ export default {
 					idOption: "QA-btn-atividade-licenciavel-fora-sim",
 					value: "true",
 					label: "Sim",
-					width: "150px"
+					width: "100px"
 				},
 				{
 					idOption: "QA-btn-atividade-licenciavel-fora-nao",
 					value: "false",
 					label: "Não",
-					width: "150px"
+					width: "100px"
 				}
 			],
 		};
