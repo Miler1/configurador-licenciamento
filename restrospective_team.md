@@ -20,17 +20,22 @@ PO/GP.
 *  Enumere as Issues Entregues no mês
 
 
-## Issues nê£o entregues
+## Issues não entregues
 
 *  Enumere as Issues NÃO entregues no prazo naquele mês
 
 
 ## Totais
 
-|Total de ~Deliverable entregues|Total de issues fechadas|Total  de MRs realizados
-|--|--|--|
-|`XX`|`YY`|`ZZ`
+|Total de ~Deliverable entregues|Total de issues fechadas|Total  de MRs realizados|Atividades não previstas|Divergência estimado x realizado (>20%)|Total de qaFailed
+|--|--|--|--|--|--|
+|`XX de XX`|`YY`|`WW`|`ZZ`|`QQ`|`AA`
+
+
+# Pontos de melhoria da última sprint
+| Ação| Realizado|
+| ------ | ------ |
+|item 1|sim / não|
+|item 2|sim / não|
 
 /confidential 
-
-/label ~retrospective 
