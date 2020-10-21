@@ -637,7 +637,7 @@ export default {
 				this.potenciaispoluidores = response.data;
 			});
 
-		atividadeCnaeService.buscarCnaesAtivosNaoVinculados()
+		atividadeCnaeService.buscarAtividadesCnaesAtivos()
 			.then((response) => {
 
 				this.cnaes = response.data;
