@@ -6,4 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TipoAtividadeRepository extends JpaRepository<TipoAtividade, Integer> {
+
+    TipoAtividade findByCodigo(String codigo);
+
 }

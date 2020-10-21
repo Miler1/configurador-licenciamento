@@ -1,5 +1,7 @@
 package com.configuradorlicenciamento.tipoCaracterizacaoAtividade.interfaces;
 
+import com.configuradorlicenciamento.atividade.models.Atividade;
+import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeDTO;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.dtos.AtividadeDispensavelCsv;
 import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.dtos.AtividadeDispensavelDTO;
@@ -14,6 +16,8 @@ import java.util.List;
 public interface ITipoCaracterizacaoAtividadeService {
 
     List<TipoCaracterizacaoAtividade> salvarAtividadeDispensavel(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO);
+
+    void salvarAtividadeLicenciavel(List<AtividadeCnaeDTO> atividadesCnae, Atividade atividade);
 
     TipoCaracterizacaoAtividade editar(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO);
 

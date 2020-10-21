@@ -1,6 +1,7 @@
 package com.configuradorlicenciamento.taxaLicenciamento.repositories;
 
 import com.configuradorlicenciamento.taxaLicenciamento.models.CodigoTaxaLicenciamento;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -14,6 +15,6 @@ public interface CodigoTaxaLicenciamentoRepository extends JpaRepository<CodigoT
 
     CodigoTaxaLicenciamento findByCodigo(String codigo);
 
-    List<CodigoTaxaLicenciamento> findByAtivo(Boolean ativo);
+    List<CodigoTaxaLicenciamento> findByAtivo(Boolean ativo, Sort codigo);
 
 }
