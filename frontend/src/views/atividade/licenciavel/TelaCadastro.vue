@@ -282,7 +282,9 @@ export default {
 			if (!valido) {
 				window.scrollTo(0, 0);
 				snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.atividades.avancarEtapaCnae, snackbar.type.WARN);
-				return valido;
+
+				// return valido;
+
 			}
 			
 			valido = this.passos[0].completo = 
@@ -300,7 +302,6 @@ export default {
 			if (!valido) {
 				window.scrollTo(0, 0);
 				snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.atividades.avancarEtapa, snackbar.type.WARN);
-				return valido;
 			}
 
 			return valido;
@@ -339,7 +340,7 @@ export default {
 				title: '<p class="title-modal-confirm">Confirmar cancelamento - Atividade licenciável</p>',
 
 				html: this.isCadastro ?
-					`<p class="message-modal-confirm">Ao cancelar o cadastro desta atividade, Todas as informações que não foram salvas serão descartadas.</p>
+					`<p class="message-modal-confirm">Ao cancelar o cadastro, todas as informações que não foram salvas serão perdidas.</p>
 					<p class="message-modal-confirm">
 						<b>Tem certeza que deseja cancelar o cadastro? Esta opção não poderá ser desfeita e todas as informações serão perdidas.</b>
 					</p>` :

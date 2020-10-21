@@ -161,7 +161,7 @@ public class RequisitoTecnicoService implements IRequisitoTecnicoService {
 
     @Override
     public List<RequisitoTecnico> findAtivos() {
-        return requisitoTecnicoRepository.findByAtivo(true);
+        return requisitoTecnicoRepository.findByAtivo(true, Sort.by("codigo"));
     }
 
 }

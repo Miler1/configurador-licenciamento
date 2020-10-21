@@ -125,7 +125,7 @@
 							)
 					v-row
 						v-col(cols="12", md="4")
-							div.mb-2
+							div
 								v-label Localização da atividade
 							div
 								v-checkbox.mt-0.mr-8.d-inline-flex(
@@ -143,6 +143,7 @@
 									color="#84A98C",
 									@click="resetErrorMessage",
 									:error-messages="errorMessage(dados.tiposAtividade)",
+									:hide-details="setDetails(dados.tiposAtividade, 0)"
 								)
 						v-col(cols="12", md="4")
 							ToggleOptions(
@@ -154,7 +155,7 @@
 								@changeOption="dados.foraEmpreendimento = $event",
 							)
 						v-col(cols="12", md="4")
-							div.mb-2
+							div
 								v-label Geometria da atividade
 							div
 								v-checkbox.mt-0.mr-8.d-inline-flex(
@@ -176,6 +177,7 @@
 									v-bind:false-value="false",
 	  								v-bind:true-value="true",
 									:error-messages="errorMessageGeometria()",
+									:hide-details="setDetails(dados.geoLinha, 0)"
 								)
 								v-checkbox.mt-0.d-inline-flex(
 									v-model="dados.geoPoligono",
@@ -185,7 +187,8 @@
 									@click="resetErrorMessage",
 									v-bind:false-value="false",
 	  								v-bind:true-value="true",
-									:error-messages="errorMessageGeometria()"
+									:error-messages="errorMessageGeometria()",
+									:hide-details="setDetails(dados.geoPoligono, 0)"
 								)
 		v-expansion-panel
 			v-expansion-panel-header
@@ -601,7 +604,7 @@ export default {
 
 			this.$fire({
 
-				title:'<p class="title-modal-confirm">Remover CNAE - ' + item.cnae.nome,
+				title:'<p class="title-modal-confirm">Remover CNAE - ' + item.nome,
 
 				html:`<p class="message-modal-confirm">Ao remover o CNAE, ele não estará mais vinculado nessa atividade.</p>
 						<p class="message-modal-confirm">
