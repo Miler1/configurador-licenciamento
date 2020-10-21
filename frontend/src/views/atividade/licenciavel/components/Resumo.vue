@@ -115,7 +115,7 @@ export default {
 
 		},
 
-		preparaExibiçãoLocalizacao() {
+		preparaExibicaoLocalizacao() {
 
 			let localizacao = '';
 
