@@ -283,7 +283,7 @@ export default {
 				window.scrollTo(0, 0);
 				snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.atividades.avancarEtapaCnae, snackbar.type.WARN);
 
-				// return valido;
+				return valido;
 
 			}
 			
@@ -301,7 +301,7 @@ export default {
 
 			if (!valido) {
 				window.scrollTo(0, 0);
-				snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.atividades.avancarEtapa, snackbar.type.WARN);
+				// snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.atividades.avancarEtapa, snackbar.type.WARN);
 			}
 
 			return valido;
