@@ -242,7 +242,15 @@ export default {
 			let dados = this.atividadeLicenciavel.dados;
 
 			let valido = this.passos[0].completo =
-				cnaesAtividades && cnaesAtividades.length > 0 &&
+				cnaesAtividades && cnaesAtividades.length > 0;
+				
+			if (!valido) {
+				window.scrollTo(0, 0);
+				snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.atividades.avancarEtapaCnae, snackbar.type.WARN);
+				return valido;
+			}
+			
+			valido = this.passos[0].completo = 
 				dados.codigoAtividade != null && dados.codigoAtividade != '' &&
 				dados.nomeAtividade != null && dados.nomeAtividade != '' &&
 				dados.licencas && dados.licencas.length > 0 &&
@@ -257,6 +265,7 @@ export default {
 			if (!valido) {
 				window.scrollTo(0, 0);
 				snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.atividades.avancarEtapa, snackbar.type.WARN);
+				return valido;
 			}
 
 			return valido;

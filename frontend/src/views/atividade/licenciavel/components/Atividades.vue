@@ -4,12 +4,12 @@
 	
 	v-expansion-panels.pb-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
 		v-expansion-panel
-			v-expansion-panel-header(v-show="indexItemEdicao != null || isCadastro")
+			v-expansion-panel-header
 				div.d-flex.flex-row.align-center.justify-start
 					span.align-baseline  Dados básicos
 				template(v-slot:actions)
 					v-icon
-			v-expansion-panel-content(v-show="indexItemEdicao != null || isCadastro")
+			v-expansion-panel-content
 				v-form(ref="atividadeLicenciavel")
 					v-row
 						v-col(cols="12", md="3")
@@ -21,6 +21,7 @@
 								@click.native="resetErrorMessage",
 								v-model="dados.codigoAtividade",
 								:error-messages="errorMessage(dados.codigoAtividade)",
+								@input="v => {dados.codigoAtividade = v.toUpperCase()}",
 								required,
 								dense
 							)
@@ -61,7 +62,7 @@
 								outlined,
 								dense,
 								color="#E0E0E0",
-								:placeholder="placeholderSelectLicenca",
+								:placeholder="placeholderSelectMultiplo",
 								item-color="#84A98C",
 								v-model="dados.licencas",
 								:items="licencas",
@@ -72,9 +73,9 @@
 								@click.native="resetErrorMessage",
 								required,
 								multiple=true,
-								return-object=true
-								chips=true,
-								deletable-chips=true
+								return-object=true,
+								chips=false,
+								deletable-chips=true,
 							)
 								template(v-slot:selection="data")
 									v-chip(
@@ -192,7 +193,7 @@
 		v-expansion-panel
 			v-expansion-panel-header
 				div.d-flex.flex-row.align-center.justify-start
-					span.align-baseline Adição de Cnae
+					span.align-baseline Adição de CNAE
 				template(v-slot:actions)
 					v-icon
 			v-expansion-panel-content
@@ -204,20 +205,20 @@
 								outlined,
 								dense,
 								color="#E0E0E0",
-								:placeholder="placeholderSelectCnae",
+								:placeholder="placeholderSelectMultiplo",
 								item-color="#84A98C",
 								v-model="dados.cnaes",
 								:items="cnaes",
 								:filter="filtroSelect",
 								item-text="textoExibicao",
-								:error-messages="errorMessageCnae(dados.cnaes)",
+								:error-messages="errorMessageCnae(cnaesAtividade)",
 								no-data-text="Nenhum CNAE encontrado",
 								@click.native="resetErrorMessage",
 								required,
 								multiple=true,
-								return-object=true
-								chips=true,
-								deletable-chips=true
+								return-object=true,
+								chips=false,
+								deletable-chips=true,
 							)
 								template(v-slot:selection="data")
 									v-chip(
@@ -350,8 +351,7 @@ export default {
 			exibirIconeEditar: false,
 			placeholder: "Digite aqui...",
 			placeholderSelect: "Selecione",
-			placeholderSelectCnae: "Selecione um ou mais",
-			placeholderSelectLicenca: "Selecione um ou mais",
+			placeholderSelectMultiplo: "Selecione um ou mais",
 			placeholderPesquisa:  "Pesquisar pelo código ou nome do CNAE",
 			tituloTooltip: "CNAE",
 			semResultados: 'Nenhum CNAE encontrado com a pesquisa informada.',
@@ -436,20 +436,17 @@ export default {
 					}
 
 				}
+
 			}
 
 		},
 
 		errorMessageGeometria(value) {
 
-			if (Array.isArray(value)) {
+			if (this.erro.invalido) {
 
-				if (this.erro.invalido) {
-
-					if (!value[0] && !value[1] && !value[2]) {
-						return 'Obrigatório';
-					}
-
+				if (!value[0] && !value[1] && !value[2]) {
+					return 'Obrigatório';
 				}
 
 			}
@@ -458,12 +455,10 @@ export default {
 
 		errorMessageCnae(value) {
 
-			if (Array.isArray(value)){
-
-				if ((!this.errorMessageEmptyInclusao || this.erro.invalido) && value.length === 0) {
-					return 'Obrigatório';
-				}
-
+			if ((!this.errorMessageEmptyInclusao || this.erro.invalido) && value.length === 0) {
+				return 'Obrigatório';
+			} else if (!this.errorMessageEmptyInclusao) {
+				return 'Obrigatório';
 			}
 
 		},
@@ -480,8 +475,8 @@ export default {
 		resetErrorMessage() {
 
 			this.errorEtapaCnaes = true;
-			this.errorMessageEmptyInclusao = true;
 			this.erro.invalido = false;
+			this.errorMessageEmptyInclusao = true;
 			
 		},
 
@@ -584,8 +579,8 @@ export default {
 
 			});
 
-			let message = ERROR_MESSAGES.atividadeLicenciavel.atividades.adicionarValores + "Já existe uma relação " +
-				"com o(s) CNAE(s): " + dadosExistentes;
+			let message = ERROR_MESSAGES.atividadeLicenciavel.atividades.adicionarValores + "Já existe um CNAE " +
+				"com o mesmo código adicionado: " + dadosExistentes;
 
 			snackbar.alert(message);
 
@@ -595,11 +590,11 @@ export default {
 
 			this.$fire({
 
-				title:'<p class="title-modal-confirm">Remover relação - ' + item.cnae.codigo + ' / ' + item.cnae.nome,
+				title:'<p class="title-modal-confirm">Remover CNAE - ' + item.cnae.nome,
 
-				html:`<p class="message-modal-confirm">Ao remover a relação CNAE / Atividade, eles não estarão mais relacionados.</p>
+				html:`<p class="message-modal-confirm">Ao remover o CNAE, ele não estará mais vinculado nessa atividade.</p>
 						<p class="message-modal-confirm">
-						<b>Tem certeza que deseja remover a relação CNAE / Atividade? Esta opção pode ser desfeita a qualquer momento ao relacioná-los novamente.</b>
+						<b>Tem certeza que deseja remover o CNAE? Esta opção pode ser desfeita a qualquer momento ao adicioná-lo novamente.</b>
 					</p>`,
 				showCancelButton: true,
 				confirmButtonColor:'#F56C6C',

@@ -117,8 +117,9 @@ const ERROR_MESSAGES = {
 		desativarErro: "Não foi possível inativar o registro. Ele se encontra vinculado a uma atividade ativa no sistema. ",
 
 		atividades: {
-			adicionarValores: ER_BASE + 'adicionar a relação Atividade/CNAE. ',
-			avancarEtapa: 'Aviso! Para avançar de etapa, é necessário adicionar ao menos uma atividade. ',
+			adicionarValores: ER_BASE + 'adicionar o CNAE. ',
+			avancarEtapaCnae: 'Aviso! Para avançar de etapa, é necessário adicionar ao menos um CNAE. ',
+			avancarEtapa: 'Aviso! Para avançar de etapa, é necessário o preenchimento de todos os campos. '
 		},
 
 		parametros: {
