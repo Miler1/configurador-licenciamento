@@ -129,21 +129,20 @@
 								v-label Localização da atividade
 							div
 								v-checkbox.mt-0.mr-8.d-inline-flex(
-									v-model="dados.selectedLocalizacao",
+									v-model="dados.tiposAtividade",
 									label="Zona Urbana",
-									value="ZONA URBANA",
+									value="URBANA",
 									color="#84A98C",
 									@click="resetErrorMessage",
-									:error-messages="errorMessage(dados.selectedLocalizacao)"
+									:error-messages="errorMessage(dados.tiposAtividade)"
 								)
 								v-checkbox.mt-0.d-inline-flex(
-									v-model="dados.selectedLocalizacao",
+									v-model="dados.tiposAtividade",
 									label="Zona Rural",
-									value="ZONA RURAL",
+									value="RURAL",
 									color="#84A98C",
 									@click="resetErrorMessage",
-									:error-messages="errorMessage(dados.selectedLocalizacao)",
-									:hide-details="setDetails(dados.selectedGeometria, 0)"
+									:error-messages="errorMessage(dados.tiposAtividade)",
 								)
 						v-col(cols="12", md="4")
 							ToggleOptions(
@@ -159,36 +158,34 @@
 								v-label Geometria da atividade
 							div
 								v-checkbox.mt-0.mr-8.d-inline-flex(
-									v-model="dados.selectedGeometria[0]",
+									v-model="dados.geoPonto",
 									label="Ponto",
 									value="true",
 									color="#84A98C",
 									@click="resetErrorMessage",
 									v-bind:false-value="false",
 	  								v-bind:true-value="true",
-									:error-messages="errorMessageGeometria(dados.selectedGeometria)",
+									:error-messages="errorMessageGeometria()",
 								)
 								v-checkbox.mt-0.mr-8.d-inline-flex(
-									v-model="dados.selectedGeometria[1]",
+									v-model="dados.geoLinha",
 									label="Linha",
 									value="true",
 									color="#84A98C",
 									@click="resetErrorMessage",
 									v-bind:false-value="false",
 	  								v-bind:true-value="true",
-									:error-messages="errorMessageGeometria(dados.selectedGeometria)",
-									:hide-details="setDetails(dados.selectedGeometria, 0)"
+									:error-messages="errorMessageGeometria()",
 								)
 								v-checkbox.mt-0.d-inline-flex(
-									v-model="dados.selectedGeometria[2]",
+									v-model="dados.geoPoligono",
 									label="Polígono",
 									value="true",
 									color="#84A98C",
 									@click="resetErrorMessage",
 									v-bind:false-value="false",
 	  								v-bind:true-value="true",
-									:error-messages="errorMessageGeometria(dados.selectedGeometria)"
-									:hide-details="setDetails(dados.selectedGeometria, 1)"
+									:error-messages="errorMessageGeometria()"
 								)
 		v-expansion-panel
 			v-expansion-panel-header
@@ -270,13 +267,13 @@
 								color="#E0E0E0",
 								:placeholder="placeholderSelect",
 								item-color="grey darken-3",
-								v-model="dados.requisitosTecnicos",
+								v-model="dados.requisitoTecnico",
 								:items="requisitosTecnicos",
 								:filter="filtroSelect",
 								item-text="textoExibicao",
-								:error-messages="errorMessage(dados.requisitosTecnicos)",
-								@input="v => {dados.requisitosTecnicos = dados.requisitosTecnicos}",
-								no-data-text="Nenhum grupo de requisito técnico encontrado",
+								:error-messages="errorMessage(dados.requisitoTecnico)",
+								@input="v => {dados.requisitoTecnico = dados.requisitoTecnico}",
+								no-data-text="Nenhuma requisito técnico",
 								@click.native="resetErrorMessage",
 								required,
 								return-object=true
@@ -289,13 +286,13 @@
 								color="#E0E0E0",
 								:placeholder="placeholderSelect",
 								item-color="grey darken-3",
-								v-model="dados.taxasLicenciamento",
+								v-model="dados.taxaLicenciamento",
 								:items="taxasLicenciamento",
 								:filter="filtroSelect",
 								item-text="textoExibicao",
-								:error-messages="errorMessage(dados.taxasLicenciamento)",
-								@input="v => {dados.taxasLicenciamento = dados.taxasLicenciamento}",
-								no-data-text="Nenhuma tabela de taxas de licenciamento encontrada",
+								:error-messages="errorMessage(dados.taxaLicenciamento)",
+								@input="v => {dados.taxaLicenciamento = dados.taxaLicenciamento}",
+								no-data-text="Nenhuma taxa de licenciamento encontrada",
 								@click.native="resetErrorMessage",
 								required,
 								return-object=true
@@ -436,19 +433,15 @@ export default {
 					}
 
 				}
-
+				
 			}
-
+			
 		},
 
-		errorMessageGeometria(value) {
-
-			if (this.erro.invalido) {
-
-				if (!value[0] && !value[1] && !value[2]) {
-					return 'Obrigatório';
-				}
-
+		errorMessageGeometria() {
+			
+			if (this.erro.invalido && !this.dados.geoPonto && !this.dados.geoLinha && !this.dados.geoPoligono) {
+				return 'Obrigatório';
 			}
 
 		},
@@ -495,7 +488,7 @@ export default {
 							dadosExistentes.push(cnae.codigo);
 						}
 
-						dadosInclusao.push(this.getDadosItem(cnae));
+						dadosInclusao.push(cnae);
 
 					});
 					
@@ -516,7 +509,7 @@ export default {
 
 					if (dadosExistentes.length === 0 ) {
 
-						dadosInclusao = this.getDadosItem(this.dados.cnaes[0]);
+						dadosInclusao = this.dados.cnaes[0];
 
 						this.cnaesAtividade.splice(this.indexItemEdicao, 1, dadosInclusao);
 
@@ -535,23 +528,13 @@ export default {
 			
 		},
 
-		getDadosItem(cnae) {
-
-			let dadoListagem = {};
-			
-			dadoListagem.cnae = cnae;
-
-			return dadoListagem;
-
-		},
-
 		validarValoresAdicionados(cnae) {
 
 			let validacao = true;
 
 			this.cnaesAtividade.forEach((dado, index) => {
 
-				if (dado.cnae.id === cnae.id
+				if (dado.id === cnae.id
 					&& (this.isInclusao || this.indexItemEdicao != index)) {
 
 					validacao = false;
@@ -583,6 +566,34 @@ export default {
 				"com o mesmo código adicionado: " + dadosExistentes;
 
 			snackbar.alert(message);
+
+		},
+
+		editarItem(item) {
+			
+			window.scrollTo(0,0);
+
+			this.dados.cnaes = [];
+			this.dados.cnaes.push(item);
+
+			if (!this.isCadastro) {
+
+				item.textoExibicao = item.codigo + ' - ' + item.nome;
+				this.cnaes.push(item);
+
+			}
+
+			this.indexItemEdicao = this.cnaesAtividade.indexOf(item);
+
+			this.isInclusao = false;
+
+			const that = this;
+
+			setTimeout(function() {
+
+				that.$refs.toggleOptionsForaEmpreendimento.setModel(item.foraEmpreendimento);
+
+			}, 100);
 
 		},
 

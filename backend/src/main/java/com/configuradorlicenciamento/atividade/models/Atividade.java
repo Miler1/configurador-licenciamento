@@ -5,9 +5,9 @@ import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.licenca.models.Licenca;
 import com.configuradorlicenciamento.potencialPoluidor.models.PotencialPoluidor;
 import com.configuradorlicenciamento.requisitoTecnico.models.RequisitoTecnico;
-import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.dtos.AtividadeDispensavelCsv;
-import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.dtos.AtividadeDispensavelDTO;
+import com.configuradorlicenciamento.taxaLicenciamento.models.TaxaLicenciamento;
 import com.configuradorlicenciamento.tipologia.models.Tipologia;
+import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +16,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -87,9 +88,29 @@ public class Atividade implements Serializable {
             {@JoinColumn(name = "id_tipo_licenca")})
     private List<Licenca> tiposLicencas;
 
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinTable(schema = GlobalReferences.ESQUEMA, name = "rel_atividade_taxa_licenciamento", joinColumns =
+            {@JoinColumn(name = "id_atividade")}, inverseJoinColumns =
+            {@JoinColumn(name = "id_taxa_licenciamento")})
+    private List<TaxaLicenciamento> taxasLicenciamento;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinTable(schema = GlobalReferences.ESQUEMA, name = "rel_atividade_porte_atividade", joinColumns =
+            {@JoinColumn(name = "id_atividade")}, inverseJoinColumns =
+            {@JoinColumn(name = "id_porte_atividade")})
+    private List<PorteAtividade> portesAtividade;
+
     @OneToMany(mappedBy="atividade")
     @JsonManagedReference
     private List<RelAtividadeParametroAtividade> parametros;
+
+    @NotNull(message = "{validacao.notnull}")
+    private Date dataCadastro;
+
+    @NotNull(message = "{validacao.notnull}")
+    @ManyToOne
+    @JoinColumn(name = "id_usuario_licenciamento", referencedColumnName = "id")
+    private UsuarioLicenciamento usuarioLicenciamento;
 
     public Atividade(AtividadeBuilder atividadeBuilder) {
         this.nome = atividadeBuilder.nome;
@@ -106,6 +127,11 @@ public class Atividade implements Serializable {
         this.requisitoTecnico = atividadeBuilder.requisitoTecnico;
         this.v1 = atividadeBuilder.v1;
         this.tiposAtividades = atividadeBuilder.tiposAtividades;
+        this.portesAtividade = atividadeBuilder.portesAtividade;
+        this.tiposLicencas = atividadeBuilder.tiposLicencas;
+        this.taxasLicenciamento = atividadeBuilder.taxasLicenciamento;
+        this.dataCadastro = atividadeBuilder.dataCadastro;
+        this.usuarioLicenciamento = atividadeBuilder.usuarioLicenciamento;
     }
 
     public AtividadeLicenciavelCsv preparaAtividadeLicenciavelParaCsv() { return new AtividadeLicenciavelCsv(this); }
@@ -126,9 +152,15 @@ public class Atividade implements Serializable {
         private RequisitoTecnico requisitoTecnico;
         private Boolean v1;
         private List<TipoAtividade> tiposAtividades;
+        private List<Licenca> tiposLicencas;
+        private List<TaxaLicenciamento> taxasLicenciamento;
+        private List<PorteAtividade> portesAtividade;
+        private Date dataCadastro;
+        private UsuarioLicenciamento usuarioLicenciamento;
 
-        public AtividadeBuilder(AtividadeDispensavelDTO.RelacaoCnaeTipologia atividadeDispensavelDTO) {
-            this.dentroMunicipio = !atividadeDispensavelDTO.getForaMunicipio();
+
+        public AtividadeBuilder(Boolean dentroMunicipio) {
+            this.dentroMunicipio = dentroMunicipio;
         }
 
         public AtividadeBuilder setNome(String nome) {
@@ -193,6 +225,31 @@ public class Atividade implements Serializable {
 
         public AtividadeBuilder setTiposAtividades(List<TipoAtividade> tiposAtividades) {
             this.tiposAtividades = tiposAtividades;
+            return this;
+        }
+
+        public AtividadeBuilder setTiposLicencas(List<Licenca> tiposLicencas) {
+            this.tiposLicencas = tiposLicencas;
+            return this;
+        }
+
+        public AtividadeBuilder setTaxasLicenciamento(List<TaxaLicenciamento> taxasLicenciamento) {
+            this.taxasLicenciamento = taxasLicenciamento;
+            return this;
+        }
+
+        public AtividadeBuilder setPortesAtividade(List<PorteAtividade> portesAtividade) {
+            this.portesAtividade = portesAtividade;
+            return this;
+        }
+
+        public AtividadeBuilder setDataCadastro(Date dataCadastro) {
+            this.dataCadastro = dataCadastro;
+            return this;
+        }
+
+        public AtividadeBuilder setUsuarioLicencimento(UsuarioLicenciamento usuarioLicencimento) {
+            this.usuarioLicenciamento = usuarioLicencimento;
             return this;
         }
 

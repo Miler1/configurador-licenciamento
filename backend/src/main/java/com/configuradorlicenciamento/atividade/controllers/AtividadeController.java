@@ -1,6 +1,7 @@
 package com.configuradorlicenciamento.atividade.controllers;
 
 import com.configuradorlicenciamento.atividade.dtos.AtividadeLicenciavelCsv;
+import com.configuradorlicenciamento.atividade.dtos.AtividadeLicenciavelDTO;
 import com.configuradorlicenciamento.atividade.interfaces.IAtividadeService;
 import com.configuradorlicenciamento.atividade.models.Atividade;
 import com.configuradorlicenciamento.configuracao.components.VariaveisAmbientes;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.Date;
 
 @RestController
@@ -28,6 +30,19 @@ public class AtividadeController extends DefaultController {
 
     @Autowired
     IAtividadeService atividadeService;
+
+    @PostMapping(value = "salvar")
+    public ResponseEntity<Atividade> salvarAtividadeLicenciavel(HttpServletRequest request, @Valid @RequestBody AtividadeLicenciavelDTO atividadeLicenciavelDTO) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        Atividade atividade = atividadeService.salvarAtividadeLicenciavel(request, atividadeLicenciavelDTO);
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(atividade);
+
+    }
 
     @PostMapping(value = "listar")
     public ResponseEntity<Page<Atividade>> listarAtividadesLicenciaveis(HttpServletRequest request,
