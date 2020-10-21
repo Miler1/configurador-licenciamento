@@ -119,7 +119,7 @@ const ERROR_MESSAGES = {
 		atividades: {
 			adicionarValores: ER_BASE + 'adicionar o CNAE. ',
 			avancarEtapaCnae: 'Aviso! Para avançar de etapa, é necessário adicionar ao menos um CNAE. ',
-			avancarEtapa: 'Aviso! Para avançar de etapa, é necessário o preenchimento de todos os campos. '
+			avancarEtapa: 'Aviso! Para avançar de etapa, é necessário preencher todos os campos obrigatórios. '
 		},
 
 		parametros: {
