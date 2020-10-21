@@ -15,4 +15,6 @@ public interface AtividadeCnaeRepository extends JpaRepository<AtividadeCnae, In
             "(SELECT tca.atividadeCnae.id FROM ac.tipoCaracterizacaoAtividadeList AS tca WHERE tca.dispensaLicenciamento = true)")
     List<AtividadeCnae> findAllWithDescriptionQuery();
 
+    List<AtividadeCnae> findByAtivo(Boolean ativo);
+
 }
