@@ -35,6 +35,7 @@
 			PassoParametros(
 				v-if="passo == 2",
 				:parametros="atividadeLicenciavel.parametros",
+				:dados="atividadeLicenciavel.dados",
 				:erro="erros[1]"
 			)
 
@@ -126,14 +127,12 @@ export default {
 					setor: null,
 					foraEmpreendimento: null,
 					cnaes: [],
-					requisitosTecnicos: null,
-					taxasLicenciamento: null,
-					selectedLocalizacao: [],
-					selectedGeometria: [
-						false,
-						false,
-						false
-					]
+					requisitoTecnico: null,
+					taxaLicenciamento: null,
+					tiposAtividade: [],
+					geoPonto: false,
+					geoLinha: false,
+					geoPoligono: false
 				},
 				parametros: []
 			},
@@ -146,7 +145,21 @@ export default {
 
 	methods: {
 
-		cadastrar() {
+		cadastrar(){
+
+			this.prepararDados();
+
+			if (this.validar()) {
+
+				AtividadeService.cadastrarAtividadeLicenciavel(this.atividadeLicenciavel)
+					.then(() => {
+						this.handleSuccess();
+					})
+					.catch(error => {
+						this.handleError(error);
+					});
+
+			}
 
 		},
 
@@ -155,6 +168,28 @@ export default {
 		},
 
 		prepararDados() {
+
+			this.atividadeLicenciavel.cnaesAtividade.forEach(atividade => {
+				delete atividade.textoExibicao;
+			});
+
+			this.atividadeLicenciavel.dados.setor = this.atividadeLicenciavel.dados.setor.sigla;
+
+			this.atividadeLicenciavel.parametros.forEach(parametro => {
+
+				parametro.limiteInferiorUm = parametro.limiteInferiorUm ? 
+					parseFloat(parametro.limiteInferiorUm.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
+
+				parametro.limiteSuperiorUm = parametro.limiteSuperiorUm ? 
+					parseFloat(parametro.limiteSuperiorUm.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
+
+				parametro.limiteInferiorDois = parametro.limiteInferiorDois ? 
+					parseFloat(parametro.limiteInferiorDois.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
+
+				parametro.limiteSuperiorDois = parametro.limiteSuperiorDois ? 
+					parseFloat(parametro.limiteSuperiorDois.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
+
+			});
 
 		},
 
@@ -242,17 +277,27 @@ export default {
 			let dados = this.atividadeLicenciavel.dados;
 
 			let valido = this.passos[0].completo =
-				cnaesAtividades && cnaesAtividades.length > 0 &&
+				cnaesAtividades && cnaesAtividades.length > 0;
+				
+			if (!valido) {
+				window.scrollTo(0, 0);
+				snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.atividades.avancarEtapaCnae, snackbar.type.WARN);
+
+				// return valido;
+
+			}
+			
+			valido = this.passos[0].completo = 
 				dados.codigoAtividade != null && dados.codigoAtividade != '' &&
 				dados.nomeAtividade != null && dados.nomeAtividade != '' &&
 				dados.licencas && dados.licencas.length > 0 &&
 				dados.potencialPoluidor != null &&
 				dados.setor &&
-				dados.selectedLocalizacao && dados.selectedLocalizacao.length > 0 &&
+				dados.tiposAtividade && dados.tiposAtividade.length > 0 &&
 				dados.foraEmpreendimento != null &&
-				dados.selectedGeometria.some(elem => elem == true) &&
-				dados.requisitosTecnicos != null &&
-				dados.taxasLicenciamento != null;
+				(dados.geoPonto || dados.geoLinha || dados.geoPoligono) &&
+				dados.requisitoTecnico != null &&
+				dados.taxaLicenciamento != null;
 
 			if (!valido) {
 				window.scrollTo(0, 0);
@@ -295,7 +340,7 @@ export default {
 				title: '<p class="title-modal-confirm">Confirmar cancelamento - Atividade licenciável</p>',
 
 				html: this.isCadastro ?
-					`<p class="message-modal-confirm">Ao cancelar o cadastro desta atividade, Todas as informações que não foram salvas serão descartadas.</p>
+					`<p class="message-modal-confirm">Ao cancelar o cadastro, todas as informações que não foram salvas serão perdidas.</p>
 					<p class="message-modal-confirm">
 						<b>Tem certeza que deseja cancelar o cadastro? Esta opção não poderá ser desfeita e todas as informações serão perdidas.</b>
 					</p>` :
@@ -326,9 +371,19 @@ export default {
 
 		handleError(error, edicao = false) {
 
+			console.error(error.message);
+
+			let message = edicao ? ERROR_MESSAGES.atividadeLicenciavel.editar : ERROR_MESSAGES.atividadeLicenciavel.cadastro;
+
+			snackbar.alert(message);
+
 		},
 
 		handleSuccess(edicao = false) {
+
+			let message = edicao ? SUCCESS_MESSAGES.editar : SUCCESS_MESSAGES.cadastro;
+
+			snackbar.alert(message, snackbar.type.SUCCESS);
 
 			this.redirectListagem();
 

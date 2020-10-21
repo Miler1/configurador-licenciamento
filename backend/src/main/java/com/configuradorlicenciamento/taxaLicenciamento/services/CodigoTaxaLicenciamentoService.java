@@ -196,7 +196,7 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
 
     @Override
     public List<CodigoTaxaLicenciamento> findAtivos() {
-        return codigoTaxaLicenciamentoRepository.findByAtivo(true);
+        return codigoTaxaLicenciamentoRepository.findByAtivo(true, Sort.by("codigo"));
     }
 
     private Specification<CodigoTaxaLicenciamento> preparaFiltro(FiltroPesquisa filtro) {
