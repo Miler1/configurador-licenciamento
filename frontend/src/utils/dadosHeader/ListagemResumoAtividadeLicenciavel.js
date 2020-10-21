@@ -1,6 +1,6 @@
 const HEADERCNAE = [
-	{ text: 'Código do CNAE', value: 'codigo'},
-	{ text: 'Descrição da atividade (CNAE)', value: 'nome'}
+	{ text: 'Código', value: 'codigo'},
+	{ text: 'Nome', value: 'nome'}
 ];
 
 const HEADERPARAMETRO = [
