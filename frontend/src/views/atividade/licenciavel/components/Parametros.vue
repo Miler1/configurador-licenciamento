@@ -6,10 +6,10 @@
 		v-row
 			v-col(cols="12", md="3")
 				v-label Código da atividade
-				p.label-atividade 2102
+				p.label-atividade {{dados.codigoAtividade}}
 			v-col(cols="12", md="9")
 				v-label Atividade
-				p.label-atividade Impressão e encadernação de material gráfico em geral
+				p.label-atividade {{dados.nomeAtividade}}
 	
 	v-expansion-panels.pb-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
 		v-expansion-panel
@@ -44,11 +44,11 @@
 									color="#E0E0E0",
 									:placeholder="placeholderSelect1",
 									item-color="grey darken-3",
-									v-model="parametro1.parametro",
+									v-model="parametroUm.parametro",
 									:items="parametrosDisponiveis",
 									:filter="filtroSelect",
 									item-text="textoExibicao",
-									:error-messages="errorMessage(parametro1.parametro)",,
+									:error-messages="errorMessage(parametroUm.parametro)",,
 									:disabled="disableParametros(1)"
 									no-data-text="Nenhum parâmetro encontrado",
 									@click.native="resetErrorMessage",
@@ -62,24 +62,24 @@
 									template(v-slot:activator="{ on, attrs }")
 										v-icon.information.ml-1(v-bind="attrs", v-on="on") mdi-information
 									span {{labelTooltipDescricao}}
-								v-text-field#QA-input-descricao-unidade(
+								v-text-field#QA-input-descricao-unidade-1(
 									outlined,
 									color="#E0E0E0",
 									:placeholder="placeholderDescricao1",
-									v-model="parametro1.descricaoUnidade",
+									v-model="parametroUm.descricaoUnidade",
 									@click.native="resetErrorMessage",
 									:disabled="disableParametros(1)"
 									required,
 									dense
 								)
 
-								v-row(v-for='(valor, index) in parametro1.valores', :key='index')
+								v-row(v-for='(valor, index) in parametroUm.valores', :key='index')
 									v-col(cols="12", md="2").align-self-center
 										span Intervalo {{index + 1}}
 
 									v-col(cols="12", md="5")
 										v-label Valor mínimo
-										v-text-field#QA-input-descricao-unidade(
+										v-text-field#QA-input-valor-minimo-1(
 											outlined,
 											color="#E0E0E0",
 											v-money="money"
@@ -106,7 +106,7 @@
 
 									v-col(cols="12", md="5")
 										v-label Valor máximo
-										v-text-field#QA-input-descricao-unidade(
+										v-text-field#QA-input-valor-maximo-1(
 											outlined,
 											color="#E0E0E0",
 											min="0",
@@ -138,11 +138,11 @@
 									color="#E0E0E0",
 									:placeholder="placeholderSelect2",
 									item-color="grey darken-3",
-									v-model="parametro2.parametro",
+									v-model="parametroDois.parametro",
 									:items="parametrosDisponiveis",
 									:filter="filtroSelect",
 									item-text="textoExibicao",
-									:error-messages="errorMessage(parametro2.parametro)",
+									:error-messages="errorMessage(parametroDois.parametro)",
 									no-data-text="Nenhum parâmetro encontrado",
 									@click.native="resetErrorMessage",
 									required,
@@ -156,28 +156,27 @@
 									template(v-slot:activator="{ on, attrs }")
 										v-icon.information.ml-1(v-bind="attrs", v-on="on") mdi-information
 									span {{labelTooltipDescricao}}
-								v-text-field#QA-input-descricao-unidade(
+								v-text-field#QA-input-descricao-unidade-2(
 									outlined,
 									color="#E0E0E0",
 									:placeholder="placeholderDescricao2",
-									v-model="parametro2.descricaoUnidade",
+									v-model="parametroDois.descricaoUnidade",
 									@click.native="resetErrorMessage",
 									required,
 									dense,
 									:disabled="disableParametros(2)"
 								)
 
-								v-row(v-for='(valor, index) in parametro2.valores', :key='index')
+								v-row(v-for='(valor, index) in parametroDois.valores', :key='index')
 									v-col(cols="12", md="2").align-self-center
 										span Intervalo {{index + 1}}
 
 									v-col(cols="12", md="5")
 										v-label Valor mínimo
-										v-text-field#QA-input-descricao-unidade(
+										v-text-field#QA-input-valor-minimo-2(
 											outlined,
 											color="#E0E0E0",
 											v-model="valor.minimo",
-											type="number",
 											v-money="money"
 											min="0",
 											@click.native="resetErrorMessage",
@@ -201,15 +200,14 @@
 
 									v-col(cols="12", md="5")
 										v-label Valor máximo
-										v-text-field.mb-0#QA-input-descricao-unidade(
+										v-text-field.mb-0#QA-input-valor-maximo-2(
 											outlined,
 											color="#E0E0E0",
 											v-model="valor.maximo",
-											type="number",
-											v-money="money"
+											v-money="index === 3 ? '' : money"
 											min="0",
 											@click.native="resetErrorMessage",
-											:placeholder="validaValoresLimites(index, 'MAXIMO') ? 'Indeterminado': ''"
+											:placeholder="validaValoresLimites(index, 'MAXIMO') ? 'Indeterminado': ''",
 											:error-messages="errorMessage(valor.maximo, null, 2, index, 'MAXIMO', false)",
 											:disabled="disableParametros(2, index, 'MAXIMO')",
 											required,
@@ -286,6 +284,9 @@ export default {
 		parametros: {
 			type: [Array]
 		},
+		dados: {
+			type: [Object]
+		},
 		erro: {
 			type: [Object]
 		},
@@ -322,12 +323,12 @@ export default {
 				precision: 2,
 			},
 
-			parametro1: {
+			parametroUm: {
 				parametro: null,
 				descricaoUnidade: null,
 				valores: []
 			},
-			parametro2: {
+			parametroDois: {
 				parametro: null,
 				descricaoUnidade: null,
 				valores: []
@@ -364,9 +365,9 @@ export default {
 			let parametro = null;
 
 			if(numeroParametro === 1) {
-				parametro = this.parametro1;
+				parametro = this.parametroUm;
 			} else {
-				parametro = this.parametro2;
+				parametro = this.parametroDois;
 			}
 
 			if(check){
@@ -408,11 +409,11 @@ export default {
 			}
 
 			if(this.tipoParametro === 'SIMPLES') {
-				this.errorMessageEmpty = this.validarParametro(this.parametro1);
+				this.errorMessageEmpty = this.validarParametro(this.parametroUm);
 
 			} else {
 
-				this.errorMessageEmpty = this.validarParametro(this.parametro1) && this.validarParametro(this.parametro2);
+				this.errorMessageEmpty = this.validarParametro(this.parametroUm) && this.validarParametro(this.parametroDois);
 
 			}
 
@@ -451,33 +452,33 @@ export default {
 			this.parametros.length = 0;
 
 			let dadoParametro = {
-				parametro1: null,
-				valorMinimoParametro1: null,
-				valorMaximoParametro1: null,
-				limiteInferiorInclusoParametro1: null,
-				limiteSuperiorInclusoParametro1: null,
-				parametro2: null,
-				valorMinimoParametro2: null,
-				valorMaximoParametro2: null,
-				limiteInferiorInclusoParametro2: null,
-				limiteSuperiorInclusoParametro2: null,
+				parametroUm: null,
+				limiteInferiorUm: null,
+				limiteSuperiorUm: null,
+				limiteInferiorUmIncluso: null,
+				limiteSuperiorUmIncluso: null,
+				parametroDois: null,
+				limiteInferiorDois: null,
+				limiteSuperiorDois: null,
+				limiteInferiorDoisIncluso: null,
+				limiteSuperiorDoisIncluso: null,
 				porte: null,
 				licenciamentoMunicipal: null,
 				repasseOutroOrgao: null,
-				descricaoUnidade1: null,
-				descricaoUnidade2: null
+				descricaoUnidadeUm: null,
+				descricaoUnidadeDois: null
 			};
 
 			if(this.isParametroSimples()) {
 				
-				this.parametro1.valores.forEach((valor, index) => {
+				this.parametroUm.valores.forEach((valor, index) => {
 
-					dadoParametro.parametro1 = this.parametro1.parametro;
-					dadoParametro.descricaoUnidade1 = this.parametro1.descricaoUnidade;
-					dadoParametro.valorMinimoParametro1 = valor.minimo;
-					dadoParametro.valorMaximoParametro1 = valor.maximo;
-					dadoParametro.limiteInferiorInclusoParametro1 = valor.limiteInferiorIncluso;
-					dadoParametro.limiteSuperiorInclusoParametro1 = valor.limiteSuperiorIncluso;
+					dadoParametro.parametroUm = this.parametroUm.parametro;
+					dadoParametro.descricaoUnidadeUm = this.parametroUm.descricaoUnidade;
+					dadoParametro.limiteInferiorUm = valor.minimo;
+					dadoParametro.limiteSuperiorUm = valor.maximo;
+					dadoParametro.limiteInferiorUmIncluso = valor.limiteInferiorIncluso;
+					dadoParametro.limiteSuperiorUmIncluso = valor.limiteSuperiorIncluso;
 
 					if(!this.isInclusao && parametrosAnterior.length === 4) {
 
@@ -496,23 +497,23 @@ export default {
 
 			} else {
 
-				this.parametro1.valores.forEach((valor, index1) => {
+				this.parametroUm.valores.forEach((valor1, index1) => {
 
-					dadoParametro.parametro1 = this.parametro1.parametro;
-					dadoParametro.descricaoUnidade1 = this.parametro1.descricaoUnidade;
-					dadoParametro.valorMinimoParametro1 = valor.minimo;
-					dadoParametro.valorMaximoParametro1 = valor.maximo;
-					dadoParametro.limiteInferiorInclusoParametro1 = valor.limiteInferiorIncluso;
-					dadoParametro.limiteSuperiorInclusoParametro1 = valor.limiteSuperiorIncluso;
+					dadoParametro.parametroUm = this.parametroUm.parametro;
+					dadoParametro.descricaoUnidadeUm = this.parametroUm.descricaoUnidade;
+					dadoParametro.limiteInferiorUm = valor1.minimo;
+					dadoParametro.limiteSuperiorUm = valor1.maximo;
+					dadoParametro.limiteInferiorUmIncluso = valor1.limiteInferiorIncluso;
+					dadoParametro.limiteSuperiorUmIncluso = valor1.limiteSuperiorIncluso;
 
-					this.parametro2.valores.forEach((valor, index2) => {
+					this.parametroDois.valores.forEach((valor2, index2) => {
 
-						dadoParametro.parametro2 = this.parametro2.parametro;
-						dadoParametro.descricaoUnidade2 = this.parametro2.descricaoUnidade;
-						dadoParametro.valorMinimoParametro2 = valor.minimo;
-						dadoParametro.valorMaximoParametro2 = valor.maximo;
-						dadoParametro.limiteInferiorInclusoParametro2 = valor.limiteInferiorIncluso;
-						dadoParametro.limiteSuperiorInclusoParametro2 = valor.limiteSuperiorIncluso;
+						dadoParametro.parametroDois = this.parametroDois.parametro;
+						dadoParametro.descricaoUnidadeDois = this.parametroDois.descricaoUnidade;
+						dadoParametro.limiteInferiorDois = valor2.minimo;
+						dadoParametro.limiteSuperiorDois = valor2.maximo;
+						dadoParametro.limiteInferiorDoisIncluso = valor2.limiteInferiorIncluso;
+						dadoParametro.limiteSuperiorDoisIncluso = valor2.limiteSuperiorIncluso;
 
 						if(!this.isInclusao && parametrosAnterior.length === 16) {
 
@@ -585,19 +586,19 @@ export default {
 
 		limparDados() {
 			if(this.parametros.length === 0) {
-				this.clearParametro(this.parametro1);
-				this.clearParametro(this.parametro2);
+				this.clearParametro(this.parametroUm);
+				this.clearParametro(this.parametroDois);
 			}
 		},
 
 		changeOption(tipoParametro) {
 			if(tipoParametro) {
 				if(tipoParametro === 'SIMPLES'){
-					this.clearParametro(this.parametro2);
+					this.clearParametro(this.parametroDois);
 				}
 			} else {
-				this.clearParametro(this.parametro1);
-				this.clearParametro(this.parametro2);
+				this.clearParametro(this.parametroUm);
+				this.clearParametro(this.parametroDois);
 			}
 
 			this.resetErrorMessage();
@@ -620,17 +621,17 @@ export default {
 			if(numeroParametro === 1) {
 
 				if(tipo === 'MINIMO') {
-					this.parametro1.valores[index-1].limiteSuperiorIncluso = false;
+					this.parametroUm.valores[index-1].limiteSuperiorIncluso = false;
 				} else {
-					this.parametro1.valores[index+1].limiteInferiorIncluso = false;
+					this.parametroUm.valores[index+1].limiteInferiorIncluso = false;
 				}
 
 			} else {
 
 				if(tipo === 'MINIMO') {
-					this.parametro2.valores[index-1].limiteSuperiorIncluso = false;
+					this.parametroDois.valores[index-1].limiteSuperiorIncluso = false;
 				} else {
-					this.parametro2.valores[index+1].limiteInferiorIncluso = false;
+					this.parametroDois.valores[index+1].limiteInferiorIncluso = false;
 				}
 
 			}
@@ -668,8 +669,8 @@ export default {
 				this.$refs.toggleAtividadeLicenciavelParametro.setModel(this.optionsTipoParametro[0].value);
 				this.tipoParametro = this.optionsTipoParametro[0].value;
 
-				this.parametro1.parametro = this.parametros[0].parametro1;
-				this.parametro1.descricaoUnidade = this.parametros[0].descricaoUnidade1; 
+				this.parametroUm.parametro = this.parametros[0].parametroUm;
+				this.parametroUm.descricaoUnidade = this.parametros[0].descricaoUnidade1; 
 
 				let valor = {
 					minimo: null,
@@ -680,14 +681,14 @@ export default {
 
 				this.parametros.forEach((parametro) => {
 
-					this.parametro1.valores.push({
-						minimo: parametro.valorMinimoParametro1,
-						maximo: parametro.valorMaximoParametro1,
-						limiteInferiorIncluso: parametro.limiteInferiorInclusoParametro1,
-						limiteSuperiorIncluso: parametro.limiteSuperiorInclusoParametro1
+					this.parametroUm.valores.push({
+						minimo: parametro.limiteInferiorUm,
+						maximo: parametro.limiteSuperiorUm,
+						limiteInferiorIncluso: parametro.limiteInferiorUmIncluso,
+						limiteSuperiorIncluso: parametro.limiteSuperiorUmIncluso
 					});
 
-					this.parametro2.valores.push({... valor});
+					this.parametroDois.valores.push({... valor});
 
 				});
 				
@@ -699,31 +700,31 @@ export default {
 				this.$refs.toggleAtividadeLicenciavelParametro.setModel(this.optionsTipoParametro[1].value);
 				this.tipoParametro = this.optionsTipoParametro[1].value;
 
-				this.parametro1.parametro = this.parametros[0].parametro1;
-				this.parametro1.descricaoUnidade = this.parametros[0].descricaoUnidade1;
-				this.parametro2.parametro = this.parametros[0].parametro2;
-				this.parametro2.descricaoUnidade = this.parametros[0].descricaoUnidade2;
+				this.parametroUm.parametro = this.parametros[0].parametroUm;
+				this.parametroUm.descricaoUnidade = this.parametros[0].descricaoUnidade1;
+				this.parametroDois.parametro = this.parametros[0].parametroDois;
+				this.parametroDois.descricaoUnidade = this.parametros[0].descricaoUnidade2;
 
 				this.parametros.forEach((parametro, index) => {
 
 					if(index % 4 === 0) {
 
-						this.parametro1.valores.push({
-							minimo: parametro.valorMinimoParametro1,
-							maximo: parametro.valorMaximoParametro1,
-							limiteInferiorIncluso: parametro.limiteInferiorInclusoParametro1,
-							limiteSuperiorIncluso: parametro.limiteSuperiorInclusoParametro1
+						this.parametroUm.valores.push({
+							minimo: parametro.limiteInferiorUm,
+							maximo: parametro.limiteSuperiorUm,
+							limiteInferiorIncluso: parametro.limiteInferiorUmIncluso,
+							limiteSuperiorIncluso: parametro.limiteSuperiorUmIncluso
 						});
 
 					}
 
 					if(index > 11) {
 
-						this.parametro2.valores.push({
-							minimo: parametro.valorMinimoParametro2,
-							maximo: parametro.valorMaximoParametro2,
-							limiteInferiorIncluso: parametro.limiteInferiorInclusoParametro2,
-							limiteSuperiorIncluso: parametro.limiteSuperiorInclusoParametro2
+						this.parametroDois.valores.push({
+							minimo: parametro.limiteInferiorDois,
+							maximo: parametro.limiteSuperiorDois,
+							limiteInferiorIncluso: parametro.limiteInferiorDoisIncluso,
+							limiteSuperiorIncluso: parametro.limiteSuperiorDoisIncluso
 						});
 
 					}
@@ -742,8 +743,8 @@ export default {
 			};
 
 			for(var i = 0; i < 4; i++) {
-				this.parametro1.valores.push({... valor});
-				this.parametro2.valores.push({... valor});
+				this.parametroUm.valores.push({... valor});
+				this.parametroDois.valores.push({... valor});
 			}
 
 		}

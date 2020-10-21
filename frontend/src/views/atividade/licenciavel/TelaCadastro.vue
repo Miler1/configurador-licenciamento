@@ -35,6 +35,7 @@
 			PassoParametros(
 				v-if="passo == 2",
 				:parametros="atividadeLicenciavel.parametros",
+				:dados="atividadeLicenciavel.dados",
 				:erro="erros[1]"
 			)
 
@@ -126,14 +127,12 @@ export default {
 					setor: null,
 					foraEmpreendimento: null,
 					cnaes: [],
-					requisitosTecnicos: null,
-					taxasLicenciamento: null,
-					selectedLocalizacao: [],
-					selectedGeometria: {
-						ponto: false,
-						linha: false,
-						poligono: false
-					}
+					requisitoTecnico: null,
+					taxaLicenciamento: null,
+					tiposAtividade: [],
+					geoPonto: false,
+					geoLinha: false,
+					geoPoligono: false
 				},
 				parametros: []
 			},
@@ -146,7 +145,21 @@ export default {
 
 	methods: {
 
-		cadastrar() {
+		cadastrar(){
+
+			this.prepararDados();
+
+			if (this.validar()) {
+
+				AtividadeService.cadastrarAtividadeLicenciavel(this.atividadeLicenciavel)
+					.then(() => {
+						this.handleSuccess();
+					})
+					.catch(error => {
+						this.handleError(error);
+					});
+
+			}
 
 		},
 
@@ -155,6 +168,28 @@ export default {
 		},
 
 		prepararDados() {
+
+			this.atividadeLicenciavel.cnaesAtividade.forEach(atividade => {
+				delete atividade.textoExibicao;
+			});
+
+			this.atividadeLicenciavel.dados.setor = this.atividadeLicenciavel.dados.setor.sigla;
+
+			this.atividadeLicenciavel.parametros.forEach(parametro => {
+
+				parametro.limiteInferiorUm = parametro.limiteInferiorUm ? 
+					parseFloat(parametro.limiteInferiorUm.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
+
+				parametro.limiteSuperiorUm = parametro.limiteSuperiorUm ? 
+					parseFloat(parametro.limiteSuperiorUm.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
+
+				parametro.limiteInferiorDois = parametro.limiteInferiorDois ? 
+					parseFloat(parametro.limiteInferiorDois.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
+
+				parametro.limiteSuperiorDois = parametro.limiteSuperiorDois ? 
+					parseFloat(parametro.limiteSuperiorDois.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
+
+			});
 
 		},
 
@@ -247,11 +282,11 @@ export default {
 				dados.licencas && dados.licencas.length > 0 &&
 				dados.potencialPoluidor != null &&
 				dados.setor &&
-				dados.selectedLocalizacao && dados.selectedLocalizacao.length > 0 &&
+				dados.tiposAtividade && dados.tiposAtividade.length > 0 &&
 				dados.foraEmpreendimento != null &&
-				(dados.selectedGeometria.ponto || dados.selectedGeometria.linha || dados.selectedGeometria.poligono) &&
-				dados.requisitosTecnicos != null &&
-				dados.taxasLicenciamento != null;
+				(dados.geoPonto || dados.geoLinha || dados.geoPoligono) &&
+				dados.requisitoTecnico != null &&
+				dados.taxaLicenciamento != null;
 
 			if (!valido) {
 				snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.atividades.avancarEtapa, snackbar.type.WARN);
@@ -328,9 +363,19 @@ export default {
 
 		handleError(error, edicao = false) {
 
+			console.error(error.message);
+
+			let message = edicao ? ERROR_MESSAGES.atividadeLicenciavel.editar : ERROR_MESSAGES.atividadeLicenciavel.cadastro;
+
+			snackbar.alert(message);
+
 		},
 
 		handleSuccess(edicao = false) {
+
+			let message = edicao ? SUCCESS_MESSAGES.editar : SUCCESS_MESSAGES.cadastro;
+
+			snackbar.alert(message, snackbar.type.SUCCESS);
 
 			this.redirectListagem();
 

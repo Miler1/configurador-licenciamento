@@ -1,24 +1,86 @@
 <template lang="pug">
 
-	#step-atividade-licenciavel-resumo
+#step-atividade-licenciavel-resumo
 
-		UnderConstruction()
+	b.titulo-cabecalho Dados da atividade
+	.cabecalho.pl-4.mb-7.rounded
+		v-row
+			v-col(cols="12", md="2")
+				v-label Código da atividade
+				p.label-atividade {{atividadeLicenciavel.dados.codigoAtividade}}
+			v-col(cols="12", md="5")
+				v-label Atividade
+				p.label-atividade {{atividadeLicenciavel.dados.nomeAtividade}}
+			v-col(cols="12", md="2")
+				v-label Tipo(s) de Licença(s)
+				p.label-atividade {{preparaExibicaoTipoLicenca()}}
+			v-col(cols="12", md="3")
+				v-label Tipologia
+				p.label-atividade {{atividadeLicenciavel.dados.tipologia.nome}}
+		v-row
+			v-col(cols="12", md="2")
+				v-label Localização
+				p.label-atividade {{preparaExibiçãoLocalizacao()}}
+			v-col(cols="12", md="3")
+				v-label Geometria
+				p.label-atividade {{preparaExibicaoGeometria()}}
+			v-col(cols="12", md="2")
+				v-label Execução
+				p.label-atividade {{preparaExibicaoExecucao()}}
+			v-col(cols="12", md="2")
+				v-label Gerência / Setor
+				p.label-atividade {{atividadeLicenciavel.dados.setor.sigla}}
+			v-col(cols="12", md="3")
+				v-label PPD
+				p.label-atividade {{atividadeLicenciavel.dados.potencialPoluidor.nome}}
+
+	GridListagemInclusao.mb-7(
+		:tituloListagem="tituloListagemCnae",
+		:headers="headerCnae",
+		:dadosListagem="atividadeLicenciavel.cnaesAtividade",
+		:inputPesquisa="inputPesquisa"
+	)
+
+	b.titulo-cabecalho Vinculações
+	.vinculacoes.pl-4.mb-7.rounded
+		v-row
+			v-col(cols="12", md="6")
+				v-label Grupo de requisito técnico
+				p.label-atividade {{atividadeLicenciavel.dados.requisitoTecnico.codigo}} - {{atividadeLicenciavel.dados.requisitoTecnico.descricao}}
+			v-col(cols="12", md="6")
+				v-label Tabela de taxas de licenciamento
+				p.label-atividade {{atividadeLicenciavel.dados.taxaLicenciamento.codigo}} - {{atividadeLicenciavel.dados.taxaLicenciamento.descricao}}
+
+	GridListagemInclusao.mt-7(
+		:tituloListagem="tituloListagemParametro",
+		:headers="headerParametro",
+		:dadosListagem="atividadeLicenciavel.parametros",
+		:inputPesquisa="inputPesquisa"
+		:resumo='resumo'
+		:itemsPerPage="itemsPerPage",
+		:hideFooter="hideFooter",
+	)
 
 </template>
 
 <script>
 
-import UnderConstruction from '@/views/UnderConstruction.vue';
+import GridListagemInclusao from '@/components/GridListagemInclusao';
+import { HEADERCNAE, HEADERPARAMETRO } from '@/utils/dadosHeader/ListagemResumoAtividadeLicenciavel';
 
 export default {
 
 	name:'Resumo',
 
 	components: {
-		UnderConstruction
+		GridListagemInclusao
 	},
 
 	props: {
+
+		atividadeLicenciavel: {
+			type: [Object]
+		},
 
 	},
 	
@@ -26,13 +88,65 @@ export default {
 
 		return {
 
+			inputPesquisa: false,
+			resumo: true,
+			hideFooter: true,
+			itemsPerPage: 20,
+			headerCnae: HEADERCNAE,
+			headerParametro: HEADERPARAMETRO,
+			tituloListagemCnae: "Listagem de CNAEs relacionados com a atividade",
+			tituloListagemParametro: "Listagem de parâmetros da atividade",
+
 		};
 
 	},
 
 	methods: {
 
-		//SOME METHODS HERE
+		preparaExibicaoTipoLicenca() {
+
+			let tiposLicencas = '';
+
+			this.atividadeLicenciavel.dados.licencas.forEach(licenca => {
+				tiposLicencas += licenca.sigla + ', ';
+			});
+
+			return tiposLicencas.substring(0, tiposLicencas.length - 2);
+
+		},
+
+		preparaExibiçãoLocalizacao() {
+
+			let localizacao = '';
+
+			this.atividadeLicenciavel.dados.tiposAtividade.forEach(localizaoSelect => {
+
+				localizacao += localizaoSelect === 'URBANA' ? localizacao.length > 0 ? ' e Zona urbana' : 'Zona urbana' : localizacao.length > 0 ? ' e Zona rural' : 'Zona rural';
+
+			});
+
+			return localizacao;
+
+		},
+
+		preparaExibicaoGeometria() {
+
+			let geometria = '';
+
+			let dados = this.atividadeLicenciavel.dados;
+
+			geometria += dados.geoPonto ? 'Ponto' : '';
+			geometria += dados.geoLinha ? geometria.length > 0 ? dados.geoPoligono ? ', Linha' : ' e Linha' : 'Linha' : '';
+			geometria += dados.geoPoligono ? geometria.length > 0 ? ' e Poligono' : 'Poligono' : '';
+
+			return geometria;
+		},
+
+		preparaExibicaoExecucao() {
+
+			return this.atividadeLicenciavel.dados.foraEmpreendimento ? 'Fora do empreendimento' : 'Dentro do empreendimento';
+
+		}
 
 	},
 
@@ -41,6 +155,14 @@ export default {
 
 	mounted() {
 
+		if(this.atividadeLicenciavel.parametros.length === 4) {
+
+			this.headerParametro = [... HEADERPARAMETRO];
+			this.headerParametro.splice(3,3);
+
+		}
+ 
+		
 	}
 
 };
@@ -48,5 +170,19 @@ export default {
 </script>
 
 <style lang="less">
+
+@import "../../../../assets/css/variaveis.less";
+
+.titulo-cabecalho{
+	font-size: 18px;
+}
+
+.cabecalho, .vinculacoes{
+	border: 1px solid @border-components;
+
+	.label-atividade {
+		margin: 0;
+	}
+}
 
 </style>

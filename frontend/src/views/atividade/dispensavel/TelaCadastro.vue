@@ -318,9 +318,9 @@ export default {
 
 		handleError(error, edicao = false) {
 
-			console.log(error.message);
+			console.error(error.message);
 
-			let message = edicao ? ERROR_MESSAGES.requisitoAdministrativo.editar : ERROR_MESSAGES.requisitoAdministrativo.cadastro;
+			let message = edicao ? ERROR_MESSAGES.atividadeDispensavel.editar : ERROR_MESSAGES.atividadeDispensavel.cadastro;
 
 			snackbar.alert(message);
 
