@@ -101,4 +101,17 @@ public class AtividadeCnaeController extends DefaultController {
 
     }
 
+    @GetMapping(value = "/buscarAtividadesCnaesAtivos")
+    public ResponseEntity<List<AtividadeCnae>> buscarAtividadesCnaesAtivos(HttpServletRequest request) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        List<AtividadeCnae> cnaeAtivos = atividadeCnaeService.findAtividadesCnaesByAtivos();
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(cnaeAtivos);
+
+    }
+
 }
