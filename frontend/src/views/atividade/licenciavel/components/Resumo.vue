@@ -20,7 +20,7 @@
 		v-row
 			v-col(cols="12", md="2")
 				v-label Localização
-				p.label-atividade {{preparaExibiçãoLocalizacao()}}
+				p.label-atividade {{preparaExibicaoLocalizacao()}}
 			v-col(cols="12", md="3")
 				v-label Geometria
 				p.label-atividade {{preparaExibicaoGeometria()}}
