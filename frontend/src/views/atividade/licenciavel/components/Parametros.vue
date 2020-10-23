@@ -179,7 +179,6 @@
 											outlined,
 											color="#E0E0E0",
 											v-model.lazy="valor.minimo",
-											type="number",
 											v-money="money"
 											min="0",
 											ref="valorminimo",
@@ -208,7 +207,6 @@
 											outlined,
 											color="#E0E0E0",
 											v-model.lazy="valor.maximo",
-											type="number",
 											v-money="money"
 											min="0",
 											ref="valormaximo",
