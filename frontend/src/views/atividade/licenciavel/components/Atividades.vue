@@ -130,7 +130,7 @@
 							div
 								v-checkbox.mt-0.mr-8.d-inline-flex(
 									v-model="dados.tiposAtividade",
-									label="Zona Urbana",
+									label="Zona urbana",
 									value="URBANA",
 									color="#84A98C",
 									@click="resetErrorMessage",
@@ -138,7 +138,7 @@
 								)
 								v-checkbox.mt-0.d-inline-flex(
 									v-model="dados.tiposAtividade",
-									label="Zona Rural",
+									label="Zona rural",
 									value="RURAL",
 									color="#84A98C",
 									@click="resetErrorMessage",
