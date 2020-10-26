@@ -8,7 +8,7 @@
 				v-label Código
 				p.label-atividade {{dados.codigoAtividade}}
 			v-col(cols="12", md="9")
-				v-label Atividade
+				v-label Nome
 				p.label-atividade {{dados.nomeAtividade}}
 	
 	v-expansion-panels.pb-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
