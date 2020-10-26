@@ -8,7 +8,7 @@
 				v-label Código
 				p.label-atividade {{dados.codigoAtividade}}
 			v-col(cols="12", md="9")
-				v-label Atividade
+				v-label Nome
 				p.label-atividade {{dados.nomeAtividade}}
 	
 	v-expansion-panels.pb-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
@@ -316,7 +316,7 @@ export default {
 			placeholderSelect2: 'Selecione o parâmetro 2',
 			placeholderDescricao1: 'Ex.: Metros cúbicos/dia (m³/d)',
 			placeholderDescricao2: 'Ex.: Produção em toneladas por mês',
-			labelTooltipDescricao: 'Esta é a descrição do campo parâmetro que será exibida para o solicitante ao informar o valor.',
+			labelTooltipDescricao: 'Esta é a descrição do campo parâmetro que será exibida para o solicitante ao informar o valor. Caso não informado, será exibida a própria descição do parâmetro.',
 
 			tituloListagem: "Listagem de relações parâmetros / portes adicionadas",
 			labelNoData: 'Não existem relações parâmetros / portes adicionadas.',
