@@ -2,7 +2,7 @@
 
 #step-atividade-licenciavel-resumo
 
-	b.titulo-cabecalho Dados da atividade
+	b.titulo-cabecalho Dados básicos da atividade
 	.cabecalho.pl-4.mb-7.rounded
 		v-row
 			v-col(cols="12", md="2")
