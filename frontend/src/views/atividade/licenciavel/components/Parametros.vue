@@ -614,17 +614,12 @@ export default {
 
 		resetaDadosValores(valor, i) {
 
-			if (this.$refs.valorminimoparametro1 != undefined || this.$refs.valormaximoparametro1 != undefined) {
-				this.$refs.valorminimoparametro1[i].$el.querySelector('input').value = 0;
-				this.$refs.valormaximoparametro1[i].$el.querySelector('input').value = 0;
-				this.$refs.valorminimoparametro2[i].$el.querySelector('input').value = 0;
-				this.$refs.valormaximoparametro2[i].$el.querySelector('input').value = 0;
-			}
-
 			valor.minimo = null;
 			valor.maximo = null;
 			valor.limiteInferiorIncluso = null;
 			valor.limiteSuperiorIncluso = null;
+			this.tipoParametro = null;
+
 		},
 
 		changeLimite(numeroParametro, index, tipo) {
