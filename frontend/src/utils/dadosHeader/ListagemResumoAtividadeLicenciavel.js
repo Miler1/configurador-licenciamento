@@ -11,8 +11,8 @@ const HEADERPARAMETRO = [
 	{ text: 'Valor mínimo', value: 'limiteInferiorDois', sortable: false},
 	{ text: 'Valor máximo', value: 'limiteSuperiorDois', sortable: false},
     { text: 'Porte', value: 'porte.nome', width: '100px', sortable: false},
-	{ text: 'Licenciamento municipal', value: 'licenciamentoMunicipal', sortable: false, align: 'center', width: '150px'},
-	{ text: 'Repasse para outro órgão', value: 'repasseOutroOrgao', sortable: false, align: 'center', width: '150px'}
+	{ text: 'Licenciamento municipal', value: 'licenciamentoMunicipal', sortable: false, align: 'center', width: '140px'},
+	{ text: 'Repasse para outro órgão', value: 'repasseOutroOrgao', sortable: false, align: 'center', width: '140px'}
 ];
 
 export {
