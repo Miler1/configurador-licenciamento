@@ -6,7 +6,7 @@
 		v-expansion-panel
 			v-expansion-panel-header
 				div.d-flex.flex-row.align-center.justify-start
-					span.align-baseline  Dados básicos
+					span.align-baseline  Dados básicos da atividade
 				template(v-slot:actions)
 					v-icon
 			v-expansion-panel-content
