@@ -233,6 +233,10 @@
 								a#QA-limpar-dados-atividade-dispensavel-cnae.d-flex.flex-row.align-center.justify-end(@click="limparDados", :class="{disabled: parametros.length > 0}")
 									v-icon.pr-1 fa-eraser
 									span Limpar dados
+								
+								v-btn#QA-btn-adicionar-atividade-dispensavel-cnae.mr-3(@click="cancelarEdicao", large, outlined, color="red", v-if="!isInclusao")
+									v-icon mdi-close
+									span Cancelar
 
 								v-btn#QA-btn-adicionar-atividade-dispensavel-cnae(@click="incluirDados", large, outlined, color="#84A98C", v-if="isInclusao", :disabled="parametros.length > 0")
 									v-icon mdi-plus
@@ -337,6 +341,8 @@ export default {
 				descricaoUnidade: null,
 				valores: []
 			},
+			parametroUmBkp: {},
+			parametroDoisBkp: {},
 			parametrosDisponiveis: [],
 			portesEmpreendimento: [],
 			optionsTipoParametro:[
@@ -543,6 +549,10 @@ export default {
 
 		editarParametros() {
 			this.isInclusao = false;
+
+			this.parametroUmBkp = JSON.parse(JSON.stringify(this.parametroUm));
+			this.parametroDoisBkp = JSON.parse(JSON.stringify(this.parametroDois));
+
 			window.scrollTo(0,0);
 		},
 
@@ -588,9 +598,57 @@ export default {
 			return true;
 		},
 
+		cancelarEdicao() {
+
+			this.isInclusao = true;
+
+			this.parametroUm.parametro = this.parametroUmBkp.parametro;
+			this.parametroUm.descricaoUnidade = this.parametroUmBkp.descricaoUnidade;
+			this.parametroUm.valores = this.parametroUmBkp.valores;
+
+			this.parametroUmBkp.valores.forEach((valor, index) => {
+
+				this.$refs.valorminimo[index].$el.querySelector('input').value = valor.minimo;
+				if(index != 3) {
+					this.$refs.valormaximo[index].$el.querySelector('input').value = valor.maximo;
+				}
+
+			});
+
+			if(this.parametroDoisBkp.parametro !== null) {
+
+				this.parametroUm.parametro = this.parametroDoisBkp.parametro;
+				this.parametroUm.descricaoUnidade = this.parametroDoisBkp.descricaoUnidade;
+				this.parametroUm.valores = this.parametroDoisBkp.valores;
+
+				this.parametroDoisBkp.valores.forEach((valor, index) => {
+
+					this.$refs.valorminimo[index].$el.querySelector('input').value = valor.minimo;
+					if(index != 3) {
+						this.$refs.valormaximo[index].$el.querySelector('input').value = valor.maximo;
+					}
+
+				});
+
+				this.$refs.toggleAtividadeLicenciavelParametro.setModel('COMPOSTO');
+				this.tipoParametro = 'COMPOSTO';
+
+			} else {
+
+				this.$refs.toggleAtividadeLicenciavelParametro.setModel('SIMPLES');
+				this.tipoParametro = 'SIMPLES';
+
+			}
+
+
+
+
+		},
+
 		limparDados() {
-			this.$refs.toggleAtividadeLicenciavelParametro.clearModel();
 			if(this.parametros.length === 0) {
+				this.$refs.toggleAtividadeLicenciavelParametro.clearModel();
+				this.tipoParametro = null;
 				this.clearParametro(this.parametroUm);
 				this.clearParametro(this.parametroDois);
 			}
@@ -617,8 +675,11 @@ export default {
 
 		resetaDadosValores(valor, i) {
 
-			if (this.$refs.valorminimo != undefined || this.$refs.valormaximo != undefined) {
+			if (this.$refs.valorminimo != undefined && this.$refs.valorminimo.length > 0) {
 				this.$refs.valorminimo[i].$el.querySelector('input').value = 0;
+			}
+
+			if (this.$refs.valormaximo != undefined && this.$refs.valormaximo.length > 0 && i != 3) {
 				this.$refs.valormaximo[i].$el.querySelector('input').value = 0;
 			}
 
