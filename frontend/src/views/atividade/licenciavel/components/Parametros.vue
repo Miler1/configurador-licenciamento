@@ -5,7 +5,7 @@
 	.cabecalho.pl-4.mb-7.rounded
 		v-row
 			v-col(cols="12", md="3")
-				v-label Código da atividade
+				v-label Código
 				p.label-atividade {{dados.codigoAtividade}}
 			v-col(cols="12", md="9")
 				v-label Atividade
