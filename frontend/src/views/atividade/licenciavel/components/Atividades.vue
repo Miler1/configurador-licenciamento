@@ -13,7 +13,7 @@
 				v-form(ref="atividadeLicenciavel")
 					v-row
 						v-col(cols="12", md="3")
-							v-label Código da atividade
+							v-label Código
 							v-text-field#QA-input-atividade-codigo(
 								outlined,
 								color="#E0E0E0",
@@ -26,7 +26,7 @@
 								dense
 							)
 						v-col(cols="12", md="9")
-							v-label Atividade
+							v-label Nome
 							v-text-field#QA-input-atividade-nome(
 								outlined,
 								color="#E0E0E0",
@@ -126,11 +126,11 @@
 					v-row
 						v-col(cols="12", md="4")
 							div
-								v-label Localização da atividade
+								v-label Localização
 							div
 								v-checkbox.mt-0.mr-8.d-inline-flex(
 									v-model="dados.tiposAtividade",
-									label="Zona Urbana",
+									label="Zona urbana",
 									value="URBANA",
 									color="#84A98C",
 									@click="resetErrorMessage",
@@ -138,7 +138,7 @@
 								)
 								v-checkbox.mt-0.d-inline-flex(
 									v-model="dados.tiposAtividade",
-									label="Zona Rural",
+									label="Zona rural",
 									value="RURAL",
 									color="#84A98C",
 									@click="resetErrorMessage",
@@ -156,7 +156,7 @@
 							)
 						v-col(cols="12", md="4")
 							div
-								v-label Geometria da atividade
+								v-label Geometria
 							div
 								v-checkbox.mt-0.mr-8.d-inline-flex(
 									v-model="dados.geoPonto",
