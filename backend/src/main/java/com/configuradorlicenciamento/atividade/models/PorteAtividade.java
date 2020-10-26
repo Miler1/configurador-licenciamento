@@ -23,43 +23,32 @@ public class PorteAtividade implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotNull(message = "{validacao.notnull}")
     @ManyToOne
     @JoinColumn(name = "id_porte_empreendimento", referencedColumnName = "id")
     private PorteEmpreendimento porteEmpreendimento;
 
-    @NotNull(message = "{validacao.notnull}")
     private Float limiteInferiorUm;
 
-    @NotNull(message = "{validacao.notnull}")
     private Float limiteSuperiorUm;
 
-    @NotNull(message = "{validacao.notnull}")
     private Float limiteInferiorDois;
 
-    @NotNull(message = "{validacao.notnull}")
     private Float limiteSuperiorDois;
 
-    @NotNull(message = "{validacao.notnull}")
     @ManyToOne
     @JoinColumn(name = "id_parametro_um", referencedColumnName = "id")
     private Parametro parametroUm;
 
-    @NotNull(message = "{validacao.notnull}")
     @ManyToOne
     @JoinColumn(name = "id_parametro_dois", referencedColumnName = "id")
     private Parametro parametroDois;
 
-    @NotNull(message = "{validacao.notnull}")
     private Boolean limiteInferiorUmIncluso;
 
-    @NotNull(message = "{validacao.notnull}")
     private Boolean limiteInferiorDoisIncluso;
 
-    @NotNull(message = "{validacao.notnull}")
     private Boolean limiteSuperiorUmIncluso;
 
-    @NotNull(message = "{validacao.notnull}")
     private Boolean limiteSuperiorDoisIncluso;
 
     @NotNull(message = "{validacao.notnull}")

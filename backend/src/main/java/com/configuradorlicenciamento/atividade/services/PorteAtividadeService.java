@@ -46,9 +46,9 @@ public class PorteAtividadeService implements IPorteAtividadeService {
 
             PorteAtividade porteAtividade = new PorteAtividade.PorteAtividadeBuilder()
                     .setPorteEmpreendimento(porteEmpreendimento.orElse(null))
-                    .setLimiteInferiorUm(porte.getLimiteInferiorUm() == null ? 0 : porte.getLimiteInferiorUm())
+                    .setLimiteInferiorUm(porte.getLimiteInferiorUm() == 0.0 ? null : porte.getLimiteInferiorUm())
                     .setLimiteSuperiorUm(porte.getLimiteSuperiorUm())
-                    .setLimiteInferiorDois(porte.getLimiteInferiorDois() == null ? 0 : porte.getLimiteInferiorDois())
+                    .setLimiteInferiorDois(porte.getLimiteInferiorDois() != null && porte.getLimiteInferiorDois() == 0.0 ? null : porte.getLimiteInferiorDois())
                     .setLimiteSuperiorDois(porte.getLimiteSuperiorDois())
                     .setParametroUm(parametroUm)
                     .setParametroDois(parametroDois)

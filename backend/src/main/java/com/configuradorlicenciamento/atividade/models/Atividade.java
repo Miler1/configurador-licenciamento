@@ -37,7 +37,6 @@ public class Atividade implements Serializable {
     @NotNull(message = "{validacao.notnull}")
     private String codigo;
 
-    @NotNull(message = "{validacao.notnull}")
     @ManyToOne
     @JoinColumn(name = "id_tipologia", referencedColumnName = "id")
     private Tipologia tipologia;
@@ -51,24 +50,20 @@ public class Atividade implements Serializable {
     @NotNull(message = "{validacao.notnull}")
     private Boolean geoPoligono;
 
-    @NotNull(message = "{validacao.notnull}")
     @ManyToOne
     @JoinColumn(name = "id_potencial_poluidor", referencedColumnName = "id")
     private PotencialPoluidor potencialPoluidor;
 
-    @NotNull(message = "{validacao.notnull}")
     private String siglaSetor;
 
     @NotNull(message = "{validacao.notnull}")
     private Boolean ativo;
 
-    @NotNull(message = "{validacao.notnull}")
     private Boolean dentroEmpreendimento;
 
     @NotNull(message = "{validacao.notnull}")
     private Boolean dentroMunicipio;
 
-    @NotNull(message = "{validacao.notnull}")
     @ManyToOne
     @JoinColumn(name = "id_grupo_documento", referencedColumnName = "id")
     private RequisitoTecnico requisitoTecnico;
