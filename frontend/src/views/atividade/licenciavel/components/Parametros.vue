@@ -48,7 +48,7 @@
 									:items="parametrosDisponiveis",
 									:filter="filtroSelect",
 									item-text="textoExibicao",
-									:error-messages="errorMessage(parametro1.parametro)",,
+									:error-messages="errorMessage(parametro1.parametro)",
 									:disabled="disableParametros(1)"
 									no-data-text="Nenhum parâmetro encontrado",
 									@click.native="resetErrorMessage",
@@ -84,7 +84,7 @@
 											color="#E0E0E0",
 											v-money="money",
 											min="0",
-											ref="valorminimo",
+											ref="valorminimoparametro1",
 											v-model.lazy="valor.minimo",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MINIMO') ? '0': ''",
@@ -111,7 +111,7 @@
 											outlined,
 											color="#E0E0E0",
 											min="0",
-											ref="valormaximo",
+											ref="valormaximoparametro1",
 											v-money="index === 3 ? '' : money"
 											v-model.lazy="valor.maximo",
 											@click.native="resetErrorMessage",
@@ -179,10 +179,9 @@
 											outlined,
 											color="#E0E0E0",
 											v-model.lazy="valor.minimo",
-											type="number",
 											v-money="money"
 											min="0",
-											ref="valorminimo",
+											ref="valorminimoparametro2",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MINIMO') ? '0': ''",
 											:error-messages="errorMessage(valor.minimo, null, 2, index, 'MINIMO', false)",
@@ -208,10 +207,9 @@
 											outlined,
 											color="#E0E0E0",
 											v-model.lazy="valor.maximo",
-											type="number",
 											v-money="money"
 											min="0",
-											ref="valormaximo",
+											ref="valormaximoparametro2",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MAXIMO') ? 'Indeterminado': ''"
 											:error-messages="errorMessage(valor.maximo, null, 2, index, 'MAXIMO', false)",
@@ -616,9 +614,11 @@ export default {
 
 		resetaDadosValores(valor, i) {
 
-			if (this.$refs.valorminimo != undefined || this.$refs.valormaximo != undefined) {
-				this.$refs.valorminimo[i].$el.getElementsByTagName('input')[0].value = 0;
-				this.$refs.valormaximo[i].$el.getElementsByTagName('input')[0].value = 0;
+			if (this.$refs.valorminimoparametro1 != undefined || this.$refs.valormaximoparametro1 != undefined) {
+				this.$refs.valorminimoparametro1[i].$el.querySelector('input').value = 0;
+				this.$refs.valormaximoparametro1[i].$el.querySelector('input').value = 0;
+				this.$refs.valorminimoparametro2[i].$el.querySelector('input').value = 0;
+				this.$refs.valormaximoparametro2[i].$el.querySelector('input').value = 0;
 			}
 
 			valor.minimo = null;
