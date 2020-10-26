@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PorteAtividadeService implements IPorteAtividadeService {
@@ -35,16 +36,19 @@ public class PorteAtividadeService implements IPorteAtividadeService {
 
         portes.forEach(porte -> {
 
-            PorteEmpreendimento porteEmpreendimento = porteEmpreendimentoRepository.findById(porte.getPorte().getId()).get();
+            Optional<PorteEmpreendimento> porteEmpreendimento = Optional.ofNullable(null);
+            if (porte.getPorte() != null) {
+                porteEmpreendimento = Optional.of(porteEmpreendimentoRepository.findById(porte.getPorte().getId()).get());
+            }
 
             Parametro parametroUm = porte.getParametroUm() != null ? parametroRepository.findById(porte.getParametroUm().getId()).get() : null;
             Parametro parametroDois = porte.getParametroDois() != null ? parametroRepository.findById(porte.getParametroDois().getId()).get() : null;
 
             PorteAtividade porteAtividade = new PorteAtividade.PorteAtividadeBuilder()
-                    .setPorteEmpreendimento(porteEmpreendimento)
-                    .setLimiteInferiorUm(porte.getLimiteInferiorUm() == 0.0 ? null : porte.getLimiteInferiorUm())
+                    .setPorteEmpreendimento(porteEmpreendimento.orElse(null))
+                    .setLimiteInferiorUm(porte.getLimiteInferiorUm() == null ? 0 : porte.getLimiteInferiorUm())
                     .setLimiteSuperiorUm(porte.getLimiteSuperiorUm())
-                    .setLimiteInferiorDois(porte.getLimiteInferiorDois() == 0.0 ? null : porte.getLimiteInferiorDois())
+                    .setLimiteInferiorDois(porte.getLimiteInferiorDois() == null ? 0 : porte.getLimiteInferiorDois())
                     .setLimiteSuperiorDois(porte.getLimiteSuperiorDois())
                     .setParametroUm(parametroUm)
                     .setParametroDois(parametroDois)

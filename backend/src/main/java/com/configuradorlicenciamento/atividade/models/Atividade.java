@@ -76,6 +76,9 @@ public class Atividade implements Serializable {
     @NotNull(message = "{validacao.notnull}")
     private Boolean v1;
 
+    @NotNull(message = "{validacao.notnull}")
+    private Boolean rascunho;
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(schema = GlobalReferences.ESQUEMA, name = "rel_atividade_tipo_atividade", joinColumns =
             {@JoinColumn(name = "id_atividade")}, inverseJoinColumns =
@@ -126,6 +129,7 @@ public class Atividade implements Serializable {
         this.dentroMunicipio = atividadeBuilder.dentroMunicipio;
         this.requisitoTecnico = atividadeBuilder.requisitoTecnico;
         this.v1 = atividadeBuilder.v1;
+        this.rascunho = atividadeBuilder.rascunho;
         this.tiposAtividades = atividadeBuilder.tiposAtividades;
         this.portesAtividade = atividadeBuilder.portesAtividade;
         this.tiposLicencas = atividadeBuilder.tiposLicencas;
@@ -151,6 +155,7 @@ public class Atividade implements Serializable {
         private Boolean dentroMunicipio;
         private RequisitoTecnico requisitoTecnico;
         private Boolean v1;
+        private Boolean rascunho;
         private List<TipoAtividade> tiposAtividades;
         private List<Licenca> tiposLicencas;
         private List<TaxaLicenciamento> taxasLicenciamento;
@@ -220,6 +225,11 @@ public class Atividade implements Serializable {
 
         public AtividadeBuilder setV1(Boolean v1) {
             this.v1 = v1;
+            return this;
+        }
+
+        public AtividadeBuilder setRascunho(Boolean rascunho) {
+            this.rascunho = rascunho;
             return this;
         }
 

@@ -20,7 +20,7 @@
 								:placeholder="placeholder",
 								@click.native="resetErrorMessage",
 								v-model="dados.codigoAtividade",
-								:error-messages="errorMessage(dados.codigoAtividade)",
+								:error-messages="errorMessageCodigoAtividade(dados.codigoAtividade)",
 								@input="v => {dados.codigoAtividade = v.toUpperCase()}",
 								required,
 								dense
@@ -33,7 +33,7 @@
 								:placeholder="placeholder",
 								@click.native="resetErrorMessage",
 								v-model="dados.nomeAtividade",
-								:error-messages="errorMessage(dados.nomeAtividade)",
+								:error-messages="errorMessageNomeAtividade(dados.nomeAtividade)",
 								required,
 								dense
 							)
@@ -50,7 +50,7 @@
 								:items="tipologias",
 								:filter="filtroSelect",
 								item-text="nome",
-								:error-messages="errorMessage(dados.tipologia)",
+								:error-messages="errorMessageTipologia(dados.tipologia)",
 								no-data-text="Nenhuma tipologia encontrada",
 								@click.native="resetErrorMessage",
 								required,
@@ -68,7 +68,7 @@
 								:items="licencas",
 								:filter="filtroSelect",
 								item-text="sigla",
-								:error-messages="errorMessage(dados.licencas)",
+								:error-messages="errorMessageLicenca(dados.licencas)",
 								no-data-text="Nenhum tipo de licença encontrado",
 								@click.native="resetErrorMessage",
 								required,
@@ -99,7 +99,7 @@
 								:items="setores",
 								:filter="filtroSelect"
 								item-text="sigla",
-								:error-messages="errorMessage( dados.setor, true )",
+								:error-messages="errorMessageSetor( dados.setor, true )",
 								@click.native="resetErrorMessage",
 								required,
 								return-object=true,
@@ -117,7 +117,7 @@
 								:items="potenciaispoluidores",
 								:filter="filtroSelect"
 								item-text="nome",
-								:error-messages="errorMessage( dados.potencialPoluidor, true )",
+								:error-messages="errorMessagePotencialPoluidor( dados.potencialPoluidor, true )",
 								@click.native="resetErrorMessage",
 								required,
 								return-object=true,
@@ -134,7 +134,7 @@
 									value="URBANA",
 									color="#84A98C",
 									@click="resetErrorMessage",
-									:error-messages="errorMessage(dados.tiposAtividade)"
+									:error-messages="errorMessageLocalizacao(dados.tiposAtividade)"
 								)
 								v-checkbox.mt-0.d-inline-flex(
 									v-model="dados.tiposAtividade",
@@ -142,7 +142,7 @@
 									value="RURAL",
 									color="#84A98C",
 									@click="resetErrorMessage",
-									:error-messages="errorMessage(dados.tiposAtividade)",
+									:error-messages="errorMessageLocalizacao(dados.tiposAtividade)",
 									:hide-details="setDetails(dados.tiposAtividade, 0)"
 								)
 						v-col(cols="12", md="4")
@@ -150,7 +150,7 @@
 								ref="toggleOptionsForaEmpreendimento",
 								labelOption="Atividade fora do empreendimento",
 								idToggle="QA-btn-toggle-fora-empreendimento",
-								:errorMessage="errorMessage",
+								:errorMessage="errorMessageForaEmpreendimento",
 								:options="optionsForaEmpreendimento",
 								@changeOption="dados.foraEmpreendimento = $event",
 							)
@@ -213,7 +213,7 @@
 								item-text="textoExibicao",
 								:error-messages="errorMessageCnae(cnaesAtividade)",
 								no-data-text="Nenhum CNAE encontrado",
-								@click.native="resetErrorMessage",
+								@click.native="resetErrorMessageCnae",
 								required,
 								multiple=true,
 								return-object=true,
@@ -274,7 +274,7 @@
 								:items="requisitosTecnicos",
 								:filter="filtroSelect",
 								item-text="textoExibicao",
-								:error-messages="errorMessage(dados.requisitoTecnico)",
+								:error-messages="errorMessageRequisito(dados.requisitoTecnico)",
 								@input="v => {dados.requisitoTecnico = dados.requisitoTecnico}",
 								no-data-text="Nenhuma requisito técnico",
 								@click.native="resetErrorMessage",
@@ -293,7 +293,7 @@
 								:items="taxasLicenciamento",
 								:filter="filtroSelect",
 								item-text="textoExibicao",
-								:error-messages="errorMessage(dados.taxaLicenciamento)",
+								:error-messages="errorMessageTaxaLicenciamento(dados.taxaLicenciamento)",
 								@input="v => {dados.taxaLicenciamento = dados.taxaLicenciamento}",
 								no-data-text="Nenhuma taxa de licenciamento encontrada",
 								@click.native="resetErrorMessage",
@@ -336,6 +336,12 @@ export default {
 			type: [Object]
 		},
 		erro: {
+			type: [Object]
+		},
+		erroCnae: {
+			type: [Object]
+		},
+		erroRascunho: {
 			type: [Object]
 		}
 
@@ -388,10 +394,159 @@ export default {
 
 	methods: {
 
+		clearCnae() {
+
+			this.isInclusao = true;
+			this.dados.cnaes = [];
+			this.resetErrorMessageCnae();
+			this.indexItemEdicao = null;
+
+		},
+
+		resetErrorMessage() {
+
+			this.erro.invalido = false;
+			this.erroCnae.invalido = false;
+			this.erroRascunho.invalido = false;
+
+		},
+
+		resetErrorMessageCnae() {
+
+			this.erroCnae.invalido = false;
+			this.errorMessageEmptyInclusao = true;
+
+		},
+
 		checkFormVinculacao() {
 
 			return this.dados.cnaes
 				&& this.dados.cnaes.length > 0;
+
+		},
+
+		errorMessageCodigoAtividade(value) {
+
+			if (this.erro.invalido) {
+
+				if (value == null || value === '') {
+					return 'Obrigatório';
+				}
+
+			}
+
+			if (this.erroRascunho.invalido) {
+
+				if (value == null || value === '') {
+					return 'Obrigatório';
+				}
+
+			}
+
+		},
+
+		errorMessageNomeAtividade(value) {
+
+			if (this.erro.invalido) {
+
+				if (value == null || value === '') {
+					return 'Obrigatório';
+				}
+
+			}
+
+			if (this.erroRascunho.invalido) {
+
+				if (value == null || value === '') {
+					return 'Obrigatório';
+				}
+
+			}
+
+		},
+
+		errorMessageTipologia(value) {
+
+			if (this.erro.invalido && value == null || value === '') {
+				return 'Obrigatório';
+			}
+
+		},
+
+		errorMessageLicenca(value) {
+
+			if (this.erro.invalido && value.length === 0) {
+				return 'Obrigatório';
+			}
+
+		},
+
+		errorMessageSetor(value) {
+
+			if (this.erro.invalido && value == null || value === '') {
+				return 'Obrigatório';
+			}
+
+		},
+
+		errorMessagePotencialPoluidor(value) {
+
+			if (this.erro.invalido && value == null || value === '') {
+				return 'Obrigatório';
+			}
+
+		},
+
+		errorMessageLocalizacao(value) {
+
+			if (this.erro.invalido && value.length === 0) {
+				return 'Obrigatório';
+			}
+
+		},
+
+		errorMessageRequisito(value) {
+
+			if (this.erro.invalido && value == null || value === '') {
+				return 'Obrigatório';
+			}
+
+		},
+
+		errorMessageTaxaLicenciamento(value) {
+
+			if (this.erro.invalido && value == null || value === '') {
+				return 'Obrigatório';
+			}
+
+		},
+
+		errorMessageForaEmpreendimento(value) {
+
+			if (this.erro.invalido && value == null || value === '') {
+				return 'Obrigatório';
+			}
+
+		},
+
+		errorMessageGeometria() {
+
+			if (this.erro.invalido && !this.dados.geoPonto && !this.dados.geoLinha && !this.dados.geoPoligono) {
+
+				return 'Obrigatório';
+
+			}
+
+		},
+
+		errorMessageCnae(value) {
+
+			if ((!this.errorMessageEmptyInclusao || this.erroCnae.invalido) && value.length === 0) {
+				return 'Obrigatório';
+			} else if (!this.errorMessageEmptyInclusao) {
+				return 'Obrigatório';
+			}
+
 		},
 
 		filtroSelect(item, query, itemText) {
@@ -409,71 +564,6 @@ export default {
 
 		setDetails(lista, index){
 			return lista.length-1 !== index;
-		},
-
-		errorMessage(value) {
-
-			if (Array.isArray(value)) {
-
-				if (this.erro.invalido) {
-
-					if (value.length === 0) {
-						return 'Obrigatório';
-					} else {
-						return '';
-					}
-
-				}
-
-			} else {
-
-				if (this.erro.invalido) {
-
-					if (value == null || value === '') {
-						return 'Obrigatório';
-					} else {
-						return '';
-					}
-
-				}
-				
-			}
-			
-		},
-
-		errorMessageGeometria() {
-			
-			if (this.erro.invalido && !this.dados.geoPonto && !this.dados.geoLinha && !this.dados.geoPoligono) {
-				return 'Obrigatório';
-			}
-
-		},
-
-		errorMessageCnae(value) {
-
-			if ((!this.errorMessageEmptyInclusao || this.erro.invalido) && value.length === 0) {
-				return 'Obrigatório';
-			} else if (!this.errorMessageEmptyInclusao) {
-				return 'Obrigatório';
-			}
-
-		},
-
-		clearCnae() {
-
-			this.isInclusao = true;
-			this.dados.cnaes = [];
-			this.resetErrorMessage();
-			this.indexItemEdicao = null;
-
-		},
-
-		resetErrorMessage() {
-
-			this.errorEtapaCnaes = true;
-			this.erro.invalido = false;
-			this.errorMessageEmptyInclusao = true;
-			
 		},
 
 		incluirDados() {
@@ -501,7 +591,7 @@ export default {
 						this.clearCnae();
 
 					} else {
-						this.erroIncluirCnaeTipologia(dadosExistentes);
+						this.erroIncluirCnae(dadosExistentes);
 					}
 
 				} else {
@@ -520,7 +610,7 @@ export default {
 						this.clearCnae();
 
 					} else {
-						this.erroIncluirCnaeTipologia(dadosExistentes);
+						this.erroIncluirCnae(dadosExistentes);
 					}
 
 				}
@@ -549,7 +639,7 @@ export default {
 
 		},
 
-		erroIncluirCnaeTipologia(codigosCnaes) {
+		erroIncluirCnae(codigosCnaes) {
 
 			let dadosExistentes = '';
 
@@ -569,34 +659,6 @@ export default {
 				"com o mesmo código adicionado: " + dadosExistentes;
 
 			snackbar.alert(message);
-
-		},
-
-		editarItem(item) {
-			
-			window.scrollTo(0,0);
-
-			this.dados.cnaes = [];
-			this.dados.cnaes.push(item);
-
-			if (!this.isCadastro) {
-
-				item.textoExibicao = item.codigo + ' - ' + item.nome;
-				this.cnaes.push(item);
-
-			}
-
-			this.indexItemEdicao = this.cnaesAtividade.indexOf(item);
-
-			this.isInclusao = false;
-
-			const that = this;
-
-			setTimeout(function() {
-
-				that.$refs.toggleOptionsForaEmpreendimento.setModel(item.foraEmpreendimento);
-
-			}, 100);
 
 		},
 
