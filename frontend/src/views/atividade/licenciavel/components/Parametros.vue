@@ -298,6 +298,9 @@ export default {
 		erro: {
 			type: [Object]
 		},
+		erroRascunho: {
+			type: [Object]
+		}
 
 	},
 	
