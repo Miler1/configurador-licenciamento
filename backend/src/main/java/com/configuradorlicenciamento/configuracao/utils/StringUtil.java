@@ -74,6 +74,24 @@ public class StringUtil {
     }
 
     /**
+     * O método toma uma string como parâmetro e remove todos os espaços em branco,
+     * sejam eles repetidos dentro da frase ou nas extremidades.
+     *
+     * @param string A string a ser tratada
+     * @return A string tratada sem os espaços em branco
+     */
+    public static String removerEspacos(String string){
+
+        String tratada = string.trim();
+
+        while (tratada.contains(" ")) {
+            tratada = tratada.replace(" ", "");
+        }
+
+        return tratada;
+    }
+
+    /**
      * O método toma uma string como parâmetro e remove espaços sobressalentes.
      * Sejam eles repetidos dentro da frase, ou no início e fim
      *
