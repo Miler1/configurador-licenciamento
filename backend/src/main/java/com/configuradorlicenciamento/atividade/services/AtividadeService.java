@@ -282,6 +282,7 @@ public class AtividadeService implements IAtividadeService {
         }
 
         Optional<Boolean> foraEmpreendimento = Optional.ofNullable(null);
+
         if (atividadeLicenciavelDTO.getDados().getForaEmpreendimento() != null) {
             foraEmpreendimento = Optional.of(!atividadeLicenciavelDTO.getDados().getForaEmpreendimento());
         }
@@ -304,11 +305,14 @@ public class AtividadeService implements IAtividadeService {
 
         List<TaxaLicenciamento> taxasLicenciamentoAtividade = new ArrayList<>();
 
-        Optional<CodigoTaxaLicenciamento> codigoTaxaLicenciamento = codigoTaxaLicenciamentoRepository.findById(atividadeLicenciavelDTO.getDados().getTaxaLicenciamento().getId());
+        if (atividadeLicenciavelDTO.getDados().getTaxaLicenciamento() != null) {
 
+            Optional<CodigoTaxaLicenciamento> codigoTaxaLicenciamento = codigoTaxaLicenciamentoRepository.findById(atividadeLicenciavelDTO.getDados().getTaxaLicenciamento().getId());
 
-        if (atividadeLicenciavelDTO.getDados().getTaxaLicenciamento() != null && codigoTaxaLicenciamento.isPresent()) {
-            taxasLicenciamentoAtividade = taxaLicenciamentoRepository.findByCodigo(codigoTaxaLicenciamento.get());
+            if (codigoTaxaLicenciamento.isPresent()) {
+                taxasLicenciamentoAtividade = taxaLicenciamentoRepository.findByCodigo(codigoTaxaLicenciamento.get());
+            }
+
         }
 
         List<PorteAtividade> portesAtividade = new ArrayList<>();
