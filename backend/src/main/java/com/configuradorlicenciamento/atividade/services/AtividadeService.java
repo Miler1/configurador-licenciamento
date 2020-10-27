@@ -326,7 +326,7 @@ public class AtividadeService implements IAtividadeService {
                 .setGeoPoligono(atividadeLicenciavelDTO.getDados().getGeoPoligono())
                 .setPotencialPoluidor(potencialPoluidor.orElse(null))
                 .setsiglaSetor(atividadeLicenciavelDTO.getDados().getSetor())
-                .setAtivo(true)
+                .setAtivo(false)
                 .setDentroEmpreendimento(foraEmpreendimento.orElse(null))
                 .setRequisitoTecnico(requisitoTecnico.orElse(null))
                 .setV1(false)

@@ -321,8 +321,8 @@ export default {
 			placeholderDescricao2: 'Ex.: Produção em toneladas por mês',
 			labelTooltipDescricao: 'Esta é a descrição do campo parâmetro que será exibida para o solicitante ao informar o valor. Caso não informado, será exibida a própria descição do parâmetro.',
 
-			tituloListagem: "Listagem de relações parâmetros / portes adicionadas",
-			labelNoData: 'Não existem relações parâmetros / portes adicionadas.',
+			tituloListagem: "Listagem de combinações de intervalos de parâmetros / portes adicionadas",
+			labelNoData: 'Não existem combinações de intervalos de parâmetros / portes adicionadas.',
 			inputPesquisa: false,
 			hideFooter: true,
 			itemsPerPage: 20,
