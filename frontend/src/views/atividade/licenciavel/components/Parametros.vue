@@ -85,7 +85,7 @@
 											v-money="money",
 											v-model.lazy="valor.minimo",
 											min="0",
-											ref="valorminimo",
+											ref="valorminimo1",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MINIMO') ? '0': ''",
 											:error-messages="errorMessage(valor.minimo, null, 1, index, 'MINIMO', false)",
@@ -113,7 +113,7 @@
 											v-money="index === 3 ? '' : money",
 											v-model.lazy="valor.maximo",
 											min="0",
-											ref="valormaximo",
+											ref="valormaximo1",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MAXIMO') ? 'Indeterminado': ''",
 											:error-messages="errorMessage(valor.maximo, null, 1, index, 'MAXIMO', false)",
@@ -181,7 +181,7 @@
 											v-money="money",
 											v-model.lazy="valor.minimo",
 											min="0",
-											ref="valorminimo",
+											ref="valorminimo2",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MINIMO') ? '0': ''",
 											:error-messages="errorMessage(valor.minimo, null, 2, index, 'MINIMO', false)",
@@ -209,7 +209,7 @@
 											v-money="money",
 											v-model.lazy="valor.maximo",
 											min="0",
-											ref="valormaximo",
+											ref="valormaximo2",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MAXIMO') ? 'Indeterminado': ''",
 											:error-messages="errorMessage(valor.maximo, null, 2, index, 'MAXIMO', false)",
@@ -611,24 +611,24 @@ export default {
 
 			this.parametroUmBkp.valores.forEach((valor, index) => {
 
-				this.$refs.valorminimo[index].$el.querySelector('input').value = valor.minimo;
+				this.$refs.valorminimo1[index].$el.querySelector('input').value = valor.minimo;
 				if(index != 3) {
-					this.$refs.valormaximo[index].$el.querySelector('input').value = valor.maximo;
+					this.$refs.valormaximo1[index].$el.querySelector('input').value = valor.maximo;
 				}
 
 			});
 
-			if(this.parametroDoisBkp.parametro !== null) {
+			if(this.parametroDoisBkp.parametro !== null && this.$refs.valorminimo2.length > 0 && this.$refs.valormaximo2.length > 0) {
 
-				this.parametroUm.parametro = this.parametroDoisBkp.parametro;
-				this.parametroUm.descricaoUnidade = this.parametroDoisBkp.descricaoUnidade;
-				this.parametroUm.valores = this.parametroDoisBkp.valores;
+				this.parametroDois.parametro = this.parametroDoisBkp.parametro;
+				this.parametroDois.descricaoUnidade = this.parametroDoisBkp.descricaoUnidade;
+				this.parametroDois.valores = this.parametroDoisBkp.valores;
 
 				this.parametroDoisBkp.valores.forEach((valor, index) => {
 
-					this.$refs.valorminimo[index].$el.querySelector('input').value = valor.minimo;
+					this.$refs.valorminimo2[index].$el.querySelector('input').value = valor.minimo;
 					if(index != 3) {
-						this.$refs.valormaximo[index].$el.querySelector('input').value = valor.maximo;
+						this.$refs.valormaximo2[index].$el.querySelector('input').value = valor.maximo;
 					}
 
 				});
@@ -643,9 +643,6 @@ export default {
 
 			}
 
-
-
-
 		},
 
 		limparDados() {
@@ -658,16 +655,9 @@ export default {
 		},
 
 		changeOption(tipoParametro) {
-			if(tipoParametro) {
-				if(tipoParametro === 'SIMPLES'){
-					this.clearParametro(this.parametroDois);
-				}
-			} else {
-				this.clearParametro(this.parametroUm);
-				this.clearParametro(this.parametroDois);
-			}
 
 			this.resetErrorMessage();
+
 		},
 
 		clearParametro(parametro) {
