@@ -115,6 +115,7 @@ const ERROR_MESSAGES = {
 		ativar: ER_BASE + 'ativar a atividade licenciável. ',
 		desativar: ER_BASE + 'desativar a atividade licenciável. ',
 		desativarErro: "Não foi possível inativar o registro. Ele se encontra vinculado a uma atividade ativa no sistema. ",
+		salvarRascunho: ER_BASE + 'salvar rascunho da atividade licenciável. ',
 
 		atividades: {
 			adicionarValores: ER_BASE + 'adicionar o CNAE. ',
