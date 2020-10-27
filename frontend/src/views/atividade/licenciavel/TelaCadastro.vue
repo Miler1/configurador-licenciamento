@@ -222,7 +222,14 @@ export default {
 				parametro.limiteSuperiorDois = parametro.limiteSuperiorDois ?
 					parseFloat(parametro.limiteSuperiorDois.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
 
+				//tratar valores nulos
+				parametro.limiteInferiorUmIncluso = parametro.limiteInferiorUmIncluso ? parametro.limiteInferiorUmIncluso : false;
+				parametro.limiteSuperiorUmIncluso = parametro.limiteSuperiorUmIncluso ? parametro.limiteSuperiorUmIncluso : false;
+				parametro.limiteInferiorDoisIncluso = parametro.limiteInfriorDoisIncluso ? parametro.limiteInferiorDoisIncluso : false;
+				parametro.limiteSuperiorDoisIncluso = parametro.limiteSuperiorDoisIncluso ? parametro.limiteSuperiorDoisIncluso : false;
+
 			});
+
 
 		},
 
@@ -324,7 +331,11 @@ export default {
 						this.handleSuccess();
 					})
 					.catch(error => {
-						this.handleError(error);
+
+						this.atividadeLicenciavel = this.atividadeLicenciavelBkp;
+
+						this.handleError(error, false, true);
+
 					});
 
 			}
@@ -349,6 +360,7 @@ export default {
 			}
 
 			return possivel;
+
 		},
 
 		validarRascunhoAtividades() {
@@ -483,11 +495,18 @@ export default {
 
 		},
 
-		handleError(error, edicao = false) {
+		handleError(error, edicao = false, isRascunho =  false) {
 
 			console.error(error.message);
 
-			let message = edicao ? ERROR_MESSAGES.atividadeLicenciavel.editar : ERROR_MESSAGES.atividadeLicenciavel.cadastro;
+			let message = "";
+
+			if (isRascunho) {
+				message += ERROR_MESSAGES.atividadeLicenciavel.salvarRascunho;
+			} else {
+				message += edicao ? ERROR_MESSAGES.atividadeLicenciavel.editar : ERROR_MESSAGES.atividadeLicenciavel.cadastro;
+			}
+
 			message += error.message;
 
 			snackbar.alert(message);
