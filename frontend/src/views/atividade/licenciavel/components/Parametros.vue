@@ -10,7 +10,7 @@
 			v-col(cols="12", md="9")
 				v-label Nome
 				p.label-atividade {{dados.nomeAtividade}}
-	
+
 	v-expansion-panels.pb-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
 		v-expansion-panel
 			v-expansion-panel-header
@@ -56,7 +56,7 @@
 									return-object=true
 								)
 
-								v-label Descrição da unidade do parâmetro 1 
+								v-label Descrição da unidade do parâmetro 1
 									i (Opcional)
 								v-tooltip(top, left, max-width=400)
 									template(v-slot:activator="{ on, attrs }")
@@ -152,7 +152,7 @@
 									:disabled="disableParametros(2)"
 								)
 
-								v-label Descrição da unidade do parâmetro 2 
+								v-label Descrição da unidade do parâmetro 2
 									i (Opcional)
 								v-tooltip(top, left, max-width=400)
 									template(v-slot:activator="{ on, attrs }")
@@ -233,7 +233,7 @@
 								a#QA-limpar-dados-atividade-dispensavel-cnae.d-flex.flex-row.align-center.justify-end(@click="limparDados", :class="{disabled: parametros.length > 0}")
 									v-icon.pr-1 fa-eraser
 									span Limpar dados
-								
+
 								v-btn#QA-btn-adicionar-atividade-dispensavel-cnae.mr-3(@click="cancelarEdicao", large, outlined, color="red", v-if="!isInclusao")
 									v-icon mdi-close
 									span Cancelar
@@ -303,7 +303,7 @@ export default {
 		}
 
 	},
-	
+
 	data: () => {
 
 		return {
@@ -371,39 +371,40 @@ export default {
 
 		errorMessage(item, isInclusao, numeroParametro, index, tipo, check) {
 
-			if(this.validaValoresLimites(index, tipo)){
+			if (this.validaValoresLimites(index, tipo)){
 				return '';
 			}
 
 			let parametro = null;
 
-			if(numeroParametro === 1) {
+			if (numeroParametro === 1) {
 				parametro = this.parametroUm;
 			} else {
 				parametro = this.parametroDois;
 			}
 
-			if(check){
+			if (check){
 				if(tipo === 'MINIMO'){
 					return (this.errorMessageEmpty || (item || parametro.valores[index-1].limiteSuperiorIncluso)) ? '' : 'Obrigatório';
 				}
-				if(tipo === 'MAXIMO'){
+				if (tipo === 'MAXIMO'){
 					return (this.errorMessageEmpty || (item || parametro.valores[index+1].limiteInferiorIncluso)) ? '' : 'Obrigatório';
 				}
 			} else {
 
-				if(!this.errorMessageEmpty && item === '0,00'){
+				if (!this.errorMessageEmpty && item === '0,00'){
 					return 'Obrigatório';
 				}
-				if(tipo === 'MINIMO' && item){
+				if (tipo === 'MINIMO' && item){
 					return (this.errorMessageEmpty || (item && (item === parametro.valores[index-1].maximo))) ? '' : 'O valor mínimo no intervalo atual deve ser igual ao valor máximo do intervalo anterior';
 				}
-				if(tipo === 'MAXIMO' && item){
+				if (tipo === 'MAXIMO' && item){
 					return (this.errorMessageEmpty || (item && (item > parametro.valores[index].minimo))) ? '' : 'O valor máximo deve ser maior que o valor mínimo no intervalo atual';
 				}
 			}
 
 			return (this.errorMessageEmpty || item) ? '' : 'Obrigatório';
+
 		},
 
 		errorMessageValido(item) {
@@ -411,8 +412,10 @@ export default {
 		},
 
 		resetErrorMessage() {
+
 			this.errorMessageEmpty = true;
 			this.erro.invalido = false;
+
 		},
 
 		dadosValidos() {
@@ -421,13 +424,10 @@ export default {
 				this.errorMessageEmpty = false;
 			}
 
-			if(this.tipoParametro === 'SIMPLES') {
+			if (this.tipoParametro === 'SIMPLES') {
 				this.errorMessageEmpty = this.validarParametro(this.parametroUm);
-
 			} else {
-
 				this.errorMessageEmpty = this.validarParametro(this.parametroUm) && this.validarParametro(this.parametroDois);
-
 			}
 
 			return this.errorMessageEmpty;
@@ -438,15 +438,15 @@ export default {
 
 			valido = !!parametro.parametro;
 
-			for(var i = 0; i < 3; i++) {
-				if(!parametro.valores[i].maximo
+			for (var i = 0; i < 3; i++) {
+
+				if (!parametro.valores[i].maximo
 					|| !parametro.valores[i + 1].minimo
 					|| parametro.valores[i].maximo !== parametro.valores[i + 1].minimo
 					|| parametro.valores[i].maximo <= parametro.valores[i].minimo
 					|| (!parametro.valores[i + 1].limiteInferiorIncluso && !parametro.valores[i].limiteSuperiorIncluso)) {
 
 					valido = false;
-
 				}
 
 			}
@@ -457,7 +457,7 @@ export default {
 
 		incluirDados() {
 
-			if(!this.dadosValidos()){
+			if (!this.dadosValidos()){
 				return;
 			}
 
@@ -482,8 +482,8 @@ export default {
 				descricaoUnidadeDois: null
 			};
 
-			if(this.isParametroSimples()) {
-				
+			if (this.isParametroSimples()) {
+
 				this.parametroUm.valores.forEach((valor, index) => {
 
 					dadoParametro.parametroUm = this.parametroUm.parametro;
@@ -547,16 +547,18 @@ export default {
 			}
 
 			this.isInclusao = true;
-		
+
 		},
 
 		editarParametros() {
+
 			this.isInclusao = false;
 
 			this.parametroUmBkp = JSON.parse(JSON.stringify(this.parametroUm));
 			this.parametroDoisBkp = JSON.parse(JSON.stringify(this.parametroDois));
 
 			window.scrollTo(0,0);
+
 		},
 
 		filtroSelect(item, query, itemText) {
@@ -586,15 +588,15 @@ export default {
 
 		disableParametros(numeroParametro, index, tipo) {
 
-			if(this.parametros.length > 0 && this.isInclusao) {
+			if (this.parametros.length > 0 && this.isInclusao) {
 				return true;
 			}
 
-			if(this.validaValoresLimites(index, tipo)) {
+			if (this.validaValoresLimites(index, tipo)) {
 				return true;
 			}
 
-			if(this.tipoParametro) {
+			if (this.tipoParametro) {
 				return numeroParametro === 2 && this.isParametroSimples();
 			}
 
@@ -612,13 +614,13 @@ export default {
 			this.parametroUmBkp.valores.forEach((valor, index) => {
 
 				this.$refs.valorminimo[index].$el.querySelector('input').value = valor.minimo;
-				if(index != 3) {
+				if (index != 3) {
 					this.$refs.valormaximo[index].$el.querySelector('input').value = valor.maximo;
 				}
 
 			});
 
-			if(this.parametroDoisBkp.parametro !== null) {
+			if (this.parametroDoisBkp.parametro !== null) {
 
 				this.parametroUm.parametro = this.parametroDoisBkp.parametro;
 				this.parametroUm.descricaoUnidade = this.parametroDoisBkp.descricaoUnidade;
@@ -627,7 +629,7 @@ export default {
 				this.parametroDoisBkp.valores.forEach((valor, index) => {
 
 					this.$refs.valorminimo[index].$el.querySelector('input').value = valor.minimo;
-					if(index != 3) {
+					if (index != 3) {
 						this.$refs.valormaximo[index].$el.querySelector('input').value = valor.maximo;
 					}
 
@@ -643,37 +645,44 @@ export default {
 
 			}
 
-
-
-
 		},
 
 		limparDados() {
+
 			if(this.parametros.length === 0) {
+
 				this.$refs.toggleAtividadeLicenciavelParametro.clearModel();
 				this.tipoParametro = null;
 				this.clearParametro(this.parametroUm);
 				this.clearParametro(this.parametroDois);
+
 			}
+
 		},
 
 		changeOption(tipoParametro) {
-			if(tipoParametro) {
-				if(tipoParametro === 'SIMPLES'){
+
+			if (tipoParametro) {
+
+				if (tipoParametro === 'SIMPLES'){
 					this.clearParametro(this.parametroDois);
 				}
+
 			} else {
 				this.clearParametro(this.parametroUm);
 				this.clearParametro(this.parametroDois);
 			}
 
 			this.resetErrorMessage();
+
 		},
 
 		clearParametro(parametro) {
+
 			parametro.parametro = null;
 			parametro.descricaoUnidade = null;
 			parametro.valores.forEach((valor, index) => this.resetaDadosValores(valor, index));
+
 		},
 
 		resetaDadosValores(valor, i) {
@@ -687,7 +696,8 @@ export default {
 		},
 
 		changeLimite(numeroParametro, index, tipo) {
-			if(numeroParametro === 1) {
+
+			if (numeroParametro === 1) {
 
 				if(tipo === 'MINIMO') {
 					this.parametroUm.valores[index-1].limiteSuperiorIncluso = false;
@@ -722,9 +732,7 @@ export default {
 
 		PorteEmpreendimento.findAll()
 			.then((response) => {
-
 				this.portesEmpreendimento = response.data;
-
 			});
 
 	},
@@ -739,7 +747,7 @@ export default {
 				this.tipoParametro = this.optionsTipoParametro[0].value;
 
 				this.parametroUm.parametro = this.parametros[0].parametroUm;
-				this.parametroUm.descricaoUnidade = this.parametros[0].descricaoUnidade1; 
+				this.parametroUm.descricaoUnidade = this.parametros[0].descricaoUnidade1;
 
 				let valor = {
 					minimo: null,
@@ -760,7 +768,7 @@ export default {
 					this.parametroDois.valores.push({... valor});
 
 				});
-				
+
 				this.headerListagem = [... HEADER];
 				this.headerListagem.splice(3,3);
 
@@ -787,7 +795,7 @@ export default {
 
 					}
 
-					if(index > 11) {
+					if (index > 11) {
 
 						this.parametroDois.valores.push({
 							minimo: parametro.limiteInferiorDois,

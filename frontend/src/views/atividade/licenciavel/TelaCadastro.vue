@@ -148,6 +148,7 @@ export default {
 				},
 				parametros: []
 			},
+			atividadeLicenciavelBkp: {},
 			allowRedirect: false,
 			isCadastro: true,
 			buttonMinWidth: "9em"
@@ -168,7 +169,13 @@ export default {
 						this.handleSuccess();
 					})
 					.catch(error => {
+
+						console.log(this);
+						console.log(this.atividadeLicenciavelBkp);
+
+						this.atividadeLicenciavel = this.atividadeLicenciavelBkp;
 						this.handleError(error);
+
 					});
 
 			}
@@ -191,11 +198,13 @@ export default {
 
 		prepararDados() {
 
+			this.atividadeLicenciavelBkp =  JSON.parse(JSON.stringify(this.atividadeLicenciavel) );
+
 			this.atividadeLicenciavel.cnaesAtividade.forEach(atividade => {
 				delete atividade.textoExibicao;
 			});
 
-			if (this.atividadeLicenciavel.dados.setor != null) {
+			if (this.atividadeLicenciavel.dados.setor) {
 				this.atividadeLicenciavel.dados.setor = this.atividadeLicenciavel.dados.setor.sigla;
 			}
 
@@ -235,6 +244,7 @@ export default {
 			}
 
 			return possivel;
+
 		},
 
 		validarCnaesAtividades() {
@@ -246,6 +256,7 @@ export default {
 				cnaesAtividades && cnaesAtividades.length > 0;
 
 			if (!valido) {
+
 				window.scrollTo(0, 0);
 				snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.atividades.avancarEtapaCnae, snackbar.type.WARN);
 
@@ -279,15 +290,19 @@ export default {
 			let valido = this.passos[1].completo = parametros && parametros.length > 0;
 
 			if (!valido) {
+
 				snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.parametros.avancarEtapa, snackbar.type.WARN);
 
 				return valido;
+
 			}
 
 			parametros.forEach(parametro => {
-				if(!parametro.porte) {
+
+				if (!parametro.porte) {
 					valido = false;
 				}
+
 			});
 
 			if (!valido) {
@@ -344,10 +359,11 @@ export default {
 				dados.nomeAtividade != null && dados.nomeAtividade != '';
 
 			if (!valido) {
+
 				window.scrollTo(0, 0);
 				// snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.rascunho.salvar, snackbar.type.WARN);
-
 				return valido;
+
 			}
 
 			return valido;
@@ -361,8 +377,10 @@ export default {
 			let valido = this.passos[1].completo = parametros && parametros.length > 0;
 
 			if (!valido) {
+
 				window.scrollTo(0, 0);
 				snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.parametros.rascunho.salvar, snackbar.type.WARN);
+
 			}
 
 			return valido;
@@ -376,8 +394,10 @@ export default {
 		nextStep() {
 
 			if (this.validar()) {
+
 				this.passo += 1;
 				window.scrollTo(0,0);
+
 			}
 
 		},
@@ -410,8 +430,10 @@ export default {
 		},
 
 		cancelar() {
+
 			this.allowRedirect = false;
 			this.$router.push({name: 'atividadesLicenciaveis'});
+
 		},
 
 		nextButtonDecider() {
