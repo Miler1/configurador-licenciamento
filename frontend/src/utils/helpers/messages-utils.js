@@ -123,8 +123,8 @@ const ERROR_MESSAGES = {
 		},
 
 		parametros: {
-			avancarEtapa: 'Aviso! Para avançar de etapa, é necessário adicionar o(s) parâmetro(s) e os intevalos e selecionar os portes. ',
-			avancarEtapaPorte: 'Aviso! Para avançar de etapa, é necessário selecionar os portes em todas as relações. ',
+			avancarEtapa: 'Aviso! Para avançar de etapa, é necessário adicionar o(s) parâmetro(s) e os intevalos e em seguida selecionar os portes. ',
+			avancarEtapaPorte: 'Aviso! Para avançar de etapa, é necessário selecionar um porte para cada combinação.',
 			rascunho: {
 				salvar: 'Aviso! Para salvar rascunho, é necessário adicionar os valores na tabela. '
 			}
