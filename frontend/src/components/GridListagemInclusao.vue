@@ -4,7 +4,7 @@
 
 	template
 
-		v-col(cols='12' md='12').pa-0
+		v-col(cols='12' md='6').pa-0
 			b.titulo-listagem {{ tituloListagem }}
 
 			v-text-field#QA-input-inclusao-pesquisar(
