@@ -1,7 +1,7 @@
 <template lang="pug">
 
 #step-atividade-licenciavel-atividades
-	
+
 	v-expansion-panels.pb-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
 		v-expansion-panel
 			v-expansion-panel-header
@@ -251,7 +251,7 @@
 		:labelNoResultset="semResultados",
 		:exibirIconeEditar="exibirIconeEditar"
 	)
-	
+
 	v-expansion-panels(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
 		v-expansion-panel
 			v-expansion-panel-header
@@ -300,7 +300,7 @@
 								required,
 								return-object=true
 							)
-	
+
 </template>
 
 <script>
@@ -346,7 +346,7 @@ export default {
 		}
 
 	},
-	
+
 	data: () => {
 
 		return {
@@ -574,7 +574,7 @@ export default {
 				let dadosExistentes = [];
 
 				if (this.isInclusao) {
-					
+
 					this.dados.cnaes.forEach(cnae => {
 
 						if (!this.validarValoresAdicionados(cnae)) {
@@ -584,9 +584,9 @@ export default {
 						dadosInclusao.push(cnae);
 
 					});
-					
+
 					if (dadosExistentes.length === 0) {
-						
+
 						this.cnaesAtividade.push(...dadosInclusao);
 						this.clearCnae();
 
@@ -618,7 +618,7 @@ export default {
 			} else {
 				this.errorMessageEmptyInclusao = false;
 			}
-			
+
 		},
 
 		validarValoresAdicionados(cnae) {
