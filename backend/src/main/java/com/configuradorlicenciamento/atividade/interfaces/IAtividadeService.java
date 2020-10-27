@@ -24,4 +24,7 @@ public interface IAtividadeService {
     List<Atividade> listarAtividadesLicenciaveis();
 
     Atividade salvarAtividadeLicenciavel(HttpServletRequest request, AtividadeLicenciavelDTO atividadeLicenciavelDTO);
+
+    Atividade salvarRascunhoAtividadeLicenciavel(HttpServletRequest request, AtividadeLicenciavelDTO atividadeLicenciavelDTO);
+
 }

@@ -48,7 +48,7 @@
 									:items="parametrosDisponiveis",
 									:filter="filtroSelect",
 									item-text="textoExibicao",
-									:error-messages="errorMessage(parametroUm.parametro)",,
+									:error-messages="errorMessage(parametroUm.parametro)",
 									:disabled="disableParametros(1)"
 									no-data-text="Nenhum parâmetro encontrado",
 									@click.native="resetErrorMessage",
@@ -83,9 +83,9 @@
 											outlined,
 											color="#E0E0E0",
 											v-money="money",
+											v-model.lazy="valor.minimo",
 											min="0",
 											ref="valorminimo",
-											v-model.lazy="valor.minimo",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MINIMO') ? '0': ''",
 											:error-messages="errorMessage(valor.minimo, null, 1, index, 'MINIMO', false)",
@@ -110,10 +110,10 @@
 										v-text-field#QA-input-valor-maximo-1(
 											outlined,
 											color="#E0E0E0",
+											v-money="index === 3 ? '' : money",
+											v-model.lazy="valor.maximo",
 											min="0",
 											ref="valormaximo",
-											v-money="index === 3 ? '' : money"
-											v-model.lazy="valor.maximo",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MAXIMO') ? 'Indeterminado': ''",
 											:error-messages="errorMessage(valor.maximo, null, 1, index, 'MAXIMO', false)",
@@ -178,8 +178,8 @@
 										v-text-field#QA-input-valor-minimo-2(
 											outlined,
 											color="#E0E0E0",
+											v-money="money",
 											v-model.lazy="valor.minimo",
-											v-money="money"
 											min="0",
 											ref="valorminimo",
 											@click.native="resetErrorMessage",
@@ -206,8 +206,8 @@
 										v-text-field.mb-0#QA-input-valor-maximo-2(
 											outlined,
 											color="#E0E0E0",
+											v-money="money",
 											v-model.lazy="valor.maximo",
-											v-money="money"
 											min="0",
 											ref="valormaximo",
 											@click.native="resetErrorMessage",
@@ -298,6 +298,9 @@ export default {
 		erro: {
 			type: [Object]
 		},
+		erroRascunho: {
+			type: [Object]
+		}
 
 	},
 	
@@ -675,18 +678,12 @@ export default {
 
 		resetaDadosValores(valor, i) {
 
-			if (this.$refs.valorminimo != undefined && this.$refs.valorminimo.length > 0) {
-				this.$refs.valorminimo[i].$el.querySelector('input').value = 0;
-			}
-
-			if (this.$refs.valormaximo != undefined && this.$refs.valormaximo.length > 0 && i != 3) {
-				this.$refs.valormaximo[i].$el.querySelector('input').value = 0;
-			}
-
 			valor.minimo = null;
 			valor.maximo = null;
 			valor.limiteInferiorIncluso = null;
 			valor.limiteSuperiorIncluso = null;
+			this.tipoParametro = null;
+
 		},
 
 		changeLimite(numeroParametro, index, tipo) {

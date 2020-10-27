@@ -119,13 +119,17 @@ const ERROR_MESSAGES = {
 		atividades: {
 			adicionarValores: ER_BASE + 'adicionar o CNAE. ',
 			avancarEtapaCnae: 'Aviso! Para avançar de etapa, é necessário adicionar ao menos um CNAE. ',
-			avancarEtapa: 'Aviso! Para avançar de etapa, é necessário preencher todos os campos obrigatórios. '
+			avancarEtapa: 'Aviso! Existem campos obrigatórios que não foram preenchidos. '
 		},
 
 		parametros: {
 			avancarEtapa: 'Aviso! Para avançar de etapa, é necessário adicionar o(s) parâmetro(s) e os intevalos e selecionar os portes. ',
-			avancarEtapaPorte: 'Aviso! Para avançar de etapa, é necessário selecionar os portes em todas as relações. '
+			avancarEtapaPorte: 'Aviso! Para avançar de etapa, é necessário selecionar os portes em todas as relações. ',
+			rascunho: {
+				salvar: 'Aviso! Para salvar rascunho, é necessário adicionar os valores na tabela. '
+			}
 		},
+
 	}
 
 };

@@ -37,7 +37,6 @@ public class Atividade implements Serializable {
     @NotNull(message = "{validacao.notnull}")
     private String codigo;
 
-    @NotNull(message = "{validacao.notnull}")
     @ManyToOne
     @JoinColumn(name = "id_tipologia", referencedColumnName = "id")
     private Tipologia tipologia;
@@ -51,30 +50,29 @@ public class Atividade implements Serializable {
     @NotNull(message = "{validacao.notnull}")
     private Boolean geoPoligono;
 
-    @NotNull(message = "{validacao.notnull}")
     @ManyToOne
     @JoinColumn(name = "id_potencial_poluidor", referencedColumnName = "id")
     private PotencialPoluidor potencialPoluidor;
 
-    @NotNull(message = "{validacao.notnull}")
     private String siglaSetor;
 
     @NotNull(message = "{validacao.notnull}")
     private Boolean ativo;
 
-    @NotNull(message = "{validacao.notnull}")
     private Boolean dentroEmpreendimento;
 
     @NotNull(message = "{validacao.notnull}")
     private Boolean dentroMunicipio;
 
-    @NotNull(message = "{validacao.notnull}")
     @ManyToOne
     @JoinColumn(name = "id_grupo_documento", referencedColumnName = "id")
     private RequisitoTecnico requisitoTecnico;
 
     @NotNull(message = "{validacao.notnull}")
     private Boolean v1;
+
+    @NotNull(message = "{validacao.notnull}")
+    private Boolean rascunho;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(schema = GlobalReferences.ESQUEMA, name = "rel_atividade_tipo_atividade", joinColumns =
@@ -126,6 +124,7 @@ public class Atividade implements Serializable {
         this.dentroMunicipio = atividadeBuilder.dentroMunicipio;
         this.requisitoTecnico = atividadeBuilder.requisitoTecnico;
         this.v1 = atividadeBuilder.v1;
+        this.rascunho = atividadeBuilder.rascunho;
         this.tiposAtividades = atividadeBuilder.tiposAtividades;
         this.portesAtividade = atividadeBuilder.portesAtividade;
         this.tiposLicencas = atividadeBuilder.tiposLicencas;
@@ -151,6 +150,7 @@ public class Atividade implements Serializable {
         private Boolean dentroMunicipio;
         private RequisitoTecnico requisitoTecnico;
         private Boolean v1;
+        private Boolean rascunho;
         private List<TipoAtividade> tiposAtividades;
         private List<Licenca> tiposLicencas;
         private List<TaxaLicenciamento> taxasLicenciamento;
@@ -220,6 +220,11 @@ public class Atividade implements Serializable {
 
         public AtividadeBuilder setV1(Boolean v1) {
             this.v1 = v1;
+            return this;
+        }
+
+        public AtividadeBuilder setRascunho(Boolean rascunho) {
+            this.rascunho = rascunho;
             return this;
         }
 
