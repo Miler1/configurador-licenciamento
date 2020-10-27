@@ -11,6 +11,7 @@ import com.configuradorlicenciamento.atividade.repositories.TipoAtividadeReposit
 import com.configuradorlicenciamento.atividade.specifications.AtividadeSpecification;
 import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.atividadeCnae.repositories.AtividadeCnaeRepository;
+import com.configuradorlicenciamento.configuracao.exceptions.ConflictException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.licenca.models.Licenca;
 import com.configuradorlicenciamento.licenca.repositories.LicencaRepository;
@@ -18,6 +19,7 @@ import com.configuradorlicenciamento.potencialPoluidor.models.PotencialPoluidor;
 import com.configuradorlicenciamento.potencialPoluidor.repositories.PotencialPoluidorRepository;
 import com.configuradorlicenciamento.requisitoTecnico.models.RequisitoTecnico;
 import com.configuradorlicenciamento.requisitoTecnico.repositories.RequisitoTecnicoRepository;
+import com.configuradorlicenciamento.taxaLicenciamento.models.CodigoTaxaLicenciamento;
 import com.configuradorlicenciamento.taxaLicenciamento.models.TaxaLicenciamento;
 import com.configuradorlicenciamento.taxaLicenciamento.repositories.CodigoTaxaLicenciamentoRepository;
 import com.configuradorlicenciamento.taxaLicenciamento.repositories.TaxaLicenciamentoRepository;
@@ -42,6 +44,8 @@ import java.util.Optional;
 
 @Service
 public class AtividadeService implements IAtividadeService {
+
+    private static final String ATIVIDADE_EXISTENTE = "Já existe uma atividade com o mesmo código.";
 
     @Autowired
     AtividadeRepository atividadeRepository;
@@ -124,8 +128,8 @@ public class AtividadeService implements IAtividadeService {
 
         List<TipoAtividade> tiposAtividades = tipoAtividadeRepository.findAll();
 
-        atividade.setNome(atividadeCnae.get().getNome());
-        atividade.setTipologia(tipologia.get());
+        atividadeCnae.ifPresent(cnae -> atividade.setNome(cnae.getNome()));
+        tipologia.ifPresent(atividade::setTipologia);
         atividade.setGeoLinha(true);
         atividade.setGeoPonto(true);
         atividade.setGeoPoligono(true);
@@ -180,13 +184,22 @@ public class AtividadeService implements IAtividadeService {
 
         Object login = request.getSession().getAttribute("login");
 
+        boolean existeAtividade = atividadeRepository.existsByCodigo(atividadeLicenciavelDTO.getDados().getCodigoAtividade());
+
+        if (existeAtividade) {
+            throw new ConflictException(ATIVIDADE_EXISTENTE);
+        }
+
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
-        Optional<Tipologia> tipologiaAtividade = tipologiaRepository.findById(atividadeLicenciavelDTO.getDados().getTipologia().getId());
+        Optional<Tipologia> tipologiaAtividade = tipologiaRepository.findById(
+                atividadeLicenciavelDTO.getDados().getTipologia().getId());
 
-        Optional<PotencialPoluidor> potencialPoluidor = potencialPoluidorRepository.findById(atividadeLicenciavelDTO.getDados().getPotencialPoluidor().getId());
+        Optional<PotencialPoluidor> potencialPoluidor = potencialPoluidorRepository.findById(
+                atividadeLicenciavelDTO.getDados().getPotencialPoluidor().getId());
 
-        Optional<RequisitoTecnico> requisitoTecnico = requisitoTecnicoRepository.findById(atividadeLicenciavelDTO.getDados().getRequisitoTecnico().getId());
+        Optional<RequisitoTecnico> requisitoTecnico = requisitoTecnicoRepository.findById(
+                atividadeLicenciavelDTO.getDados().getRequisitoTecnico().getId());
 
         List<TipoAtividade> tiposAtividade = new ArrayList<>();
 
@@ -200,8 +213,14 @@ public class AtividadeService implements IAtividadeService {
                 licencasAtividade.add(licencaRepository.findById(licenca.getId()).get())
         );
 
-        List<TaxaLicenciamento> taxasLicenciamentoAtividade = taxaLicenciamentoRepository.findByCodigo(
-                codigoTaxaLicenciamentoRepository.findById(atividadeLicenciavelDTO.getDados().getTaxaLicenciamento().getId()).get());
+        List<TaxaLicenciamento> taxasLicenciamentoAtividade = new ArrayList<>();
+
+        Optional<CodigoTaxaLicenciamento> codigoTaxaLicenciamento = codigoTaxaLicenciamentoRepository.findById(
+                atividadeLicenciavelDTO.getDados().getTaxaLicenciamento().getId());
+
+        if (codigoTaxaLicenciamento.isPresent()) {
+            taxasLicenciamentoAtividade = taxaLicenciamentoRepository.findByCodigo(codigoTaxaLicenciamento.get());
+        }
 
         List<PorteAtividade> portesAtividade = porteAtividadeService.salvar(atividadeLicenciavelDTO.getParametros());
 
@@ -264,7 +283,7 @@ public class AtividadeService implements IAtividadeService {
 
         Optional<Boolean> foraEmpreendimento = Optional.ofNullable(null);
         if (atividadeLicenciavelDTO.getDados().getForaEmpreendimento() != null) {
-            foraEmpreendimento = Optional.ofNullable(!atividadeLicenciavelDTO.getDados().getForaEmpreendimento());
+            foraEmpreendimento = Optional.of(!atividadeLicenciavelDTO.getDados().getForaEmpreendimento());
         }
 
         List<TipoAtividade> tiposAtividade = new ArrayList<>();
@@ -285,9 +304,11 @@ public class AtividadeService implements IAtividadeService {
 
         List<TaxaLicenciamento> taxasLicenciamentoAtividade = new ArrayList<>();
 
-        if (atividadeLicenciavelDTO.getDados().getTaxaLicenciamento() != null) {
-            taxasLicenciamentoAtividade = taxaLicenciamentoRepository.findByCodigo(
-                    codigoTaxaLicenciamentoRepository.findById(atividadeLicenciavelDTO.getDados().getTaxaLicenciamento().getId()).get());
+        Optional<CodigoTaxaLicenciamento> codigoTaxaLicenciamento = codigoTaxaLicenciamentoRepository.findById(atividadeLicenciavelDTO.getDados().getTaxaLicenciamento().getId());
+
+
+        if (atividadeLicenciavelDTO.getDados().getTaxaLicenciamento() != null && codigoTaxaLicenciamento.isPresent()) {
+            taxasLicenciamentoAtividade = taxaLicenciamentoRepository.findByCodigo(codigoTaxaLicenciamento.get());
         }
 
         List<PorteAtividade> portesAtividade = new ArrayList<>();

@@ -201,16 +201,16 @@ export default {
 
 			this.atividadeLicenciavel.parametros.forEach(parametro => {
 
-				parametro.limiteInferiorUm = parametro.limiteInferiorUm ? 
+				parametro.limiteInferiorUm = parametro.limiteInferiorUm ?
 					parseFloat(parametro.limiteInferiorUm.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
 
-				parametro.limiteSuperiorUm = parametro.limiteSuperiorUm ? 
+				parametro.limiteSuperiorUm = parametro.limiteSuperiorUm ?
 					parseFloat(parametro.limiteSuperiorUm.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
 
-				parametro.limiteInferiorDois = parametro.limiteInferiorDois ? 
+				parametro.limiteInferiorDois = parametro.limiteInferiorDois ?
 					parseFloat(parametro.limiteInferiorDois.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
 
-				parametro.limiteSuperiorDois = parametro.limiteSuperiorDois ? 
+				parametro.limiteSuperiorDois = parametro.limiteSuperiorDois ?
 					parseFloat(parametro.limiteSuperiorDois.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
 
 			});
@@ -299,7 +299,7 @@ export default {
 		},
 
 		salvarRascunho() {
-			
+
 			if (this.validarRascunho()) {
 
 				this.prepararDados();
@@ -466,6 +466,7 @@ export default {
 			console.error(error.message);
 
 			let message = edicao ? ERROR_MESSAGES.atividadeLicenciavel.editar : ERROR_MESSAGES.atividadeLicenciavel.cadastro;
+			message += error.message;
 
 			snackbar.alert(message);
 
@@ -516,7 +517,7 @@ export default {
 		this.passos[0].validar = this.validarCnaesAtividades;
 		this.passos[1].validar = this.validarParametros;
 		this.passos[2].validar = () => true;
-		
+
 	},
 
 	beforeRouteLeave(to, from, next) {
@@ -607,7 +608,7 @@ export default {
 				font-weight: bold;
 			}
 		}
-		
+
 		.noWrap{
 			white-space: nowrap;
 		}

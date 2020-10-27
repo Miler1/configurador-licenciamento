@@ -198,7 +198,7 @@ const SUCCESS_MESSAGES = {
 		ativar: 'Sucesso! A atividade licenciável foi ativada.',
 		desativar: 'Sucesso! A atividade licenciável foi desativada.',
 	},
-	
+
 };
 
 const WARNING_MESSAGES = {

@@ -76,18 +76,18 @@ export default {
 
 					console.error(erro);
 					snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.listagem + erro.message);
-					
+
 				});
 
 		},
-		
+
 		prepararDadosParaListagem(){
 
 			var parametros = '';
 			var tiposLicencas = '';
-			
+
 			this.dadosListagem.content.forEach(dado => {
-				
+
 				dado.parametros.forEach(parametro => {
 					parametros += parametro.parametro.codigo + ' - ';
 				});
@@ -175,7 +175,7 @@ export default {
 			// 				if (item.ativo) {
 			// 					snackbar.alert(ERROR_MESSAGES.atividadeDispensavel.ativar);
 			// 				} else {
-			// 					snackbar.alert(ERROR_MESSAGES.atividadeDispensavel.desativar);								
+			// 					snackbar.alert(ERROR_MESSAGES.atividadeDispensavel.desativar);
 			// 				}
 
 			// 			});

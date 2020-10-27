@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AtividadeRepository extends JpaRepository<Atividade, Integer> , JpaSpecificationExecutor<Atividade> {
 
+    Boolean existsByCodigo(String codigo);
+
 }
