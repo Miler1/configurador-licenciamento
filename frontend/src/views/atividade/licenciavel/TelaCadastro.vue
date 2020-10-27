@@ -148,6 +148,7 @@ export default {
 				},
 				parametros: []
 			},
+			atividadeLicenciavelBkp: {},
 			allowRedirect: false,
 			isCadastro: true,
 			buttonMinWidth: "9em"
@@ -168,7 +169,13 @@ export default {
 						this.handleSuccess();
 					})
 					.catch(error => {
+
+						console.log(this);
+						console.log(this.atividadeLicenciavelBkp);
+
+						this.atividadeLicenciavel = this.atividadeLicenciavelBkp;
 						this.handleError(error);
+
 					});
 
 			}
@@ -191,26 +198,28 @@ export default {
 
 		prepararDados() {
 
+			this.atividadeLicenciavelBkp =  JSON.parse(JSON.stringify(this.atividadeLicenciavel) );
+
 			this.atividadeLicenciavel.cnaesAtividade.forEach(atividade => {
 				delete atividade.textoExibicao;
 			});
 
-			if (this.atividadeLicenciavel.dados.setor != null) {
+			if (this.atividadeLicenciavel.dados.setor) {
 				this.atividadeLicenciavel.dados.setor = this.atividadeLicenciavel.dados.setor.sigla;
 			}
 
 			this.atividadeLicenciavel.parametros.forEach(parametro => {
 
-				parametro.limiteInferiorUm = parametro.limiteInferiorUm ? 
+				parametro.limiteInferiorUm = parametro.limiteInferiorUm ?
 					parseFloat(parametro.limiteInferiorUm.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
 
-				parametro.limiteSuperiorUm = parametro.limiteSuperiorUm ? 
+				parametro.limiteSuperiorUm = parametro.limiteSuperiorUm ?
 					parseFloat(parametro.limiteSuperiorUm.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
 
-				parametro.limiteInferiorDois = parametro.limiteInferiorDois ? 
+				parametro.limiteInferiorDois = parametro.limiteInferiorDois ?
 					parseFloat(parametro.limiteInferiorDois.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
 
-				parametro.limiteSuperiorDois = parametro.limiteSuperiorDois ? 
+				parametro.limiteSuperiorDois = parametro.limiteSuperiorDois ?
 					parseFloat(parametro.limiteSuperiorDois.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
 
 			});
@@ -235,6 +244,7 @@ export default {
 			}
 
 			return possivel;
+
 		},
 
 		validarCnaesAtividades() {
@@ -246,6 +256,7 @@ export default {
 				cnaesAtividades && cnaesAtividades.length > 0;
 
 			if (!valido) {
+
 				window.scrollTo(0, 0);
 				snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.atividades.avancarEtapaCnae, snackbar.type.WARN);
 
@@ -279,15 +290,19 @@ export default {
 			let valido = this.passos[1].completo = parametros && parametros.length > 0;
 
 			if (!valido) {
+
 				snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.parametros.avancarEtapa, snackbar.type.WARN);
 
 				return valido;
+
 			}
 
 			parametros.forEach(parametro => {
-				if(!parametro.porte) {
+
+				if (!parametro.porte) {
 					valido = false;
 				}
+
 			});
 
 			if (!valido) {
@@ -299,7 +314,7 @@ export default {
 		},
 
 		salvarRascunho() {
-			
+
 			if (this.validarRascunho()) {
 
 				this.prepararDados();
@@ -344,10 +359,11 @@ export default {
 				dados.nomeAtividade != null && dados.nomeAtividade != '';
 
 			if (!valido) {
+
 				window.scrollTo(0, 0);
 				// snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.rascunho.salvar, snackbar.type.WARN);
-
 				return valido;
+
 			}
 
 			return valido;
@@ -361,8 +377,10 @@ export default {
 			let valido = this.passos[1].completo = parametros && parametros.length > 0;
 
 			if (!valido) {
+
 				window.scrollTo(0, 0);
 				snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.parametros.rascunho.salvar, snackbar.type.WARN);
+
 			}
 
 			return valido;
@@ -376,8 +394,10 @@ export default {
 		nextStep() {
 
 			if (this.validar()) {
+
 				this.passo += 1;
 				window.scrollTo(0,0);
+
 			}
 
 		},
@@ -410,8 +430,10 @@ export default {
 		},
 
 		cancelar() {
+
 			this.allowRedirect = false;
 			this.$router.push({name: 'atividadesLicenciaveis'});
+
 		},
 
 		nextButtonDecider() {
@@ -466,6 +488,7 @@ export default {
 			console.error(error.message);
 
 			let message = edicao ? ERROR_MESSAGES.atividadeLicenciavel.editar : ERROR_MESSAGES.atividadeLicenciavel.cadastro;
+			message += error.message;
 
 			snackbar.alert(message);
 
@@ -516,7 +539,7 @@ export default {
 		this.passos[0].validar = this.validarCnaesAtividades;
 		this.passos[1].validar = this.validarParametros;
 		this.passos[2].validar = () => true;
-		
+
 	},
 
 	beforeRouteLeave(to, from, next) {
@@ -607,7 +630,7 @@ export default {
 				font-weight: bold;
 			}
 		}
-		
+
 		.noWrap{
 			white-space: nowrap;
 		}
