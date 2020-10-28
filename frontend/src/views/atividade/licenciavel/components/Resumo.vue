@@ -29,7 +29,7 @@
 				p.label-atividade {{preparaExibicaoExecucao()}}
 			v-col(cols="12", md="2")
 				v-label Gerência / Setor
-				p.label-atividade {{atividadeLicenciavel.dados.setor.sigla}}
+				p.label-atividade {{atividadeLicenciavel.dados.setor.sigla || atividadeLicenciavel.dados.setor}}
 			v-col(cols="12", md="3")
 				v-label PPD
 				p.label-atividade {{atividadeLicenciavel.dados.potencialPoluidor.nome}}

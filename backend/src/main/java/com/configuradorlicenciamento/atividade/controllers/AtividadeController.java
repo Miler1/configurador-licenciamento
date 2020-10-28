@@ -2,6 +2,7 @@ package com.configuradorlicenciamento.atividade.controllers;
 
 import com.configuradorlicenciamento.atividade.dtos.AtividadeLicenciavelCsv;
 import com.configuradorlicenciamento.atividade.dtos.AtividadeLicenciavelDTO;
+import com.configuradorlicenciamento.atividade.dtos.AtividadeLicenciavelEdicaoDTO;
 import com.configuradorlicenciamento.atividade.interfaces.IAtividadeService;
 import com.configuradorlicenciamento.atividade.models.Atividade;
 import com.configuradorlicenciamento.configuracao.components.VariaveisAmbientes;
@@ -44,6 +45,19 @@ public class AtividadeController extends DefaultController {
 
     }
 
+    @PostMapping(value = "editar")
+    public ResponseEntity<Atividade> editar(HttpServletRequest request, @Valid @RequestBody AtividadeLicenciavelDTO atividadeLicenciavelDTO) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        Atividade atividade = atividadeService.editarAtividadeLicenciavel(request, atividadeLicenciavelDTO);
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(atividade);
+
+    }
+
     @PostMapping(value = "listar")
     public ResponseEntity<Page<Atividade>> listarAtividadesLicenciaveis(HttpServletRequest request,
                                                                         @PageableDefault(size = 20) Pageable pageable,
@@ -71,6 +85,20 @@ public class AtividadeController extends DefaultController {
         mappingStrategy.setType(AtividadeLicenciavelCsv.class);
 
         downloadCsv(atividadeService.listarAtividadesLicenciaveisParaCsv(), nome, mappingStrategy, response);
+    }
+
+    @GetMapping(value = "findById/{idAtividadeLicenciavel}")
+    public ResponseEntity<AtividadeLicenciavelEdicaoDTO> findById(HttpServletRequest request,
+                                                                  @PathVariable("idAtividadeLicenciavel") Integer idAtividadeDispensavel) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        AtividadeLicenciavelEdicaoDTO atividadeLicenciavelEdicaoDTO = atividadeService.findById(idAtividadeDispensavel);
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(atividadeLicenciavelEdicaoDTO);
+
     }
 
 }
