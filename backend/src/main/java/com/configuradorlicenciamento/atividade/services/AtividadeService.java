@@ -174,7 +174,12 @@ public class AtividadeService implements IAtividadeService {
         List<AtividadeLicenciavelCsv> dtos = new ArrayList<>();
 
         for (Atividade tipoAtividade : tiposAtividade) {
-            dtos.add(tipoAtividade.preparaAtividadeLicenciavelParaCsv());
+
+            boolean isRascunho = tipoAtividade.getRascunho();
+
+            if (!isRascunho) {
+                dtos.add(tipoAtividade.preparaAtividadeLicenciavelParaCsv());
+            }
         }
 
         return dtos;
