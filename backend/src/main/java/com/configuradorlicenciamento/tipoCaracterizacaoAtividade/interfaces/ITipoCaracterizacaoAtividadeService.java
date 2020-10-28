@@ -21,6 +21,8 @@ public interface ITipoCaracterizacaoAtividadeService {
 
     TipoCaracterizacaoAtividade editar(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO);
 
+    void editarAtividadeLicenciavel(List<AtividadeCnaeDTO> atividadesCnae, Atividade atividade);
+
     TipoCaracterizacaoAtividade ativarDesativar(Integer idAtividadeDispensavel);
 
     Page<TipoCaracterizacaoAtividade> listarAtividadesDispensaveis(Pageable pageable, FiltroPesquisa filtro);

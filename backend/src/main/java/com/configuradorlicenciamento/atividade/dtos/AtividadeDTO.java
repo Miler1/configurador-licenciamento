@@ -16,6 +16,8 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AtividadeDTO {
 
+    private Integer id;
+
     @NotNull(message = "{validacao.notnull}")
     @NotBlank(message = "{validacao.notBlank}")
     private String nomeAtividade;

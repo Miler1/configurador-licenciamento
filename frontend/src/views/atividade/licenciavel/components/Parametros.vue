@@ -718,6 +718,14 @@ export default {
 				this.parametrosDisponiveis = response.data;
 				this.parametrosDisponiveis.forEach(parametro => parametro.textoExibicao = parametro.codigo + ' - ' + parametro.nome);
 
+				if (this.parametros[0] && this.parametros[0].parametroUm !== null && this.parametros[0].parametroUm.id !== null) {
+					this.parametroUm.parametro = this.parametrosDisponiveis.filter(parametro => parametro.id === this.parametros[0].parametroUm.id)[0];
+				}
+
+				if (this.parametros[0] && this.parametros[0].parametroDois !== null && this.parametros[0].parametroDois.id !== null) {
+					this.parametroDois.parametro = this.parametrosDisponiveis.filter(parametro => parametro.id === this.parametros[0].parametroDois.id)[0];
+				}
+
 			});
 
 		PorteEmpreendimento.findAll()
@@ -737,7 +745,7 @@ export default {
 				this.tipoParametro = this.optionsTipoParametro[0].value;
 
 				this.parametroUm.parametro = this.parametros[0].parametroUm;
-				this.parametroUm.descricaoUnidade = this.parametros[0].descricaoUnidade1;
+				this.parametroUm.descricaoUnidade = this.parametros[0].descricaoUnidadeUm;
 
 				let valor = {
 					minimo: null,
@@ -768,9 +776,9 @@ export default {
 				this.tipoParametro = this.optionsTipoParametro[1].value;
 
 				this.parametroUm.parametro = this.parametros[0].parametroUm;
-				this.parametroUm.descricaoUnidade = this.parametros[0].descricaoUnidade1;
+				this.parametroUm.descricaoUnidade = this.parametros[0].descricaoUnidadeUm;
 				this.parametroDois.parametro = this.parametros[0].parametroDois;
-				this.parametroDois.descricaoUnidade = this.parametros[0].descricaoUnidade2;
+				this.parametroDois.descricaoUnidade = this.parametros[0].descricaoUnidadeDois;
 
 				this.parametros.forEach((parametro, index) => {
 

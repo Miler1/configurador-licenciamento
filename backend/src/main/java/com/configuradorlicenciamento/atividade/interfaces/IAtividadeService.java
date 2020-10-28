@@ -2,6 +2,7 @@ package com.configuradorlicenciamento.atividade.interfaces;
 
 import com.configuradorlicenciamento.atividade.dtos.AtividadeLicenciavelCsv;
 import com.configuradorlicenciamento.atividade.dtos.AtividadeLicenciavelDTO;
+import com.configuradorlicenciamento.atividade.dtos.AtividadeLicenciavelEdicaoDTO;
 import com.configuradorlicenciamento.atividade.models.Atividade;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.dtos.AtividadeDispensavelDTO;
@@ -25,6 +26,11 @@ public interface IAtividadeService {
 
     Atividade salvarAtividadeLicenciavel(HttpServletRequest request, AtividadeLicenciavelDTO atividadeLicenciavelDTO);
 
+    Atividade editarAtividadeLicenciavel(HttpServletRequest request, AtividadeLicenciavelDTO atividadeLicenciavelDTO);
+
+    AtividadeLicenciavelEdicaoDTO findById(Integer idAtividadeLicenciavel);
+
     Atividade salvarRascunhoAtividadeLicenciavel(HttpServletRequest request, AtividadeLicenciavelDTO atividadeLicenciavelDTO);
 
+    Atividade ativarDesativar(Integer idAtividadeLicenciavel);
 }
