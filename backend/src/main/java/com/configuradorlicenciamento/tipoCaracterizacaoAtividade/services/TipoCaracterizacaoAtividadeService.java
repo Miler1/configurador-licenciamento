@@ -120,8 +120,6 @@ public class TipoCaracterizacaoAtividadeService implements ITipoCaracterizacaoAt
 
     }
 
-
-
     @Override
     public TipoCaracterizacaoAtividade editar(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO) {
 
@@ -155,6 +153,17 @@ public class TipoCaracterizacaoAtividadeService implements ITipoCaracterizacaoAt
         relAtividadePerguntaService.editar(atividade, atividadeDispensavelDTO.getPerguntas());
 
         return tipoCaracterizacaoAtividadeEditado;
+
+    }
+
+    @Override
+    public void editarAtividadeLicenciavel(List<AtividadeCnaeDTO> atividadesCnae, Atividade atividade) {
+
+        List<TipoCaracterizacaoAtividade> tipoCaracterizacaoAtividades = tipoCaracterizacaoAtividadeRepository.findByAtividade(atividade);
+
+        tipoCaracterizacaoAtividades.forEach(tipoCaracterizacaoAtividade -> tipoCaracterizacaoAtividadeRepository.delete(tipoCaracterizacaoAtividade));
+
+        this.salvarAtividadeLicenciavel(atividadesCnae, atividade);
 
     }
 

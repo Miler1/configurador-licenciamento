@@ -11,6 +11,8 @@ import com.configuradorlicenciamento.atividade.repositories.RelAtividadeParametr
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class RelAtividadeParametroAtividadeService implements IRelAtividadeParametroAtividadeService {
 
@@ -22,6 +24,28 @@ public class RelAtividadeParametroAtividadeService implements IRelAtividadeParam
 
     @Override
     public void salvar(Atividade atividade, PorteAtividadeDTO parametro) {
+
+        if(parametro.getParametroUm() != null) {
+
+            this.salvarParametro(atividade, parametro.getParametroUm(), parametro.getDescricaoUnidadeUm());
+
+        }
+
+        if(parametro.getParametroDois() != null) {
+
+            this.salvarParametro(atividade, parametro.getParametroDois(), parametro.getDescricaoUnidadeDois());
+
+        }
+
+    }
+
+    @Override
+    public void editar(Atividade atividade, PorteAtividadeDTO parametro) {
+
+        List<RelAtividadeParametroAtividade> relAtividadeParametroAtividades = relAtividadeParametroAtividadeRepository.findByAtividade(atividade);
+
+        relAtividadeParametroAtividades.forEach(relAtividadeParametroAtividade -> relAtividadeParametroAtividadeRepository.delete(relAtividadeParametroAtividade));
+
 
         if(parametro.getParametroUm() != null) {
 

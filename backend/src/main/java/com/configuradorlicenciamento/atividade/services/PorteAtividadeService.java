@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.Optional;
 
 @Service
@@ -36,35 +37,94 @@ public class PorteAtividadeService implements IPorteAtividadeService {
 
         portes.forEach(porte -> {
 
-            Optional<PorteEmpreendimento> porteEmpreendimento = Optional.ofNullable(null);
-            if (porte.getPorte() != null) {
-                porteEmpreendimento = Optional.of(porteEmpreendimentoRepository.findById(porte.getPorte().getId()).get());
-            }
-
-            Parametro parametroUm = porte.getParametroUm() != null ? parametroRepository.findById(porte.getParametroUm().getId()).get() : null;
-            Parametro parametroDois = porte.getParametroDois() != null ? parametroRepository.findById(porte.getParametroDois().getId()).get() : null;
-
-            PorteAtividade porteAtividade = new PorteAtividade.PorteAtividadeBuilder()
-                    .setPorteEmpreendimento(porteEmpreendimento.orElse(null))
-                    .setLimiteInferiorUm(porte.getLimiteInferiorUm() == 0.0 ? null : porte.getLimiteInferiorUm())
-                    .setLimiteSuperiorUm(porte.getLimiteSuperiorUm())
-                    .setLimiteInferiorDois(porte.getLimiteInferiorDois() != null && porte.getLimiteInferiorDois() == 0.0 ? null : porte.getLimiteInferiorDois())
-                    .setLimiteSuperiorDois(porte.getLimiteSuperiorDois())
-                    .setParametroUm(parametroUm)
-                    .setParametroDois(parametroDois)
-                    .setLimiteInferiorUmIncluso(porte.getLimiteInferiorUmIncluso())
-                    .setLimiteSuperiorUmIncluso(porte.getLimiteSuperiorUmIncluso())
-                    .setLimiteInferiorDoisIncluso(porte.getLimiteInferiorDoisIncluso())
-                    .setLimiteSuperiorDoisIncluso(porte.getLimiteSuperiorDoisIncluso())
-                    .setCodigo(codigoPorte)
-                    .build();
-
-            porteAtividadeRepository.save(porteAtividade);
-
-            portesAtividade.add(porteAtividade);
+            portesAtividade.add(this.salvarPorte(porte, codigoPorte));
 
         });
 
         return portesAtividade;
     }
+
+    public PorteAtividade salvarPorte(PorteAtividadeDTO porte, Integer codigoPorte) {
+
+        Optional<PorteEmpreendimento> porteEmpreendimento = Optional.ofNullable(null);
+        if (porte.getPorte() != null) {
+            porteEmpreendimento = Optional.of(porteEmpreendimentoRepository.findById(porte.getPorte().getId()).get());
+        }
+
+        Parametro parametroUm = porte.getParametroUm() != null ? parametroRepository.findById(porte.getParametroUm().getId()).get() : null;
+        Parametro parametroDois = porte.getParametroDois() != null ? parametroRepository.findById(porte.getParametroDois().getId()).get() : null;
+
+        PorteAtividade porteAtividade = new PorteAtividade.PorteAtividadeBuilder()
+                .setPorteEmpreendimento(porteEmpreendimento)
+                .setLimiteInferiorUm(porte.getLimiteInferiorUm() != null && porte.getLimiteInferiorUm() == 0.0 ? null : porte.getLimiteInferiorUm())
+                .setLimiteSuperiorUm(porte.getLimiteSuperiorUm())
+                .setLimiteInferiorDois(porte.getLimiteInferiorDois() != null && porte.getLimiteInferiorDois() == 0.0 ? null : porte.getLimiteInferiorDois())
+                .setLimiteSuperiorDois(porte.getLimiteSuperiorDois())
+                .setParametroUm(parametroUm)
+                .setParametroDois(parametroDois)
+                .setLimiteInferiorUmIncluso(porte.getLimiteInferiorUmIncluso())
+                .setLimiteSuperiorUmIncluso(porte.getLimiteSuperiorUmIncluso())
+                .setLimiteInferiorDoisIncluso(porte.getLimiteInferiorDoisIncluso())
+                .setLimiteSuperiorDoisIncluso(porte.getLimiteSuperiorDoisIncluso())
+                .setCodigo(codigoPorte)
+                .build();
+
+        porteAtividadeRepository.save(porteAtividade);
+
+        return porteAtividade;
+
+    }
+
+    @Override
+    public List<PorteAtividade> editar(List<PorteAtividadeDTO> portes) {
+
+        List<PorteAtividade> portesAtividade = new ArrayList<>();
+
+        List<PorteAtividadeDTO> portesDTOSalvos = portes.stream().filter(porte -> porte.getId() != null).collect(Collectors.toList());
+
+        Integer codigoPorte;
+
+        if (portesDTOSalvos.isEmpty()) {
+            codigoPorte = porteAtividadeRepository.max() + 1;
+        } else {
+            codigoPorte = porteAtividadeRepository.findById(portesDTOSalvos.get(0).getId()).get().getCodigo();
+        }
+
+        portes.forEach(porte -> {
+
+            if (porte.getId() == null) {
+
+                portesAtividade.add(this.salvarPorte(porte, codigoPorte));
+
+            } else {
+
+                PorteAtividade porteAtividadesalvo = porteAtividadeRepository.findById(porte.getId()).orElse(null);
+
+                PorteEmpreendimento porteEmpreendimento = porteEmpreendimentoRepository.findById(porte.getPorte().getId()).get();
+
+                Parametro parametroUm = porte.getParametroUm() != null ? parametroRepository.findById(porte.getParametroUm().getId()).get() : null;
+                Parametro parametroDois = porte.getParametroDois() != null ? parametroRepository.findById(porte.getParametroDois().getId()).get() : null;
+
+                porteAtividadesalvo.setPorteEmpreendimento(porteEmpreendimento);
+                porteAtividadesalvo.setLimiteInferiorUm(porte.getLimiteInferiorUm() != null && porte.getLimiteInferiorUm() == 0.0 ? null : porte.getLimiteInferiorUm());
+                porteAtividadesalvo.setLimiteSuperiorUm(porte.getLimiteSuperiorUm());
+                porteAtividadesalvo.setLimiteInferiorDois(porte.getLimiteInferiorDois() != null && porte.getLimiteInferiorDois() == 0.0 ? null : porte.getLimiteInferiorDois());
+                porteAtividadesalvo.setLimiteSuperiorDois(porte.getLimiteSuperiorDois());
+                porteAtividadesalvo.setParametroUm(parametroUm);
+                porteAtividadesalvo.setParametroDois(parametroDois);
+                porteAtividadesalvo.setLimiteInferiorUmIncluso(porte.getLimiteInferiorUmIncluso());
+                porteAtividadesalvo.setLimiteSuperiorUmIncluso(porte.getLimiteSuperiorUmIncluso());
+                porteAtividadesalvo.setLimiteInferiorDoisIncluso(porte.getLimiteInferiorDoisIncluso());
+                porteAtividadesalvo.setLimiteSuperiorDoisIncluso(porte.getLimiteSuperiorDoisIncluso());
+
+                porteAtividadeRepository.save(porteAtividadesalvo);
+
+                portesAtividade.add(porteAtividadesalvo);
+            }
+
+        });
+
+        return portesAtividade;
+    }
+
 }
