@@ -137,7 +137,7 @@ const ERROR_MESSAGES = {
 
 const SUCCESS_MESSAGES = {
 
-	cadastro: 'Sucesso! As informações foram salvas.',
+	cadastro: 'Sucesso! As informações foram cadastradas.',
 	editar: 'Sucesso! As informações foram editadas.',
 
 	cnae: {
