@@ -43,6 +43,7 @@ public class DocumentoService implements IDocumentoService {
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
         documentoDTO.setNome(StringUtil.tratarEspacos(documentoDTO.getNome()));
+
         boolean nomeExistente = documentoRepository.existsByNome(documentoDTO.getNome());
 
         if (nomeExistente) {
@@ -71,13 +72,14 @@ public class DocumentoService implements IDocumentoService {
         }
 
         return dtos;
+
     }
 
     private Specification<Documento> preparaFiltro(FiltroPesquisa filtro) {
 
         Specification<Documento> specification = Specification.where(DocumentoSpecification.padrao());
 
-        if(filtro.getStringPesquisa() != null) {
+        if (filtro.getStringPesquisa() != null) {
             specification = specification.and(DocumentoSpecification.nome(filtro.getStringPesquisa())
                     .or(DocumentoSpecification.prefixoNomeArquivo(filtro.getStringPesquisa())));
         }
@@ -108,16 +110,17 @@ public class DocumentoService implements IDocumentoService {
 
 
     @Override
-    public Documento editar (HttpServletRequest request, DocumentoDTO documentoDTO){
+    public Documento editar(HttpServletRequest request, DocumentoDTO documentoDTO) {
 
         Object login = request.getSession().getAttribute("login");
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
         documentoDTO.setNome(StringUtil.tratarEspacos(documentoDTO.getNome()));
+
         boolean nomeExistente = documentoRepository.existsByNome(documentoDTO.getNome());
 
-        if (nomeExistente){
+        if (nomeExistente) {
 
             Documento documentoExistente = documentoRepository.findByNome(documentoDTO.getNome());
 

@@ -104,7 +104,6 @@
 											hide-details="auto"
 										)
 
-
 									v-col(cols="12", md="5")
 										v-label Valor máximo
 										v-text-field#QA-input-valor-maximo-1(
@@ -200,13 +199,12 @@
 											hide-details="auto"
 										)
 
-
 									v-col(cols="12", md="5")
 										v-label Valor máximo
 										v-text-field.mb-0#QA-input-valor-maximo-2(
 											outlined,
 											color="#E0E0E0",
-											v-money="money",
+											v-money="index === 3 ? '' : money",
 											v-model.lazy="valor.maximo",
 											min="0",
 											ref="valormaximo2",
@@ -401,6 +399,7 @@ export default {
 				if (tipo === 'MAXIMO' && item){
 					return (this.errorMessageEmpty || (item && (item > parametro.valores[index].minimo))) ? '' : 'O valor máximo deve ser maior que o valor mínimo no intervalo atual';
 				}
+
 			}
 
 			return (this.errorMessageEmpty || item) ? '' : 'Obrigatório';
@@ -420,7 +419,7 @@ export default {
 
 		dadosValidos() {
 
-			if(!this.tipoParametro) {
+			if (!this.tipoParametro) {
 				this.errorMessageEmpty = false;
 			}
 
@@ -431,6 +430,7 @@ export default {
 			}
 
 			return this.errorMessageEmpty;
+
 		},
 
 		validarParametro(parametro) {
@@ -493,7 +493,7 @@ export default {
 					dadoParametro.limiteInferiorUmIncluso = valor.limiteInferiorIncluso;
 					dadoParametro.limiteSuperiorUmIncluso = valor.limiteSuperiorIncluso;
 
-					if(!this.isInclusao && parametrosAnterior.length === 4) {
+					if (!this.isInclusao && parametrosAnterior.length === 4) {
 
 						dadoParametro.porte = parametrosAnterior[index].porte;
 						dadoParametro.licenciamentoMunicipal = parametrosAnterior[index].licenciamentoMunicipal;
@@ -528,7 +528,7 @@ export default {
 						dadoParametro.limiteInferiorDoisIncluso = valor2.limiteInferiorIncluso;
 						dadoParametro.limiteSuperiorDoisIncluso = valor2.limiteSuperiorIncluso;
 
-						if(!this.isInclusao && parametrosAnterior.length === 16) {
+						if (!this.isInclusao && parametrosAnterior.length === 16) {
 
 							dadoParametro.porte = parametrosAnterior[(index1*4) + index2].porte;
 							dadoParametro.licenciamentoMunicipal = parametrosAnterior[(index1*4) + index2].licenciamentoMunicipal;
@@ -614,13 +614,13 @@ export default {
 			this.parametroUmBkp.valores.forEach((valor, index) => {
 
 				this.$refs.valorminimo1[index].$el.querySelector('input').value = valor.minimo;
-				if(index != 3) {
+				if (index != 3) {
 					this.$refs.valormaximo1[index].$el.querySelector('input').value = valor.maximo;
 				}
 
 			});
 
-			if(this.parametroDoisBkp.parametro !== null && this.$refs.valorminimo2.length > 0 && this.$refs.valormaximo2.length > 0) {
+			if (this.parametroDoisBkp.parametro !== null && this.$refs.valorminimo2.length > 0 && this.$refs.valormaximo2.length > 0) {
 
 				this.parametroDois.parametro = this.parametroDoisBkp.parametro;
 				this.parametroDois.descricaoUnidade = this.parametroDoisBkp.descricaoUnidade;
@@ -629,7 +629,7 @@ export default {
 				this.parametroDoisBkp.valores.forEach((valor, index) => {
 
 					this.$refs.valorminimo2[index].$el.querySelector('input').value = valor.minimo;
-					if(index != 3) {
+					if (index != 3) {
 						this.$refs.valormaximo2[index].$el.querySelector('input').value = valor.maximo;
 					}
 
@@ -649,7 +649,7 @@ export default {
 
 		limparDados() {
 
-			if(this.parametros.length === 0) {
+			if (this.parametros.length === 0) {
 
 				this.$refs.toggleAtividadeLicenciavelParametro.clearModel();
 				this.tipoParametro = null;
@@ -688,7 +688,7 @@ export default {
 
 			if (numeroParametro === 1) {
 
-				if(tipo === 'MINIMO') {
+				if (tipo === 'MINIMO') {
 					this.parametroUm.valores[index-1].limiteSuperiorIncluso = false;
 				} else {
 					this.parametroUm.valores[index+1].limiteInferiorIncluso = false;
@@ -696,7 +696,7 @@ export default {
 
 			} else {
 
-				if(tipo === 'MINIMO') {
+				if (tipo === 'MINIMO') {
 					this.parametroDois.valores[index-1].limiteSuperiorIncluso = false;
 				} else {
 					this.parametroDois.valores[index+1].limiteInferiorIncluso = false;
@@ -705,6 +705,7 @@ export default {
 			}
 
 			this.resetErrorMessage();
+
 		}
 
 	},
@@ -728,9 +729,9 @@ export default {
 
 	mounted() {
 
-		if(this.parametros.length !== 0) {
+		if (this.parametros.length !== 0) {
 
-			if(this.parametros.length === 4) {
+			if (this.parametros.length === 4) {
 
 				this.$refs.toggleAtividadeLicenciavelParametro.setModel(this.optionsTipoParametro[0].value);
 				this.tipoParametro = this.optionsTipoParametro[0].value;
@@ -773,7 +774,7 @@ export default {
 
 				this.parametros.forEach((parametro, index) => {
 
-					if(index % 4 === 0) {
+					if (index % 4 === 0) {
 
 						this.parametroUm.valores.push({
 							minimo: parametro.limiteInferiorUm,
@@ -808,9 +809,11 @@ export default {
 				limiteSuperiorIncluso: null
 			};
 
-			for(var i = 0; i < 4; i++) {
+			for (var i = 0; i < 4; i++) {
+
 				this.parametroUm.valores.push({... valor});
 				this.parametroDois.valores.push({... valor});
+
 			}
 
 		}

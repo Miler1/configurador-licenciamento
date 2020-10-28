@@ -13,6 +13,7 @@ import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.atividadeCnae.repositories.AtividadeCnaeRepository;
 import com.configuradorlicenciamento.configuracao.exceptions.ConflictException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
+import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.licenca.models.Licenca;
 import com.configuradorlicenciamento.licenca.repositories.LicencaRepository;
 import com.configuradorlicenciamento.potencialPoluidor.models.PotencialPoluidor;
@@ -184,7 +185,7 @@ public class AtividadeService implements IAtividadeService {
 
         Object login = request.getSession().getAttribute("login");
 
-        boolean existeAtividade = atividadeRepository.existsByCodigo(atividadeLicenciavelDTO.getDados().getCodigoAtividade());
+        boolean existeAtividade = atividadeRepository.existsByCodigo(atividadeLicenciavelDTO.getDados().getCodigoAtividade().trim());
 
         if (existeAtividade) {
             throw new ConflictException(ATIVIDADE_EXISTENTE);
@@ -226,7 +227,7 @@ public class AtividadeService implements IAtividadeService {
 
         Atividade atividade = new Atividade.AtividadeBuilder(false)
                 .setNome(atividadeLicenciavelDTO.getDados().getNomeAtividade())
-                .setCodigo(atividadeLicenciavelDTO.getDados().getCodigoAtividade())
+                .setCodigo(atividadeLicenciavelDTO.getDados().getCodigoAtividade().trim())
                 .setTipologia(tipologiaAtividade.orElse(null))
                 .setGeoPonto(atividadeLicenciavelDTO.getDados().getGeoPonto())
                 .setGeoLinha(atividadeLicenciavelDTO.getDados().getGeoLinha())
@@ -260,6 +261,12 @@ public class AtividadeService implements IAtividadeService {
     public Atividade salvarRascunhoAtividadeLicenciavel(HttpServletRequest request, AtividadeLicenciavelDTO atividadeLicenciavelDTO) {
 
         Object login = request.getSession().getAttribute("login");
+
+        boolean existeAtividade = atividadeRepository.existsByCodigo(atividadeLicenciavelDTO.getDados().getCodigoAtividade().trim());
+
+        if (existeAtividade) {
+            throw new ConflictException(ATIVIDADE_EXISTENTE);
+        }
 
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 

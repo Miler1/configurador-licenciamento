@@ -83,7 +83,7 @@ export default {
 		},
 
 	},
-	
+
 	data: () => {
 
 		return {
@@ -155,14 +155,14 @@ export default {
 
 	mounted() {
 
-		if(this.atividadeLicenciavel.parametros.length === 4) {
+		if (this.atividadeLicenciavel.parametros.length === 4) {
 
 			this.headerParametro = [... HEADERPARAMETRO];
 			this.headerParametro.splice(3,3);
 
 		}
- 
-		
+
+
 	}
 
 };
