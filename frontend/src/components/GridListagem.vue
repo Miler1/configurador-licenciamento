@@ -99,7 +99,7 @@
 					template(v-slot:activator="{ on, attrs }")
 						v-icon(small @click='excluirRascunho(item)', v-on='on', color='#F56C6C')
 							|  mdi-delete
-					span Remover {{tituloAba}}
+					span Excluir {{tituloAba}}
 
 			template(v-slot:no-data, v-if="checkNomeItem()")
 				span Não existem {{dadosListagem.nomeItem}} a serem exibidas.
