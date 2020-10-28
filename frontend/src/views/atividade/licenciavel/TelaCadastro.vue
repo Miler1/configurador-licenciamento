@@ -201,16 +201,6 @@ export default {
 
 		},
 
-		prepararDadosParaEdicao(atividadeLicenciavel) {
-
-			this.atividadeLicenciavel = atividadeLicenciavel;
-
-			this.atividadeLicenciavel.cnaesAtividade.forEach(cnaeAtividade=> {
-				cnaeAtividade.foraEmpreendimento = cnaeAtividade.foraEmpreendimento ? 'false' : 'true';
-			});
-
-		},
-
 		prepararDados() {
 
 			this.atividadeLicenciavelBkp =  JSON.parse(JSON.stringify(this.atividadeLicenciavel) );
@@ -467,7 +457,7 @@ export default {
 			let lastStep = this.lastStep();
 
 			return {
-				text: lastStep ? (this.isCadastro ? "Cadastrar" : "Editar") : "Próxima",
+				text: lastStep ? (this.isCadastro ? "Cadastrar" : (this.$route.name === 'ContinuarCadastroAtividadeLicenciavel' ? "Cadastrar" : "Editar")) : "Próxima",
 				icon: lastStep ? (this.isCadastro ? "mdi-plus" : "mdi-pencil") : "mdi-arrow-right"
 			};
 
@@ -529,7 +519,7 @@ export default {
 
 		handleSuccess(edicao = false) {
 
-			let message = edicao ? SUCCESS_MESSAGES.editar : SUCCESS_MESSAGES.cadastro;
+			let message = edicao ? (this.$route.name === 'ContinuarCadastroAtividadeLicenciavel' ? SUCCESS_MESSAGES.cadastro : SUCCESS_MESSAGES.editar) : SUCCESS_MESSAGES.cadastro;
 
 			snackbar.alert(message, snackbar.type.SUCCESS);
 
@@ -549,12 +539,14 @@ export default {
 			this.atividadeLicenciavel = atividadeLicenciavel;
 
 			this.atividadeLicenciavel.cnaesAtividade.forEach(cnaeAtividade=> {
-				cnaeAtividade.foraEmpreendimento = cnaeAtividade.foraEmpreendimento ? 'false' : 'true';
+				cnaeAtividade.foraEmpreendimento = cnaeAtividade.foraEmpreendimento === null ? null : cnaeAtividade.foraEmpreendimento? 'false' : 'true';
 			});
 
 			let dados = this.atividadeLicenciavel.dados;
 
-			dados.requisitoTecnico.textoExibicao = dados.requisitoTecnico.codigo + ' - ' + dados.requisitoTecnico.descricao;
+			if(dados.requisitoTecnico != null) {
+				dados.requisitoTecnico.textoExibicao = dados.requisitoTecnico.codigo + ' - ' + dados.requisitoTecnico.descricao;
+			}
 
 
 		}
@@ -571,7 +563,7 @@ export default {
 				.then((response) => {
 					this.prepararDadosParaEdicao(response.data);
 
-					this.$refs.telaAtividades.$refs.toggleOptionsForaEmpreendimento.setModel(this.atividadeLicenciavel.dados.foraEmpreendimento ? 'true' : 'false');
+					this.$refs.telaAtividades.$refs.toggleOptionsForaEmpreendimento.setModel(this.atividadeLicenciavel.dados.foraEmpreendimento === null ? null : this.atividadeLicenciavel.dados.foraEmpreendimento? 'false' : 'true');
 
 				})
 				.catch(error => {

@@ -54,9 +54,9 @@ public class AtividadeEdicaoDTO {
         this.geoPoligono = atividade.getGeoPoligono();
         this.potencialPoluidor = atividade.getPotencialPoluidor();
         this.setor = atividade.getSiglaSetor();
-        this.foraEmpreendimento = !atividade.getDentroEmpreendimento();
+        this.foraEmpreendimento = atividade.getDentroEmpreendimento() != null ? !atividade.getDentroEmpreendimento() : null;
         this.requisitoTecnico = atividade.getRequisitoTecnico();
-        this.taxaLicenciamento = atividade.recuperaCodigoTaxaLicenciamentobyTaxas();
+        this.taxaLicenciamento = atividade.getTaxasLicenciamento().isEmpty() ? null : atividade.recuperaCodigoTaxaLicenciamentobyTaxas();
         this.tiposAtividade = atividade.recuperaCodigosTiposAtividade();
         this.licencas = atividade.getTiposLicencas();
 

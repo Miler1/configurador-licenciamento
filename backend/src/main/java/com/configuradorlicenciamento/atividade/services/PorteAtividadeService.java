@@ -55,7 +55,7 @@ public class PorteAtividadeService implements IPorteAtividadeService {
         Parametro parametroDois = porte.getParametroDois() != null ? parametroRepository.findById(porte.getParametroDois().getId()).get() : null;
 
         PorteAtividade porteAtividade = new PorteAtividade.PorteAtividadeBuilder()
-                .setPorteEmpreendimento(porteEmpreendimento.get())
+                .setPorteEmpreendimento(porteEmpreendimento.orElse(null))
                 .setLimiteInferiorUm(porte.getLimiteInferiorUm() != null && porte.getLimiteInferiorUm() == 0.0 ? null : porte.getLimiteInferiorUm())
                 .setLimiteSuperiorUm(porte.getLimiteSuperiorUm())
                 .setLimiteInferiorDois(porte.getLimiteInferiorDois() != null && porte.getLimiteInferiorDois() == 0.0 ? null : porte.getLimiteInferiorDois())
@@ -100,7 +100,7 @@ public class PorteAtividadeService implements IPorteAtividadeService {
 
                 PorteAtividade porteAtividadesalvo = porteAtividadeRepository.findById(porte.getId()).orElse(null);
 
-                PorteEmpreendimento porteEmpreendimento = porteEmpreendimentoRepository.findById(porte.getPorte().getId()).get();
+                PorteEmpreendimento porteEmpreendimento = porte.getPorte() != null ? porteEmpreendimentoRepository.findById(porte.getPorte().getId()).get() : null;
 
                 Parametro parametroUm = porte.getParametroUm() != null ? parametroRepository.findById(porte.getParametroUm().getId()).get() : null;
                 Parametro parametroDois = porte.getParametroDois() != null ? parametroRepository.findById(porte.getParametroDois().getId()).get() : null;

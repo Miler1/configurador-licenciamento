@@ -63,7 +63,14 @@ public class AtividadeController extends DefaultController {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        Atividade atividade = atividadeService.salvarRascunhoAtividadeLicenciavel(request, atividadeLicenciavelDTO);
+        Atividade atividade;
+
+        if (atividadeLicenciavelDTO.getDados().getId() == null) {
+            atividade = atividadeService.salvarRascunhoAtividadeLicenciavel(request, atividadeLicenciavelDTO);
+        } else {
+            atividade = atividadeService.editarRascunhoAtividadeLicenciavel(request, atividadeLicenciavelDTO);
+        }
+
 
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
