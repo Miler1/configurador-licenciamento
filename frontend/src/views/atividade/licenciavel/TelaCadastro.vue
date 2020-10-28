@@ -245,7 +245,6 @@ export default {
 
 			});
 
-
 		},
 
 		validar() {

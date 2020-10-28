@@ -718,11 +718,11 @@ export default {
 				this.parametrosDisponiveis = response.data;
 				this.parametrosDisponiveis.forEach(parametro => parametro.textoExibicao = parametro.codigo + ' - ' + parametro.nome);
 
-				if(this.parametros[0].parametroUm !== null && this.parametros[0].parametroUm.id !== null) {
+				if (this.parametros[0] && this.parametros[0].parametroUm !== null && this.parametros[0].parametroUm.id !== null) {
 					this.parametroUm.parametro = this.parametrosDisponiveis.filter(parametro => parametro.id === this.parametros[0].parametroUm.id)[0];
 				}
 
-				if(this.parametros[0].parametroDois !== null && this.parametros[0].parametroDois.id !== null) {
+				if (this.parametros[0] && this.parametros[0].parametroDois !== null && this.parametros[0].parametroDois.id !== null) {
 					this.parametroDois.parametro = this.parametrosDisponiveis.filter(parametro => parametro.id === this.parametros[0].parametroDois.id)[0];
 				}
 

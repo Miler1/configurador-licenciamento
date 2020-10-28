@@ -25,7 +25,7 @@
 				v-label Geometria
 				p.label-atividade {{preparaExibicaoGeometria()}}
 			v-col(cols="12", md="2")
-				v-label Execução
+				v-label Atividade fora do empreendimento
 				p.label-atividade {{preparaExibicaoExecucao()}}
 			v-col(cols="12", md="2")
 				v-label Gerência / Setor
@@ -143,9 +143,7 @@ export default {
 		},
 
 		preparaExibicaoExecucao() {
-
-			return this.atividadeLicenciavel.dados.foraEmpreendimento ? 'Fora do empreendimento' : 'Dentro do empreendimento';
-
+			return this.atividadeLicenciavel.dados.foraEmpreendimento === "true" ? 'Sim' : 'Não';
 		}
 
 	},
