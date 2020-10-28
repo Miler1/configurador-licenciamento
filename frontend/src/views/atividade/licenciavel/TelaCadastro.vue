@@ -26,6 +26,7 @@
 		v-col.py-0(cols="12")
 
 			PassoAtividades(
+				ref="telaAtividades"
 				v-if="passo == 1",
 				:cnaesAtividade="atividadeLicenciavel.cnaesAtividade",
 				:dados="atividadeLicenciavel.dados",
@@ -184,6 +185,20 @@ export default {
 
 		editar() {
 
+			this.prepararDados();
+
+			if (this.validar()) {
+
+				AtividadeService.editarAtividadeLicenciavel(this.atividadeLicenciavel)
+					.then( () => {
+						this.handleSuccess(true);
+					})
+					.catch(error => {
+						this.handleError(error, true);
+					});
+
+			}
+
 		},
 
 		prepararDadosParaEdicao(atividadeLicenciavel) {
@@ -210,16 +225,16 @@ export default {
 
 			this.atividadeLicenciavel.parametros.forEach(parametro => {
 
-				parametro.limiteInferiorUm = parametro.limiteInferiorUm ?
+				parametro.limiteInferiorUm = parametro.limiteInferiorUm && typeof parametro.limiteInferiorUm === 'string' ? 
 					parseFloat(parametro.limiteInferiorUm.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
 
-				parametro.limiteSuperiorUm = parametro.limiteSuperiorUm ?
+				parametro.limiteSuperiorUm = parametro.limiteSuperiorUm && typeof parametro.limiteSuperiorUm === 'string' ? 
 					parseFloat(parametro.limiteSuperiorUm.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
 
-				parametro.limiteInferiorDois = parametro.limiteInferiorDois ?
+				parametro.limiteInferiorDois = parametro.limiteInferiorDois && typeof parametro.limiteInferiorDois === 'string' ? 
 					parseFloat(parametro.limiteInferiorDois.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
 
-				parametro.limiteSuperiorDois = parametro.limiteSuperiorDois ?
+				parametro.limiteSuperiorDois = parametro.limiteSuperiorDois && typeof parametro.limiteSuperiorDois === 'string' ? 
 					parseFloat(parametro.limiteSuperiorDois.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
 
 				//tratar valores nulos
@@ -528,6 +543,21 @@ export default {
 			this.allowRedirect = allowed;
 			this.$router.push({name: 'atividadesLicenciaveis'});
 
+		},
+
+		prepararDadosParaEdicao(atividadeLicenciavel) {
+
+			this.atividadeLicenciavel = atividadeLicenciavel;
+
+			this.atividadeLicenciavel.cnaesAtividade.forEach(cnaeAtividade=> {
+				cnaeAtividade.foraEmpreendimento = cnaeAtividade.foraEmpreendimento ? 'false' : 'true';
+			});
+
+			let dados = this.atividadeLicenciavel.dados;
+
+			dados.requisitoTecnico.textoExibicao = dados.requisitoTecnico.codigo + ' - ' + dados.requisitoTecnico.descricao;
+
+
 		}
 
 	},
@@ -537,13 +567,17 @@ export default {
 		if (this.$route.params.idAtividadeLicenciavel) {
 
 			this.isCadastro = false;
-			// AtividadeService.findById(this.$route.params.idAtividadeLicenciavel)
-			// 	.then((response) => {
-			// 		this.prepararDadosParaEdicao(response.data);
-			// 	})
-			// 	.catch(error => {
-			// 		console.log(error.message);
-			// 	});
+
+			AtividadeService.findById(this.$route.params.idAtividadeLicenciavel)
+				.then((response) => {
+					this.prepararDadosParaEdicao(response.data);
+
+					this.$refs.telaAtividades.$refs.toggleOptionsForaEmpreendimento.setModel(this.atividadeLicenciavel.dados.foraEmpreendimento ? 'true' : 'false');
+
+				})
+				.catch(error => {
+					console.log(error.message);
+				});
 
 		}
 

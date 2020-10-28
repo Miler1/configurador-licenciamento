@@ -59,7 +59,6 @@ public class TipoCaracterizacaoAtividadeController extends DefaultController {
 
     }
 
-
     @PostMapping(value = "ativarDesativar/{idAtividadeDispensavel}")
     public ResponseEntity<TipoCaracterizacaoAtividade> ativarDesativar(HttpServletRequest request, @PathVariable("idAtividadeDispensavel") Integer idAtividadeDispensavel) throws Exception {
 

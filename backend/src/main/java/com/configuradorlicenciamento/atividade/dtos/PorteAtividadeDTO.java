@@ -9,6 +9,7 @@ import lombok.Getter;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PorteAtividadeDTO {
 
+    private Integer id;
     private Float limiteInferiorUm;
     private Float limiteSuperiorUm;
     private Float limiteInferiorDois;

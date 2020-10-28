@@ -56,10 +56,12 @@
 				v-select(:items="dadosSelect", item-text="nome", return-object, v-model="props.item.porte", hide-details="auto", :error-messages="errorMessage(props.item.porte)")
 
 			template(v-slot:item.licenciamentoMunicipal='{ item }')
-				v-simple-checkbox(v-model="item.licenciamentoMunicipal", color="#84A98C", :disabled='resumo')
+				//- TODO - Remover o " || true" no disabled quando for mapeado o licenciamento municipal
+				v-simple-checkbox(v-model="item.licenciamentoMunicipal", color="#84A98C", :disabled='resumo || true')
 
 			template(v-slot:item.repasseOutroOrgao='{ item }')
-				v-simple-checkbox(v-model="item.repasseOutroOrgao", color="#84A98C", :disabled='resumo')
+				//- TODO - Remover o " || true" no disabled quando for mapeado o repasse para outro órgão
+				v-simple-checkbox(v-model="item.repasseOutroOrgao", color="#84A98C", :disabled='resumo || true')
 
 			template(v-slot:item.actions='{ item }')
 				v-tooltip(bottom, v-if="exibirIconeEditar")
@@ -231,6 +233,10 @@ tbody tr:nth-of-type(odd) {
 
 .v-btn {
 	text-transform: none !important;
+}
+
+.v-simple-checkbox--disabled{
+	cursor: not-allowed !important;
 }
 
 </style>

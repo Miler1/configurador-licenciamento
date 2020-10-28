@@ -7,4 +7,5 @@ public interface IRelAtividadeParametroAtividadeService {
 
     void salvar(Atividade atividade, PorteAtividadeDTO parametro);
 
+    void editar(Atividade atividade, PorteAtividadeDTO parametro);
 }

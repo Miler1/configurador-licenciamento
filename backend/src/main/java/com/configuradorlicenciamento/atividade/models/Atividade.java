@@ -5,6 +5,7 @@ import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.licenca.models.Licenca;
 import com.configuradorlicenciamento.potencialPoluidor.models.PotencialPoluidor;
 import com.configuradorlicenciamento.requisitoTecnico.models.RequisitoTecnico;
+import com.configuradorlicenciamento.taxaLicenciamento.models.CodigoTaxaLicenciamento;
 import com.configuradorlicenciamento.taxaLicenciamento.models.TaxaLicenciamento;
 import com.configuradorlicenciamento.tipologia.models.Tipologia;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
@@ -16,6 +17,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -198,7 +200,7 @@ public class Atividade implements Serializable {
             return this;
         }
 
-        public AtividadeBuilder setsiglaSetor(String siglaSetor) {
+        public AtividadeBuilder setSiglaSetor(String siglaSetor) {
             this.siglaSetor = siglaSetor;
             return this;
         }
@@ -253,7 +255,7 @@ public class Atividade implements Serializable {
             return this;
         }
 
-        public AtividadeBuilder setUsuarioLicencimento(UsuarioLicenciamento usuarioLicencimento) {
+        public AtividadeBuilder setUsuarioLicenciamento(UsuarioLicenciamento usuarioLicencimento) {
             this.usuarioLicenciamento = usuarioLicencimento;
             return this;
         }
@@ -261,6 +263,24 @@ public class Atividade implements Serializable {
         public Atividade build() {
             return new Atividade(this);
         }
+
+    }
+
+    public CodigoTaxaLicenciamento recuperaCodigoTaxaLicenciamentobyTaxas(){
+
+        return this.taxasLicenciamento.get(0).getCodigo();
+
+    }
+
+    public List<String> recuperaCodigosTiposAtividade() {
+
+        List<String> codigosTiposAtividade = new ArrayList<>();
+
+        this.tiposAtividades.forEach(tipoAtividade -> {
+            codigosTiposAtividade.add(tipoAtividade.getCodigo());
+        });
+
+        return codigosTiposAtividade;
 
     }
 
