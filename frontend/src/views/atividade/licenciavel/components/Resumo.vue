@@ -143,7 +143,7 @@ export default {
 		},
 
 		preparaExibicaoExecucao() {
-			return this.atividadeLicenciavel.dados.foraEmpreendimento === "true" ? 'Sim' : 'Não';
+			return this.atividadeLicenciavel.dados.foraEmpreendimento === "true" ? "Sim" : "Não";
 		}
 
 	},
