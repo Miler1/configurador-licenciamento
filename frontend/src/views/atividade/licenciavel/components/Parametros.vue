@@ -317,7 +317,7 @@ export default {
 			placeholderSelect2: 'Selecione o parâmetro 2',
 			placeholderDescricao1: 'Ex.: Metros cúbicos/dia (m³/d)',
 			placeholderDescricao2: 'Ex.: Produção em toneladas por mês',
-			labelTooltipDescricao: 'Esta é a descrição do campo parâmetro que será exibida para o solicitante ao informar o valor. Caso não informado, será exibida a própria descição do parâmetro.',
+			labelTooltipDescricao: 'Esta é a descrição do campo parâmetro que será exibida para o solicitante ao informar o valor. Caso não informada, será exibida a própria descição do parâmetro.',
 
 			tituloListagem: "Listagem de combinações de intervalos de parâmetros / portes adicionadas",
 			labelNoData: 'Não existem combinações de intervalos de parâmetros / portes adicionadas.',
