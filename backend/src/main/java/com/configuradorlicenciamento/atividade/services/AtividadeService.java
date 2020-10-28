@@ -408,7 +408,7 @@ public class AtividadeService implements IAtividadeService {
                 .setGeoLinha(atividadeLicenciavelDTO.getDados().getGeoLinha())
                 .setGeoPoligono(atividadeLicenciavelDTO.getDados().getGeoPoligono())
                 .setPotencialPoluidor(potencialPoluidor.orElse(null))
-                .setsiglaSetor(atividadeLicenciavelDTO.getDados().getSetor())
+                .setSiglaSetor(atividadeLicenciavelDTO.getDados().getSetor())
                 .setAtivo(false)
                 .setDentroEmpreendimento(foraEmpreendimento.orElse(null))
                 .setRequisitoTecnico(requisitoTecnico.orElse(null))
@@ -419,7 +419,7 @@ public class AtividadeService implements IAtividadeService {
                 .setTaxasLicenciamento(taxasLicenciamentoAtividade)
                 .setPortesAtividade(portesAtividade)
                 .setDataCadastro(new Date())
-                .setUsuarioLicencimento(usuarioLicenciamento)
+                .setUsuarioLicenciamento(usuarioLicenciamento)
                 .build();
 
         atividadeRepository.save(atividade);

@@ -55,7 +55,7 @@ public class PorteAtividadeService implements IPorteAtividadeService {
         Parametro parametroDois = porte.getParametroDois() != null ? parametroRepository.findById(porte.getParametroDois().getId()).get() : null;
 
         PorteAtividade porteAtividade = new PorteAtividade.PorteAtividadeBuilder()
-                .setPorteEmpreendimento(porteEmpreendimento)
+                .setPorteEmpreendimento(porteEmpreendimento.get())
                 .setLimiteInferiorUm(porte.getLimiteInferiorUm() != null && porte.getLimiteInferiorUm() == 0.0 ? null : porte.getLimiteInferiorUm())
                 .setLimiteSuperiorUm(porte.getLimiteSuperiorUm())
                 .setLimiteInferiorDois(porte.getLimiteInferiorDois() != null && porte.getLimiteInferiorDois() == 0.0 ? null : porte.getLimiteInferiorDois())
