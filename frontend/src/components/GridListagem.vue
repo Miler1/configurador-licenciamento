@@ -31,7 +31,7 @@
 				)
 				v-icon mdi-download
 				span Gerar relatório
-			
+
 	template
 		v-data-table.elevation-1(
 				:headers="headers",
@@ -122,10 +122,10 @@
 
 					v-col.flex-row.mt-3(cols='12' md='4')
 						v-select.float-right.d-inline-flex.mx-4.w-80(
-								:items="itensPerPages", 
-								solo, 
-								dense, 
-								@input="changeValue", 
+								:items="itensPerPages",
+								solo,
+								dense,
+								@input="changeValue",
 								v-model="itensPerPage"
 							)
 						span.float-right.exibicao-paginas.mt-2.ml-1
@@ -191,20 +191,20 @@ export default {
 
 	updated() {
 
-		if(this.dadosListagem) {
+		if (this.dadosListagem) {
 
-			if(this.dadosListagem.pageable) {
+			if (this.dadosListagem.pageable) {
 				this.page = this.dadosListagem.pageable.pageNumber + 1;
 			}
 
-			if(this.dadosListagem.content) {
+			if (this.dadosListagem.content) {
 
 				this.dadosListagem.content.forEach((item) => {
 					item.model = false;
 				});
-				
+
 			}
- 
+
 		}
 
 	},
@@ -213,7 +213,7 @@ export default {
 
 		changeValue(itensPerPage) {
 
-			if(this.parametrosFiltro.itemsPorPagina !== itensPerPage) {
+			if (this.parametrosFiltro.itemsPorPagina !== itensPerPage) {
 
 				this.parametrosFiltro.itemsPorPagina = itensPerPage;
 				this.parametrosFiltro.pagina = 0;
@@ -226,7 +226,7 @@ export default {
 
 		input(page) {
 
-			if(this.parametrosFiltro.pagina !== page-1) {
+			if (this.parametrosFiltro.pagina !== page-1) {
 
 				this.parametrosFiltro.pagina = page-1;
 				this.updatePagination(this.parametrosFiltro);
@@ -247,7 +247,7 @@ export default {
 
 		sortBy(value) {
 
-			if(value.sortBy.length > 0) {
+			if (value.sortBy.length > 0) {
 				this.parametrosFiltro.tipoOrdenacao = value.sortBy[0] + (value.sortDesc[0] ? ',desc' : ',asc');
 			} else {
 				this.parametrosFiltro.tipoOrdenacao = null;
@@ -261,8 +261,8 @@ export default {
 		},
 
 		checkNomeItem() {
-			return this.dadosListagem.nomeItem === 'tipologias' 
-				|| this.dadosListagem.nomeItem === 'licenças' 
+			return this.dadosListagem.nomeItem === 'tipologias'
+				|| this.dadosListagem.nomeItem === 'licenças'
 				|| this.dadosListagem.nomeItem === 'tabelas de taxas de licenciamento'
 				|| this.dadosListagem.nomeItem === 'taxas administrativas'
 				|| this.dadosListagem.nomeItem === 'perguntas'

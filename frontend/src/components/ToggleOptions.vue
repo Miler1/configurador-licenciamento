@@ -18,12 +18,12 @@
 				:width="option.width ? option.width : '100px'",
 				:height="option.height ? option.height : '40px'",
 				:disabled="disabled"
-			) 
+			)
 				span {{option.label}}
 	v-col.d-flex.pa-0
-		span.v-messages.theme--light.error--text.v-messages__message.pl-3.mb-3 
+		span.v-messages.theme--light.error--text.v-messages__message.pl-3.mb-3
 			| {{ errorMessage(modelToggle, true) }}
-  
+
 </template>
 
 <script>
@@ -65,16 +65,18 @@ export default {
 
 	methods: {
 		changeModel() {
-			if(this.change) {
+
+			if (this.change) {
 				this.change(this.modelToggle);
 			}
 			this.$emit('changeOption', this.modelToggle);
+
 		},
 
 		clearModel() {
 			this.modelToggle = null;
 		},
-		
+
 		setModel(valueModel) {
 			this.modelToggle = valueModel;
 		}
