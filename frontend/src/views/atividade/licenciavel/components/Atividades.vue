@@ -729,7 +729,7 @@ export default {
 
 				this.requisitosTecnicos.forEach(requisitoTecnico => requisitoTecnico.textoExibicao = requisitoTecnico.codigo + ' - ' + requisitoTecnico.descricao);
 
-				if(this.dados.requisitoTecnico.id !== null) {
+				if (this.dados.requisitoTecnico && this.dados.requisitoTecnico.id !== null) {
 					this.dados.requisitoTecnico = this.requisitosTecnicos.filter(requisitoTecnico => requisitoTecnico.id === this.dados.requisitoTecnico.id)[0];
 				}
 
@@ -742,7 +742,7 @@ export default {
 
 				this.taxasLicenciamento.forEach(taxaLicenciamento => taxaLicenciamento.textoExibicao = taxaLicenciamento.codigo + ' - ' + taxaLicenciamento.descricao);
 
-				if(this.dados.taxaLicenciamento.id !== null) {
+				if (this.dados.taxaLicenciamento && this.dados.taxaLicenciamento.id !== null) {
 					this.dados.taxaLicenciamento = this.taxasLicenciamento.filter(taxaLicenciamento => taxaLicenciamento.id === this.dados.taxaLicenciamento.id)[0];
 				}
 
@@ -750,10 +750,10 @@ export default {
 
 		EntradaUnicaWSService.findSetores()
 			.then((response) => {
-				
+
 				this.setores = response.data;
 
-				if(this.dados.setor !== null && typeof this.dados.setor === 'string') {
+				if (this.dados.setor !== null && typeof this.dados.setor === 'string') {
 					this.dados.setor = this.setores.filter(setor => setor.sigla === this.dados.setor)[0];
 				}
 
@@ -776,7 +776,7 @@ export default {
 			this.isInclusao = false;
 		}
 
-		if(this.dados.foraEmpreendimento !== null) {
+		if (this.dados.foraEmpreendimento !== null) {
 			this.$refs.toggleOptionsForaEmpreendimento.setModel(this.dados.foraEmpreendimento);
 		}
 
