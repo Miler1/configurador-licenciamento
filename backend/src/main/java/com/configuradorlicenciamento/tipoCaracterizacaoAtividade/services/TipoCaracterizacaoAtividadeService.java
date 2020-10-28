@@ -2,6 +2,7 @@ package com.configuradorlicenciamento.tipoCaracterizacaoAtividade.services;
 
 import com.configuradorlicenciamento.atividade.interfaces.IAtividadeService;
 import com.configuradorlicenciamento.atividade.models.Atividade;
+import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeDTO;
 import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.atividadeCnae.repositories.AtividadeCnaeRepository;
 import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
@@ -96,6 +97,32 @@ public class TipoCaracterizacaoAtividadeService implements ITipoCaracterizacaoAt
     }
 
     @Override
+    public void salvarAtividadeLicenciavel(List<AtividadeCnaeDTO> atividadesCnae, Atividade atividade) {
+
+        atividadesCnae.forEach(cnae -> {
+
+            Optional<AtividadeCnae> atividadeCnae = atividadeCnaeRepository.findById(cnae.getId());
+
+            TipoCaracterizacaoAtividade tipoCaracterizacaoAtividade = new TipoCaracterizacaoAtividade.TipoCaracterizacaoAtividadeBuilder()
+                    .setAtividade(atividade)
+                    .setAtividadeCnae(atividadeCnae.get())
+                    .setDispensaLicenciamento(false)
+                    .setLicenciamentoDeclaratorio(false)
+                    .setLicenciamentoSimplificado(true)
+                    .setAtivo(true)
+                    .setDataCadastro(new Date())
+                    .setUsuarioLicencimento(atividade.getUsuarioLicenciamento())
+                    .build();
+
+            tipoCaracterizacaoAtividadeRepository.save(tipoCaracterizacaoAtividade);
+
+        });
+
+    }
+
+
+
+    @Override
     public TipoCaracterizacaoAtividade editar(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO) {
 
         Object login = request.getSession().getAttribute("login");
@@ -112,7 +139,7 @@ public class TipoCaracterizacaoAtividadeService implements ITipoCaracterizacaoAt
 
         TipoCaracterizacaoAtividade tipoCaracterizacaoAtividadeEditado = new TipoCaracterizacaoAtividade.TipoCaracterizacaoAtividadeBuilder()
                 .setAtividade(atividade)
-                .setAtividadeCnae(atividadeCnae.get())
+                .setAtividadeCnae(atividadeCnae.orElse(null))
                 .setDataCadastro(new Date())
                 .setDispensaLicenciamento(true)
                 .setLicenciamentoDeclaratorio(false)

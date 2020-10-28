@@ -1,38 +1,39 @@
 <template lang="pug">
 
 #step-atividade-licenciavel-atividades
-	
+
 	v-expansion-panels.pb-7(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
 		v-expansion-panel
-			v-expansion-panel-header(v-show="indexItemEdicao != null || isCadastro")
+			v-expansion-panel-header
 				div.d-flex.flex-row.align-center.justify-start
-					span.align-baseline  Dados básicos
+					span.align-baseline  Dados básicos da atividade
 				template(v-slot:actions)
 					v-icon
-			v-expansion-panel-content(v-show="indexItemEdicao != null || isCadastro")
+			v-expansion-panel-content
 				v-form(ref="atividadeLicenciavel")
 					v-row
 						v-col(cols="12", md="3")
-							v-label Código da atividade
+							v-label Código
 							v-text-field#QA-input-atividade-codigo(
 								outlined,
 								color="#E0E0E0",
 								:placeholder="placeholder",
 								@click.native="resetErrorMessage",
 								v-model="dados.codigoAtividade",
-								:error-messages="errorMessage(dados.codigoAtividade)",
+								:error-messages="errorMessageCodigoAtividade(dados.codigoAtividade)",
+								@input="v => {dados.codigoAtividade = v.toUpperCase()}",
 								required,
 								dense
 							)
 						v-col(cols="12", md="9")
-							v-label Atividade
+							v-label Nome
 							v-text-field#QA-input-atividade-nome(
 								outlined,
 								color="#E0E0E0",
 								:placeholder="placeholder",
 								@click.native="resetErrorMessage",
 								v-model="dados.nomeAtividade",
-								:error-messages="errorMessage(dados.nomeAtividade)",
+								:error-messages="errorMessageNomeAtividade(dados.nomeAtividade)",
 								required,
 								dense
 							)
@@ -49,7 +50,7 @@
 								:items="tipologias",
 								:filter="filtroSelect",
 								item-text="nome",
-								:error-messages="errorMessage(dados.tipologia)",
+								:error-messages="errorMessageTipologia(dados.tipologia)",
 								no-data-text="Nenhuma tipologia encontrada",
 								@click.native="resetErrorMessage",
 								required,
@@ -61,20 +62,20 @@
 								outlined,
 								dense,
 								color="#E0E0E0",
-								:placeholder="placeholderSelectLicenca",
+								:placeholder="placeholderSelectMultiplo",
 								item-color="#84A98C",
 								v-model="dados.licencas",
 								:items="licencas",
 								:filter="filtroSelect",
 								item-text="sigla",
-								:error-messages="errorMessage(dados.licencas)",
+								:error-messages="errorMessageLicenca(dados.licencas)",
 								no-data-text="Nenhum tipo de licença encontrado",
 								@click.native="resetErrorMessage",
 								required,
 								multiple=true,
-								return-object=true
-								chips=true,
-								deletable-chips=true
+								return-object=true,
+								chips=false,
+								deletable-chips=true,
 							)
 								template(v-slot:selection="data")
 									v-chip(
@@ -98,7 +99,7 @@
 								:items="setores",
 								:filter="filtroSelect"
 								item-text="sigla",
-								:error-messages="errorMessage( dados.setor, true )",
+								:error-messages="errorMessageSetor( dados.setor, true )",
 								@click.native="resetErrorMessage",
 								required,
 								return-object=true,
@@ -116,7 +117,7 @@
 								:items="potenciaispoluidores",
 								:filter="filtroSelect"
 								item-text="nome",
-								:error-messages="errorMessage( dados.potencialPoluidor, true )",
+								:error-messages="errorMessagePotencialPoluidor( dados.potencialPoluidor, true )",
 								@click.native="resetErrorMessage",
 								required,
 								return-object=true,
@@ -124,75 +125,75 @@
 							)
 					v-row
 						v-col(cols="12", md="4")
-							div.mb-2
-								v-label Localização da atividade
+							div
+								v-label Localização
 							div
 								v-checkbox.mt-0.mr-8.d-inline-flex(
-									v-model="dados.selectedLocalizacao",
-									label="Zona Urbana",
-									value="ZONA URBANA",
+									v-model="dados.tiposAtividade",
+									label="Zona urbana",
+									value="URBANA",
 									color="#84A98C",
 									@click="resetErrorMessage",
-									:error-messages="errorMessage(dados.selectedLocalizacao)"
+									:error-messages="errorMessageLocalizacao(dados.tiposAtividade)"
 								)
 								v-checkbox.mt-0.d-inline-flex(
-									v-model="dados.selectedLocalizacao",
-									label="Zona Rural",
-									value="ZONA RURAL",
+									v-model="dados.tiposAtividade",
+									label="Zona rural",
+									value="RURAL",
 									color="#84A98C",
 									@click="resetErrorMessage",
-									:error-messages="errorMessage(dados.selectedLocalizacao)",
-									:hide-details="setDetails(dados.selectedGeometria, 0)"
+									:error-messages="errorMessageLocalizacao(dados.tiposAtividade)",
+									:hide-details="setDetails(dados.tiposAtividade, 0)"
 								)
 						v-col(cols="12", md="4")
 							ToggleOptions(
 								ref="toggleOptionsForaEmpreendimento",
 								labelOption="Atividade fora do empreendimento",
 								idToggle="QA-btn-toggle-fora-empreendimento",
-								:errorMessage="errorMessage",
+								:errorMessage="errorMessageForaEmpreendimento",
 								:options="optionsForaEmpreendimento",
 								@changeOption="dados.foraEmpreendimento = $event",
 							)
 						v-col(cols="12", md="4")
-							div.mb-2
-								v-label Geometria da atividade
+							div
+								v-label Geometria
 							div
 								v-checkbox.mt-0.mr-8.d-inline-flex(
-									v-model="dados.selectedGeometria[0]",
+									v-model="dados.geoPonto",
 									label="Ponto",
 									value="true",
 									color="#84A98C",
 									@click="resetErrorMessage",
 									v-bind:false-value="false",
 	  								v-bind:true-value="true",
-									:error-messages="errorMessageGeometria(dados.selectedGeometria)",
+									:error-messages="errorMessageGeometria()",
 								)
 								v-checkbox.mt-0.mr-8.d-inline-flex(
-									v-model="dados.selectedGeometria[1]",
+									v-model="dados.geoLinha",
 									label="Linha",
 									value="true",
 									color="#84A98C",
 									@click="resetErrorMessage",
 									v-bind:false-value="false",
 	  								v-bind:true-value="true",
-									:error-messages="errorMessageGeometria(dados.selectedGeometria)",
-									:hide-details="setDetails(dados.selectedGeometria, 0)"
+									:error-messages="errorMessageGeometria()",
+									:hide-details="setDetails(dados.geoLinha, 0)"
 								)
 								v-checkbox.mt-0.d-inline-flex(
-									v-model="dados.selectedGeometria[2]",
+									v-model="dados.geoPoligono",
 									label="Polígono",
 									value="true",
 									color="#84A98C",
 									@click="resetErrorMessage",
 									v-bind:false-value="false",
 	  								v-bind:true-value="true",
-									:error-messages="errorMessageGeometria(dados.selectedGeometria)"
-									:hide-details="setDetails(dados.selectedGeometria, 1)"
+									:error-messages="errorMessageGeometria()",
+									:hide-details="setDetails(dados.geoPoligono, 0)"
 								)
 		v-expansion-panel
 			v-expansion-panel-header
 				div.d-flex.flex-row.align-center.justify-start
-					span.align-baseline Adição de Cnae
+					span.align-baseline Adição de CNAE
 				template(v-slot:actions)
 					v-icon
 			v-expansion-panel-content
@@ -204,20 +205,20 @@
 								outlined,
 								dense,
 								color="#E0E0E0",
-								:placeholder="placeholderSelectCnae",
+								:placeholder="placeholderSelectMultiplo",
 								item-color="#84A98C",
 								v-model="dados.cnaes",
 								:items="cnaes",
 								:filter="filtroSelect",
 								item-text="textoExibicao",
-								:error-messages="errorMessageCnae(dados.cnaes)",
+								:error-messages="errorMessageCnae(cnaesAtividade)",
 								no-data-text="Nenhum CNAE encontrado",
-								@click.native="resetErrorMessage",
+								@click.native="resetErrorMessageCnae",
 								required,
 								multiple=true,
-								return-object=true
-								chips=true,
-								deletable-chips=true
+								return-object=true,
+								chips=false,
+								deletable-chips=true,
 							)
 								template(v-slot:selection="data")
 									v-chip(
@@ -250,7 +251,7 @@
 		:labelNoResultset="semResultados",
 		:exibirIconeEditar="exibirIconeEditar"
 	)
-	
+
 	v-expansion-panels(multiple, v-model="dadosPanel.panel", :readonly="dadosPanel.readonly")
 		v-expansion-panel
 			v-expansion-panel-header
@@ -269,13 +270,13 @@
 								color="#E0E0E0",
 								:placeholder="placeholderSelect",
 								item-color="grey darken-3",
-								v-model="dados.requisitosTecnicos",
+								v-model="dados.requisitoTecnico",
 								:items="requisitosTecnicos",
 								:filter="filtroSelect",
 								item-text="textoExibicao",
-								:error-messages="errorMessage(dados.requisitosTecnicos)",
-								@input="v => {dados.requisitosTecnicos = dados.requisitosTecnicos}",
-								no-data-text="Nenhum grupo de requisito técnico encontrado",
+								:error-messages="errorMessageRequisito(dados.requisitoTecnico)",
+								@input="v => {dados.requisitoTecnico = dados.requisitoTecnico}",
+								no-data-text="Nenhuma requisito técnico",
 								@click.native="resetErrorMessage",
 								required,
 								return-object=true
@@ -288,18 +289,18 @@
 								color="#E0E0E0",
 								:placeholder="placeholderSelect",
 								item-color="grey darken-3",
-								v-model="dados.taxasLicenciamento",
+								v-model="dados.taxaLicenciamento",
 								:items="taxasLicenciamento",
 								:filter="filtroSelect",
 								item-text="textoExibicao",
-								:error-messages="errorMessage(dados.taxasLicenciamento)",
-								@input="v => {dados.taxasLicenciamento = dados.taxasLicenciamento}",
-								no-data-text="Nenhuma tabela de taxas de licenciamento encontrada",
+								:error-messages="errorMessageTaxaLicenciamento(dados.taxaLicenciamento)",
+								@input="v => {dados.taxaLicenciamento = dados.taxaLicenciamento}",
+								no-data-text="Nenhuma taxa de licenciamento encontrada",
 								@click.native="resetErrorMessage",
 								required,
 								return-object=true
 							)
-	
+
 </template>
 
 <script>
@@ -336,10 +337,16 @@ export default {
 		},
 		erro: {
 			type: [Object]
+		},
+		erroCnae: {
+			type: [Object]
+		},
+		erroRascunho: {
+			type: [Object]
 		}
 
 	},
-	
+
 	data: () => {
 
 		return {
@@ -350,8 +357,7 @@ export default {
 			exibirIconeEditar: false,
 			placeholder: "Digite aqui...",
 			placeholderSelect: "Selecione",
-			placeholderSelectCnae: "Selecione um ou mais",
-			placeholderSelectLicenca: "Selecione um ou mais",
+			placeholderSelectMultiplo: "Selecione um ou mais",
 			placeholderPesquisa:  "Pesquisar pelo código ou nome do CNAE",
 			tituloTooltip: "CNAE",
 			semResultados: 'Nenhum CNAE encontrado com a pesquisa informada.',
@@ -388,10 +394,159 @@ export default {
 
 	methods: {
 
+		clearCnae() {
+
+			this.isInclusao = true;
+			this.dados.cnaes = [];
+			this.resetErrorMessageCnae();
+			this.indexItemEdicao = null;
+
+		},
+
+		resetErrorMessage() {
+
+			this.erro.invalido = false;
+			this.erroCnae.invalido = false;
+			this.erroRascunho.invalido = false;
+
+		},
+
+		resetErrorMessageCnae() {
+
+			this.erroCnae.invalido = false;
+			this.errorMessageEmptyInclusao = true;
+
+		},
+
 		checkFormVinculacao() {
 
 			return this.dados.cnaes
 				&& this.dados.cnaes.length > 0;
+
+		},
+
+		errorMessageCodigoAtividade(value) {
+
+			if (this.erro.invalido) {
+
+				if (value == null || value === '') {
+					return 'Obrigatório';
+				}
+
+			}
+
+			if (this.erroRascunho.invalido) {
+
+				if (value == null || value === '') {
+					return 'Obrigatório';
+				}
+
+			}
+
+		},
+
+		errorMessageNomeAtividade(value) {
+
+			if (this.erro.invalido) {
+
+				if (value == null || value === '') {
+					return 'Obrigatório';
+				}
+
+			}
+
+			if (this.erroRascunho.invalido) {
+
+				if (value == null || value === '') {
+					return 'Obrigatório';
+				}
+
+			}
+
+		},
+
+		errorMessageTipologia(value) {
+
+			if (this.erro.invalido && value == null || value === '') {
+				return 'Obrigatório';
+			}
+
+		},
+
+		errorMessageLicenca(value) {
+
+			if (this.erro.invalido && value.length === 0) {
+				return 'Obrigatório';
+			}
+
+		},
+
+		errorMessageSetor(value) {
+
+			if (this.erro.invalido && value == null || value === '') {
+				return 'Obrigatório';
+			}
+
+		},
+
+		errorMessagePotencialPoluidor(value) {
+
+			if (this.erro.invalido && value == null || value === '') {
+				return 'Obrigatório';
+			}
+
+		},
+
+		errorMessageLocalizacao(value) {
+
+			if (this.erro.invalido && value.length === 0) {
+				return 'Obrigatório';
+			}
+
+		},
+
+		errorMessageRequisito(value) {
+
+			if (this.erro.invalido && value == null || value === '') {
+				return 'Obrigatório';
+			}
+
+		},
+
+		errorMessageTaxaLicenciamento(value) {
+
+			if (this.erro.invalido && value == null || value === '') {
+				return 'Obrigatório';
+			}
+
+		},
+
+		errorMessageForaEmpreendimento(value) {
+
+			if (this.erro.invalido && value == null || value === '') {
+				return 'Obrigatório';
+			}
+
+		},
+
+		errorMessageGeometria() {
+
+			if (this.erro.invalido && !this.dados.geoPonto && !this.dados.geoLinha && !this.dados.geoPoligono) {
+
+				return 'Obrigatório';
+
+			}
+
+		},
+
+		errorMessageCnae(value) {
+
+			if ((!this.errorMessageEmptyInclusao || this.erroCnae.invalido) && value.length === 0) {
+				return 'Obrigatório';
+			} else if (!this.errorMessageEmptyInclusao) {
+				return 'Obrigatório';
+			}
+
 		},
 
 		filtroSelect(item, query, itemText) {
@@ -411,80 +566,6 @@ export default {
 			return lista.length-1 !== index;
 		},
 
-		errorMessage(value) {
-
-			if (Array.isArray(value)) {
-
-				if (this.erro.invalido) {
-
-					if (value.length === 0) {
-						return 'Obrigatório';
-					} else {
-						return '';
-					}
-
-				}
-
-			} else {
-
-				if (this.erro.invalido) {
-
-					if (value == null || value === '') {
-						return 'Obrigatório';
-					} else {
-						return '';
-					}
-
-				}
-			}
-
-		},
-
-		errorMessageGeometria(value) {
-
-			if (Array.isArray(value)) {
-
-				if (this.erro.invalido) {
-
-					if (!value[0] && !value[1] && !value[2]) {
-						return 'Obrigatório';
-					}
-
-				}
-
-			}
-
-		},
-
-		errorMessageCnae(value) {
-
-			if (Array.isArray(value)){
-
-				if ((!this.errorMessageEmptyInclusao || this.erro.invalido) && value.length === 0) {
-					return 'Obrigatório';
-				}
-
-			}
-
-		},
-
-		clearCnae() {
-
-			this.isInclusao = true;
-			this.dados.cnaes = [];
-			this.resetErrorMessage();
-			this.indexItemEdicao = null;
-
-		},
-
-		resetErrorMessage() {
-
-			this.errorEtapaCnaes = true;
-			this.errorMessageEmptyInclusao = true;
-			this.erro.invalido = false;
-			
-		},
-
 		incluirDados() {
 
 			if (this.checkFormVinculacao()) {
@@ -493,24 +574,24 @@ export default {
 				let dadosExistentes = [];
 
 				if (this.isInclusao) {
-					
+
 					this.dados.cnaes.forEach(cnae => {
 
 						if (!this.validarValoresAdicionados(cnae)) {
 							dadosExistentes.push(cnae.codigo);
 						}
 
-						dadosInclusao.push(this.getDadosItem(cnae));
+						dadosInclusao.push(cnae);
 
 					});
-					
+
 					if (dadosExistentes.length === 0) {
-						
+
 						this.cnaesAtividade.push(...dadosInclusao);
 						this.clearCnae();
 
 					} else {
-						this.erroIncluirCnaeTipologia(dadosExistentes);
+						this.erroIncluirCnae(dadosExistentes);
 					}
 
 				} else {
@@ -521,7 +602,7 @@ export default {
 
 					if (dadosExistentes.length === 0 ) {
 
-						dadosInclusao = this.getDadosItem(this.dados.cnaes[0]);
+						dadosInclusao = this.dados.cnaes[0];
 
 						this.cnaesAtividade.splice(this.indexItemEdicao, 1, dadosInclusao);
 
@@ -529,7 +610,7 @@ export default {
 						this.clearCnae();
 
 					} else {
-						this.erroIncluirCnaeTipologia(dadosExistentes);
+						this.erroIncluirCnae(dadosExistentes);
 					}
 
 				}
@@ -537,16 +618,6 @@ export default {
 			} else {
 				this.errorMessageEmptyInclusao = false;
 			}
-			
-		},
-
-		getDadosItem(cnae) {
-
-			let dadoListagem = {};
-			
-			dadoListagem.cnae = cnae;
-
-			return dadoListagem;
 
 		},
 
@@ -556,7 +627,7 @@ export default {
 
 			this.cnaesAtividade.forEach((dado, index) => {
 
-				if (dado.cnae.id === cnae.id
+				if (dado.id === cnae.id
 					&& (this.isInclusao || this.indexItemEdicao != index)) {
 
 					validacao = false;
@@ -568,7 +639,7 @@ export default {
 
 		},
 
-		erroIncluirCnaeTipologia(codigosCnaes) {
+		erroIncluirCnae(codigosCnaes) {
 
 			let dadosExistentes = '';
 
@@ -584,8 +655,8 @@ export default {
 
 			});
 
-			let message = ERROR_MESSAGES.atividadeLicenciavel.atividades.adicionarValores + "Já existe uma relação " +
-				"com o(s) CNAE(s): " + dadosExistentes;
+			let message = ERROR_MESSAGES.atividadeLicenciavel.atividades.adicionarValores + "Já existe um CNAE " +
+				"com o mesmo código adicionado: " + dadosExistentes;
 
 			snackbar.alert(message);
 
@@ -595,11 +666,11 @@ export default {
 
 			this.$fire({
 
-				title:'<p class="title-modal-confirm">Remover relação - ' + item.cnae.codigo + ' / ' + item.cnae.nome,
+				title:'<p class="title-modal-confirm">Remover CNAE - ' + item.nome,
 
-				html:`<p class="message-modal-confirm">Ao remover a relação CNAE / Atividade, eles não estarão mais relacionados.</p>
+				html:`<p class="message-modal-confirm">Ao remover o CNAE, ele não estará mais vinculado nessa atividade.</p>
 						<p class="message-modal-confirm">
-						<b>Tem certeza que deseja remover a relação CNAE / Atividade? Esta opção pode ser desfeita a qualquer momento ao relacioná-los novamente.</b>
+						<b>Tem certeza que deseja remover o CNAE? Esta opção pode ser desfeita a qualquer momento ao adicioná-lo novamente.</b>
 					</p>`,
 				showCancelButton: true,
 				confirmButtonColor:'#F56C6C',

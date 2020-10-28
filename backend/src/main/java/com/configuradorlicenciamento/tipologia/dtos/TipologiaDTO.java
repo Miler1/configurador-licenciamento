@@ -13,8 +13,6 @@ public class TipologiaDTO implements Serializable {
 
     private Integer id;
 
-    //private String codigo;
-
     @NotNull(message = "{validacao.notnull}")
     @NotBlank(message = "{validacao.notBlank}")
     private String nome;

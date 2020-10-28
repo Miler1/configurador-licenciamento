@@ -29,13 +29,17 @@
 				v-if="passo == 1",
 				:cnaesAtividade="atividadeLicenciavel.cnaesAtividade",
 				:dados="atividadeLicenciavel.dados",
-				:erro="erros[0]"
+				:erro="erros[0]",
+				:erroCnae="errosCnae[0]",
+				:erroRascunho="errosRascunho[0]"
 			)
 
 			PassoParametros(
 				v-if="passo == 2",
 				:parametros="atividadeLicenciavel.parametros",
-				:erro="erros[1]"
+				:dados="atividadeLicenciavel.dados",
+				:erro="erros[1]",
+				:erroRascunho="errosRascunho[1]"
 			)
 
 			Resumo(
@@ -97,21 +101,30 @@ export default {
 				{
 					titulo: "Atividade",
 					completo: false,
-					validar: null
+					validar: null,
+					validarRascunho: null,
 				},
 				{
 					titulo: "Parâmetros / Portes",
 					completo: false,
-					validar: null
+					validar: null,
+					validarRascunho: null
 				},
 				{
 					titulo: "Resumo",
 					completo: false,
-					validar: null
+					validar: null,
 				},
 			],
 			erros: [
 				{ invalido: false },
+				{ invalido: false },
+				{ invalido: false }
+			],
+			errosCnae: [
+				{ invalido: false }
+			],
+			errosRascunho: [
 				{ invalido: false },
 				{ invalido: false }
 			],
@@ -126,17 +139,16 @@ export default {
 					setor: null,
 					foraEmpreendimento: null,
 					cnaes: [],
-					requisitosTecnicos: null,
-					taxasLicenciamento: null,
-					selectedLocalizacao: [],
-					selectedGeometria: [
-						false,
-						false,
-						false
-					]
+					requisitoTecnico: null,
+					taxaLicenciamento: null,
+					tiposAtividade: [],
+					geoPonto: false,
+					geoLinha: false,
+					geoPoligono: false
 				},
 				parametros: []
 			},
+			atividadeLicenciavelBkp: {},
 			allowRedirect: false,
 			isCadastro: true,
 			buttonMinWidth: "9em"
@@ -146,7 +158,27 @@ export default {
 
 	methods: {
 
-		cadastrar() {
+		cadastrar(){
+
+			this.prepararDados();
+
+			if (this.validar()) {
+
+				AtividadeService.cadastrarAtividadeLicenciavel(this.atividadeLicenciavel)
+					.then(() => {
+						this.handleSuccess();
+					})
+					.catch(error => {
+
+						console.log(this);
+						console.log(this.atividadeLicenciavelBkp);
+
+						this.atividadeLicenciavel = this.atividadeLicenciavelBkp;
+						this.handleError(error);
+
+					});
+
+			}
 
 		},
 
@@ -154,24 +186,50 @@ export default {
 
 		},
 
+		prepararDadosParaEdicao(atividadeLicenciavel) {
+
+			this.atividadeLicenciavel = atividadeLicenciavel;
+
+			this.atividadeLicenciavel.cnaesAtividade.forEach(cnaeAtividade=> {
+				cnaeAtividade.foraEmpreendimento = cnaeAtividade.foraEmpreendimento ? 'false' : 'true';
+			});
+
+		},
+
 		prepararDados() {
 
-		},
+			this.atividadeLicenciavelBkp =  JSON.parse(JSON.stringify(this.atividadeLicenciavel) );
 
-		salvarRascunho() {
-			alert("Só vou conseguir salvar pra você quando for implementado :(");
-		},
+			this.atividadeLicenciavel.cnaesAtividade.forEach(atividade => {
+				delete atividade.textoExibicao;
+			});
 
-		lastStep() {
-			return this.passo === this.passos.length;
-		},
-
-		nextStep() {
-
-			if (this.validar()) {
-				this.passo += 1;
-				window.scrollTo(0,0);
+			if (this.atividadeLicenciavel.dados.setor) {
+				this.atividadeLicenciavel.dados.setor = this.atividadeLicenciavel.dados.setor.sigla;
 			}
+
+			this.atividadeLicenciavel.parametros.forEach(parametro => {
+
+				parametro.limiteInferiorUm = parametro.limiteInferiorUm ?
+					parseFloat(parametro.limiteInferiorUm.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
+
+				parametro.limiteSuperiorUm = parametro.limiteSuperiorUm ?
+					parseFloat(parametro.limiteSuperiorUm.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
+
+				parametro.limiteInferiorDois = parametro.limiteInferiorDois ?
+					parseFloat(parametro.limiteInferiorDois.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
+
+				parametro.limiteSuperiorDois = parametro.limiteSuperiorDois ?
+					parseFloat(parametro.limiteSuperiorDois.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
+
+				//tratar valores nulos
+				parametro.limiteInferiorUmIncluso = parametro.limiteInferiorUmIncluso ? parametro.limiteInferiorUmIncluso : false;
+				parametro.limiteSuperiorUmIncluso = parametro.limiteSuperiorUmIncluso ? parametro.limiteSuperiorUmIncluso : false;
+				parametro.limiteInferiorDoisIncluso = parametro.limiteInfriorDoisIncluso ? parametro.limiteInferiorDoisIncluso : false;
+				parametro.limiteSuperiorDoisIncluso = parametro.limiteSuperiorDoisIncluso ? parametro.limiteSuperiorDoisIncluso : false;
+
+			});
+
 
 		},
 
@@ -185,12 +243,175 @@ export default {
 
 					possivel = false;
 					this.erros[i].invalido = true;
+					this.errosCnae[0].invalido = true;
+					this.errosRascunho[i].invalido = false;
 
 				}
 
 			}
 
 			return possivel;
+
+		},
+
+		validarCnaesAtividades() {
+
+			let cnaesAtividades = this.atividadeLicenciavel.cnaesAtividade;
+			let dados = this.atividadeLicenciavel.dados;
+
+			let valido = this.passos[0].completo =
+				cnaesAtividades && cnaesAtividades.length > 0;
+
+			if (!valido) {
+
+				window.scrollTo(0, 0);
+				snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.atividades.avancarEtapaCnae, snackbar.type.WARN);
+
+				return valido;
+
+			}
+
+			valido = this.passos[0].completo = dados.codigoAtividade != null && dados.codigoAtividade != '' &&
+				dados.nomeAtividade != null && dados.nomeAtividade != '' &&
+				dados.licencas && dados.licencas.length > 0 &&
+				dados.potencialPoluidor != null &&
+				dados.setor &&
+				dados.tiposAtividade && dados.tiposAtividade.length > 0 &&
+				dados.foraEmpreendimento != null &&
+				(dados.geoPonto || dados.geoLinha || dados.geoPoligono) &&
+				dados.requisitoTecnico != null &&
+				dados.taxaLicenciamento != null;
+
+			if (!valido) {
+				window.scrollTo(0, 0);
+				// snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.atividades.avancarEtapa, snackbar.type.WARN);
+			}
+
+			return valido;
+
+		},
+
+		validarParametros() {
+
+			let parametros = this.atividadeLicenciavel.parametros;
+			let valido = this.passos[1].completo = parametros && parametros.length > 0;
+
+			if (!valido) {
+
+				snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.parametros.avancarEtapa, snackbar.type.WARN);
+
+				return valido;
+
+			}
+
+			parametros.forEach(parametro => {
+
+				if (!parametro.porte) {
+					valido = false;
+				}
+
+			});
+
+			if (!valido) {
+				snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.parametros.avancarEtapaPorte, snackbar.type.WARN);
+			}
+
+			return valido;
+
+		},
+
+		salvarRascunho() {
+
+			if (this.validarRascunho()) {
+
+				this.prepararDados();
+
+				AtividadeService.salvarRascunhoAtividadeLicenciavel(this.atividadeLicenciavel)
+					.then(() => {
+						this.handleSuccess();
+					})
+					.catch(error => {
+
+						this.atividadeLicenciavel = this.atividadeLicenciavelBkp;
+
+						this.handleError(error, false, true);
+
+					});
+
+			}
+
+		},
+
+		validarRascunho() {
+
+			let possivel = true;
+
+			for (let i = 0; i < this.passo; i++) {
+
+				if (!this.passos[i].validarRascunho()) {
+
+					possivel = false;
+					this.erros[i].invalido = false;
+					this.errosCnae[0].invalido = false;
+					this.errosRascunho[i].invalido = true;
+
+				}
+
+			}
+
+			return possivel;
+
+		},
+
+		validarRascunhoAtividades() {
+
+			let dados = this.atividadeLicenciavel.dados;
+
+			let valido = this.passos[0].completo = dados.codigoAtividade != null && dados.codigoAtividade != '' &&
+				dados.nomeAtividade != null && dados.nomeAtividade != '';
+
+			if (!valido) {
+
+				window.scrollTo(0, 0);
+				// snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.rascunho.salvar, snackbar.type.WARN);
+				return valido;
+
+			}
+
+			return valido;
+
+		},
+
+		validarRascunhoParametros() {
+
+			console.log(this.atividadeLicenciavel);
+			let parametros = this.atividadeLicenciavel.parametros;
+			let valido = this.passos[1].completo = parametros && parametros.length > 0;
+
+			if (!valido) {
+
+				window.scrollTo(0, 0);
+				snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.parametros.rascunho.salvar, snackbar.type.WARN);
+
+			}
+
+			return valido;
+
+		},
+
+		lastStep() {
+			return this.passo === this.passos.length;
+		},
+
+		nextStep() {
+
+			if (this.validar()) {
+
+				this.passo += 1;
+				window.scrollTo(0,0);
+
+			}
+
 		},
 
 		previousStep() {
@@ -221,8 +442,10 @@ export default {
 		},
 
 		cancelar() {
+
 			this.allowRedirect = false;
 			this.$router.push({name: 'atividadesLicenciaveis'});
+
 		},
 
 		nextButtonDecider() {
@@ -236,58 +459,6 @@ export default {
 
 		},
 
-		validarCnaesAtividades() {
-
-			let cnaesAtividades = this.atividadeLicenciavel.cnaesAtividade;
-			let dados = this.atividadeLicenciavel.dados;
-
-			let valido = this.passos[0].completo =
-				cnaesAtividades && cnaesAtividades.length > 0 &&
-				dados.codigoAtividade != null && dados.codigoAtividade != '' &&
-				dados.nomeAtividade != null && dados.nomeAtividade != '' &&
-				dados.licencas && dados.licencas.length > 0 &&
-				dados.potencialPoluidor != null &&
-				dados.setor &&
-				dados.selectedLocalizacao && dados.selectedLocalizacao.length > 0 &&
-				dados.foraEmpreendimento != null &&
-				dados.selectedGeometria.some(elem => elem == true) &&
-				dados.requisitosTecnicos != null &&
-				dados.taxasLicenciamento != null;
-
-			if (!valido) {
-				window.scrollTo(0, 0);
-				snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.atividades.avancarEtapa, snackbar.type.WARN);
-			}
-
-			return valido;
-
-		},
-
-		validarParametros() {
-
-			let parametros = this.atividadeLicenciavel.parametros;
-			let valido = this.passos[1].completo = parametros && parametros.length > 0;
-
-			if (!valido) {
-				snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.parametros.avancarEtapa, snackbar.type.WARN);
-
-				return valido;
-			}
-
-			parametros.forEach(parametro => {
-				if(!parametro.porte) {
-					valido = false;
-				}
-			});
-
-			if (!valido) {
-				snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.parametros.avancarEtapaPorte, snackbar.type.WARN);
-			}
-
-			return valido;
-			
-		},
-
 		confirmarCancelamento(next) {
 
 			this.$fire({
@@ -295,13 +466,13 @@ export default {
 				title: '<p class="title-modal-confirm">Confirmar cancelamento - Atividade licenciável</p>',
 
 				html: this.isCadastro ?
-					`<p class="message-modal-confirm">Ao cancelar o cadastro desta atividade, Todas as informações que não foram salvas serão descartadas.</p>
+					`<p class="message-modal-confirm">Ao cancelar o cadastro, todas as informações que não foram salvas serão perdidas.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja cancelar o cadastro? Esta opção não poderá ser desfeita e todas as informações serão perdidas.</b>
+						<b>Tem certeza que deseja cancelar o cadastro? Esta opção não poderá ser desfeita e todas as informações que não foram salvas serão perdidas.</b>
 					</p>` :
-					`<p class="message-modal-confirm">Ao cancelar a edição, todas as informações alteradas serão perdidas.</p>
+					`<p class="message-modal-confirm">Ao cancelar a edição, todas as informações alteradas e que não foram salvas serão perdidas.</p>
 					<p class="message-modal-confirm">
-						<b>Tem certeza que deseja cancelar a edição? Esta opção não poderá ser desfeita e todas as informações serão perdidas.</b>
+						<b>Tem certeza que deseja cancelar a edição? Esta opção não poderá ser desfeita e todas as informações alteradas e que não foram salvas serão perdidas.</b>
 					</p>`,
 				showCancelButton: true,
 				confirmButtonColor: '#67C23A',
@@ -324,11 +495,29 @@ export default {
 
 		},
 
-		handleError(error, edicao = false) {
+		handleError(error, edicao = false, isRascunho =  false) {
+
+			console.error(error.message);
+
+			let message = "";
+
+			if (isRascunho) {
+				message += ERROR_MESSAGES.atividadeLicenciavel.salvarRascunho;
+			} else {
+				message += edicao ? ERROR_MESSAGES.atividadeLicenciavel.editar : ERROR_MESSAGES.atividadeLicenciavel.cadastro;
+			}
+
+			message += error.message;
+
+			snackbar.alert(message);
 
 		},
 
 		handleSuccess(edicao = false) {
+
+			let message = edicao ? SUCCESS_MESSAGES.editar : SUCCESS_MESSAGES.cadastro;
+
+			snackbar.alert(message, snackbar.type.SUCCESS);
 
 			this.redirectListagem();
 
@@ -338,16 +527,6 @@ export default {
 
 			this.allowRedirect = allowed;
 			this.$router.push({name: 'atividadesLicenciaveis'});
-
-		},
-
-		prepararDadosParaEdicao(atividadeLicenciavel) {
-
-			this.atividadeLicenciavel = atividadeLicenciavel;
-
-			this.atividadeLicenciavel.cnaesAtividade.forEach(cnaeAtividade=> {
-				cnaeAtividade.foraEmpreendimento = cnaeAtividade.foraEmpreendimento ? 'false' : 'true';
-			});
 
 		}
 
@@ -372,10 +551,14 @@ export default {
 
 	mounted() {
 
+		this.passos[0].validarRascunho = this.validarRascunhoAtividades;
+		this.passos[1].validarRascunho = this.validarRascunhoParametros;
+		this.passos[2].validarRascunho = () => true;
+
 		this.passos[0].validar = this.validarCnaesAtividades;
 		this.passos[1].validar = this.validarParametros;
 		this.passos[2].validar = () => true;
-		
+
 	},
 
 	beforeRouteLeave(to, from, next) {
@@ -466,7 +649,7 @@ export default {
 				font-weight: bold;
 			}
 		}
-		
+
 		.noWrap{
 			white-space: nowrap;
 		}
