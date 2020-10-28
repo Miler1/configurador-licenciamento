@@ -4,6 +4,8 @@ import ApiService from './api.service';
 export default {
 
 	cadastrarAtividadeLicenciavel: async (atividadeLicenciavel) => ApiService.post('atividadeLicenciavel/salvar', atividadeLicenciavel ),
+	
+	editarAtividadeLicenciavel: async (atividadeLicenciavel) => ApiService.post('atividadeLicenciavel/editar', atividadeLicenciavel ),
 
 	listarAtividadeLicenciavel: async (parametrosFiltro) => {
 

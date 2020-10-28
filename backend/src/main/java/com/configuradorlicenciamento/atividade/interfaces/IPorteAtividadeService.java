@@ -9,4 +9,5 @@ public interface IPorteAtividadeService {
 
     List<PorteAtividade> salvar(List<PorteAtividadeDTO> portes);
 
+    List<PorteAtividade> editar(List<PorteAtividadeDTO> portes);
 }
