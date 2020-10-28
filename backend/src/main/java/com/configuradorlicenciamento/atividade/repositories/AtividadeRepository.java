@@ -10,4 +10,6 @@ public interface AtividadeRepository extends JpaRepository<Atividade, Integer> ,
 
     Boolean existsByCodigo(String codigo);
 
+    Atividade findByCodigo(String codigo);
+
 }

@@ -121,7 +121,7 @@ public class PorteAtividadeService implements IPorteAtividadeService {
 
                 PorteAtividade porteAtividadesalvo = porteAtividadeRepository.findById(porte.getId()).orElse(null);
 
-                PorteEmpreendimento porteEmpreendimento = porteEmpreendimentoRepository.findById(porte.getPorte().getId()).get();
+                PorteEmpreendimento porteEmpreendimento = porte.getPorte() != null ? porteEmpreendimentoRepository.findById(porte.getPorte().getId()).get() : null;
 
                 Parametro parametroUm = porte.getParametroUm() != null ? parametroRepository.findById(porte.getParametroUm().getId()).get() : null;
                 Parametro parametroDois = porte.getParametroDois() != null ? parametroRepository.findById(porte.getParametroDois().getId()).get() : null;
