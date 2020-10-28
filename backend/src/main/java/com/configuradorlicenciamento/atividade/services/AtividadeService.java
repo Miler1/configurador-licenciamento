@@ -13,6 +13,7 @@ import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.atividadeCnae.repositories.AtividadeCnaeRepository;
 import com.configuradorlicenciamento.configuracao.exceptions.ConflictException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
+import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.licenca.models.Licenca;
 import com.configuradorlicenciamento.licenca.repositories.LicencaRepository;
 import com.configuradorlicenciamento.potencialPoluidor.models.PotencialPoluidor;
@@ -184,7 +185,7 @@ public class AtividadeService implements IAtividadeService {
 
         Object login = request.getSession().getAttribute("login");
 
-        boolean existeAtividade = atividadeRepository.existsByCodigo(atividadeLicenciavelDTO.getDados().getCodigoAtividade());
+        boolean existeAtividade = atividadeRepository.existsByCodigo(atividadeLicenciavelDTO.getDados().getCodigoAtividade().trim());
 
         if (existeAtividade) {
             throw new ConflictException(ATIVIDADE_EXISTENTE);
@@ -226,7 +227,7 @@ public class AtividadeService implements IAtividadeService {
 
         Atividade atividade = new Atividade.AtividadeBuilder(false)
                 .setNome(atividadeLicenciavelDTO.getDados().getNomeAtividade())
-                .setCodigo(atividadeLicenciavelDTO.getDados().getCodigoAtividade())
+                .setCodigo(atividadeLicenciavelDTO.getDados().getCodigoAtividade().trim())
                 .setTipologia(tipologiaAtividade.orElse(null))
                 .setGeoPonto(atividadeLicenciavelDTO.getDados().getGeoPonto())
                 .setGeoLinha(atividadeLicenciavelDTO.getDados().getGeoLinha())
@@ -261,6 +262,12 @@ public class AtividadeService implements IAtividadeService {
 
         Object login = request.getSession().getAttribute("login");
 
+        boolean existeAtividade = atividadeRepository.existsByCodigo(atividadeLicenciavelDTO.getDados().getCodigoAtividade().trim());
+
+        if (existeAtividade) {
+            throw new ConflictException(ATIVIDADE_EXISTENTE);
+        }
+
         UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
         Optional<Tipologia> tipologiaAtividade = Optional.ofNullable(null);
@@ -282,6 +289,7 @@ public class AtividadeService implements IAtividadeService {
         }
 
         Optional<Boolean> foraEmpreendimento = Optional.ofNullable(null);
+
         if (atividadeLicenciavelDTO.getDados().getForaEmpreendimento() != null) {
             foraEmpreendimento = Optional.of(!atividadeLicenciavelDTO.getDados().getForaEmpreendimento());
         }
@@ -304,11 +312,14 @@ public class AtividadeService implements IAtividadeService {
 
         List<TaxaLicenciamento> taxasLicenciamentoAtividade = new ArrayList<>();
 
-        Optional<CodigoTaxaLicenciamento> codigoTaxaLicenciamento = codigoTaxaLicenciamentoRepository.findById(atividadeLicenciavelDTO.getDados().getTaxaLicenciamento().getId());
+        if (atividadeLicenciavelDTO.getDados().getTaxaLicenciamento() != null) {
 
+            Optional<CodigoTaxaLicenciamento> codigoTaxaLicenciamento = codigoTaxaLicenciamentoRepository.findById(atividadeLicenciavelDTO.getDados().getTaxaLicenciamento().getId());
 
-        if (atividadeLicenciavelDTO.getDados().getTaxaLicenciamento() != null && codigoTaxaLicenciamento.isPresent()) {
-            taxasLicenciamentoAtividade = taxaLicenciamentoRepository.findByCodigo(codigoTaxaLicenciamento.get());
+            if (codigoTaxaLicenciamento.isPresent()) {
+                taxasLicenciamentoAtividade = taxaLicenciamentoRepository.findByCodigo(codigoTaxaLicenciamento.get());
+            }
+
         }
 
         List<PorteAtividade> portesAtividade = new ArrayList<>();
