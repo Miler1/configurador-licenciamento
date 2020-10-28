@@ -2,7 +2,10 @@ package com.configuradorlicenciamento.atividade.dtos;
 
 import com.configuradorlicenciamento.atividade.models.Atividade;
 import com.configuradorlicenciamento.atividade.models.RelAtividadeParametroAtividade;
+import com.configuradorlicenciamento.configuracao.utils.DateUtil;
+import com.configuradorlicenciamento.entradaUnica.services.EntradaUnicaWS;
 import com.configuradorlicenciamento.licenca.models.Licenca;
+import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;
@@ -39,6 +42,14 @@ public class AtividadeLicenciavelCsv implements Serializable {
     @CsvBindByPosition(position = 5)
     private final String ativo;
 
+    @CsvBindByName(column = "Data de cadastro")
+    @CsvBindByPosition(position = 6)
+    private String dataCadastro;
+
+    @CsvBindByName(column = "Usuário")
+    @CsvBindByPosition(position = 7)
+    private String usuarioLicenciamento;
+
     public AtividadeLicenciavelCsv(Atividade atividade) {
 
         this.codigo = atividade.getCodigo();
@@ -47,7 +58,14 @@ public class AtividadeLicenciavelCsv implements Serializable {
         this.parametros = tratarParametrosParaCsv(atividade.getParametros());
         this.tiposLicencas = tratarLicencasParaCsv(atividade.getTiposLicencas());
         this.ativo = atividade.getAtivo() ? "Ativo" : "Inativo";
+        this.dataCadastro = atividade.getDataCadastro() != null ? DateUtil.formataBrSimples(atividade.getDataCadastro()) : "-";
 
+        this.usuarioLicenciamento = atividade.getUsuarioLicenciamento() != null ? getNomeUsuario(atividade.getUsuarioLicenciamento()) : "-";
+
+    }
+
+    private String getNomeUsuario(UsuarioLicenciamento usuario){
+        return EntradaUnicaWS.ws.buscarPessoaFisicaPeloCpf(usuario.getLogin()).nome;
     }
 
     private String tratarParametrosParaCsv(List<RelAtividadeParametroAtividade> parametrosExistentes) {
@@ -65,6 +83,7 @@ public class AtividadeLicenciavelCsv implements Serializable {
 
 
         return listaparametros.toString();
+
     }
 
     private String tratarLicencasParaCsv(List<Licenca> licencasExistentes) {
@@ -81,6 +100,7 @@ public class AtividadeLicenciavelCsv implements Serializable {
         }
 
         return listalicencas.toString();
+
     }
 
 }
