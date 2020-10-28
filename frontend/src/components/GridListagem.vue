@@ -176,6 +176,12 @@ export default {
 		},
 		abrirTelaCadastro: {
 			type: [Function]
+		},
+		continuarRascunho: {
+			type: [Function]
+		},
+		excluirRascunho: {
+			type: [Function]
 		}
 
 	},
