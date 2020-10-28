@@ -17,7 +17,6 @@ import com.configuradorlicenciamento.atividadeCnae.repositories.AtividadeCnaeRep
 import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
 import com.configuradorlicenciamento.configuracao.exceptions.ConflictException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
-import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.licenca.models.Licenca;
 import com.configuradorlicenciamento.licenca.repositories.LicencaRepository;
 import com.configuradorlicenciamento.potencialPoluidor.models.PotencialPoluidor;
@@ -473,6 +472,20 @@ public class AtividadeService implements IAtividadeService {
                 tiposCaracterizacaoAtividade,
                 relAtividadeParametroAtividadeUm != null ? relAtividadeParametroAtividadeUm.getDescricaoUnidade() : null,
                 relAtividadeParametroAtividadeDois != null ? relAtividadeParametroAtividadeDois.getDescricaoUnidade() : null);
+
+    }
+
+    @Override
+    public Atividade ativarDesativar(Integer idAtividadeLicenciavel) {
+
+        Atividade atividade = atividadeRepository.findById(idAtividadeLicenciavel).orElseThrow(() ->
+                new ConfiguradorNotFoundException("Não foi possível encontrar a atividade licenciável com id: " + idAtividadeLicenciavel));
+
+        atividade.setAtivo(!atividade.getAtivo());
+
+        atividadeRepository.save(atividade);
+
+        return atividade;
 
     }
 

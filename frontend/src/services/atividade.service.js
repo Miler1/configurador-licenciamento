@@ -9,6 +9,8 @@ export default {
 
 	salvarRascunhoAtividadeLicenciavel: async (atividadeLicenciavel) => ApiService.post('atividadeLicenciavel/salvarRascunho', atividadeLicenciavel),
 
+	ativarDesativarAtividadeLicenciavel: async (idAtividadeLicenciavel) => ApiService.post('atividadeLicenciavel/ativarDesativar/' + idAtividadeLicenciavel ),
+
 	listarAtividadeLicenciavel: async (parametrosFiltro) => {
 
 		if (parametrosFiltro) {
