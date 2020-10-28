@@ -58,6 +58,19 @@ public class AtividadeController extends DefaultController {
 
     }
 
+    @PostMapping(value = "salvarRascunho")
+    public ResponseEntity<Atividade> salvarRascunhoAtividadeLicenciavel(HttpServletRequest request, @Valid @RequestBody AtividadeLicenciavelDTO atividadeLicenciavelDTO) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        Atividade atividade = atividadeService.salvarRascunhoAtividadeLicenciavel(request, atividadeLicenciavelDTO);
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(atividade);
+
+    }
+
     @PostMapping(value = "listar")
     public ResponseEntity<Page<Atividade>> listarAtividadesLicenciaveis(HttpServletRequest request,
                                                                         @PageableDefault(size = 20) Pageable pageable,

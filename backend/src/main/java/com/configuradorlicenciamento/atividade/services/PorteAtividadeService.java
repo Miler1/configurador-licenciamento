@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class PorteAtividadeService implements IPorteAtividadeService {
@@ -45,7 +46,10 @@ public class PorteAtividadeService implements IPorteAtividadeService {
 
     public PorteAtividade salvarPorte(PorteAtividadeDTO porte, Integer codigoPorte) {
 
-        PorteEmpreendimento porteEmpreendimento = porteEmpreendimentoRepository.findById(porte.getPorte().getId()).get();
+        Optional<PorteEmpreendimento> porteEmpreendimento = Optional.ofNullable(null);
+        if (porte.getPorte() != null) {
+            porteEmpreendimento = Optional.of(porteEmpreendimentoRepository.findById(porte.getPorte().getId()).get());
+        }
 
         Parametro parametroUm = porte.getParametroUm() != null ? parametroRepository.findById(porte.getParametroUm().getId()).get() : null;
         Parametro parametroDois = porte.getParametroDois() != null ? parametroRepository.findById(porte.getParametroDois().getId()).get() : null;

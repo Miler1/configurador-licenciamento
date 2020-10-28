@@ -2,17 +2,17 @@
 
 #step-atividade-licenciavel-resumo
 
-	b.titulo-cabecalho Dados da atividade
+	b.titulo-cabecalho Dados básicos da atividade
 	.cabecalho.pl-4.mb-7.rounded
 		v-row
 			v-col(cols="12", md="2")
-				v-label Código da atividade
+				v-label Código
 				p.label-atividade {{atividadeLicenciavel.dados.codigoAtividade}}
 			v-col(cols="12", md="5")
-				v-label Atividade
+				v-label Nome
 				p.label-atividade {{atividadeLicenciavel.dados.nomeAtividade}}
 			v-col(cols="12", md="2")
-				v-label Tipo(s) de Licença(s)
+				v-label Tipos de licenças
 				p.label-atividade {{preparaExibicaoTipoLicenca()}}
 			v-col(cols="12", md="3")
 				v-label Tipologia
@@ -83,7 +83,7 @@ export default {
 		},
 
 	},
-	
+
 	data: () => {
 
 		return {
@@ -94,8 +94,8 @@ export default {
 			itemsPerPage: 20,
 			headerCnae: HEADERCNAE,
 			headerParametro: HEADERPARAMETRO,
-			tituloListagemCnae: "Listagem de CNAEs relacionados com a atividade",
-			tituloListagemParametro: "Listagem de parâmetros da atividade",
+			tituloListagemCnae: "Listagem de CNAEs adicionados para esta atividade",
+			tituloListagemParametro: "Listagem de relações parâmetros / portes adicionadas",
 
 		};
 
@@ -137,7 +137,7 @@ export default {
 
 			geometria += dados.geoPonto ? 'Ponto' : '';
 			geometria += dados.geoLinha ? geometria.length > 0 ? dados.geoPoligono ? ', Linha' : ' e Linha' : 'Linha' : '';
-			geometria += dados.geoPoligono ? geometria.length > 0 ? ' e Poligono' : 'Poligono' : '';
+			geometria += dados.geoPoligono ? geometria.length > 0 ? ' e Polígono' : 'Polígono' : '';
 
 			return geometria;
 		},
@@ -155,14 +155,14 @@ export default {
 
 	mounted() {
 
-		if(this.atividadeLicenciavel.parametros.length === 4) {
+		if (this.atividadeLicenciavel.parametros.length === 4) {
 
 			this.headerParametro = [... HEADERPARAMETRO];
 			this.headerParametro.splice(3,3);
 
 		}
- 
-		
+
+
 	}
 
 };

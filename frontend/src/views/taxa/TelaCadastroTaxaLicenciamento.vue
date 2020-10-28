@@ -1,5 +1,5 @@
 <template lang="pug">
-  
+
 #tela-cadastro-taxa-licenciamento.pa-7
 
 	.tituloAcao {{isCadastro ? 'Cadastro de' : 'Editar'}} tabela de taxas de licenciamento
@@ -277,7 +277,7 @@ export default {
 	},
 
 	directives: {money: VMoney},
-	
+
 	data: () => {
 		return {
 			dadosPanel: {
@@ -390,7 +390,7 @@ export default {
 				}
 
 				if (validaVirgula) {
-					return this.errorMessageEmptyInclusao || this.verificaVirgula(value) ? 
+					return this.errorMessageEmptyInclusao || this.verificaVirgula(value) ?
 						'' : 'Erro! Equação da fórmula inválida. Utilize apenas ponto para separar os números monetários e decimais.';
 				}
 
@@ -499,7 +499,7 @@ export default {
 
 			this.dadosListagem.forEach(
 				(dado, index) => {
-					if (dado.potencialPoluidor.codigo === this.valor.potencialPoluidor.codigo 
+					if (dado.potencialPoluidor.codigo === this.valor.potencialPoluidor.codigo
 						&& dado.porteEmpreendimento.codigo === this.valor.porteEmpreendimento.codigo
 						&& dado.licenca.sigla === licenca.sigla
 						&& (this.isInclusao || this.indexItemEdicao != index)) {
@@ -572,7 +572,7 @@ export default {
 		},
 
 		editar() {
-			
+
 			TaxaLicenciamentoService.editar(this.prepararParaSalvar())
 				.then(() => {
 					this.handleSuccess(true);
@@ -592,7 +592,7 @@ export default {
 			this.taxaLicenciamento.listTaxasLicenciamento = [];
 
 			this.dadosListagem.forEach(dado => {
-				
+
 				dadoListagem.id = dado.id;
 				dadoListagem.idPorteEmpreendimento = dado.porteEmpreendimento.id;
 				dadoListagem.idPotencialPoluidor = dado.potencialPoluidor.id;
@@ -762,7 +762,7 @@ export default {
 				if (result.value) {
 					next();
 				}
-				
+
 			}).catch((error) => {
 				console.error(error);
 			});
@@ -849,12 +849,12 @@ export default {
 				reverseButtons: true
 
 			}).then((result) => {
-				
+
 				if (result.value) {
 
 					let indexItemExclusao = this.dadosListagem.indexOf(item);
 					this.dadosListagem.splice(indexItemExclusao, 1);
-					
+
 				}
 
 			});
@@ -910,7 +910,7 @@ export default {
 			this.taxaLicenciamento.descricao = requisito.descricao;
 			this.taxaLicenciamento.ativo = requisito.ativo;
 			this.taxaLicenciamento.id = this.$route.params.idTaxaLicenciamento;
-			
+
 			this.dadosListagem = [];
 
 			let taxas = {};
@@ -948,7 +948,7 @@ export default {
 			.then((response) => {
 				this.portesEmpreendimento = response.data;
 			});
-		
+
 		PotencialPoluidorService.findAll()
 			.then((response) => {
 				this.potenciaispoluidores = response.data;

@@ -73,7 +73,7 @@ export default {
 
 					console.error(erro);
 					snackbar.alert(ERROR_MESSAGES.atividadeDispensavel.listagem + erro.message);
-					
+
 				});
 
 		},
@@ -146,7 +146,7 @@ export default {
 							if (item.ativo) {
 								snackbar.alert(ERROR_MESSAGES.atividadeDispensavel.ativar);
 							} else {
-								snackbar.alert(ERROR_MESSAGES.atividadeDispensavel.desativar);								
+								snackbar.alert(ERROR_MESSAGES.atividadeDispensavel.desativar);
 							}
 
 						});

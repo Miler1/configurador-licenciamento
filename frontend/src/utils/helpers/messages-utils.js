@@ -115,17 +115,22 @@ const ERROR_MESSAGES = {
 		ativar: ER_BASE + 'ativar a atividade licenciável. ',
 		desativar: ER_BASE + 'desativar a atividade licenciável. ',
 		desativarErro: "Não foi possível inativar o registro. Ele se encontra vinculado a uma atividade ativa no sistema. ",
+		salvarRascunho: ER_BASE + 'salvar rascunho da atividade licenciável. ',
 
 		atividades: {
 			adicionarValores: ER_BASE + 'adicionar o CNAE. ',
 			avancarEtapaCnae: 'Aviso! Para avançar de etapa, é necessário adicionar ao menos um CNAE. ',
-			avancarEtapa: 'Aviso! Para avançar de etapa, é necessário preencher todos os campos obrigatórios. '
+			avancarEtapa: 'Aviso! Existem campos obrigatórios que não foram preenchidos. '
 		},
 
 		parametros: {
-			avancarEtapa: 'Aviso! Para avançar de etapa, é necessário adicionar o(s) parâmetro(s) e os intevalos e selecionar os portes. ',
-			avancarEtapaPorte: 'Aviso! Para avançar de etapa, é necessário selecionar os portes em todas as relações. '
+			avancarEtapa: 'Aviso! Para avançar de etapa, é necessário adicionar o(s) parâmetro(s) e os intevalos e em seguida selecionar os portes. ',
+			avancarEtapaPorte: 'Aviso! Para avançar de etapa, é necessário selecionar um porte para cada combinação.',
+			rascunho: {
+				salvar: 'Aviso! Para salvar rascunho, é necessário adicionar os valores na tabela. '
+			}
 		},
+
 	}
 
 };
@@ -194,7 +199,7 @@ const SUCCESS_MESSAGES = {
 		ativar: 'Sucesso! A atividade licenciável foi ativada.',
 		desativar: 'Sucesso! A atividade licenciável foi desativada.',
 	},
-	
+
 };
 
 const WARNING_MESSAGES = {

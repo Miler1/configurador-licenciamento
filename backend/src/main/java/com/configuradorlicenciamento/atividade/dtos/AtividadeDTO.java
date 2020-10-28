@@ -74,6 +74,10 @@ public class AtividadeDTO {
     @NotBlank(message = "{validacao.notBlank}")
     private List<LicencaDTO> licencas;
 
+    @NotNull(message = "{validacao.notnull}")
+    @NotBlank(message = "{validacao.notBlank}")
+    private Boolean rascunho;
+
     private List<RelAtividadeParametroAtividadeDTO> atividadesParametro;
 
     private List<PorteAtividadeDTO> portesAtividade;

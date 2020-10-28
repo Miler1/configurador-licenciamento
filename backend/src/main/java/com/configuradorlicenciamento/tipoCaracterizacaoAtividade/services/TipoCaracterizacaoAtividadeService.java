@@ -110,6 +110,8 @@ public class TipoCaracterizacaoAtividadeService implements ITipoCaracterizacaoAt
                     .setLicenciamentoDeclaratorio(false)
                     .setLicenciamentoSimplificado(true)
                     .setAtivo(true)
+                    .setDataCadastro(new Date())
+                    .setUsuarioLicencimento(atividade.getUsuarioLicenciamento())
                     .build();
 
             tipoCaracterizacaoAtividadeRepository.save(tipoCaracterizacaoAtividade);
