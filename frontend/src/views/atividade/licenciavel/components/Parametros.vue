@@ -65,7 +65,7 @@
 								v-text-field#QA-input-descricao-unidade-1(
 									outlined,
 									color="#E0E0E0",
-									:placeholder="placeholderDescricao1",
+									:placeholder="(!parametroUm.descricaoUnicade && disableParametros(1)) ? 'Não informada' : this.placeholderDescricao1",
 									v-model="parametroUm.descricaoUnidade",
 									@click.native="resetErrorMessage",
 									:disabled="disableParametros(1)"
@@ -160,7 +160,7 @@
 								v-text-field#QA-input-descricao-unidade-2(
 									outlined,
 									color="#E0E0E0",
-									:placeholder="placeholderDescricao2",
+									:placeholder="(!parametroDois.descricaoUnicade && disableParametros(2)) ? 'Não informada' : this.placeholderDescricao2",
 									v-model="parametroDois.descricaoUnidade",
 									@click.native="resetErrorMessage",
 									required,
@@ -381,22 +381,24 @@ export default {
 				parametro = this.parametroDois;
 			}
 
-			if (check){
-				if(tipo === 'MINIMO'){
+			if (check) {
+
+				if (tipo === 'MINIMO') {
 					return (this.errorMessageEmpty || (item || parametro.valores[index-1].limiteSuperiorIncluso)) ? '' : 'Obrigatório';
 				}
-				if (tipo === 'MAXIMO'){
+				if (tipo === 'MAXIMO') {
 					return (this.errorMessageEmpty || (item || parametro.valores[index+1].limiteInferiorIncluso)) ? '' : 'Obrigatório';
 				}
+
 			} else {
 
-				if (!this.errorMessageEmpty && item === '0,00'){
+				if (!this.errorMessageEmpty && item === '0,00') {
 					return 'Obrigatório';
 				}
-				if (tipo === 'MINIMO' && item){
+				if (tipo === 'MINIMO' && item) {
 					return (this.errorMessageEmpty || (item && (item === parametro.valores[index-1].maximo))) ? '' : 'O valor mínimo no intervalo atual deve ser igual ao valor máximo do intervalo anterior';
 				}
-				if (tipo === 'MAXIMO' && item){
+				if (tipo === 'MAXIMO' && item) {
 					return (this.errorMessageEmpty || (item && (item > parametro.valores[index].minimo))) ? '' : 'O valor máximo deve ser maior que o valor mínimo no intervalo atual';
 				}
 
@@ -457,7 +459,7 @@ export default {
 
 		incluirDados() {
 
-			if (!this.dadosValidos()){
+			if (!this.dadosValidos()) {
 				return;
 			}
 
@@ -601,6 +603,7 @@ export default {
 			}
 
 			return true;
+
 		},
 
 		cancelarEdicao() {
@@ -706,7 +709,7 @@ export default {
 
 			this.resetErrorMessage();
 
-		}
+		},
 
 	},
 
@@ -900,6 +903,7 @@ export default {
 		color: gray !important;
 	}
 }
+
 .disable{
 
 	#QA-btn-toggle-atividade-licenciavel-parametro{

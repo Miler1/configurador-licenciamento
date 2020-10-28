@@ -370,7 +370,7 @@ export default {
 
 					value = value ? parseFloat(value.replace(/R\$\s|\./g, '').replace(',', '.')) : 0.0;
 
-					if( value < 0) {return 'Este campo permite apenas números decimais maiores ou iguais a 0,01.';}
+					if ( value < 0) {return 'Este campo permite apenas números decimais maiores ou iguais a 0,01.';}
 
 					if (!this.errorMessageEmpty && value === 0.0) { return 'Obrigatório'; }
 
@@ -543,7 +543,7 @@ export default {
 
 			if (this.checkForm()) {
 
-				if(this.isCadastro) {
+				if (this.isCadastro) {
 					this.cadastrar();
 				} else {
 					this.editar();
