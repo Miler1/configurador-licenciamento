@@ -114,4 +114,17 @@ public class AtividadeController extends DefaultController {
 
     }
 
+    @PostMapping(value = "ativarDesativar/{idAtividadeLicenciavel}")
+    public ResponseEntity<Atividade> ativarDesativar(HttpServletRequest request, @PathVariable("idAtividadeLicenciavel") Integer idAtividadeLicenciavel) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        Atividade atividade = atividadeService.ativarDesativar(idAtividadeLicenciavel);
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(atividade);
+
+    }
+
 }
