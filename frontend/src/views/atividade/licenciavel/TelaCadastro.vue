@@ -240,7 +240,7 @@ export default {
 				//tratar valores nulos
 				parametro.limiteInferiorUmIncluso = parametro.limiteInferiorUmIncluso ? parametro.limiteInferiorUmIncluso : false;
 				parametro.limiteSuperiorUmIncluso = parametro.limiteSuperiorUmIncluso ? parametro.limiteSuperiorUmIncluso : false;
-				parametro.limiteInferiorDoisIncluso = parametro.limiteInfriorDoisIncluso ? parametro.limiteInferiorDoisIncluso : false;
+				parametro.limiteInferiorDoisIncluso = parametro.limiteInferiorDoisIncluso ? parametro.limiteInferiorDoisIncluso : false;
 				parametro.limiteSuperiorDoisIncluso = parametro.limiteSuperiorDoisIncluso ? parametro.limiteSuperiorDoisIncluso : false;
 
 			});
