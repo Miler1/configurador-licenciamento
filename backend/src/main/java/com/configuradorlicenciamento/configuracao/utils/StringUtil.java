@@ -82,13 +82,8 @@ public class StringUtil {
      */
     public static String removerEspacos(String string){
 
-        String tratada = string.trim();
+        return string.trim().replaceAll("\\s+", "");
 
-        while (tratada.contains(" ")) {
-            tratada = tratada.replace(" ", "");
-        }
-
-        return tratada;
     }
 
     /**
