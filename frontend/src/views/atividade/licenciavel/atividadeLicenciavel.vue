@@ -10,6 +10,8 @@
 			:headers="headerListagem",
 			:dadosListagem="dadosListagem",
 			:updatePagination="updatePagination",
+			:continuarRascunho="continuarRascunho",
+			:excluirRascunho="excluirRascunho",
 			:editarItem="editarItem",
 			:ativarDesativarItem="ativarDesativarItem",
 			:parametrosFiltro="parametrosFiltro",
@@ -102,7 +104,6 @@ export default {
 				dado.tiposLicencas = tiposLicencas;
 				tiposLicencas = '';
 
-
 			});
 
 		},
@@ -185,6 +186,14 @@ export default {
 			}).catch((error) => {
 				console.error(error);
 			});
+
+		},
+
+		continuarRascunho(item) {
+
+		},
+
+		excluirRascunho(item) {
 
 		}
 
