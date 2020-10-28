@@ -11,7 +11,9 @@
 			:dadosListagem="dadosListagem",
 			:updatePagination="updatePagination",
 			:continuarRascunho="continuarRascunho",
-			:removerItem="removerItem",
+			:excluirRascunho="excluirRascunho",
+			:editarItem="editarItem",
+			:ativarDesativarItem="ativarDesativarItem",
 			:parametrosFiltro="parametrosFiltro",
 			:buttonCadastrar="buttonCadastrar",
 			:abrirTelaCadastro="abrirTelaCadastro"
@@ -102,7 +104,6 @@ export default {
 				dado.tiposLicencas = tiposLicencas;
 				tiposLicencas = '';
 
-
 			});
 
 		},
@@ -122,6 +123,79 @@ export default {
 		editarItem(item) {
 			this.$router.push({name: 'EditarAtividadeLicenciavel', params: { idAtividadeLicenciavel: item.id }});
 		},
+
+		ativarDesativarItem(item) {
+
+			// this.$fire({
+
+			// 	title: item.ativo ?
+			// 		'<p class="title-modal-confirm">Desativar CNAE dispensável - ' + item.nome+ '</p>' :
+			// 		'<p class="title-modal-confirm">Ativar CNAE dispensável - ' + item.nome+ '</p>',
+
+			// 	html: item.ativo ?
+			// 		`<p class="message-modal-confirm">Ao desativar o CNAE dispensável, ele não estará mais disponível no sistema.</p>
+			// 		<p class="message-modal-confirm">
+			// 			<b>Tem certeza que deseja desativar o CNAE dispensável? Esta opção pode ser desfeita a qualquer momento ao ativá-lo novamente.</b>
+			// 		</p>` :
+			// 		`<p class="message-modal-confirm">Ao ativar o CNAE dispensável, ele ficará disponível no sistema.</p>
+			// 		<p class="message-modal-confirm">
+			// 			<b>Tem certeza que deseja ativar o CNAE dispensável? Esta opção pode ser desfeita a qualquer momento ao desativá-lo novamente.</b>
+			// 		</p>`,
+			// 	showCancelButton: true,
+			// 	confirmButtonColor: item.ativo ? '#E6A23C' : '#67C23A',
+			// 	cancelButtonColor: '#FFF',
+			// 	showCloseButton: true,
+			// 	focusConfirm: false,
+			// 	confirmButtonText: item.ativo ? '<i class="fa fa-minus-circle"></i> Desativar' : '<i class="fa fa-check-circle"></i> Ativar',
+			// 	cancelButtonText: '<i class="fa fa-close"></i> Cancelar',
+			// 	reverseButtons: true
+
+			// }).then((result) => {
+
+			// 	if(result.value) {
+
+			// 		item.ativo = !item.ativo;
+
+			// 		TipoCaracterizacaoAtividadeService.ativarDesativarAtividadeDispensavel(item.id)
+			// 			.then(() => {
+
+			// 				if (item.ativo) {
+			// 					snackbar.alert(SUCCESS_MESSAGES.atividadeDispensavel.ativar, snackbar.type.SUCCESS);
+			// 				} else {
+			// 					snackbar.alert(SUCCESS_MESSAGES.atividadeDispensavel.desativar, snackbar.type.SUCCESS);
+			// 				}
+
+			// 				this.updatePagination();
+			// 				this.resetaDadosFiltragem();
+
+			// 			})
+			// 			.catch(error => {
+
+			// 				console.error(error);
+
+			// 				if (item.ativo) {
+			// 					snackbar.alert(ERROR_MESSAGES.atividadeDispensavel.ativar);
+			// 				} else {
+			// 					snackbar.alert(ERROR_MESSAGES.atividadeDispensavel.desativar);
+			// 				}
+
+			// 			});
+
+			// 	}
+
+			// }).catch((error) => {
+			// 	console.error(error);
+			// });
+
+		},
+
+		continuarRascunho(item) {
+
+		},
+
+		excluirRascunho(item) {
+
+		}
 
 	},
 

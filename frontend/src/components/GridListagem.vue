@@ -53,7 +53,7 @@
 				span {{item.obrigatorio ? 'Básico' : 'Complementar'}}
 
 			template(v-slot:item.ativo='{ item }')
-				span {{item.ativo ? 'Ativo' : 'Inativo'}}
+				span {{item.ativo ? 'Ativo' : item.rascunho ? 'Rascunho' : 'Inativo'}}
 
 			template(v-slot:item.atividadeDispensavel='{ item }')
 				span {{item.atividadeDispensavel === null ? ' ‒' : item.atividadeDispensavel ? 'Sim' : 'Não'}}
@@ -64,27 +64,42 @@
 			template(v-slot:item.isento='{ item }')
 				span {{item.isento ? 'Sim' : 'Não'}}
 
+			template(v-slot:item.tipologia.nome='{ item }')
+				span {{item.tipologia != null ? item.tipologia.nome : ' ‒'}}
+
+			template(v-slot:item.tiposLicencas='{ item }')
+				span {{item.tiposLicencas ? item.tiposLicencas : ' ‒'}}
+
+			template(v-slot:item.parametros='{ item }')
+				span {{item.parametros ? item.parametros : ' ‒'}}
+
 			template(v-slot:item.valor='{ item }')
 				span {{item.valor == '0' ? ' ‒' : item.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2})}}
 
 			template(v-slot:item.actions='{ item }')
-				v-tooltip(bottom)
+				v-tooltip(bottom, v-if="!item.rascunho")
 					template(v-slot:activator="{ on, attrs }")
 						v-icon.mr-2(small @click='editarItem(item)', v-on='on', color='#9EBAA4')
 							| mdi-pencil
 					span Editar {{tituloAba}}
 
-				v-tooltip(bottom, v-model = 'item.model')
+				v-tooltip(bottom, v-model = 'item.model', v-if="!item.rascunho")
 					template(v-slot:activator="{ on, attrs }")
 						v-icon(small @click='ativarDesativar(item)', v-on='on', :color= "item.ativo ? '#E6A23B' : '#67C239'")
 							| {{item.ativo ? 'mdi-minus-circle' : 'mdi-check-circle'}}
 					span {{item.ativo ? 'Desativar ' + tituloAba : 'Ativar ' + tituloAba }}
 
-				v-tooltip(bottom)
+				v-tooltip(bottom, v-if="item.rascunho")
 					template(v-slot:activator="{ on, attrs }")
 						v-icon.mr-2(small @click='continuarRascunho(item)', v-on='on', color='#9EBAA4')
 							| fa fa-arrow-circle-right
-					span Editar {{tituloAba}}
+					span Continuar cadastro de {{tituloAba}}
+
+				v-tooltip(bottom, v-if="item.rascunho")
+					template(v-slot:activator="{ on, attrs }")
+						v-icon(small @click='excluirRascunho(item)', v-on='on', color='#F56C6C')
+							|  mdi-delete
+					span Remover {{tituloAba}}
 
 			template(v-slot:no-data, v-if="checkNomeItem()")
 				span Não existem {{dadosListagem.nomeItem}} a serem exibidas.
