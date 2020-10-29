@@ -329,6 +329,21 @@ public class AtividadeService implements IAtividadeService {
 
     }
 
+    @Override
+    public Atividade excluirRascunhoAtividadeLicenciavel(HttpServletRequest request, Integer idAtividade) {
+
+        Atividade atividadeRascunho = atividadeRepository.findById(idAtividade).get();
+
+        tipoCaracterizacaoAtividadeService.excluirAtividadeLicenciavel(atividadeRascunho);
+
+        relAtividadeParametroAtividadeService.excluir(atividadeRascunho);
+
+        atividadeRepository.delete(atividadeRascunho);
+
+        return atividadeRascunho;
+
+    }
+
     public Atividade salvarRascunhoAtividadeLicenciavel(HttpServletRequest request, AtividadeLicenciavelDTO atividadeLicenciavelDTO) {
 
         Object login = request.getSession().getAttribute("login");

@@ -29,6 +29,8 @@ export default {
 
 	},
 
-	findById: async (idAtividade) => ApiService.get('atividadeLicenciavel/findById/' + idAtividade )
+	findById: async (idAtividade) => ApiService.get('atividadeLicenciavel/findById/' + idAtividade ),
+
+	excluirRascunhoAtividadeLicenciavel: async (idAtividadeLicenciavel) => ApiService.post('atividadeLicenciavel/excluirRascunho/' + idAtividadeLicenciavel)
 
 };
