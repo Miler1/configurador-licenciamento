@@ -56,28 +56,24 @@
 	.cabecalho.pl-4.mb-7.rounded
 		v-row.flex-row
 			v-col(cols="12", md="3")
-				v-row
-					v-col(cols="12", md="12")
 						v-label Tipo de parâmetro
 						p.label-atividade {{ (atividadeLicenciavel.parametros[0].parametroUm && atividadeLicenciavel.parametros[0].parametroDois) ? "Composto" : "Simples" }}
 			v-col.pa-0(cols="12", md="9")
 				v-row
-					v-col(cols="12", md="12")
-						v-row
-							v-col(cols="12", md="6")
-								v-label Parâmetro 1
-								p.label-atividade {{atividadeLicenciavel.parametros[0].parametroUm.nome}}
-							v-col(cols="12", md="6")
-								v-label Descrição da unidade do parâmetro 1
-								p.label-atividade {{atividadeLicenciavel.parametros[0].descricaoUnidadeUm ? atividadeLicenciavel.parametros[0].descricaoUnidadeUm : "Não informada"}}
-					v-col(cols="12", md="12", v-if="atividadeLicenciavel.parametros[0].parametroDois")
-						v-row
-							v-col(cols="12", md="6")
-								v-label Parametro 2
-								p.label-atividade {{atividadeLicenciavel.parametros[0].parametroDois.nome}}
-							v-col(cols="12", md="6")
-								v-label Descrição da unidade do parâmetro 2
-								p.label-atividade {{atividadeLicenciavel.parametros[0].descricaoUnidadeDois ? atividadeLicenciavel.parametros[0].descricaoUnidadeDois : "Não informada"}}
+					v-col(cols="12", md="6")
+						v-label Parâmetro 1
+						p.label-atividade {{atividadeLicenciavel.parametros[0].parametroUm.codigo}} - {{atividadeLicenciavel.parametros[0].parametroUm.nome}}
+					v-col(cols="12", md="6")
+						v-label Descrição da unidade do parâmetro 1
+						p.label-atividade {{atividadeLicenciavel.parametros[0].descricaoUnidadeUm ? atividadeLicenciavel.parametros[0].descricaoUnidadeUm : "Não informada"}}
+
+				v-row(v-if="atividadeLicenciavel.parametros[0].parametroDois")
+					v-col(cols="12", md="6")
+						v-label Parametro 2
+						p.label-atividade {{atividadeLicenciavel.parametros[0].parametroDois.codigo}} - {{atividadeLicenciavel.parametros[0].parametroDois.nome}}
+					v-col(cols="12", md="6")
+						v-label Descrição da unidade do parâmetro 2
+						p.label-atividade {{atividadeLicenciavel.parametros[0].descricaoUnidadeDois ? atividadeLicenciavel.parametros[0].descricaoUnidadeDois : "Não informada"}}
 
 	GridListagemInclusao.mt-7(
 		:tituloListagem="tituloListagemParametro",
