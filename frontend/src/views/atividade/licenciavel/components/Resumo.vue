@@ -5,34 +5,35 @@
 	b.titulo-cabecalho Dados básicos da atividade
 	.cabecalho.pl-4.mb-7.rounded
 		v-row
-			v-col(cols="12", md="2")
+			v-col(cols="12", md="4")
 				v-label Código
 				p.label-atividade {{atividadeLicenciavel.dados.codigoAtividade}}
-			v-col(cols="12", md="5")
+			v-col(cols="12", md="8")
 				v-label Nome
 				p.label-atividade {{atividadeLicenciavel.dados.nomeAtividade}}
-			v-col(cols="12", md="2")
+		v-row
+			v-col(cols="12", md="4")
+				v-label Tipologia
+				p.label-atividade {{atividadeLicenciavel.dados.tipologia.nome}}
+			v-col(cols="12", md="3")
 				v-label Tipos de licenças
 				p.label-atividade {{preparaExibicaoTipoLicenca()}}
 			v-col(cols="12", md="3")
-				v-label Tipologia
-				p.label-atividade {{atividadeLicenciavel.dados.tipologia.nome}}
-		v-row
-			v-col(cols="12", md="2")
-				v-label Localização
-				p.label-atividade {{preparaExibicaoLocalizacao()}}
-			v-col(cols="12", md="3")
-				v-label Geometria
-				p.label-atividade {{preparaExibicaoGeometria()}}
-			v-col(cols="12", md="3")
-				v-label Atividade fora do empreendimento
-				p.label-atividade {{preparaExibicaoExecucao()}}
-			v-col(cols="12", md="2")
 				v-label Gerência / Setor
 				p.label-atividade {{atividadeLicenciavel.dados.setor.sigla || atividadeLicenciavel.dados.setor}}
 			v-col(cols="12", md="2")
 				v-label PPD
 				p.label-atividade {{atividadeLicenciavel.dados.potencialPoluidor.nome}}
+		v-row
+			v-col(cols="12", md="4")
+				v-label Localização
+				p.label-atividade {{preparaExibicaoLocalizacao()}}
+			v-col(cols="12", md="3")
+				v-label Atividade fora do empreendimento
+				p.label-atividade {{preparaExibicaoExecucao()}}
+			v-col(cols="12", md="3")
+				v-label Geometria
+				p.label-atividade {{preparaExibicaoGeometria()}}
 
 	GridListagemInclusao.mb-7(
 		:tituloListagem="tituloListagemCnae",
@@ -64,7 +65,7 @@
 					v-col(cols="12", md="12")
 						v-row
 							v-col(cols="12", md="6")
-								v-label Parametro 1
+								v-label Parâmetro 1
 								p.label-atividade {{atividadeLicenciavel.parametros[0].parametroUm.nome}}
 							v-col(cols="12", md="6")
 								v-label Descrição da unidade do parâmetro 1
