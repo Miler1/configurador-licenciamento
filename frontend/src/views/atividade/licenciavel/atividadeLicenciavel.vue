@@ -197,18 +197,18 @@ export default {
 
 			this.$fire({
 
-				title:'<p class="title-modal-confirm">Remover - ' + item.nome,
+				title:'<p class="title-modal-confirm">Excluir rascunho da atividade licenciável - ' + item.codigo,
 
-				html:`<p class="message-modal-confirm">Ao remover o rascunho da atividade, ela não estará mais disponível.</p>
+				html:`<p class="message-modal-confirm">Ao excluir o rascunho da atividade licenciável, todas as informações serão excluídas permanentemente.</p>
 						<p class="message-modal-confirm">
-						<b>Tem certeza que deseja remover este rascunho da atividade? Esta opção não poderá ser desfeita.</b>
+						<b>Tem certeza que deseja excluir o rascunho? Esta opção não poderá ser desfeita e todas as informações serão excluídas.</b>
 					</p>`,
 				showCancelButton: true,
 				confirmButtonColor:'#F56C6C',
 				cancelButtonColor: '#FFF',
 				showCloseButton: true,
 				focusConfirm: false,
-				confirmButtonText: '<i class="mdi mdi-delete"></i> Remover' ,
+				confirmButtonText: '<i class="mdi mdi-delete"></i> Excluir' ,
 				cancelButtonText: '<i class="fa fa-close"></i> Cancelar',
 				reverseButtons: true
 
