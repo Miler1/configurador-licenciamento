@@ -62,16 +62,27 @@ public class PorteAtividadeService implements IPorteAtividadeService {
 
         }
 
-        Optional<Parametro> parametroUmSalvo = parametroRepository.findById(porte.getParametroUm().getId());
+        Optional<Parametro> parametroUmSalvo;
 
-        if (parametroUmSalvo.isPresent() && porte.getParametroUm() != null) {
-            parametroUm = parametroUmSalvo.get();
+        if (porte.getParametroUm() != null) {
+
+            parametroUmSalvo = parametroRepository.findById(porte.getParametroUm().getId());
+
+            if (parametroUmSalvo.isPresent()) {
+                parametroUm = parametroUmSalvo.get();
+            }
+
         }
 
-        Optional<Parametro> parametroDoisEncontrado = parametroRepository.findById(porte.getParametroDois().getId());
+        Optional<Parametro> parametroDoisSalvo;
 
-        if (parametroDoisEncontrado.isPresent() && porte.getParametroDois() != null) {
-            parametroDois = parametroDoisEncontrado.get();
+        if (porte.getParametroDois() != null) {
+
+            parametroDoisSalvo = parametroRepository.findById(porte.getParametroDois().getId());
+
+            if (parametroDoisSalvo.isPresent()) {
+                parametroDois = parametroDoisSalvo.get();
+            }
 
         }
 
@@ -119,33 +130,34 @@ public class PorteAtividadeService implements IPorteAtividadeService {
 
             } else {
 
-                PorteAtividade porteAtividadesalvo = porteAtividadeRepository.findById(porte.getId()).orElse(null);
+                PorteAtividade porteAtividadeSalvo = porteAtividadeRepository.findById(porte.getId()).orElse(null);
 
                 PorteEmpreendimento porteEmpreendimento = porte.getPorte() != null ? porteEmpreendimentoRepository.findById(porte.getPorte().getId()).get() : null;
 
                 Parametro parametroUm = porte.getParametroUm() != null ? parametroRepository.findById(porte.getParametroUm().getId()).get() : null;
                 Parametro parametroDois = porte.getParametroDois() != null ? parametroRepository.findById(porte.getParametroDois().getId()).get() : null;
 
-                porteAtividadesalvo.setPorteEmpreendimento(porteEmpreendimento);
-                porteAtividadesalvo.setLimiteInferiorUm(porte.getLimiteInferiorUm() != null && porte.getLimiteInferiorUm() == 0.0 ? null : porte.getLimiteInferiorUm());
-                porteAtividadesalvo.setLimiteSuperiorUm(porte.getLimiteSuperiorUm());
-                porteAtividadesalvo.setLimiteInferiorDois(porte.getLimiteInferiorDois() != null && porte.getLimiteInferiorDois() == 0.0 ? null : porte.getLimiteInferiorDois());
-                porteAtividadesalvo.setLimiteSuperiorDois(porte.getLimiteSuperiorDois());
-                porteAtividadesalvo.setParametroUm(parametroUm);
-                porteAtividadesalvo.setParametroDois(parametroDois);
-                porteAtividadesalvo.setLimiteInferiorUmIncluso(porte.getLimiteInferiorUmIncluso());
-                porteAtividadesalvo.setLimiteSuperiorUmIncluso(porte.getLimiteSuperiorUmIncluso());
-                porteAtividadesalvo.setLimiteInferiorDoisIncluso(porte.getLimiteInferiorDoisIncluso());
-                porteAtividadesalvo.setLimiteSuperiorDoisIncluso(porte.getLimiteSuperiorDoisIncluso());
+                porteAtividadeSalvo.setPorteEmpreendimento(porteEmpreendimento);
+                porteAtividadeSalvo.setLimiteInferiorUm(porte.getLimiteInferiorUm() != null && porte.getLimiteInferiorUm() == 0.0 ? null : porte.getLimiteInferiorUm());
+                porteAtividadeSalvo.setLimiteSuperiorUm(porte.getLimiteSuperiorUm());
+                porteAtividadeSalvo.setLimiteInferiorDois(porte.getLimiteInferiorDois() != null && porte.getLimiteInferiorDois() == 0.0 ? null : porte.getLimiteInferiorDois());
+                porteAtividadeSalvo.setLimiteSuperiorDois(porte.getLimiteSuperiorDois());
+                porteAtividadeSalvo.setParametroUm(parametroUm);
+                porteAtividadeSalvo.setParametroDois(parametroDois);
+                porteAtividadeSalvo.setLimiteInferiorUmIncluso(porte.getLimiteInferiorUmIncluso());
+                porteAtividadeSalvo.setLimiteSuperiorUmIncluso(porte.getLimiteSuperiorUmIncluso());
+                porteAtividadeSalvo.setLimiteInferiorDoisIncluso(porte.getLimiteInferiorDoisIncluso());
+                porteAtividadeSalvo.setLimiteSuperiorDoisIncluso(porte.getLimiteSuperiorDoisIncluso());
 
-                porteAtividadeRepository.save(porteAtividadesalvo);
+                porteAtividadeRepository.save(porteAtividadeSalvo);
 
-                portesAtividade.add(porteAtividadesalvo);
+                portesAtividade.add(porteAtividadeSalvo);
             }
 
         });
 
         return portesAtividade;
+
     }
 
 }

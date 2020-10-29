@@ -21,7 +21,7 @@
 
 		v-col(cols="12")
 
-			.tituloAcao {{isCadastro ? 'Cadastro de atividade licenciável' : 'Editar atividade licenciável'}}
+			.tituloAcao {{isCadastro || this.$route.name === 'ContinuarCadastroAtividadeLicenciavel' ? 'Cadastro de atividade licenciável' : 'Editar atividade licenciável'}}
 
 		v-col.py-0(cols="12")
 
@@ -65,7 +65,7 @@
 					v-icon mdi-arrow-left
 					span Voltar
 
-				v-btn#QA-btn-rascunho-atividade-licenciavel.ml-2(v-show="true", @click="salvarRascunho", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
+				v-btn#QA-btn-rascunho-atividade-licenciavel.ml-2(v-show="isCadastro || this.$route.name === 'ContinuarCadastroAtividadeLicenciavel'", @click="salvarRascunho", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
 					v-icon mdi-floppy
 					span Salvar
 
@@ -215,18 +215,21 @@ export default {
 
 			this.atividadeLicenciavel.parametros.forEach(parametro => {
 
-				parametro.limiteInferiorUm = parametro.limiteInferiorUm && typeof parametro.limiteInferiorUm === 'string' ? 
-					parseFloat(parametro.limiteInferiorUm.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
+				if (parametro.limiteInferiorUm && typeof parametro.limiteInferiorUm === 'string') {
+					parametro.limiteInferiorUm = parseFloat(parametro.limiteInferiorUm.replace(/R\$\s|\./g, '').replace(',', '.'));
+				}
 
-				parametro.limiteSuperiorUm = parametro.limiteSuperiorUm && typeof parametro.limiteSuperiorUm === 'string' ? 
-					parseFloat(parametro.limiteSuperiorUm.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
+				if (parametro.limiteSuperiorUm && typeof parametro.limiteSuperiorUm === 'string') {
+					parametro.limiteSuperiorUm = parseFloat(parametro.limiteSuperiorUm.replace(/R\$\s|\./g, '').replace(',', '.'));
+				}
 
-				parametro.limiteInferiorDois = parametro.limiteInferiorDois && typeof parametro.limiteInferiorDois === 'string' ? 
-					parseFloat(parametro.limiteInferiorDois.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
+				if (parametro.limiteInferiorDois && typeof parametro.limiteInferiorDois === 'string') {
+					parametro.limiteInferiorDois = parseFloat(parametro.limiteInferiorDois.replace(/R\$\s|\./g, '').replace(',', '.'));
+				}
 
-				parametro.limiteSuperiorDois = parametro.limiteSuperiorDois && typeof parametro.limiteSuperiorDois === 'string' ? 
-					parseFloat(parametro.limiteSuperiorDois.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
-
+				if (parametro.limiteSuperiorDois && typeof parametro.limiteSuperiorDois === 'string') {
+					parametro.limiteSuperiorDois = parseFloat(parametro.limiteSuperiorDois.replace(/R\$\s|\./g, '').replace(',', '.'));
+				}
 				//tratar valores nulos
 				parametro.limiteInferiorUmIncluso = parametro.limiteInferiorUmIncluso ? parametro.limiteInferiorUmIncluso : false;
 				parametro.limiteSuperiorUmIncluso = parametro.limiteSuperiorUmIncluso ? parametro.limiteSuperiorUmIncluso : false;
@@ -332,7 +335,7 @@ export default {
 
 				AtividadeService.salvarRascunhoAtividadeLicenciavel(this.atividadeLicenciavel)
 					.then(() => {
-						this.handleSuccess();
+						this.handleSuccess(false, true);
 					})
 					.catch(error => {
 
@@ -388,7 +391,6 @@ export default {
 
 		validarRascunhoParametros() {
 
-			console.log(this.atividadeLicenciavel);
 			let parametros = this.atividadeLicenciavel.parametros;
 			let valido = this.passos[1].completo = parametros && parametros.length > 0;
 
@@ -517,13 +519,22 @@ export default {
 
 		},
 
-		handleSuccess(edicao = false) {
+		handleSuccess(edicao = false, rascunho = false) {
 
-			let message = edicao ? (this.$route.name === 'ContinuarCadastroAtividadeLicenciavel' ? SUCCESS_MESSAGES.cadastro : SUCCESS_MESSAGES.editar) : SUCCESS_MESSAGES.cadastro;
+			let message = edicao ?
+				(this.$route.name === 'ContinuarCadastroAtividadeLicenciavel' ?
+					SUCCESS_MESSAGES.cadastro :
+					SUCCESS_MESSAGES.editar) :
+				(rascunho ?
+					SUCCESS_MESSAGES.salvarRascunho :
+					SUCCESS_MESSAGES.cadastro);
+
 
 			snackbar.alert(message, snackbar.type.SUCCESS);
 
-			this.redirectListagem();
+			if(!rascunho) {
+				this.redirectListagem();
+			}
 
 		},
 
@@ -538,16 +549,11 @@ export default {
 
 			this.atividadeLicenciavel = atividadeLicenciavel;
 
-			this.atividadeLicenciavel.cnaesAtividade.forEach(cnaeAtividade=> {
-				cnaeAtividade.foraEmpreendimento = cnaeAtividade.foraEmpreendimento === null ? null : cnaeAtividade.foraEmpreendimento? 'false' : 'true';
-			});
-
 			let dados = this.atividadeLicenciavel.dados;
 
-			if(dados.requisitoTecnico != null) {
+			if (dados.requisitoTecnico != null) {
 				dados.requisitoTecnico.textoExibicao = dados.requisitoTecnico.codigo + ' - ' + dados.requisitoTecnico.descricao;
 			}
-
 
 		}
 
@@ -561,9 +567,12 @@ export default {
 
 			AtividadeService.findById(this.$route.params.idAtividadeLicenciavel)
 				.then((response) => {
+
 					this.prepararDadosParaEdicao(response.data);
 
-					this.$refs.telaAtividades.$refs.toggleOptionsForaEmpreendimento.setModel(this.atividadeLicenciavel.dados.foraEmpreendimento === null ? null : this.atividadeLicenciavel.dados.foraEmpreendimento? 'false' : 'true');
+					if (this.atividadeLicenciavel.dados.foraEmpreendimento !== null) {
+						this.$refs.telaAtividades.$refs.toggleOptionsForaEmpreendimento.setModel(this.atividadeLicenciavel.dados.foraEmpreendimento.toString());
+					}
 
 				})
 				.catch(error => {

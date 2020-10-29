@@ -78,6 +78,19 @@ public class AtividadeController extends DefaultController {
 
     }
 
+    @PostMapping(value = "excluirRascunho/{idAtividadeLicenciavel}")
+    public ResponseEntity<String> excluirRascunhoAtividadeLicenciavel(HttpServletRequest request, @PathVariable("idAtividadeLicenciavel") Integer idAtividadeLicenciavel) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        atividadeService.excluirRascunhoAtividadeLicenciavel(request, idAtividadeLicenciavel);
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body("{validacao.deleteRascunho}");
+
+    }
+
     @PostMapping(value = "listar")
     public ResponseEntity<Page<Atividade>> listarAtividadesLicenciaveis(HttpServletRequest request,
                                                                         @PageableDefault(size = 20) Pageable pageable,

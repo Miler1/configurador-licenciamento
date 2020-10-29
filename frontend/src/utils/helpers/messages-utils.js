@@ -139,6 +139,7 @@ const SUCCESS_MESSAGES = {
 
 	cadastro: 'Sucesso! As informações foram cadastradas.',
 	editar: 'Sucesso! As informações foram editadas.',
+	salvarRascunho: 'Sucesso! As informações foram salvas como rascunho.',
 
 	cnae: {
 		ativar: 'Sucesso! O CNAE foi ativado.',
@@ -198,6 +199,7 @@ const SUCCESS_MESSAGES = {
 	atividadeLicenciavel: {
 		ativar: 'Sucesso! A atividade licenciável foi ativada.',
 		desativar: 'Sucesso! A atividade licenciável foi desativada.',
+		excluirRascunho: 'Sucesso! O rascunho da atividade licenciável foi excluído. '
 	},
 
 };

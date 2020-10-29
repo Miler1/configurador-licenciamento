@@ -307,6 +307,12 @@ public class AtividadeService implements IAtividadeService {
 
         Atividade atividadeSalva = atividadeRepository.findById(atividadeLicenciavelDTO.getDados().getId()).get();
 
+        boolean isRascunho = atividadeSalva.getRascunho();
+
+        if (isRascunho) {
+            atividadeSalva.setAtivo(true);
+        }
+
         atividadeSalva.setNome(atividadeLicenciavelDTO.getDados().getNomeAtividade());
         atividadeSalva.setCodigo(atividadeLicenciavelDTO.getDados().getCodigoAtividade());
         atividadeSalva.setTipologia(tipologiaAtividade.orElse(null));
@@ -344,13 +350,27 @@ public class AtividadeService implements IAtividadeService {
 
             Atividade atividade = atividadeRepository.findByCodigo(atividadeLicenciavelDTO.getDados().getCodigoAtividade().trim());
 
-            if(!atividade.getId().equals(atividadeLicenciavelDTO.getDados().getId())){
+            if (!atividade.getId().equals(atividadeLicenciavelDTO.getDados().getId())) {
                 throw new ConflictException(ATIVIDADE_EXISTENTE);
             }
         }
     }
 
     @Override
+    public Atividade excluirRascunhoAtividadeLicenciavel(HttpServletRequest request, Integer idAtividade) {
+
+        Atividade atividadeRascunho = atividadeRepository.findById(idAtividade).get();
+
+        tipoCaracterizacaoAtividadeService.excluirAtividadeLicenciavel(atividadeRascunho);
+
+        relAtividadeParametroAtividadeService.excluir(atividadeRascunho);
+
+        atividadeRepository.delete(atividadeRascunho);
+
+        return atividadeRascunho;
+
+    }
+
     public Atividade salvarRascunhoAtividadeLicenciavel(HttpServletRequest request, AtividadeLicenciavelDTO atividadeLicenciavelDTO) {
 
         Object login = request.getSession().getAttribute("login");
@@ -585,10 +605,10 @@ public class AtividadeService implements IAtividadeService {
         RelAtividadeParametroAtividade relAtividadeParametroAtividadeUm = null;
         RelAtividadeParametroAtividade relAtividadeParametroAtividadeDois = null;
 
-        if(!atividade.getPortesAtividade().isEmpty() && atividade.getPortesAtividade().get(0).getParametroUm() != null){
+        if (!atividade.getPortesAtividade().isEmpty() && atividade.getPortesAtividade().get(0).getParametroUm() != null) {
             relAtividadeParametroAtividadeUm = relAtividadeParametroAtividadeRepository.findByAtividadeAndParametro(atividade, atividade.getPortesAtividade().get(0).getParametroUm()).get(0);
         }
-        if(!atividade.getPortesAtividade().isEmpty() && atividade.getPortesAtividade().get(0).getParametroDois() != null){
+        if (!atividade.getPortesAtividade().isEmpty() && atividade.getPortesAtividade().get(0).getParametroDois() != null) {
             relAtividadeParametroAtividadeDois = relAtividadeParametroAtividadeRepository.findByAtividadeAndParametro(atividade, atividade.getPortesAtividade().get(0).getParametroDois()).get(0);
         }
 

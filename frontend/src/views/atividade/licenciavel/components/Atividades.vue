@@ -419,10 +419,7 @@ export default {
 		},
 
 		checkFormVinculacao() {
-
-			return this.dados.cnaes
-				&& this.dados.cnaes.length > 0;
-
+			return this.dados.cnaes && this.dados.cnaes.length > 0;
 		},
 
 		errorMessageCodigoAtividade(value) {
@@ -532,9 +529,7 @@ export default {
 		errorMessageGeometria() {
 
 			if (this.erro.invalido && !this.dados.geoPonto && !this.dados.geoLinha && !this.dados.geoPoligono) {
-
 				return 'Obrigatório';
-
 			}
 
 		},
@@ -777,7 +772,7 @@ export default {
 		}
 
 		if (this.dados.foraEmpreendimento !== null) {
-			this.$refs.toggleOptionsForaEmpreendimento.setModel(this.dados.foraEmpreendimento);
+			this.$refs.toggleOptionsForaEmpreendimento.setModel(this.dados.foraEmpreendimento.toString());
 		}
 
 	}
