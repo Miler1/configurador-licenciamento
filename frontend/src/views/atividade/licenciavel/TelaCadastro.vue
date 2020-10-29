@@ -21,7 +21,7 @@
 
 		v-col(cols="12")
 
-			.tituloAcao {{isCadastro ? 'Cadastro de atividade licenciável' : 'Editar atividade licenciável'}}
+			.tituloAcao {{isCadastro || this.$route.name === 'ContinuarCadastroAtividadeLicenciavel' ? 'Cadastro de atividade licenciável' : 'Editar atividade licenciável'}}
 
 		v-col.py-0(cols="12")
 
@@ -547,10 +547,6 @@ export default {
 
 			this.atividadeLicenciavel = atividadeLicenciavel;
 
-			this.atividadeLicenciavel.cnaesAtividade.forEach(cnaeAtividade=> {
-				cnaeAtividade.foraEmpreendimento = cnaeAtividade.foraEmpreendimento === null ? null : cnaeAtividade.foraEmpreendimento? 'false' : 'true';
-			});
-
 			let dados = this.atividadeLicenciavel.dados;
 
 			if(dados.requisitoTecnico != null) {
@@ -572,7 +568,9 @@ export default {
 				.then((response) => {
 					this.prepararDadosParaEdicao(response.data);
 
-					this.$refs.telaAtividades.$refs.toggleOptionsForaEmpreendimento.setModel(this.atividadeLicenciavel.dados.foraEmpreendimento === null ? null : this.atividadeLicenciavel.dados.foraEmpreendimento? 'false' : 'true');
+					if(this.atividadeLicenciavel.dados.foraEmpreendimento !== null) {
+						this.$refs.telaAtividades.$refs.toggleOptionsForaEmpreendimento.setModel(this.atividadeLicenciavel.dados.foraEmpreendimento.toString());
+					}
 
 				})
 				.catch(error => {

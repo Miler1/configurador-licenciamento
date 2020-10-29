@@ -777,7 +777,7 @@ export default {
 		}
 
 		if (this.dados.foraEmpreendimento !== null) {
-			this.$refs.toggleOptionsForaEmpreendimento.setModel(this.dados.foraEmpreendimento);
+			this.$refs.toggleOptionsForaEmpreendimento.setModel(this.dados.foraEmpreendimento.toString());
 		}
 
 	}
