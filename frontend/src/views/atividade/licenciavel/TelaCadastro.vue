@@ -215,18 +215,21 @@ export default {
 
 			this.atividadeLicenciavel.parametros.forEach(parametro => {
 
-				parametro.limiteInferiorUm = parametro.limiteInferiorUm && typeof parametro.limiteInferiorUm === 'string' ? 
-					parseFloat(parametro.limiteInferiorUm.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
+				if (parametro.limiteInferiorUm && typeof parametro.limiteInferiorUm === 'string') {
+					parametro.limiteInferiorUm = parseFloat(parametro.limiteInferiorUm.replace(/R\$\s|\./g, '').replace(',', '.'));
+				}
 
-				parametro.limiteSuperiorUm = parametro.limiteSuperiorUm && typeof parametro.limiteSuperiorUm === 'string' ? 
-					parseFloat(parametro.limiteSuperiorUm.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
+				if (parametro.limiteSuperiorUm && typeof parametro.limiteSuperiorUm === 'string') {
+					parametro.limiteSuperiorUm = parseFloat(parametro.limiteSuperiorUm.replace(/R\$\s|\./g, '').replace(',', '.'));
+				}
 
-				parametro.limiteInferiorDois = parametro.limiteInferiorDois && typeof parametro.limiteInferiorDois === 'string' ? 
-					parseFloat(parametro.limiteInferiorDois.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
+				if (parametro.limiteInferiorDois && typeof parametro.limiteInferiorDois === 'string') {
+					parametro.limiteInferiorDois = parseFloat(parametro.limiteInferiorDois.replace(/R\$\s|\./g, '').replace(',', '.'));
+				}
 
-				parametro.limiteSuperiorDois = parametro.limiteSuperiorDois && typeof parametro.limiteSuperiorDois === 'string' ? 
-					parseFloat(parametro.limiteSuperiorDois.replace(/R\$\s|\./g, '').replace(',', '.')) : null;
-
+				if (parametro.limiteSuperiorDois && typeof parametro.limiteSuperiorDois === 'string') {
+					parametro.limiteSuperiorDois = parseFloat(parametro.limiteSuperiorDois.replace(/R\$\s|\./g, '').replace(',', '.'));
+				}
 				//tratar valores nulos
 				parametro.limiteInferiorUmIncluso = parametro.limiteInferiorUmIncluso ? parametro.limiteInferiorUmIncluso : false;
 				parametro.limiteSuperiorUmIncluso = parametro.limiteSuperiorUmIncluso ? parametro.limiteSuperiorUmIncluso : false;
@@ -388,7 +391,6 @@ export default {
 
 		validarRascunhoParametros() {
 
-			console.log(this.atividadeLicenciavel);
 			let parametros = this.atividadeLicenciavel.parametros;
 			let valido = this.passos[1].completo = parametros && parametros.length > 0;
 
@@ -520,16 +522,16 @@ export default {
 		handleSuccess(edicao = false, rascunho = false) {
 
 			let message = edicao ?
-				(this.$route.name === 'ContinuarCadastroAtividadeLicenciavel' ? 
-					SUCCESS_MESSAGES.cadastro : 
-					SUCCESS_MESSAGES.editar) : 
+				(this.$route.name === 'ContinuarCadastroAtividadeLicenciavel' ?
+					SUCCESS_MESSAGES.cadastro :
+					SUCCESS_MESSAGES.editar) :
 				(rascunho ?
 					SUCCESS_MESSAGES.salvarRascunho :
 					SUCCESS_MESSAGES.cadastro);
 
 
 			snackbar.alert(message, snackbar.type.SUCCESS);
-			
+
 			if(!rascunho) {
 				this.redirectListagem();
 			}
@@ -549,10 +551,9 @@ export default {
 
 			let dados = this.atividadeLicenciavel.dados;
 
-			if(dados.requisitoTecnico != null) {
+			if (dados.requisitoTecnico != null) {
 				dados.requisitoTecnico.textoExibicao = dados.requisitoTecnico.codigo + ' - ' + dados.requisitoTecnico.descricao;
 			}
-
 
 		}
 
@@ -566,9 +567,10 @@ export default {
 
 			AtividadeService.findById(this.$route.params.idAtividadeLicenciavel)
 				.then((response) => {
+
 					this.prepararDadosParaEdicao(response.data);
 
-					if(this.atividadeLicenciavel.dados.foraEmpreendimento !== null) {
+					if (this.atividadeLicenciavel.dados.foraEmpreendimento !== null) {
 						this.$refs.telaAtividades.$refs.toggleOptionsForaEmpreendimento.setModel(this.atividadeLicenciavel.dados.foraEmpreendimento.toString());
 					}
 
