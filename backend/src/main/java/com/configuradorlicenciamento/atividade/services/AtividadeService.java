@@ -307,7 +307,9 @@ public class AtividadeService implements IAtividadeService {
 
         Atividade atividadeSalva = atividadeRepository.findById(atividadeLicenciavelDTO.getDados().getId()).get();
 
-        if(atividadeSalva.getRascunho()) {
+        boolean isRascunho = atividadeSalva.getRascunho();
+
+        if (isRascunho) {
             atividadeSalva.setAtivo(true);
         }
 
@@ -348,7 +350,7 @@ public class AtividadeService implements IAtividadeService {
 
             Atividade atividade = atividadeRepository.findByCodigo(atividadeLicenciavelDTO.getDados().getCodigoAtividade().trim());
 
-            if(!atividade.getId().equals(atividadeLicenciavelDTO.getDados().getId())){
+            if (!atividade.getId().equals(atividadeLicenciavelDTO.getDados().getId())) {
                 throw new ConflictException(ATIVIDADE_EXISTENTE);
             }
         }
@@ -589,10 +591,10 @@ public class AtividadeService implements IAtividadeService {
         RelAtividadeParametroAtividade relAtividadeParametroAtividadeUm = null;
         RelAtividadeParametroAtividade relAtividadeParametroAtividadeDois = null;
 
-        if(!atividade.getPortesAtividade().isEmpty() && atividade.getPortesAtividade().get(0).getParametroUm() != null){
+        if (!atividade.getPortesAtividade().isEmpty() && atividade.getPortesAtividade().get(0).getParametroUm() != null) {
             relAtividadeParametroAtividadeUm = relAtividadeParametroAtividadeRepository.findByAtividadeAndParametro(atividade, atividade.getPortesAtividade().get(0).getParametroUm()).get(0);
         }
-        if(!atividade.getPortesAtividade().isEmpty() && atividade.getPortesAtividade().get(0).getParametroDois() != null){
+        if (!atividade.getPortesAtividade().isEmpty() && atividade.getPortesAtividade().get(0).getParametroDois() != null) {
             relAtividadeParametroAtividadeDois = relAtividadeParametroAtividadeRepository.findByAtividadeAndParametro(atividade, atividade.getPortesAtividade().get(0).getParametroDois()).get(0);
         }
 
