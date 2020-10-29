@@ -198,6 +198,7 @@ const SUCCESS_MESSAGES = {
 	atividadeLicenciavel: {
 		ativar: 'Sucesso! A atividade licenciável foi ativada.',
 		desativar: 'Sucesso! A atividade licenciável foi desativada.',
+		excluirRascunho: 'Sucesso! O rascunho da atividade licenciável foi excluído. '
 	},
 
 };

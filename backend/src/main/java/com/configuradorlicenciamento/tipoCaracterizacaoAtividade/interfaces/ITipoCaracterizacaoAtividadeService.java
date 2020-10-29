@@ -23,6 +23,8 @@ public interface ITipoCaracterizacaoAtividadeService {
 
     void editarAtividadeLicenciavel(List<AtividadeCnaeDTO> atividadesCnae, Atividade atividade);
 
+    void excluirAtividadeLicenciavel(Atividade atividade);
+
     TipoCaracterizacaoAtividade ativarDesativar(Integer idAtividadeDispensavel);
 
     Page<TipoCaracterizacaoAtividade> listarAtividadesDispensaveis(Pageable pageable, FiltroPesquisa filtro);

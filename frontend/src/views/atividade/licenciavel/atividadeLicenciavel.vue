@@ -195,6 +195,44 @@ export default {
 
 		excluirRascunho(item) {
 
+			this.$fire({
+
+				title:'<p class="title-modal-confirm">Remover - ' + item.nome,
+
+				html:`<p class="message-modal-confirm">Ao remover o rascunho da atividade, ela não estará mais disponível.</p>
+						<p class="message-modal-confirm">
+						<b>Tem certeza que deseja remover este rascunho da atividade? Esta opção não poderá ser desfeita.</b>
+					</p>`,
+				showCancelButton: true,
+				confirmButtonColor:'#F56C6C',
+				cancelButtonColor: '#FFF',
+				showCloseButton: true,
+				focusConfirm: false,
+				confirmButtonText: '<i class="mdi mdi-delete"></i> Remover' ,
+				cancelButtonText: '<i class="fa fa-close"></i> Cancelar',
+				reverseButtons: true
+
+			}).then((result) => {
+
+				if (result.value) {
+
+					AtividadeService.excluirRascunhoAtividadeLicenciavel(item.id)
+						.then(() => {
+
+							snackbar.alert(SUCCESS_MESSAGES.atividadeLicenciavel.excluirRascunho, snackbar.type.SUCCESS);
+
+							this.updatePagination();
+							this.resetaDadosFiltragem();
+
+						})
+						.catch(error => {
+							console.log(error);
+						});
+
+				}
+
+			});
+
 		}
 
 	},

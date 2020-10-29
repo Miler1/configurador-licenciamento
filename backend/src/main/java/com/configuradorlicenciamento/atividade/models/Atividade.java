@@ -94,13 +94,13 @@ public class Atividade implements Serializable {
             {@JoinColumn(name = "id_taxa_licenciamento")})
     private List<TaxaLicenciamento> taxasLicenciamento;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinTable(schema = GlobalReferences.ESQUEMA, name = "rel_atividade_porte_atividade", joinColumns =
             {@JoinColumn(name = "id_atividade")}, inverseJoinColumns =
             {@JoinColumn(name = "id_porte_atividade")})
     private List<PorteAtividade> portesAtividade;
 
-    @OneToMany(mappedBy="atividade")
+    @OneToMany(mappedBy = "atividade")
     @JsonManagedReference
     private List<RelAtividadeParametroAtividade> parametros;
 
@@ -135,7 +135,27 @@ public class Atividade implements Serializable {
         this.usuarioLicenciamento = atividadeBuilder.usuarioLicenciamento;
     }
 
-    public AtividadeLicenciavelCsv preparaAtividadeLicenciavelParaCsv() { return new AtividadeLicenciavelCsv(this); }
+    public AtividadeLicenciavelCsv preparaAtividadeLicenciavelParaCsv() {
+        return new AtividadeLicenciavelCsv(this);
+    }
+
+    public CodigoTaxaLicenciamento recuperaCodigoTaxaLicenciamentobyTaxas() {
+
+        return this.taxasLicenciamento.get(0).getCodigo();
+
+    }
+
+    public List<String> recuperaCodigosTiposAtividade() {
+
+        List<String> codigosTiposAtividade = new ArrayList<>();
+
+        this.tiposAtividades.forEach(tipoAtividade -> {
+            codigosTiposAtividade.add(tipoAtividade.getCodigo());
+        });
+
+        return codigosTiposAtividade;
+
+    }
 
     public static class AtividadeBuilder {
 
@@ -149,7 +169,7 @@ public class Atividade implements Serializable {
         private String siglaSetor;
         private Boolean ativo;
         private Boolean dentroEmpreendimento;
-        private Boolean dentroMunicipio;
+        private final Boolean dentroMunicipio;
         private RequisitoTecnico requisitoTecnico;
         private Boolean v1;
         private Boolean rascunho;
@@ -263,24 +283,6 @@ public class Atividade implements Serializable {
         public Atividade build() {
             return new Atividade(this);
         }
-
-    }
-
-    public CodigoTaxaLicenciamento recuperaCodigoTaxaLicenciamentobyTaxas(){
-
-        return this.taxasLicenciamento.get(0).getCodigo();
-
-    }
-
-    public List<String> recuperaCodigosTiposAtividade() {
-
-        List<String> codigosTiposAtividade = new ArrayList<>();
-
-        this.tiposAtividades.forEach(tipoAtividade -> {
-            codigosTiposAtividade.add(tipoAtividade.getCodigo());
-        });
-
-        return codigosTiposAtividade;
 
     }
 
