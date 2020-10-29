@@ -711,7 +711,7 @@ export default {
 
 		PorteEmpreendimento.findAll()
 			.then((response) => {
-				this.portesEmpreendimento = response.data.filter(item => item.codigo !== 'MICRO'); 
+				this.portesEmpreendimento = response.data.filter(item => item.codigo !== 'MICRO');
 			});
 
 	},
