@@ -24,13 +24,13 @@
 			v-col(cols="12", md="3")
 				v-label Geometria
 				p.label-atividade {{preparaExibicaoGeometria()}}
-			v-col(cols="12", md="2")
+			v-col(cols="12", md="3")
 				v-label Atividade fora do empreendimento
 				p.label-atividade {{preparaExibicaoExecucao()}}
 			v-col(cols="12", md="2")
 				v-label Gerência / Setor
 				p.label-atividade {{atividadeLicenciavel.dados.setor.sigla || atividadeLicenciavel.dados.setor}}
-			v-col(cols="12", md="3")
+			v-col(cols="12", md="2")
 				v-label PPD
 				p.label-atividade {{atividadeLicenciavel.dados.potencialPoluidor.nome}}
 
@@ -50,6 +50,33 @@
 			v-col(cols="12", md="6")
 				v-label Tabela de taxas de licenciamento
 				p.label-atividade {{atividadeLicenciavel.dados.taxaLicenciamento.codigo}} - {{atividadeLicenciavel.dados.taxaLicenciamento.descricao}}
+
+	b.titulo-cabecalho Parâmetros da atividade
+	.cabecalho.pl-4.mb-7.rounded
+		v-row.flex-row
+			v-col(cols="12", md="3")
+				v-row
+					v-col(cols="12", md="12")
+						v-label Tipo de parâmetro
+						p.label-atividade {{ (atividadeLicenciavel.parametros[0].parametroUm && atividadeLicenciavel.parametros[0].parametroDois) ? "Composto" : "Simples" }}
+			v-col.pa-0(cols="12", md="9")
+				v-row
+					v-col(cols="12", md="12")
+						v-row
+							v-col(cols="12", md="6")
+								v-label Parametro 1
+								p.label-atividade {{atividadeLicenciavel.parametros[0].parametroUm.nome}}
+							v-col(cols="12", md="6")
+								v-label Descrição da unidade do parâmetro 1
+								p.label-atividade {{atividadeLicenciavel.parametros[0].descricaoUnidadeUm ? atividadeLicenciavel.parametros[0].descricaoUnidadeUm : "Não informada"}}
+					v-col(cols="12", md="12", v-if="atividadeLicenciavel.parametros[0].parametroDois")
+						v-row
+							v-col(cols="12", md="6")
+								v-label Parametro 2
+								p.label-atividade {{atividadeLicenciavel.parametros[0].parametroDois.nome}}
+							v-col(cols="12", md="6")
+								v-label Descrição da unidade do parâmetro 2
+								p.label-atividade {{atividadeLicenciavel.parametros[0].descricaoUnidadeDois ? atividadeLicenciavel.parametros[0].descricaoUnidadeDois : "Não informada"}}
 
 	GridListagemInclusao.mt-7(
 		:tituloListagem="tituloListagemParametro",

@@ -85,7 +85,7 @@ public class AtividadeCnaeService implements IAtividadeCnaeService {
 
         Specification<AtividadeCnae> specification = Specification.where(AtividadeCnaeSpecification.padrao());
 
-        if(filtro.getStringPesquisa() != null) {
+        if (filtro.getStringPesquisa() != null) {
             specification = specification.and(AtividadeCnaeSpecification.nome(filtro.getStringPesquisa())
                     .or(AtividadeCnaeSpecification.codigo(filtro.getStringPesquisa())));
 
@@ -101,7 +101,7 @@ public class AtividadeCnaeService implements IAtividadeCnaeService {
     }
 
     @Override
-    public List<AtividadeCnaeCsv> listarCnaesParaCsv(){
+    public List<AtividadeCnaeCsv> listarCnaesParaCsv() {
 
         List<AtividadeCnae> cnaes = listarCnaes();
         List<AtividadeCnaeCsv> dtos = new ArrayList<>();
