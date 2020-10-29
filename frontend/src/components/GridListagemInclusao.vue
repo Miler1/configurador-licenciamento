@@ -4,18 +4,18 @@
 
 	template
 
-		v-col(cols='12' md='6').pa-0
-			b.titulo-listagem {{ tituloListagem }}
-
-			v-text-field#QA-input-inclusao-pesquisar(
-				outlined,
-				v-model='stringPesquisa'
-				:placeholder='placeholderPesquisa',
-				prepend-inner-icon="mdi-magnify",
-				color="#E0E0E0",
-				dense
-				v-if="inputPesquisa"
-			)
+		v-row
+			v-col.pb-3(cols='12', md='12')
+				b.titulo-listagem {{ tituloListagem }}
+			v-col.pt-0(v-if="inputPesquisa", cols='12', md='6')
+				v-text-field#QA-input-inclusao-pesquisar(
+					outlined,
+					v-model='stringPesquisa'
+					:placeholder='placeholderPesquisa',
+					prepend-inner-icon="mdi-magnify",
+					color="#E0E0E0",
+					dense
+				)
 
 		v-data-table.elevation-1(
 				:headers="headers",
