@@ -149,6 +149,7 @@ export default {
 				},
 				parametros: []
 			},
+			primeiroRascunho: false,
 			atividadeLicenciavelBkp: {},
 			allowRedirect: false,
 			isCadastro: true,
@@ -201,6 +202,32 @@ export default {
 
 		},
 
+		salvarRascunho() {
+
+			if (this.validarRascunho()) {
+
+				this.prepararDados();
+
+				AtividadeService.salvarRascunhoAtividadeLicenciavel(this.atividadeLicenciavel)
+					.then((response) => {
+
+						this.atividadeLicenciavel.dados.id = response.data.id;
+
+						this.handleSuccess(false, true);
+
+					})
+					.catch(error => {
+
+						this.atividadeLicenciavel = this.atividadeLicenciavelBkp;
+
+						this.handleError(error, false, true);
+
+					});
+
+			}
+
+		},
+
 		prepararDados() {
 
 			this.atividadeLicenciavelBkp =  JSON.parse(JSON.stringify(this.atividadeLicenciavel) );
@@ -209,7 +236,7 @@ export default {
 				delete atividade.textoExibicao;
 			});
 
-			if (this.atividadeLicenciavel.dados.setor) {
+			if (this.atividadeLicenciavel.dados.setor && this.atividadeLicenciavel.dados.setor.sigla) {
 				this.atividadeLicenciavel.dados.setor = this.atividadeLicenciavel.dados.setor.sigla;
 			}
 
@@ -324,28 +351,6 @@ export default {
 			}
 
 			return valido;
-
-		},
-
-		salvarRascunho() {
-
-			if (this.validarRascunho()) {
-
-				this.prepararDados();
-
-				AtividadeService.salvarRascunhoAtividadeLicenciavel(this.atividadeLicenciavel)
-					.then(() => {
-						this.handleSuccess(false, true);
-					})
-					.catch(error => {
-
-						this.atividadeLicenciavel = this.atividadeLicenciavelBkp;
-
-						this.handleError(error, false, true);
-
-					});
-
-			}
 
 		},
 
