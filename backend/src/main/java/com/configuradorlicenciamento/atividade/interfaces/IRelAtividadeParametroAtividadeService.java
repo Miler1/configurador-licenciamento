@@ -8,4 +8,6 @@ public interface IRelAtividadeParametroAtividadeService {
     void salvar(Atividade atividade, PorteAtividadeDTO parametro);
 
     void editar(Atividade atividade, PorteAtividadeDTO parametro);
+
+    void excluir(Atividade atividade);
 }
