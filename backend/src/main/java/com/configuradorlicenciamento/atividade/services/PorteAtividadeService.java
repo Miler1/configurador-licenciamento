@@ -62,16 +62,27 @@ public class PorteAtividadeService implements IPorteAtividadeService {
 
         }
 
-        Optional<Parametro> parametroUmSalvo = parametroRepository.findById(porte.getParametroUm().getId());
+        Optional<Parametro> parametroUmSalvo;
 
-        if (parametroUmSalvo.isPresent() && porte.getParametroUm() != null) {
-            parametroUm = parametroUmSalvo.get();
+        if (porte.getParametroUm() != null) {
+
+            parametroUmSalvo = parametroRepository.findById(porte.getParametroUm().getId());
+
+            if (parametroUmSalvo.isPresent()) {
+                parametroUm = parametroUmSalvo.get();
+            }
+
         }
 
-        Optional<Parametro> parametroDoisEncontrado = parametroRepository.findById(porte.getParametroDois().getId());
+        Optional<Parametro> parametroDoisSalvo;
 
-        if (parametroDoisEncontrado.isPresent() && porte.getParametroDois() != null) {
-            parametroDois = parametroDoisEncontrado.get();
+        if (porte.getParametroDois() != null) {
+
+            parametroDoisSalvo = parametroRepository.findById(porte.getParametroDois().getId());
+
+            if (parametroDoisSalvo.isPresent()) {
+                parametroDois = parametroDoisSalvo.get();
+            }
 
         }
 
