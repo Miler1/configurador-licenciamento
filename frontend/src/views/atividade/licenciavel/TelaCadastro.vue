@@ -460,7 +460,7 @@ export default {
 
 			return {
 				text: lastStep ? (this.isCadastro ? "Cadastrar" : (this.$route.name === 'ContinuarCadastroAtividadeLicenciavel' ? "Cadastrar" : "Editar")) : "Próxima",
-				icon: lastStep ? (this.isCadastro ? "mdi-plus" : "mdi-pencil") : "mdi-arrow-right"
+				icon: lastStep ? (this.isCadastro ? "mdi-plus" : (this.$route.name === 'ContinuarCadastroAtividadeLicenciavel' ? "mdi-plus" : "mdi-pencil")) : "mdi-arrow-right"
 			};
 
 		},
