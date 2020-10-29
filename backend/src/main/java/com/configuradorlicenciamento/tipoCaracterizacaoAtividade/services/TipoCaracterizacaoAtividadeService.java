@@ -168,6 +168,17 @@ public class TipoCaracterizacaoAtividadeService implements ITipoCaracterizacaoAt
     }
 
     @Override
+    public void excluirAtividadeLicenciavel(Atividade atividade) {
+
+        List<TipoCaracterizacaoAtividade> tipoCaracterizacaoAtividades = tipoCaracterizacaoAtividadeRepository.findByAtividade(atividade);
+
+        if (!tipoCaracterizacaoAtividades.isEmpty()) {
+            tipoCaracterizacaoAtividades.forEach(tipoCaracterizacaoAtividade -> tipoCaracterizacaoAtividadeRepository.delete(tipoCaracterizacaoAtividade));
+        }
+
+    }
+
+    @Override
     public TipoCaracterizacaoAtividade ativarDesativar(Integer idAtividadeDispensavel) {
 
         TipoCaracterizacaoAtividade tipoCaracterizacaoAtividade = tipoCaracterizacaoAtividadeRepository.findById(idAtividadeDispensavel).orElseThrow(() ->
