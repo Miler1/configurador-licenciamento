@@ -610,41 +610,19 @@ export default {
 
 			this.isInclusao = true;
 
+			var tipoParametro = this.parametroDoisBkp.parametro !== null ? 'COMPOSTO' : 'SIMPLES';
+			this.$refs.toggleAtividadeLicenciavelParametro.setModel(tipoParametro);
+			this.tipoParametro = tipoParametro;
+
 			this.parametroUm.parametro = this.parametroUmBkp.parametro;
 			this.parametroUm.descricaoUnidade = this.parametroUmBkp.descricaoUnidade;
 			this.parametroUm.valores = this.parametroUmBkp.valores;
-
-			this.parametroUmBkp.valores.forEach((valor, index) => {
-
-				this.$refs.valorminimo1[index].$el.querySelector('input').value = valor.minimo;
-				if (index != 3) {
-					this.$refs.valormaximo1[index].$el.querySelector('input').value = valor.maximo;
-				}
-
-			});
 
 			if (this.parametroDoisBkp.parametro !== null && this.$refs.valorminimo2.length > 0 && this.$refs.valormaximo2.length > 0) {
 
 				this.parametroDois.parametro = this.parametroDoisBkp.parametro;
 				this.parametroDois.descricaoUnidade = this.parametroDoisBkp.descricaoUnidade;
 				this.parametroDois.valores = this.parametroDoisBkp.valores;
-
-				this.parametroDoisBkp.valores.forEach((valor, index) => {
-
-					this.$refs.valorminimo2[index].$el.querySelector('input').value = valor.minimo;
-					if (index != 3) {
-						this.$refs.valormaximo2[index].$el.querySelector('input').value = valor.maximo;
-					}
-
-				});
-
-				this.$refs.toggleAtividadeLicenciavelParametro.setModel('COMPOSTO');
-				this.tipoParametro = 'COMPOSTO';
-
-			} else {
-
-				this.$refs.toggleAtividadeLicenciavelParametro.setModel('SIMPLES');
-				this.tipoParametro = 'SIMPLES';
 
 			}
 
