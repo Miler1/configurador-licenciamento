@@ -28,6 +28,8 @@ public interface IAtividadeService {
 
     Atividade editarAtividadeLicenciavel(HttpServletRequest request, AtividadeLicenciavelDTO atividadeLicenciavelDTO);
 
+    Atividade editarRascunhoAtividadeLicenciavel(HttpServletRequest request, AtividadeLicenciavelDTO atividadeLicenciavelDTO);
+
     AtividadeLicenciavelEdicaoDTO findById(Integer idAtividadeLicenciavel);
 
     Atividade salvarRascunhoAtividadeLicenciavel(HttpServletRequest request, AtividadeLicenciavelDTO atividadeLicenciavelDTO);

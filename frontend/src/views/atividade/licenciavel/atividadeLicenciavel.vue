@@ -190,7 +190,7 @@ export default {
 		},
 
 		continuarRascunho(item) {
-
+			this.$router.push({name: 'ContinuarCadastroAtividadeLicenciavel', params: { idAtividadeLicenciavel: item.id }});
 		},
 
 		excluirRascunho(item) {
