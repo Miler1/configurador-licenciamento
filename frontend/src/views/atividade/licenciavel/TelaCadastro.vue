@@ -65,7 +65,7 @@
 					v-icon mdi-arrow-left
 					span Voltar
 
-				v-btn#QA-btn-rascunho-atividade-licenciavel.ml-2(v-show="isCadastro", @click="salvarRascunho", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
+				v-btn#QA-btn-rascunho-atividade-licenciavel.ml-2(v-show="isCadastro || this.$route.name === 'ContinuarCadastroAtividadeLicenciavel'", @click="salvarRascunho", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
 					v-icon mdi-floppy
 					span Salvar
 

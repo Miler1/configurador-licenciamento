@@ -307,6 +307,10 @@ public class AtividadeService implements IAtividadeService {
 
         Atividade atividadeSalva = atividadeRepository.findById(atividadeLicenciavelDTO.getDados().getId()).get();
 
+        if(atividadeSalva.getRascunho()) {
+            atividadeSalva.setAtivo(true);
+        }
+
         atividadeSalva.setNome(atividadeLicenciavelDTO.getDados().getNomeAtividade());
         atividadeSalva.setCodigo(atividadeLicenciavelDTO.getDados().getCodigoAtividade());
         atividadeSalva.setTipologia(tipologiaAtividade.orElse(null));
