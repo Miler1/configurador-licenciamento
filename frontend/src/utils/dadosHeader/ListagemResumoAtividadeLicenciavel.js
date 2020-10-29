@@ -1,5 +1,5 @@
 const HEADERCNAE = [
-	{ text: 'Código', value: 'codigo'},
+	{ text: 'Código', value: 'codigo', width: '155px'},
 	{ text: 'Nome', value: 'nome'}
 ];
 

@@ -1,5 +1,4 @@
 const HEADER = [
-    
 	{ text: 'Código', value: 'codigo', width: '175px' },
 	{ text: 'Descrição', value: 'nome' },
 	{ text: 'Casas decimais', value: 'casasDecimais', width: '150px'},
