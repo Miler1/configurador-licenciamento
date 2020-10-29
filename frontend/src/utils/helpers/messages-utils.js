@@ -139,6 +139,7 @@ const SUCCESS_MESSAGES = {
 
 	cadastro: 'Sucesso! As informações foram cadastradas.',
 	editar: 'Sucesso! As informações foram editadas.',
+	salvarRascunho: 'Sucesso! As informações foram salvas como rascunho.',
 
 	cnae: {
 		ativar: 'Sucesso! O CNAE foi ativado.',

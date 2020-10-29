@@ -65,7 +65,7 @@
 					v-icon mdi-arrow-left
 					span Voltar
 
-				v-btn#QA-btn-rascunho-atividade-licenciavel.ml-2(v-show="true", @click="salvarRascunho", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
+				v-btn#QA-btn-rascunho-atividade-licenciavel.ml-2(v-show="isCadastro", @click="salvarRascunho", :min-width="buttonMinWidth", outlined, large, color="#84A98C")
 					v-icon mdi-floppy
 					span Salvar
 
@@ -332,7 +332,7 @@ export default {
 
 				AtividadeService.salvarRascunhoAtividadeLicenciavel(this.atividadeLicenciavel)
 					.then(() => {
-						this.handleSuccess();
+						this.handleSuccess(false, true);
 					})
 					.catch(error => {
 
@@ -517,13 +517,22 @@ export default {
 
 		},
 
-		handleSuccess(edicao = false) {
+		handleSuccess(edicao = false, rascunho = false) {
 
-			let message = edicao ? (this.$route.name === 'ContinuarCadastroAtividadeLicenciavel' ? SUCCESS_MESSAGES.cadastro : SUCCESS_MESSAGES.editar) : SUCCESS_MESSAGES.cadastro;
+			let message = edicao ?
+				(this.$route.name === 'ContinuarCadastroAtividadeLicenciavel' ? 
+					SUCCESS_MESSAGES.cadastro : 
+					SUCCESS_MESSAGES.editar) : 
+				(rascunho ?
+					SUCCESS_MESSAGES.salvarRascunho :
+					SUCCESS_MESSAGES.cadastro);
+
 
 			snackbar.alert(message, snackbar.type.SUCCESS);
-
-			this.redirectListagem();
+			
+			if(!rascunho) {
+				this.redirectListagem();
+			}
 
 		},
 
