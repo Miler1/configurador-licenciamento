@@ -216,7 +216,7 @@ export default {
 
 				if (result.value) {
 
-					AtividadeService.excluirRascunhoAtividadeLicenciavel(item.id)
+					let retorno = AtividadeService.excluirRascunhoAtividadeLicenciavel(item.id)
 						.then(() => {
 
 							snackbar.alert(SUCCESS_MESSAGES.atividadeLicenciavel.excluirRascunho, snackbar.type.SUCCESS);
@@ -226,8 +226,12 @@ export default {
 							console.log(error);
 						});
 
-					this.updatePagination();
-					this.resetaDadosFiltragem();
+					if (retorno) {
+
+						this.updatePagination();
+						this.resetaDadosFiltragem();
+
+					}
 
 				}
 
