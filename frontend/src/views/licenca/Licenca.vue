@@ -85,7 +85,7 @@ export default {
 				panel: [],
 				readonly: true,
 				title: "Cadastro de licença ambiental",
-				iconName: "mdi-card-account-details",
+				iconName: "mdi-file-check-outline",
 				tipo: "cadastro"
 			},
 		};
