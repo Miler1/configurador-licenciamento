@@ -221,13 +221,13 @@ export default {
 
 							snackbar.alert(SUCCESS_MESSAGES.atividadeLicenciavel.excluirRascunho, snackbar.type.SUCCESS);
 
-							this.updatePagination();
-							this.resetaDadosFiltragem();
-
 						})
 						.catch(error => {
 							console.log(error);
 						});
+
+					this.updatePagination();
+					this.resetaDadosFiltragem();
 
 				}
 
