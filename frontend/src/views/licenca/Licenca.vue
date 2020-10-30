@@ -85,7 +85,7 @@ export default {
 				panel: [],
 				readonly: true,
 				title: "Cadastro de licença ambiental",
-				iconName: "mdi-card-account-details",
+				iconName: "mdi-file-check-outline",
 				tipo: "cadastro"
 			},
 		};
@@ -108,7 +108,7 @@ export default {
 		resetaDadosCadastro() {
 
 			this.dadosPanel.title = "Cadastro de licença ambiental";
-			this.dadosPanel.iconName = "mdi-card-account-details";
+			this.dadosPanel.iconName = "mdi-file-check-outline";
 			this.dadosPanel.tipo = "cadastro";
 			this.labelBotaoCadastrarEditar = "Cadastrar";
 			this.iconBotaoCadastrarEditar = "mdi-plus";
