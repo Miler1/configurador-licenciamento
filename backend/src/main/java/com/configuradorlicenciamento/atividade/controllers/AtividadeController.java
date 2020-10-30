@@ -71,7 +71,6 @@ public class AtividadeController extends DefaultController {
             atividade = atividadeService.editarRascunhoAtividadeLicenciavel(request, atividadeLicenciavelDTO);
         }
 
-
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
                 .body(atividade);
