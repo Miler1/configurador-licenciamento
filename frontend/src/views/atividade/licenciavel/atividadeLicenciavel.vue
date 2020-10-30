@@ -129,8 +129,8 @@ export default {
 			this.$fire({
 
 				title: item.ativo ?
-					'<p class="title-modal-confirm">Desativar atividade licenciável - ' + item.nome+ '</p>' :
-					'<p class="title-modal-confirm">Ativar atividade licenciável - ' + item.nome+ '</p>',
+					'<p class="title-modal-confirm">Desativar atividade licenciável - ' + item.codigo + '</p>' :
+					'<p class="title-modal-confirm">Ativar atividade licenciável - ' + item.codigo + '</p>',
 
 				html: item.ativo ?
 					`<p class="message-modal-confirm">Ao desativar a atividade licenciável, ela não estará mais disponível no sistema.</p>
