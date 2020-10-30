@@ -373,6 +373,10 @@ public class AtividadeService implements IAtividadeService {
 
     public Atividade salvarRascunhoAtividadeLicenciavel(HttpServletRequest request, AtividadeLicenciavelDTO atividadeLicenciavelDTO) {
 
+        if (atividadeLicenciavelDTO.getDados().getId() != null) {
+            return this.editarRascunhoAtividadeLicenciavel(request, atividadeLicenciavelDTO);
+        }
+
         Object login = request.getSession().getAttribute("login");
 
         boolean existeAtividade = atividadeRepository.existsByCodigo(atividadeLicenciavelDTO.getDados().getCodigoAtividade().trim());
