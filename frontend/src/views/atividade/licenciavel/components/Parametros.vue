@@ -426,9 +426,21 @@ export default {
 			}
 
 			if (this.tipoParametro === 'SIMPLES') {
+
 				this.errorMessageEmpty = this.validarParametro(this.parametroUm);
+
+				if (!this.parametroUm.parametro){
+					window.scrollTo(0, 0);
+				}
+
 			} else {
+
 				this.errorMessageEmpty = this.validarParametro(this.parametroUm) && this.validarParametro(this.parametroDois);
+
+				if (!this.parametroUm.parametro || !this.parametroDois.parametro){
+					window.scrollTo(0, 0);
+				}
+
 			}
 
 			return this.errorMessageEmpty;
