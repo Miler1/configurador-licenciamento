@@ -618,7 +618,7 @@ export default {
 			this.parametroUm.descricaoUnidade = this.parametroUmBkp.descricaoUnidade;
 			this.parametroUm.valores = this.parametroUmBkp.valores;
 
-			if (this.parametroDoisBkp.parametro !== null && this.$refs.valorminimo2.length > 0 && this.$refs.valormaximo2.length > 0) {
+			if (this.parametroDoisBkp.parametro !== null) {
 
 				this.parametroDois.parametro = this.parametroDoisBkp.parametro;
 				this.parametroDois.descricaoUnidade = this.parametroDoisBkp.descricaoUnidade;
@@ -689,6 +689,10 @@ export default {
 
 		},
 
+		ordenarParametros() {
+			return this.parametros.sort((a,b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+		}
+
 	},
 
 	created(){
@@ -719,7 +723,7 @@ export default {
 	mounted() {
 
 		if (this.parametros.length !== 0) {
-
+			this.ordenarParametros();
 			if (this.parametros.length === 4) {
 
 				this.$refs.toggleAtividadeLicenciavelParametro.setModel(this.optionsTipoParametro[0].value);

@@ -208,8 +208,12 @@ export default {
 
 				this.prepararDados();
 
+				window.scrollTo(0, 0);
+
 				AtividadeService.salvarRascunhoAtividadeLicenciavel(this.atividadeLicenciavel)
 					.then((response) => {
+
+						this.atividadeLicenciavel =  JSON.parse(JSON.stringify(this.atividadeLicenciavelBkp) );
 
 						this.atividadeLicenciavel.dados.id = response.data.id;
 
@@ -537,7 +541,7 @@ export default {
 
 			snackbar.alert(message, snackbar.type.SUCCESS);
 
-			if(!rascunho) {
+			if (!rascunho) {
 				this.redirectListagem();
 			}
 

@@ -35,10 +35,10 @@
 				span {{item.foraMunicipio == "true" ? 'Sim' : 'Não'}}
 
 			template(v-slot:item.limiteInferiorUm='{ item }')
-				span {{item.limiteInferiorUm == null ? '0' : item.limiteInferiorUm}}
+				span {{item.limiteInferiorUm == null ? '0,00' : item.limiteInferiorUm}}
 
 			template(v-slot:item.limiteInferiorDois='{ item }')
-				span {{item.limiteInferiorDois == null ? '0' : item.limiteInferiorDois}}
+				span {{item.limiteInferiorDois == null ? '0,00' : item.limiteInferiorDois}}
 
 			template(v-slot:item.limiteSuperiorUm='{ item }')
 				span {{item.limiteSuperiorUm == null ? 'Indeterminado' : item.limiteSuperiorUm}}
