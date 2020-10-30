@@ -199,6 +199,10 @@ public class AtividadeService implements IAtividadeService {
     @Override
     public Atividade salvarAtividadeLicenciavel(HttpServletRequest request, AtividadeLicenciavelDTO atividadeLicenciavelDTO) {
 
+        if (atividadeLicenciavelDTO.getDados().getId() != null) {
+            return this.editarAtividadeLicenciavel(request, atividadeLicenciavelDTO);
+        }
+
         Object login = request.getSession().getAttribute("login");
 
         boolean existeAtividade = atividadeRepository.existsByCodigo(atividadeLicenciavelDTO.getDados().getCodigoAtividade().trim());

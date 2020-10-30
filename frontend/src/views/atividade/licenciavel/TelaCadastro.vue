@@ -165,10 +165,12 @@ export default {
 			this.prepararDados();
 
 			if (this.validar()) {
+				
+				window.scrollTo(0, 0);
 
-				AtividadeService.cadastrarAtividadeLicenciavel(this.atividadeLicenciavel)
+				let retorno = AtividadeService.cadastrarAtividadeLicenciavel(this.atividadeLicenciavel)
 					.then(() => {
-						this.handleSuccess();
+
 					})
 					.catch(error => {
 
@@ -180,6 +182,10 @@ export default {
 
 					});
 
+				if (retorno) {
+					this.handleSuccess();
+				}
+
 			}
 
 		},
@@ -190,13 +196,17 @@ export default {
 
 			if (this.validar()) {
 
-				AtividadeService.editarAtividadeLicenciavel(this.atividadeLicenciavel)
+				let retorno = AtividadeService.editarAtividadeLicenciavel(this.atividadeLicenciavel)
 					.then( () => {
-						this.handleSuccess(true);
+
 					})
 					.catch(error => {
 						this.handleError(error, true);
 					});
+
+				if (retorno) {
+					this.handleSuccess(true);
+				}
 
 			}
 
@@ -208,8 +218,12 @@ export default {
 
 				this.prepararDados();
 
+				window.scrollTo(0, 0);
+
 				AtividadeService.salvarRascunhoAtividadeLicenciavel(this.atividadeLicenciavel)
 					.then((response) => {
+
+						this.atividadeLicenciavel =  JSON.parse(JSON.stringify(this.atividadeLicenciavelBkp) );
 
 						this.atividadeLicenciavel.dados.id = response.data.id;
 
@@ -537,7 +551,7 @@ export default {
 
 			snackbar.alert(message, snackbar.type.SUCCESS);
 
-			if(!rascunho) {
+			if (!rascunho) {
 				this.redirectListagem();
 			}
 

@@ -129,8 +129,8 @@ export default {
 			this.$fire({
 
 				title: item.ativo ?
-					'<p class="title-modal-confirm">Desativar atividade licenciável - ' + item.nome+ '</p>' :
-					'<p class="title-modal-confirm">Ativar atividade licenciável - ' + item.nome+ '</p>',
+					'<p class="title-modal-confirm">Desativar atividade licenciável - ' + item.codigo + '</p>' :
+					'<p class="title-modal-confirm">Ativar atividade licenciável - ' + item.codigo + '</p>',
 
 				html: item.ativo ?
 					`<p class="message-modal-confirm">Ao desativar a atividade licenciável, ela não estará mais disponível no sistema.</p>
@@ -216,18 +216,22 @@ export default {
 
 				if (result.value) {
 
-					AtividadeService.excluirRascunhoAtividadeLicenciavel(item.id)
+					let retorno = AtividadeService.excluirRascunhoAtividadeLicenciavel(item.id)
 						.then(() => {
 
 							snackbar.alert(SUCCESS_MESSAGES.atividadeLicenciavel.excluirRascunho, snackbar.type.SUCCESS);
-
-							this.updatePagination();
-							this.resetaDadosFiltragem();
 
 						})
 						.catch(error => {
 							console.log(error);
 						});
+
+					if (retorno) {
+
+						this.updatePagination();
+						this.resetaDadosFiltragem();
+
+					}
 
 				}
 

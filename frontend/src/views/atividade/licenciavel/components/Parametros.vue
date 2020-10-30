@@ -318,7 +318,8 @@ export default {
 			placeholderDescricao1: 'Ex.: Metros cúbicos/dia (m³/d)',
 			placeholderDescricao2: 'Ex.: Produção em toneladas por mês',
 			labelTooltipDescricao: 'Esta é a descrição do campo parâmetro que será exibida para o solicitante ao informar o valor. Caso não informada, será exibida a própria descição do parâmetro.',
-
+			errorMessageMin: 'O valor mínimo no intervalo atual deve ser igual ao valor máximo do intervalo anterior',
+			errorMessageMax: 'O valor máximo deve ser maior que o valor mínimo no intervalo atual',
 			tituloListagem: "Listagem de combinações de intervalos de parâmetros / portes adicionadas",
 			labelNoData: 'Não existem combinações de intervalos de parâmetros / portes adicionadas.',
 			inputPesquisa: false,
@@ -396,10 +397,11 @@ export default {
 					return 'Obrigatório';
 				}
 				if (tipo === 'MINIMO' && item) {
-					return (this.errorMessageEmpty || (item && (item === parametro.valores[index-1].maximo))) ? '' : 'O valor mínimo no intervalo atual deve ser igual ao valor máximo do intervalo anterior';
+					return (this.errorMessageEmpty || (item && (item === parametro.valores[index-1].maximo)) ? '' : this.errorMessageMin);
 				}
 				if (tipo === 'MAXIMO' && item) {
-					return (this.errorMessageEmpty || (item && (item > parametro.valores[index].minimo))) ? '' : 'O valor máximo deve ser maior que o valor mínimo no intervalo atual';
+
+					return (this.errorMessageEmpty || (item && (parseFloat(item.replace(",", ".")) > parseFloat(parametro.valores[index].minimo.replace(",", ".")))) ? '' : this.errorMessageMax);
 				}
 
 			}
@@ -426,9 +428,21 @@ export default {
 			}
 
 			if (this.tipoParametro === 'SIMPLES') {
+
 				this.errorMessageEmpty = this.validarParametro(this.parametroUm);
+
+				if (!this.parametroUm.parametro){
+					window.scrollTo(0, 0);
+				}
+
 			} else {
+
 				this.errorMessageEmpty = this.validarParametro(this.parametroUm) && this.validarParametro(this.parametroDois);
+
+				if (!this.parametroUm.parametro || !this.parametroDois.parametro){
+					window.scrollTo(0, 0);
+				}
+
 			}
 
 			return this.errorMessageEmpty;
@@ -444,8 +458,8 @@ export default {
 
 				if (!parametro.valores[i].maximo
 					|| !parametro.valores[i + 1].minimo
-					|| parametro.valores[i].maximo !== parametro.valores[i + 1].minimo
-					|| parametro.valores[i].maximo <= parametro.valores[i].minimo
+					|| parseFloat(parametro.valores[i].maximo.replace(",", ".")) !== parseFloat(parametro.valores[i + 1].minimo.replace(",","."))
+					|| parseFloat(parametro.valores[i].maximo.replace(",", ".")) <= parseFloat(parametro.valores[i].minimo.replace(",","."))
 					|| (!parametro.valores[i + 1].limiteInferiorIncluso && !parametro.valores[i].limiteSuperiorIncluso)) {
 
 					valido = false;
@@ -618,7 +632,7 @@ export default {
 			this.parametroUm.descricaoUnidade = this.parametroUmBkp.descricaoUnidade;
 			this.parametroUm.valores = this.parametroUmBkp.valores;
 
-			if (this.parametroDoisBkp.parametro !== null && this.$refs.valorminimo2.length > 0 && this.$refs.valormaximo2.length > 0) {
+			if (this.parametroDoisBkp.parametro !== null) {
 
 				this.parametroDois.parametro = this.parametroDoisBkp.parametro;
 				this.parametroDois.descricaoUnidade = this.parametroDoisBkp.descricaoUnidade;
@@ -689,6 +703,10 @@ export default {
 
 		},
 
+		ordenarParametros() {
+			return this.parametros.sort((a,b) => (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+		}
+
 	},
 
 	created(){
@@ -719,7 +737,7 @@ export default {
 	mounted() {
 
 		if (this.parametros.length !== 0) {
-
+			this.ordenarParametros();
 			if (this.parametros.length === 4) {
 
 				this.$refs.toggleAtividadeLicenciavelParametro.setModel(this.optionsTipoParametro[0].value);
