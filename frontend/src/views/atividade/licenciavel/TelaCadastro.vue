@@ -165,6 +165,8 @@ export default {
 			this.prepararDados();
 
 			if (this.validar()) {
+				
+				window.scrollTo(0, 0);
 
 				AtividadeService.cadastrarAtividadeLicenciavel(this.atividadeLicenciavel)
 					.then(() => {
