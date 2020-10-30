@@ -168,7 +168,7 @@ export default {
 				
 				window.scrollTo(0, 0);
 
-				AtividadeService.cadastrarAtividadeLicenciavel(this.atividadeLicenciavel)
+				let retorno = AtividadeService.cadastrarAtividadeLicenciavel(this.atividadeLicenciavel)
 					.then(() => {
 
 					})
@@ -182,7 +182,9 @@ export default {
 
 					});
 
-				this.handleSuccess();
+				if (retorno) {
+					this.handleSuccess();
+				}
 
 			}
 
@@ -194,7 +196,7 @@ export default {
 
 			if (this.validar()) {
 
-				AtividadeService.editarAtividadeLicenciavel(this.atividadeLicenciavel)
+				let retorno = AtividadeService.editarAtividadeLicenciavel(this.atividadeLicenciavel)
 					.then( () => {
 
 					})
@@ -202,7 +204,9 @@ export default {
 						this.handleError(error, true);
 					});
 
-				this.handleSuccess(true);
+				if (retorno) {
+					this.handleSuccess(true);
+				}
 
 			}
 
