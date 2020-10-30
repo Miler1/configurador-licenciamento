@@ -168,7 +168,7 @@ export default {
 
 				AtividadeService.cadastrarAtividadeLicenciavel(this.atividadeLicenciavel)
 					.then(() => {
-						this.handleSuccess();
+
 					})
 					.catch(error => {
 
@@ -179,6 +179,8 @@ export default {
 						this.handleError(error);
 
 					});
+
+				this.handleSuccess();
 
 			}
 
@@ -192,11 +194,13 @@ export default {
 
 				AtividadeService.editarAtividadeLicenciavel(this.atividadeLicenciavel)
 					.then( () => {
-						this.handleSuccess(true);
+
 					})
 					.catch(error => {
 						this.handleError(error, true);
 					});
+
+				this.handleSuccess(true);
 
 			}
 
