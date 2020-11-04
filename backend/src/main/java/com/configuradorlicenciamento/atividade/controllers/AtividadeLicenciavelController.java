@@ -92,8 +92,8 @@ public class AtividadeLicenciavelController extends DefaultController {
 
     @PostMapping(value = "listar")
     public ResponseEntity<Page<Atividade>> listar(HttpServletRequest request,
-                                                    @PageableDefault(size = 20) Pageable pageable,
-                                                    @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
+                                                  @PageableDefault(size = 20) Pageable pageable,
+                                                  @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
@@ -138,7 +138,7 @@ public class AtividadeLicenciavelController extends DefaultController {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        Atividade atividade = atividadeService.ativarDesativar(idAtividadeLicenciavel);
+        Atividade atividade = atividadeService.ativarDesativar(request, idAtividadeLicenciavel);
 
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())

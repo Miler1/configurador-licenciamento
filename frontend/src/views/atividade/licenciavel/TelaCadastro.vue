@@ -191,12 +191,13 @@ export default {
 		},
 
 		editar() {
+
 			this.$fire({
 
 				title: `<div><p class="title-modal-confirm">Confirmar edição - Atividade licenciável</p><div>`,
 				html:
 					`
-					<div class="row" id="row-justificativa-atividade-licenciavel">
+					<div class="row" id="row-justificativa-atividade-licenciavel" style="padding-top:15px">
 						<div class="col col-12" style="display:flex; flex-direction: column;">
 							<label aria-hidden="true" class="v-label theme--light" style="text-align: left; padding-bottom:4px">Justificativa</label>
 							<div class="v-input v-textarea v-textarea--auto-grow v-textarea--no-resize theme--light v-text-field v-text-field--is-booted v-text-field--enclosed v-text-field--outlined">
@@ -221,7 +222,6 @@ export default {
 						</div>
 					</div>
 					`,
-				dense: true,
 				width: '580px',
 				showCancelButton: true,
 				confirmButtonColor:'#67C23A',
@@ -230,33 +230,49 @@ export default {
 				focusConfirm: false,
 				confirmButtonText: '<i class="fa fa-check-circle" style="left:0px"></i> Confirmar',
 				cancelButtonText: '<i class="fa fa-close"></i> Cancelar',
-				reverseButtons: true
+				reverseButtons: true,
 
 			}).then((result) => {
 
 				if (result.value) {
 
-					this.prepararDados();
+					const campoJustificativa = document.getElementById("QA-input-atividade-licenciavel-justificativa");
 
-					if (this.validar()) {
+					let justificativa = campoJustificativa.value;
 
-						let retorno = AtividadeService.editarAtividadeLicenciavel(this.atividadeLicenciavel)
-							.then( (response) => {
+					if (justificativa) {
 
-								if (response.data) {
-									return true;
-								}
+						this.atividadeLicenciavel.justificativa = justificativa;
 
-							})
-							.catch(error => {
+						this.prepararDados();
 
-								this.handleError(error, true);
-								return false;
+						if (this.validar()) {
 
-							});
+							let retorno = AtividadeService.editarAtividadeLicenciavel(this.atividadeLicenciavel)
+								.then( (response) => {
 
-						if (retorno) {
-							this.handleSuccess(true);
+									if (response.status === 200) {
+										return true;
+									}
+
+									return false;
+
+								})
+								.catch(error => {
+
+									console.error(error);
+
+									this.handleError(error, true);
+									return false;
+
+								});
+
+							if (retorno) {
+								this.handleSuccess(true);
+							} else {
+								snackbar.alert("Algo deu errado. Por favor, tente novamente mais tarde. ", snackbar.type.WARN);
+							}
+
 						}
 
 					}
