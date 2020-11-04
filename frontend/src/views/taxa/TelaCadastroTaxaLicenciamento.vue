@@ -235,7 +235,7 @@
 				outlined,
 				color="#E0E0E0",
 				rows="3",
-				auto-grow
+				auto-grow,
 				v-model="justificativa",
 				:error-messages="errorMessage(justificativa, false, false)",
 				@click.native="resetErrorMessage",

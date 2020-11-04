@@ -147,7 +147,8 @@ export default {
 					geoLinha: false,
 					geoPoligono: false
 				},
-				parametros: []
+				parametros: [],
+				justificativa: null,
 			},
 			primeiroRascunho: false,
 			atividadeLicenciavelBkp: {},
@@ -191,24 +192,79 @@ export default {
 		},
 
 		editar() {
+			this.$fire({
 
-			this.prepararDados();
+				title: `<div><p class="title-modal-confirm">Confirmar edição - Atividade licenciável</p><div>`,
+				html:
+					`
+					<div class="row" id="row-justificativa-atividade-licenciavel">
+						<div class="col col-12" style="display:flex; flex-direction: column;">
+							<label aria-hidden="true" class="v-label theme--light" style="text-align: left; padding-bottom:4px">Justificativa</label>
+							<div class="v-input v-textarea v-textarea--auto-grow v-textarea--no-resize theme--light v-text-field v-text-field--is-booted v-text-field--enclosed v-text-field--outlined">
+								<div class="v-input__control">
+									<div class="v-input__slot">
+										<fieldset>
+											<legend style="width: 0px;">
+												<span>​</span>
+											</legend>
+										</fieldset>
+										<div class="v-text-field__slot">
+											<textarea id="QA-input-atividade-licenciavel-justificativa" rows="4" placeholder="Justifique aqui" required></textarea>
+										</div>
+									</div>
+									<div class="v-text-field__details">
+										<div class="v-messages theme--light">
+											<div class="v-messages__wrapper"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					`,
+				dense: true,
+				width: '580px',
+				showCancelButton: true,
+				confirmButtonColor:'#67C23A',
+				cancelButtonColor: '#FFF',
+				showCloseButton: true,
+				focusConfirm: false,
+				confirmButtonText: '<i class="fa fa-check-circle" style="left:0px"></i> Confirmar',
+				cancelButtonText: '<i class="fa fa-close"></i> Cancelar',
+				reverseButtons: true
 
-			if (this.validar()) {
+			}).then((result) => {
 
-				let retorno = AtividadeService.editarAtividadeLicenciavel(this.atividadeLicenciavel)
-					.then( () => {
+				if (result.value) {
 
-					})
-					.catch(error => {
-						this.handleError(error, true);
-					});
+					this.prepararDados();
 
-				if (retorno) {
-					this.handleSuccess(true);
+					if (this.validar()) {
+
+						let retorno = AtividadeService.editarAtividadeLicenciavel(this.atividadeLicenciavel)
+							.then( (response) => {
+
+								if (response.data) {
+									return true;
+								}
+
+							})
+							.catch(error => {
+
+								this.handleError(error, true);
+								return false;
+
+							});
+
+						if (retorno) {
+							this.handleSuccess(true);
+						}
+
+					}
+
 				}
 
-			}
+			});
 
 		},
 
