@@ -85,7 +85,7 @@
 											v-money="money",
 											v-model.lazy="valor.minimo",
 											min="0",
-											ref="valorminimo1",
+											ref="valorminimoUm",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MINIMO') ? '0': ''",
 											:error-messages="errorMessage(valor.minimo, null, 1, index, 'MINIMO', false)",
@@ -112,7 +112,7 @@
 											v-money="index === 3 ? '' : money",
 											v-model.lazy="valor.maximo",
 											min="0",
-											ref="valormaximo1",
+											ref="valormaximoUm",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MAXIMO') ? 'Indeterminado': ''",
 											:error-messages="errorMessage(valor.maximo, null, 1, index, 'MAXIMO', false)",
@@ -180,7 +180,7 @@
 											v-money="money",
 											v-model.lazy="valor.minimo",
 											min="0",
-											ref="valorminimo2",
+											ref="valorminimoDois",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MINIMO') ? '0': ''",
 											:error-messages="errorMessage(valor.minimo, null, 2, index, 'MINIMO', false)",
@@ -207,7 +207,7 @@
 											v-money="index === 3 ? '' : money",
 											v-model.lazy="valor.maximo",
 											min="0",
-											ref="valormaximo2",
+											ref="valormaximoDois",
 											@click.native="resetErrorMessage",
 											:placeholder="validaValoresLimites(index, 'MAXIMO') ? 'Indeterminado': ''",
 											:error-messages="errorMessage(valor.maximo, null, 2, index, 'MAXIMO', false)",
@@ -632,7 +632,31 @@ export default {
 			this.parametroUm.descricaoUnidade = this.parametroUmBkp.descricaoUnidade;
 			this.parametroUm.valores = this.parametroUmBkp.valores;
 
+			this.parametroUm.valores.forEach((parametroUm, indexOne) => {
+
+				if (this.$refs.valorminimoUm[indexOne] != null && this.$refs.valormaximoUm[indexOne] != null) {
+					this.$refs.valorminimoUm[indexOne].$el.querySelector('input').value = parametroUm.minimo;
+					this.$refs.valormaximoUm[indexOne].$el.querySelector('input').value = parametroUm.maximo;
+				}
+
+			});
+
 			if (this.parametroDoisBkp.parametro !== null) {
+
+				this.parametroDois.parametro = this.parametroDoisBkp.parametro;
+				this.parametroDois.descricaoUnidade = this.parametroDoisBkp.descricaoUnidade;
+				this.parametroDois.valores = this.parametroDoisBkp.valores;
+
+				this.parametroDois.valores.forEach((parametroDois, indexTwo) => {
+
+					if (this.$refs.valorminimoDois[indexTwo] != null && this.$refs.valormaximoDois[indexTwo] != null) {
+						this.$refs.valorminimoDois[indexTwo].$el.querySelector('input').value = parametroDois.minimo;
+						this.$refs.valormaximoDois[indexTwo].$el.querySelector('input').value = parametroDois.maximo;
+					}
+
+				});
+
+			} else {
 
 				this.parametroDois.parametro = this.parametroDoisBkp.parametro;
 				this.parametroDois.descricaoUnidade = this.parametroDoisBkp.descricaoUnidade;
