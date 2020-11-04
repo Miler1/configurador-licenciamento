@@ -79,7 +79,7 @@
 
 import PassoAtividades from '@/views/atividade/licenciavel/components/Atividades.vue';
 import PassoParametros from '@/views/atividade/licenciavel/components/Parametros.vue';
-import AtividadeService from '@/services/atividade/dispensavel.service';
+import AtividadeService from '@/services/atividade/licenciavel.service';
 import Resumo from '@/views/atividade/licenciavel/components/Resumo.vue';
 import snackbar from '@/services/snack.service';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/utils/helpers/messages-utils';

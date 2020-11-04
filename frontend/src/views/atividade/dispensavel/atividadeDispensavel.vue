@@ -66,6 +66,7 @@ export default {
 				.then((response) => {
 
 					this.dadosListagem = response.data;
+					this.prepararDadosParaListagem();
 					this.dadosListagem.nomeItem = 'CNAEs dispensáveis';
 
 				})
@@ -75,6 +76,16 @@ export default {
 					snackbar.alert(ERROR_MESSAGES.atividadeDispensavel.listagem + erro.message);
 
 				});
+
+		},
+
+		prepararDadosParaListagem(){
+
+			this.dadosListagem.content.forEach(dado => {
+
+				dado.codigoAtividadeCnae = dado.atividadesCnae[0].atividadeCnae.codigo;
+
+			});
 
 		},
 
