@@ -759,7 +759,7 @@ export default {
 			this.exibirIconeRemover = false;
 			this.isCadastro = false;
 
-		}else{
+		} else{
 			this.isCadastro = true;
 		}
 

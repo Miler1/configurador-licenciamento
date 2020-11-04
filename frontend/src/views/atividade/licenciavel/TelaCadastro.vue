@@ -165,7 +165,7 @@ export default {
 			this.prepararDados();
 
 			if (this.validar()) {
-				
+
 				window.scrollTo(0, 0);
 
 				let retorno = AtividadeService.cadastrarAtividadeLicenciavel(this.atividadeLicenciavel)
@@ -572,6 +572,10 @@ export default {
 
 			if (dados.requisitoTecnico != null) {
 				dados.requisitoTecnico.textoExibicao = dados.requisitoTecnico.codigo + ' - ' + dados.requisitoTecnico.descricao;
+			}
+
+			if (dados.taxaLicenciamento != null) {
+				dados.taxaLicenciamento.textoExibicao = dados.taxaLicenciamento.codigo + ' - ' + dados.taxaLicenciamento.descricao;
 			}
 
 		}

@@ -114,6 +114,7 @@ export default {
 			this.parametrosFiltro.itemsPorPagina = 10;
 			this.parametrosFiltro.tipoOrdenacao = 'nome,asc';
 			this.parametrosFiltro.stringPesquisa = '';
+
 		},
 
 		abrirTelaCadastro() {
