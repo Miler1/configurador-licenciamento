@@ -1,12 +1,12 @@
-package com.configuradorlicenciamento.tipoCaracterizacaoAtividade.services;
+package com.configuradorlicenciamento.atividade.services;
 
 import com.configuradorlicenciamento.atividade.models.Atividade;
 import com.configuradorlicenciamento.pergunta.dtos.PerguntaDTO;
 import com.configuradorlicenciamento.pergunta.models.Pergunta;
 import com.configuradorlicenciamento.pergunta.repositories.PerguntaRepository;
-import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.interfaces.IRelAtividadePerguntaService;
-import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.models.RelAtividadePergunta;
-import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.repositories.RelAtividadePerguntaRepository;
+import com.configuradorlicenciamento.atividade.interfaces.IRelAtividadePerguntaService;
+import com.configuradorlicenciamento.atividade.models.RelAtividadePergunta;
+import com.configuradorlicenciamento.atividade.repositories.RelAtividadePerguntaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
