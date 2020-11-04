@@ -74,7 +74,7 @@
 import PassoCnaes from '@/views/atividade/dispensavel/components/Cnaes.vue';
 import PassoPerguntas from '@/views/atividade/dispensavel/components/Perguntas.vue';
 import Resumo from '@/views/atividade/dispensavel/components/Resumo.vue';
-import AtividadeService from '@/services/atividade.service';
+import AtividadeService from '@/services/atividade/dispensavel.service';
 import snackbar from '@/services/snack.service';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/utils/helpers/messages-utils';
 
