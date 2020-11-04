@@ -1,7 +1,7 @@
-package com.configuradorlicenciamento.tipoCaracterizacaoAtividade.repositories;
+package com.configuradorlicenciamento.atividade.repositories;
 
 import com.configuradorlicenciamento.atividade.models.Atividade;
-import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.models.RelAtividadePergunta;
+import com.configuradorlicenciamento.atividade.models.RelAtividadePergunta;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

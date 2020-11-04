@@ -1,4 +1,4 @@
-package com.configuradorlicenciamento.tipoCaracterizacaoAtividade.dtos;
+package com.configuradorlicenciamento.atividade.dtos;
 
 import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeDTO;
 import com.configuradorlicenciamento.pergunta.dtos.PerguntaDTO;
@@ -17,8 +17,6 @@ import java.util.List;
 public class AtividadeDispensavelDTO {
 
     private Integer id;
-
-    private Integer idTipoCaracterizacaoAtividade;
 
     @NotNull(message = "{validacao.notnull}")
     @NotBlank(message = "{validacao.notBlank}")

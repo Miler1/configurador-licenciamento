@@ -80,7 +80,6 @@
 import PassoAtividades from '@/views/atividade/licenciavel/components/Atividades.vue';
 import PassoParametros from '@/views/atividade/licenciavel/components/Parametros.vue';
 import AtividadeService from '@/services/atividade.service';
-import TipoCaracterizacaoAtividadeService from '@/services/tipoCaracterizacaoAtividade.service';
 import Resumo from '@/views/atividade/licenciavel/components/Resumo.vue';
 import snackbar from '@/services/snack.service';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/utils/helpers/messages-utils';
@@ -334,8 +333,11 @@ export default {
 				this.prepararDados();
 
 				AtividadeService.salvarRascunhoAtividadeLicenciavel(this.atividadeLicenciavel)
-					.then(() => {
+					.then((response) => {
 						this.handleSuccess(false, true);
+
+						this.atividadeLicenciavel.dados.id = response.data.id;
+
 					})
 					.catch(error => {
 
@@ -565,7 +567,7 @@ export default {
 
 			this.isCadastro = false;
 
-			AtividadeService.findById(this.$route.params.idAtividadeLicenciavel)
+			AtividadeService.findByIdAtividadeLicenciavel(this.$route.params.idAtividadeLicenciavel)
 				.then((response) => {
 
 					this.prepararDadosParaEdicao(response.data);

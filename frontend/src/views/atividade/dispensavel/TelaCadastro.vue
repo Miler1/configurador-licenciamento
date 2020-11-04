@@ -74,7 +74,7 @@
 import PassoCnaes from '@/views/atividade/dispensavel/components/Cnaes.vue';
 import PassoPerguntas from '@/views/atividade/dispensavel/components/Perguntas.vue';
 import Resumo from '@/views/atividade/dispensavel/components/Resumo.vue';
-import TipoCaracterizacaoAtividadeService from '@/services/tipoCaracterizacaoAtividade.service';
+import AtividadeService from '@/services/atividade.service';
 import snackbar from '@/services/snack.service';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@/utils/helpers/messages-utils';
 
@@ -133,7 +133,7 @@ export default {
 
 			if (this.validar()) {
 
-				TipoCaracterizacaoAtividadeService.cadastrarAtividadeDispensavel(this.atividadeDispensavel)
+				AtividadeService.cadastrarAtividadeDispensavel(this.atividadeDispensavel)
 					.then(() => {
 						this.handleSuccess();
 					})
@@ -151,7 +151,7 @@ export default {
 
 			if (this.validar()) {
 
-				TipoCaracterizacaoAtividadeService.editarAtividadeDispensavel(this.atividadeDispensavel)
+				AtividadeService.editarAtividadeDispensavel(this.atividadeDispensavel)
 					.then( () => {
 						this.handleSuccess(true);
 					})
@@ -363,7 +363,7 @@ export default {
 
 			this.isCadastro = false;
 
-			TipoCaracterizacaoAtividadeService.findById(this.$route.params.idAtividadeDispensavel)
+			AtividadeService.findByIdAtividadeDispensavel(this.$route.params.idAtividadeDispensavel)
 				.then((response) => {
 					this.prepararDadosParaEdicao(response.data);
 				})
