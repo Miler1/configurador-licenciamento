@@ -1,8 +1,8 @@
-package com.configuradorlicenciamento.tipoCaracterizacaoAtividade.dtos;
+package com.configuradorlicenciamento.atividade.dtos;
 
+import com.configuradorlicenciamento.atividade.models.Atividade;
 import com.configuradorlicenciamento.configuracao.utils.DateUtil;
 import com.configuradorlicenciamento.entradaUnica.services.EntradaUnicaWS;
-import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.models.TipoCaracterizacaoAtividade;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.opencsv.bean.CsvBindByName;
@@ -39,19 +39,20 @@ public class AtividadeDispensavelCsv implements Serializable {
     @CsvBindByPosition(position = 5)
     private String usuarioLicenciamento;
 
-    public AtividadeDispensavelCsv(TipoCaracterizacaoAtividade tipoCaracterizacaoAtividade) {
+    public AtividadeDispensavelCsv(Atividade atividade) {
 
-        this.codigoCnae = tipoCaracterizacaoAtividade.getAtividadeCnae().getCodigo();
-        this.descricaoCnae = tipoCaracterizacaoAtividade.getAtividadeCnae().getNome();
-        this.tipologiaCnae = tipoCaracterizacaoAtividade.getAtividade().getTipologia().getNome();
-        this.ativo = tipoCaracterizacaoAtividade.getAtivo() ? "Ativo" : "Inativo";
-        this.dataCadastro = tipoCaracterizacaoAtividade.getDataCadastro() != null ? DateUtil.formataBrSimples(tipoCaracterizacaoAtividade.getDataCadastro()) : "-";
+        this.codigoCnae = atividade.getAtividadesCnae().isEmpty() ? "-" : atividade.getAtividadesCnae().get(0).getAtividadeCnae().getCodigo();
+        this.descricaoCnae = atividade.getNome();
+        this.tipologiaCnae = atividade.getTipologia().getNome();
+        this.ativo = atividade.getAtivo() ? "Ativo" : "Inativo";
+        this.dataCadastro = atividade.getDataCadastro() != null ? DateUtil.formataBrSimples(atividade.getDataCadastro()) : "-";
 
-        this.usuarioLicenciamento = tipoCaracterizacaoAtividade.getUsuarioLicenciamento() != null ? getNomeUsuario(tipoCaracterizacaoAtividade.getUsuarioLicenciamento()) : "-";
+        this.usuarioLicenciamento = atividade.getUsuarioLicenciamento() != null ? getNomeUsuario(atividade.getUsuarioLicenciamento()) : "-";
 
     }
 
     private String getNomeUsuario(UsuarioLicenciamento usuario){
         return EntradaUnicaWS.ws.buscarPessoaFisicaPeloCpf(usuario.getLogin()).nome;
     }
+
 }

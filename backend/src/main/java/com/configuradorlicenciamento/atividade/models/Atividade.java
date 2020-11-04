@@ -1,5 +1,6 @@
 package com.configuradorlicenciamento.atividade.models;
 
+import com.configuradorlicenciamento.atividade.dtos.AtividadeDispensavelCsv;
 import com.configuradorlicenciamento.atividade.dtos.AtividadeLicenciavelCsv;
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.licenca.models.Licenca;
@@ -7,6 +8,7 @@ import com.configuradorlicenciamento.potencialPoluidor.models.PotencialPoluidor;
 import com.configuradorlicenciamento.requisitoTecnico.models.RequisitoTecnico;
 import com.configuradorlicenciamento.taxaLicenciamento.models.CodigoTaxaLicenciamento;
 import com.configuradorlicenciamento.taxaLicenciamento.models.TaxaLicenciamento;
+import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.models.TipoCaracterizacaoAtividade;
 import com.configuradorlicenciamento.tipologia.models.Tipologia;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -112,6 +114,10 @@ public class Atividade implements Serializable {
     @JoinColumn(name = "id_usuario_licenciamento", referencedColumnName = "id")
     private UsuarioLicenciamento usuarioLicenciamento;
 
+    @OneToMany(mappedBy="atividade")
+    @JsonManagedReference
+    private List<TipoCaracterizacaoAtividade> atividadesCnae;
+
     public Atividade(AtividadeBuilder atividadeBuilder) {
         this.nome = atividadeBuilder.nome;
         this.codigo = atividadeBuilder.codigo;
@@ -137,6 +143,10 @@ public class Atividade implements Serializable {
 
     public AtividadeLicenciavelCsv preparaAtividadeLicenciavelParaCsv() {
         return new AtividadeLicenciavelCsv(this);
+    }
+
+    public AtividadeDispensavelCsv preparaAtividadeDispensavelParaCsv() {
+        return new AtividadeDispensavelCsv(this);
     }
 
     public CodigoTaxaLicenciamento recuperaCodigoTaxaLicenciamentobyTaxas() {
