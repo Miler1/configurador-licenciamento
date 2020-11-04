@@ -93,13 +93,13 @@
 					template(v-slot:activator="{ on, attrs }")
 						v-icon.mr-2(small @click='continuarRascunho(item)', v-on='on', color='#9EBAA4')
 							| fa fa-arrow-circle-right
-					span Continuar cadastro de {{tituloAba}}
+					span Continuar cadastro da {{tituloAba}}
 
 				v-tooltip(bottom, v-if="item.rascunho")
 					template(v-slot:activator="{ on, attrs }")
 						v-icon(small @click='excluirRascunho(item)', v-on='on', color='#F56C6C')
 							|  mdi-delete
-					span Excluir {{tituloAba}}
+					span Excluir rascunho da {{tituloAba}}
 
 			template(v-slot:no-data, v-if="checkNomeItem()")
 				span Não existem {{dadosListagem.nomeItem}} a serem exibidas.
