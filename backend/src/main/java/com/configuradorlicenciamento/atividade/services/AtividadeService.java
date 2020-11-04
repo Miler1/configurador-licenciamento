@@ -27,7 +27,7 @@ import com.configuradorlicenciamento.taxaLicenciamento.models.CodigoTaxaLicencia
 import com.configuradorlicenciamento.taxaLicenciamento.models.TaxaLicenciamento;
 import com.configuradorlicenciamento.taxaLicenciamento.repositories.CodigoTaxaLicenciamentoRepository;
 import com.configuradorlicenciamento.taxaLicenciamento.repositories.TaxaLicenciamentoRepository;
-import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.dtos.AtividadeDispensavelDTO;
+import com.configuradorlicenciamento.atividade.dtos.AtividadeDispensavelDTO;
 import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.models.TipoCaracterizacaoAtividade;
 import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.repositories.TipoCaracterizacaoAtividadeRepository;
 import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.services.TipoCaracterizacaoAtividadeService;
@@ -361,7 +361,7 @@ public class AtividadeService implements IAtividadeService {
     }
 
     @Override
-    public Atividade excluirRascunhoAtividadeLicenciavel(HttpServletRequest request, Integer idAtividade) {
+    public void excluirRascunhoAtividadeLicenciavel(HttpServletRequest request, Integer idAtividade) {
 
         Atividade atividadeRascunho = atividadeRepository.findById(idAtividade).get();
 
@@ -370,8 +370,6 @@ public class AtividadeService implements IAtividadeService {
         relAtividadeParametroAtividadeService.excluir(atividadeRascunho);
 
         atividadeRepository.delete(atividadeRascunho);
-
-        return atividadeRascunho;
 
     }
 
