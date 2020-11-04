@@ -25,7 +25,7 @@
 
 import GridListagem from '@/components/GridListagem';
 import RelatorioService from '@/services/relatorio.service';
-import AtividadeService from '@/services/atividade.service';
+import AtividadeService from '@/services/atividade/dispensavel.service';
 import snackbar from '@/services/snack.service';
 import { HEADER } from '@/utils/dadosHeader/ListagemAtividadeLicenciavelHeader';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';

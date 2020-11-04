@@ -1,4 +1,4 @@
-package com.configuradorlicenciamento.tipoCaracterizacaoAtividade.dtos;
+package com.configuradorlicenciamento.atividade.dtos;
 
 import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeEdicaoDTO;
 import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
@@ -17,16 +17,16 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AtividadeDispensavelEdicaoDTO {
 
-    private Integer idTipoCaracterizacaoAtividade;
+    private final Integer id;
 
-    private List<RelacaoCnaeTipologia> cnaesTipologia;
+    private final List<RelacaoCnaeTipologia> cnaesTipologia;
 
-    private List<PerguntaEdicaoDTO> perguntas;
+    private final List<PerguntaEdicaoDTO> perguntas;
 
     public AtividadeDispensavelEdicaoDTO(
-            Integer idTipoCaracterizacaoAtividade, AtividadeCnae atividadeCnae, Tipologia tipologia, Boolean foraMunicipio, List<Pergunta> perguntas) {
+            Integer id, AtividadeCnae atividadeCnae, Tipologia tipologia, Boolean foraMunicipio, List<Pergunta> perguntas) {
 
-        this.idTipoCaracterizacaoAtividade = idTipoCaracterizacaoAtividade;
+        this.id = id;
 
         this.cnaesTipologia = new ArrayList<>();
         this.cnaesTipologia.add(new AtividadeDispensavelEdicaoDTO.RelacaoCnaeTipologia(atividadeCnae, tipologia, foraMunicipio));
