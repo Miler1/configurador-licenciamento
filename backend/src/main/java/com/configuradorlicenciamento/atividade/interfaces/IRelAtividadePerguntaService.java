@@ -1,4 +1,4 @@
-package com.configuradorlicenciamento.tipoCaracterizacaoAtividade.interfaces;
+package com.configuradorlicenciamento.atividade.interfaces;
 
 import com.configuradorlicenciamento.atividade.models.Atividade;
 import com.configuradorlicenciamento.pergunta.dtos.PerguntaDTO;

@@ -3,8 +3,7 @@ package com.configuradorlicenciamento.tipoCaracterizacaoAtividade.models;
 import com.configuradorlicenciamento.atividade.models.Atividade;
 import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
-import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.dtos.AtividadeDispensavelCsv;
-import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +12,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Date;
 
 @Getter
 @Setter
@@ -30,6 +28,7 @@ public class TipoCaracterizacaoAtividade implements Serializable {
     @NotNull(message = "{validacao.notnull}")
     @ManyToOne
     @JoinColumn(name = "id_atividade", referencedColumnName = "id")
+    @JsonBackReference
     private Atividade atividade;
 
     @NotNull(message = "{validacao.notnull}")
@@ -50,14 +49,6 @@ public class TipoCaracterizacaoAtividade implements Serializable {
     @NotNull(message = "{validacao.notnull}")
     private Boolean ativo;
 
-    @NotNull(message = "{validacao.notnull}")
-    private Date dataCadastro;
-
-    @NotNull(message = "{validacao.notnull}")
-    @ManyToOne
-    @JoinColumn(name = "id_usuario_licenciamento", referencedColumnName = "id")
-    private UsuarioLicenciamento usuarioLicenciamento;
-
     public TipoCaracterizacaoAtividade(TipoCaracterizacaoAtividadeBuilder tipoCaracterizacaoAtividadeBuilder) {
         this.atividade = tipoCaracterizacaoAtividadeBuilder.atividade;
         this.atividadeCnae = tipoCaracterizacaoAtividadeBuilder.atividadeCnae;
@@ -65,8 +56,6 @@ public class TipoCaracterizacaoAtividade implements Serializable {
         this.licenciamentoSimplificado = tipoCaracterizacaoAtividadeBuilder.licenciamentoSimplificado;
         this.licenciamentoDeclaratorio = tipoCaracterizacaoAtividadeBuilder.licenciamentoDeclaratorio;
         this.ativo = tipoCaracterizacaoAtividadeBuilder.ativo;
-        this.dataCadastro = tipoCaracterizacaoAtividadeBuilder.dataCadastro;
-        this.usuarioLicenciamento = tipoCaracterizacaoAtividadeBuilder.usuarioLicenciamento;
     }
 
     public static class TipoCaracterizacaoAtividadeBuilder {
@@ -77,8 +66,6 @@ public class TipoCaracterizacaoAtividade implements Serializable {
         private Boolean licenciamentoSimplificado;
         private Boolean licenciamentoDeclaratorio;
         private Boolean ativo;
-        private Date dataCadastro;
-        private UsuarioLicenciamento usuarioLicenciamento;
 
         public TipoCaracterizacaoAtividadeBuilder() {
         }
@@ -113,23 +100,8 @@ public class TipoCaracterizacaoAtividade implements Serializable {
             return this;
         }
 
-        public TipoCaracterizacaoAtividadeBuilder setDataCadastro(Date dataCadastro) {
-            this.dataCadastro = dataCadastro;
-            return this;
-        }
-
-        public TipoCaracterizacaoAtividadeBuilder setUsuarioLicencimento(UsuarioLicenciamento usuarioLicencimento) {
-            this.usuarioLicenciamento = usuarioLicencimento;
-            return this;
-        }
-
         public TipoCaracterizacaoAtividade build() { return new TipoCaracterizacaoAtividade(this); }
 
-    }
-
-    public AtividadeDispensavelCsv preparaAtividadeDispensavelParaCsv() {
-
-        return new AtividadeDispensavelCsv(this);
     }
 
 }

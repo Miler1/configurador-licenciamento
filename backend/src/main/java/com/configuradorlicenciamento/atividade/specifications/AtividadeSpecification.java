@@ -16,6 +16,10 @@ public class AtividadeSpecification {
         return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.notLike(criteriaBuilder.lower(root.get("codigo")), "0000");
     }
 
+    public static Specification<Atividade> filtrarAtividadesDispensaveis() {
+        return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(criteriaBuilder.lower(root.get("codigo")), "0000");
+    }
+
     public static Specification<Atividade> atividadeNome(String nome) {
 
         return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(

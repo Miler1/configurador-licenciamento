@@ -1,5 +1,4 @@
-
-import ApiService from './api.service';
+import ApiService from '../api.service';
 
 export default {
 
@@ -29,7 +28,7 @@ export default {
 
 	},
 
-	findById: async (idAtividade) => ApiService.get('atividadeLicenciavel/findById/' + idAtividade ),
+	findByIdAtividadeLicenciavel: async (idAtividade) => ApiService.get('atividadeLicenciavel/findById/' + idAtividade ),
 
 	excluirRascunhoAtividadeLicenciavel: async (idAtividadeLicenciavel) => ApiService.post('atividadeLicenciavel/excluirRascunho/' + idAtividadeLicenciavel)
 
