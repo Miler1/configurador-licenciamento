@@ -169,16 +169,23 @@ export default {
 				window.scrollTo(0, 0);
 
 				let retorno = AtividadeService.cadastrarAtividadeLicenciavel(this.atividadeLicenciavel)
-					.then(() => {
+					.then((response) => {
+
+						if (response.status === 200) {
+							return true;
+						}
+
+						snackbar.alert("Algo deu errado. Por favor, tente novamente mais tarde. ", snackbar.type.WARN);
+
+						return false;
 
 					})
 					.catch(error => {
 
-						console.log(this);
-						console.log(this.atividadeLicenciavelBkp);
-
+						console.error(error);
 						this.atividadeLicenciavel = this.atividadeLicenciavelBkp;
 						this.handleError(error);
+						return false;
 
 					});
 
@@ -255,13 +262,14 @@ export default {
 										return true;
 									}
 
+									snackbar.alert("Algo deu errado. Por favor, tente novamente mais tarde. ", snackbar.type.WARN);
+
 									return false;
 
 								})
 								.catch(error => {
 
 									console.error(error);
-
 									this.handleError(error, true);
 									return false;
 
@@ -269,8 +277,6 @@ export default {
 
 							if (retorno) {
 								this.handleSuccess(true);
-							} else {
-								snackbar.alert("Algo deu errado. Por favor, tente novamente mais tarde. ", snackbar.type.WARN);
 							}
 
 						}
