@@ -1,10 +1,15 @@
 package com.configuradorlicenciamento.atividade.services;
 
 import com.configuradorlicenciamento.atividade.dtos.AtividadeDispensavelCsv;
+import com.configuradorlicenciamento.atividade.dtos.AtividadeDispensavelDTO;
+import com.configuradorlicenciamento.atividade.dtos.AtividadeDispensavelEdicaoDTO;
 import com.configuradorlicenciamento.atividade.interfaces.IAtividadeDispensavelService;
+import com.configuradorlicenciamento.atividade.interfaces.IRelAtividadePerguntaService;
 import com.configuradorlicenciamento.atividade.models.Atividade;
+import com.configuradorlicenciamento.atividade.models.RelAtividadePergunta;
 import com.configuradorlicenciamento.atividade.models.TipoAtividade;
 import com.configuradorlicenciamento.atividade.repositories.AtividadeRepository;
+import com.configuradorlicenciamento.atividade.repositories.RelAtividadePerguntaRepository;
 import com.configuradorlicenciamento.atividade.repositories.TipoAtividadeRepository;
 import com.configuradorlicenciamento.atividade.specifications.AtividadeSpecification;
 import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
@@ -15,12 +20,6 @@ import com.configuradorlicenciamento.pergunta.models.Pergunta;
 import com.configuradorlicenciamento.pergunta.repositories.PerguntaRepository;
 import com.configuradorlicenciamento.potencialPoluidor.models.PotencialPoluidor;
 import com.configuradorlicenciamento.potencialPoluidor.repositories.PotencialPoluidorRepository;
-import com.configuradorlicenciamento.atividade.dtos.AtividadeDispensavelDTO;
-import com.configuradorlicenciamento.atividade.dtos.AtividadeDispensavelEdicaoDTO;
-import com.configuradorlicenciamento.atividade.interfaces.IRelAtividadePerguntaService;
-import com.configuradorlicenciamento.atividade.models.RelAtividadePergunta;
-import com.configuradorlicenciamento.atividade.repositories.RelAtividadePerguntaRepository;
-import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.repositories.TipoCaracterizacaoAtividadeRepository;
 import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.services.TipoCaracterizacaoAtividadeService;
 import com.configuradorlicenciamento.tipologia.models.Tipologia;
 import com.configuradorlicenciamento.tipologia.repositories.TipologiaRepository;
@@ -75,10 +74,6 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
     @Override
     public List<Atividade> salvarAtividadeDispensavel(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO) {
 
-        Object login = request.getSession().getAttribute("login");
-
-        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
-
         List<Atividade> atividades = new ArrayList<>();
 
         atividadeDispensavelDTO.getCnaesTipologia().forEach(cnaeTipologia -> {
@@ -104,8 +99,6 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
                     .setV1(false)
                     .setRascunho(false)
                     .setTiposAtividades(tiposAtividades)
-                    .setDataCadastro(new Date())
-                    .setUsuarioLicenciamento(usuarioLicenciamento)
                     .build();
 
             atividadeRepository.save(atividade);
@@ -119,14 +112,11 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
         });
 
         return atividades;
+
     }
 
     @Override
     public Atividade editarAtividadeLicenciavel(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO) {
-
-        Object login = request.getSession().getAttribute("login");
-
-        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
         AtividadeDispensavelDTO.RelacaoCnaeTipologia cnaeTipologia = atividadeDispensavelDTO.getCnaesTipologia().get(0);
 
@@ -143,14 +133,13 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
         assert atividade != null;
         tipologia.ifPresent(atividade::setTipologia);
         atividade.setDentroMunicipio(!cnaeTipologia.getForaMunicipio());
-        atividade.setDataCadastro(new Date());
-        atividade.setUsuarioLicenciamento(usuarioLicenciamento);
 
         atividadeRepository.save(atividade);
 
         relAtividadePerguntaService.editar(atividade, atividadeDispensavelDTO.getPerguntas());
 
         return atividade;
+
     }
 
     @Override
@@ -162,6 +151,7 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
         atividade.setAtivo(!atividade.getAtivo());
 
         return atividadeRepository.save(atividade);
+
     }
 
     @Override
@@ -234,4 +224,5 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
                 perguntas);
 
     }
+
 }

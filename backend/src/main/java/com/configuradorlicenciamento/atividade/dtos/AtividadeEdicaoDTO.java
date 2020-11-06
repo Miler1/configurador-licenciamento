@@ -43,7 +43,7 @@ public class AtividadeEdicaoDTO {
 
     private final List<Licenca> licencas;
 
-    public AtividadeEdicaoDTO (Atividade atividade) {
+    public AtividadeEdicaoDTO(Atividade atividade) {
 
         this.id = atividade.getId();
         this.nomeAtividade = atividade.getNome();
