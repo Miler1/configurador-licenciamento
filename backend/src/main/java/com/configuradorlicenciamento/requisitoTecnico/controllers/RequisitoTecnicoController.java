@@ -64,7 +64,7 @@ public class RequisitoTecnicoController extends DefaultController {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        RequisitoTecnico requisitoTecnico = requisitoTecnicoService.ativarDesativar(idRequisito);
+        RequisitoTecnico requisitoTecnico = requisitoTecnicoService.ativarDesativar(request, idRequisito);
 
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())

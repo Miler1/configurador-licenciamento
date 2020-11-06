@@ -1,6 +1,5 @@
-package com.configuradorlicenciamento.tipoCaracterizacaoAtividade.models;
+package com.configuradorlicenciamento.atividade.models;
 
-import com.configuradorlicenciamento.atividade.models.Atividade;
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.pergunta.models.Pergunta;
 import lombok.Getter;

@@ -58,6 +58,19 @@ public class ParametroController extends DefaultController {
 
     }
 
+    @PostMapping(value = "/ativarDesativar/{idParametro}")
+    public ResponseEntity<Parametro> editar(HttpServletRequest request, @PathVariable("idParametro") Integer idParametro) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        Parametro parametro = parametroService.ativarDesativar(request, idParametro);
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(parametro);
+
+    }
+
     @PostMapping(value = "/listar")
     public ResponseEntity<Page<Parametro>> listar(HttpServletRequest request,
                                                   @PageableDefault(size = 20) Pageable pageable,

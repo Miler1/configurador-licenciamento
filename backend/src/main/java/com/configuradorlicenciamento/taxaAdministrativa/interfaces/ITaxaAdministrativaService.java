@@ -22,4 +22,6 @@ public interface ITaxaAdministrativaService {
 
     TaxaAdministrativa editar(HttpServletRequest request, TaxaAdministrativaDTO taxaAdministrativaDTO);
 
+    TaxaAdministrativa ativarDesativar(HttpServletRequest request, Integer idTaxaAdministrativa);
+
 }

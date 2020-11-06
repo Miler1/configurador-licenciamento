@@ -1,5 +1,7 @@
 package com.configuradorlicenciamento.taxaLicenciamento.services;
 
+import com.configuradorlicenciamento.atividade.models.Atividade;
+import com.configuradorlicenciamento.atividade.repositories.AtividadeRepository;
 import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
 import com.configuradorlicenciamento.configuracao.exceptions.ConflictException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
@@ -34,11 +36,16 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
 
     public static final String TAXA_EXISTENTE = "Já existe uma tabela com o mesmo código.";
 
+    private static final String VINCULO_EXISTENTE = "Não é possível inativar o registro pois, ele se encontra vinculado a uma atividade ativa no sistema.";
+
     @Autowired
     CodigoTaxaLicenciamentoRepository codigoTaxaLicenciamentoRepository;
 
     @Autowired
     UsuarioLicenciamentoRepository usuarioLicenciamentoRepository;
+
+    @Autowired
+    AtividadeRepository atividadeRepository;
 
     @Autowired
     ITaxaLicenciamentoService taxaLicenciamentoService;
@@ -124,6 +131,23 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
 
         CodigoTaxaLicenciamento codigoTaxaLicenciamento = codigoTaxaLicenciamentoRepository.findById(idTaxaLicenciamento).orElseThrow(() ->
                 new ConfiguradorNotFoundException("Não Foi possível Ativar/Desativar a taxa de licenciamento"));
+
+        List<TaxaLicenciamento> taxasLicencasList = taxaLicenciamentoService.findByCodigo(codigoTaxaLicenciamento);
+
+        taxasLicencasList.forEach(taxasLicencas -> {
+
+            List<Atividade> atividadesList = atividadeRepository.findByTaxasLicenciamento(taxasLicencas);
+            atividadesList.forEach(atividade -> {
+
+                boolean ativo = atividade.getAtivo();
+
+                if (ativo) {
+                    throw new ConflictException(VINCULO_EXISTENTE);
+                }
+
+            });
+
+        });
 
         codigoTaxaLicenciamento.setAtivo(!codigoTaxaLicenciamento.getAtivo());
 

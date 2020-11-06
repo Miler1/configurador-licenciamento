@@ -25,7 +25,7 @@ import java.util.Date;
 
 @RestController
 @RequestMapping("/atividadeLicenciavel/")
-public class AtividadeController extends DefaultController {
+public class AtividadeLicenciavelController extends DefaultController {
 
     private static final String HEADER_CORS = "Access-Control-Allow-Origin";
 
@@ -33,7 +33,7 @@ public class AtividadeController extends DefaultController {
     IAtividadeService atividadeService;
 
     @PostMapping(value = "salvar")
-    public ResponseEntity<Atividade> salvarAtividadeLicenciavel(HttpServletRequest request, @Valid @RequestBody AtividadeLicenciavelDTO atividadeLicenciavelDTO) throws Exception {
+    public ResponseEntity<Atividade> salvar(HttpServletRequest request, @Valid @RequestBody AtividadeLicenciavelDTO atividadeLicenciavelDTO) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
@@ -59,7 +59,7 @@ public class AtividadeController extends DefaultController {
     }
 
     @PostMapping(value = "salvarRascunho")
-    public ResponseEntity<Atividade> salvarRascunhoAtividadeLicenciavel(HttpServletRequest request, @Valid @RequestBody AtividadeLicenciavelDTO atividadeLicenciavelDTO) throws Exception {
+    public ResponseEntity<Atividade> salvarRascunho(HttpServletRequest request, @Valid @RequestBody AtividadeLicenciavelDTO atividadeLicenciavelDTO) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
@@ -78,7 +78,7 @@ public class AtividadeController extends DefaultController {
     }
 
     @PostMapping(value = "excluirRascunho/{idAtividadeLicenciavel}")
-    public ResponseEntity<String> excluirRascunhoAtividadeLicenciavel(HttpServletRequest request, @PathVariable("idAtividadeLicenciavel") Integer idAtividadeLicenciavel) throws Exception {
+    public ResponseEntity<String> excluirRascunho(HttpServletRequest request, @PathVariable("idAtividadeLicenciavel") Integer idAtividadeLicenciavel) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
@@ -91,9 +91,9 @@ public class AtividadeController extends DefaultController {
     }
 
     @PostMapping(value = "listar")
-    public ResponseEntity<Page<Atividade>> listarAtividadesLicenciaveis(HttpServletRequest request,
-                                                                        @PageableDefault(size = 20) Pageable pageable,
-                                                                        @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
+    public ResponseEntity<Page<Atividade>> listar(HttpServletRequest request,
+                                                    @PageableDefault(size = 20) Pageable pageable,
+                                                    @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 

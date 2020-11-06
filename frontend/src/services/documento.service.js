@@ -6,6 +6,8 @@ export default {
 
 	editar: async (documento) => ApiService.post('/documento/editar', documento),
 
+	ativarDesativar: async (idDocumento) => ApiService.post('/documento/ativarDesativar/' + idDocumento),
+
 	listar: async (documentosFiltro) => {
 		if(documentosFiltro){
 			return ApiService.post(`documento/listar/?

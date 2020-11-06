@@ -23,7 +23,7 @@
 
 import GridListagem from '@/components/GridListagem';
 import RelatorioService from '@/services/relatorio.service';
-import TipoCaracterizacaoAtividadeService from '@/services/tipoCaracterizacaoAtividade.service';
+import AtividadeService from '@/services/atividade/dispensavel.service';
 import snackbar from '@/services/snack.service';
 import { HEADER } from '@/utils/dadosHeader/ListagemAtividadeDispensavelHeader';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
@@ -46,7 +46,7 @@ export default {
 			parametrosFiltro: {
 				pagina: 0,
 				itemsPorPagina: 10,
-				tipoOrdenacao: 'atividadeCnae.nome,asc',
+				tipoOrdenacao: 'atividadeCnae.codigo,asc',
 				stringPesquisa: ''
 			},
 			buttonCadastrar: true
@@ -56,16 +56,17 @@ export default {
 	methods: {
 
 		gerarRelatorio() {
-			RelatorioService.baixarRelatorio("/tipoCaracterizacaoAtividade/atividadeDispensavel/relatorio");
+			RelatorioService.baixarRelatorio("/atividadeDispensavel/relatorio");
 		},
 
 		updatePagination(parametrosFiltro) {
 
-			TipoCaracterizacaoAtividadeService.listarAtividadeDispensavel(parametrosFiltro)
+			AtividadeService.listarAtividadeDispensavel(parametrosFiltro)
 
 				.then((response) => {
 
 					this.dadosListagem = response.data;
+					this.prepararDadosParaListagem();
 					this.dadosListagem.nomeItem = 'CNAEs dispensáveis';
 
 				})
@@ -75,6 +76,16 @@ export default {
 					snackbar.alert(ERROR_MESSAGES.atividadeDispensavel.listagem + erro.message);
 
 				});
+
+		},
+
+		prepararDadosParaListagem(){
+
+			this.dadosListagem.content.forEach(dado => {
+
+				dado.codigoAtividadeCnae = dado.atividadesCnae[0].atividadeCnae.codigo;
+
+			});
 
 		},
 
@@ -99,8 +110,8 @@ export default {
 			this.$fire({
 
 				title: item.ativo ?
-					'<p class="title-modal-confirm">Desativar CNAE dispensável - ' + item.atividadeCnae.nome+ '</p>' :
-					'<p class="title-modal-confirm">Ativar CNAE dispensável - ' + item.atividadeCnae.nome+ '</p>',
+					'<p class="title-modal-confirm">Desativar CNAE dispensável - ' + item.nome+ '</p>' :
+					'<p class="title-modal-confirm">Ativar CNAE dispensável - ' + item.nome+ '</p>',
 
 				html: item.ativo ?
 					`<p class="message-modal-confirm">Ao desativar o CNAE dispensável, ele não estará mais disponível no sistema.</p>
@@ -124,9 +135,7 @@ export default {
 
 				if(result.value) {
 
-					item.ativo = !item.ativo;
-
-					TipoCaracterizacaoAtividadeService.ativarDesativarAtividadeDispensavel(item.id)
+					AtividadeService.ativarDesativarAtividadeDispensavel(item.id)
 						.then(() => {
 
 							if (item.ativo) {

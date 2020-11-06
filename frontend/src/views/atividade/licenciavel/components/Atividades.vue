@@ -12,7 +12,7 @@
 			v-expansion-panel-content
 				v-form(ref="atividadeLicenciavel")
 					v-row
-						v-col(cols="12", md="3")
+						v-col(cols="12", md="2")
 							v-label Código
 							v-text-field#QA-input-atividade-codigo(
 								outlined,
@@ -25,7 +25,7 @@
 								required,
 								dense
 							)
-						v-col(cols="12", md="9")
+						v-col(cols="12", md="10")
 							v-label Nome
 							v-text-field#QA-input-atividade-nome(
 								outlined,
@@ -38,7 +38,7 @@
 								dense
 							)
 					v-row
-						v-col(cols="12", md="6")
+						v-col(cols="12", md="4")
 							v-label Tipologia
 							v-autocomplete#QA-select-atividade-licenciavel-tipologia(
 								outlined,
@@ -56,7 +56,7 @@
 								required,
 								return-object=true
 							)
-						v-col(cols="12", md="2")
+						v-col(cols="12", md="4")
 							v-label Tipos de licenças
 							v-autocomplete#QA-select-atividade-licenciavel-licenca(
 								outlined,
@@ -759,7 +759,7 @@ export default {
 			this.exibirIconeRemover = false;
 			this.isCadastro = false;
 
-		}else{
+		} else{
 			this.isCadastro = true;
 		}
 

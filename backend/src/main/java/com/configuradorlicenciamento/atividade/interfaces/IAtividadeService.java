@@ -5,7 +5,7 @@ import com.configuradorlicenciamento.atividade.dtos.AtividadeLicenciavelDTO;
 import com.configuradorlicenciamento.atividade.dtos.AtividadeLicenciavelEdicaoDTO;
 import com.configuradorlicenciamento.atividade.models.Atividade;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
-import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.dtos.AtividadeDispensavelDTO;
+import com.configuradorlicenciamento.atividade.dtos.AtividadeDispensavelDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -30,7 +30,7 @@ public interface IAtividadeService {
 
     Atividade editarRascunhoAtividadeLicenciavel(HttpServletRequest request, AtividadeLicenciavelDTO atividadeLicenciavelDTO);
 
-    Atividade excluirRascunhoAtividadeLicenciavel(HttpServletRequest request, Integer idAtividade);
+    void excluirRascunhoAtividadeLicenciavel(HttpServletRequest request, Integer idAtividade);
 
     AtividadeLicenciavelEdicaoDTO findById(Integer idAtividadeLicenciavel);
 

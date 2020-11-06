@@ -25,7 +25,7 @@
 
 import GridListagem from '@/components/GridListagem';
 import RelatorioService from '@/services/relatorio.service';
-import AtividadeService from '@/services/atividade.service';
+import AtividadeService from '@/services/atividade/licenciavel.service';
 import snackbar from '@/services/snack.service';
 import { HEADER } from '@/utils/dadosHeader/ListagemAtividadeLicenciavelHeader';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@/utils/helpers/messages-utils';
@@ -114,6 +114,7 @@ export default {
 			this.parametrosFiltro.itemsPorPagina = 10;
 			this.parametrosFiltro.tipoOrdenacao = 'nome,asc';
 			this.parametrosFiltro.stringPesquisa = '';
+
 		},
 
 		abrirTelaCadastro() {
@@ -153,8 +154,6 @@ export default {
 			}).then((result) => {
 
 				if(result.value) {
-
-					item.ativo = !item.ativo;
 
 					AtividadeService.ativarDesativarAtividadeLicenciavel(item.id)
 						.then(() => {
