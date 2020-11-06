@@ -63,6 +63,9 @@ public class Atividade implements Serializable {
     @NotNull(message = "{validacao.notnull}")
     private Boolean ativo;
 
+    @NotNull(message = "{validacao.notnull}")
+    private Boolean itemAntigo;
+
     private Boolean dentroEmpreendimento;
 
     @NotNull(message = "{validacao.notnull}")
@@ -121,6 +124,7 @@ public class Atividade implements Serializable {
         this.potencialPoluidor = atividadeBuilder.potencialPoluidor;
         this.siglaSetor = atividadeBuilder.siglaSetor;
         this.ativo = atividadeBuilder.ativo;
+        this.itemAntigo = atividadeBuilder.itemAntigo;
         this.dentroEmpreendimento = atividadeBuilder.dentroEmpreendimento;
         this.dentroMunicipio = atividadeBuilder.dentroMunicipio;
         this.requisitoTecnico = atividadeBuilder.requisitoTecnico;
@@ -168,6 +172,7 @@ public class Atividade implements Serializable {
         private PotencialPoluidor potencialPoluidor;
         private String siglaSetor;
         private Boolean ativo;
+        private Boolean itemAntigo;
         private Boolean dentroEmpreendimento;
         private final Boolean dentroMunicipio;
         private RequisitoTecnico requisitoTecnico;
@@ -229,6 +234,11 @@ public class Atividade implements Serializable {
 
         public AtividadeBuilder setAtivo(Boolean ativo) {
             this.ativo = ativo;
+            return this;
+        }
+
+        public AtividadeBuilder setItemAntigo(Boolean itemAntigo) {
+            this.itemAntigo = itemAntigo;
             return this;
         }
 

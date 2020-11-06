@@ -16,6 +16,9 @@ import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.atividadeCnae.repositories.AtividadeCnaeRepository;
 import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
+import com.configuradorlicenciamento.historicoConfigurador.interfaces.IHistoricoConfiguradorService;
+import com.configuradorlicenciamento.historicoConfigurador.models.FuncionalidadeConfigurador;
+import com.configuradorlicenciamento.historicoConfigurador.models.HistoricoConfigurador;
 import com.configuradorlicenciamento.pergunta.models.Pergunta;
 import com.configuradorlicenciamento.pergunta.repositories.PerguntaRepository;
 import com.configuradorlicenciamento.potencialPoluidor.models.PotencialPoluidor;
@@ -71,6 +74,9 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
     @Autowired
     TipoCaracterizacaoAtividadeService tipoCaracterizacaoAtividadeService;
 
+    @Autowired
+    IHistoricoConfiguradorService historicoConfiguradorService;
+
     @Override
     public List<Atividade> salvarAtividadeDispensavel(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO) {
 
@@ -116,7 +122,7 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
     }
 
     @Override
-    public Atividade editarAtividadeLicenciavel(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO) {
+    public Atividade editarAtividadeDispensavel(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO) {
 
         AtividadeDispensavelDTO.RelacaoCnaeTipologia cnaeTipologia = atividadeDispensavelDTO.getCnaesTipologia().get(0);
 
@@ -186,7 +192,17 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
         List<AtividadeDispensavelCsv> dtos = new ArrayList<>();
 
         for (Atividade atividade : atividades) {
-            dtos.add(atividade.preparaAtividadeDispensavelParaCsv());
+
+            List<HistoricoConfigurador> historicos = historicoConfiguradorService.buscarHistoricoItem(
+                    FuncionalidadeConfigurador.Funcionalidades.ATIVIDADES_LICENCIAVEIS.getTipo(),
+                    atividade.getId()
+            );
+
+            dtos.add(atividade.preparaAtividadeDispensavelParaCsv(
+                    !historicos.isEmpty() ? historicos.get(0).getDataCadastro() : null,
+                    !historicos.isEmpty() ? historicos.get(0).getUsuarioLicenciamento() : null
+            ));
+
         }
 
         return dtos;

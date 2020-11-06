@@ -16,4 +16,6 @@ public class AtividadeLicenciavelDTO {
 
     private List<PorteAtividadeDTO> parametros;
 
+    private String justificativa;
+
 }

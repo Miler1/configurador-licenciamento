@@ -26,6 +26,8 @@ public class HistoricoConfigurador implements Serializable {
     @NotNull(message = "{validacao.notnull}")
     public Integer idItem;
 
+    Integer idItemAntigo;
+
     @NotNull(message = "{validacao.notnull}")
     @OneToOne
     @JoinColumn(name = "id_funcionalidade_configurador", referencedColumnName = "id")
@@ -60,14 +62,16 @@ public class HistoricoConfigurador implements Serializable {
 
     }
 
-    public HistoricoConfigurador(Integer idItem,
+    public HistoricoConfigurador(Integer idItemAtual,
+                                 Integer idItemAntigo,
                                  FuncionalidadeConfigurador funcionalidade,
                                  AcaoConfigurador acao,
                                  String justificativa,
                                  Date dataCadastro,
                                  UsuarioLicenciamento usuarioLicenciamento) {
 
-        this.idItem = idItem;
+        this.idItem = idItemAtual;
+        this.idItemAntigo = idItemAntigo;
         this.funcionalidade = funcionalidade;
         this.acao = acao;
         this.justificativa = justificativa;

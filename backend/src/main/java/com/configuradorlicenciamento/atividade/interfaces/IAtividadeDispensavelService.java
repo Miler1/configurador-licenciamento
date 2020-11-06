@@ -15,7 +15,7 @@ public interface IAtividadeDispensavelService {
 
     List<Atividade> salvarAtividadeDispensavel(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO);
 
-    Atividade editarAtividadeLicenciavel(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO);
+    Atividade editarAtividadeDispensavel(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO);
 
     Atividade ativarDesativar(Integer idAtividadeDispensavel);
 
