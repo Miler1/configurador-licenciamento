@@ -2,7 +2,6 @@ package com.configuradorlicenciamento.requisitoAdministrativo.controllers;
 
 import com.configuradorlicenciamento.configuracao.components.VariaveisAmbientes;
 import com.configuradorlicenciamento.configuracao.controllers.DefaultController;
-
 import com.configuradorlicenciamento.configuracao.enums.Acao;
 import com.configuradorlicenciamento.configuracao.utils.DateUtil;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
@@ -46,7 +45,7 @@ public class RequisitoAdministrativoController extends DefaultController {
 
     }
 
-    @PostMapping(value="/editar")
+    @PostMapping(value = "/editar")
     public ResponseEntity<RequisitoAdministrativo> editar(HttpServletRequest request, @Valid @RequestBody RequisitoAdministrativoDTO requisitoAdministrativoDTO) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
@@ -59,10 +58,23 @@ public class RequisitoAdministrativoController extends DefaultController {
 
     }
 
-    @PostMapping(value="/listar")
+    @PostMapping(value = "/ativarDesativar/{idRequisitoAdministrativo}")
+    public ResponseEntity<RequisitoAdministrativo> ativarDesativar(HttpServletRequest request, @PathVariable("idRequisitoAdministrativo") Integer idRequisitoAdministrativo) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        RequisitoAdministrativo requisitoAdministrativo = requisitoAdministrativoService.ativarDesativar(request, idRequisitoAdministrativo);
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(requisitoAdministrativo);
+
+    }
+
+    @PostMapping(value = "/listar")
     public ResponseEntity<Page<RequisitoAdministrativo>> listar(HttpServletRequest request,
-                                                  @PageableDefault(size = 20) Pageable pageable,
-                                                  @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
+                                                                @PageableDefault(size = 20) Pageable pageable,
+                                                                @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 

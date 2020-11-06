@@ -278,8 +278,7 @@ export default {
 
 				if(result.value) {
 
-					item.ativo = !item.ativo;
-					RequisitoAdministrativoService.editar(item)
+					RequisitoAdministrativoService.ativarDesativar(item.id)
 						.then(() => {
 
 							if(!item.ativo) {
@@ -301,8 +300,6 @@ export default {
 							} else {
 								snackbar.alert(ERROR_MESSAGES.requisitoAdministrativo.ativar);
 							}
-
-							item.ativo = !item.ativo;
 
 						});
 				}

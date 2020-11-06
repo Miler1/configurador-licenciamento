@@ -1,5 +1,9 @@
 package com.configuradorlicenciamento.parametro.services;
 
+import com.configuradorlicenciamento.atividade.models.Atividade;
+import com.configuradorlicenciamento.atividade.models.RelAtividadeParametroAtividade;
+import com.configuradorlicenciamento.atividade.repositories.AtividadeRepository;
+import com.configuradorlicenciamento.atividade.repositories.RelAtividadeParametroAtividadeRepository;
 import com.configuradorlicenciamento.configuracao.exceptions.ConflictException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.configuracao.utils.StringUtil;
@@ -14,8 +18,8 @@ import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLi
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,8 +33,16 @@ public class ParametroService implements IParametroService {
 
     private static final String PARAMETRO_EXISTENTE = "Já existe um parâmetro com o mesmo código.";
 
+    private static final String VINCULO_EXISTENTE = "Não é possível inativar o registro pois, ele se encontra vinculado a uma atividade ativa no sistema.";
+
     @Autowired
     ParametroRepository parametroRepository;
+
+    @Autowired
+    RelAtividadeParametroAtividadeRepository relAtividadeParametroAtividadeRepository;
+
+    @Autowired
+    AtividadeRepository atividadeRepository;
 
     @Autowired
     UsuarioLicenciamentoRepository usuarioLicenciamentoRepository;
@@ -91,6 +103,43 @@ public class ParametroService implements IParametroService {
                     parametro.setUsuarioLicenciamento(usuarioLicenciamento);
                     parametro.setDataCadastro(new Date());
                     parametro.setAtivo(parametroDTO.getAtivo());
+                    return parametro;
+                });
+
+        parametroRepository.save(parametroSalvo.get());
+
+        return parametroSalvo.get();
+
+    }
+
+    @Override
+    public Parametro ativarDesativar(HttpServletRequest request, Integer idParametro) {
+
+        Object login = request.getSession().getAttribute("login");
+
+        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
+
+        Parametro parametroExistente = parametroRepository.findById(idParametro).get();
+
+        List<RelAtividadeParametroAtividade> relAtividadeParametroAtividadeList = relAtividadeParametroAtividadeRepository.findByParametro(parametroExistente);
+
+        relAtividadeParametroAtividadeList.forEach(relAtividadeParametroAtividade -> {
+
+            Atividade atividade = atividadeRepository.findById(relAtividadeParametroAtividade.getAtividade().getId()).get();
+
+            boolean ativo = atividade.getAtivo();
+
+            if (ativo) {
+                throw new ConflictException(VINCULO_EXISTENTE);
+            }
+
+        });
+
+        Optional<Parametro> parametroSalvo = parametroRepository.findById(idParametro)
+                .map(parametro -> {
+                    parametro.setAtivo(!parametroExistente.getAtivo());
+                    parametro.setUsuarioLicenciamento(usuarioLicenciamento);
+                    parametro.setDataCadastro(new Date());
                     return parametro;
                 });
 

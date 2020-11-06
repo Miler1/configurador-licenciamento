@@ -4,7 +4,9 @@ export default {
 
 	cadastrar: async (requisitoAdministrativo) => ApiService.post('/requisitoAdministrativo/salvar', requisitoAdministrativo ),
 
-	editar: async (tipologia) => ApiService.post('/requisitoAdministrativo/editar', tipologia),
+	editar: async (requisitoAdministrativo) => ApiService.post('/requisitoAdministrativo/editar', requisitoAdministrativo),
+
+	ativarDesativar: async (idRequisitoAdministrativo) => ApiService.post('/requisitoAdministrativo/ativarDesativar/' + idRequisitoAdministrativo),
 
 	listar: async (parametrosFiltro) => {
 

@@ -18,7 +18,7 @@ public interface IRequisitoTecnicoService {
 
     RequisitoTecnico editar(HttpServletRequest request, RequisitoTecnicoDTO requisitoTecnicoDTO);
 
-    RequisitoTecnico ativarDesativar(Integer idRequisito);
+    RequisitoTecnico ativarDesativar(HttpServletRequest request, Integer idRequisito);
 
     Page<RequisitoTecnico> listar(Pageable pageable, FiltroPesquisa filtro);
 

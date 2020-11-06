@@ -16,6 +16,8 @@ public interface IRequisitoAdministrativoService {
 
     RequisitoAdministrativo editar(HttpServletRequest request, RequisitoAdministrativoDTO requisitoAdministrativoDTO);
 
+    RequisitoAdministrativo ativarDesativar(HttpServletRequest request, Integer idRequisitoAdministrativo);
+
     Page<RequisitoAdministrativo> listar(Pageable pageable, FiltroPesquisa filtro);
 
     List<RequisitoAdministrativoCsv> listarRequisitosAdministrativosParaCsv();

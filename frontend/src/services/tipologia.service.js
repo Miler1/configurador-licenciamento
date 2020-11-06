@@ -6,6 +6,8 @@ export default {
 
 	editar: async (tipologia) => ApiService.post('/tipologia/editar', tipologia),
 
+	ativarDesativar: async (idTipologia) => ApiService.post('tipologia/ativarDesativar/' + idTipologia),
+
 	listar: async (parametrosFiltro) => {
 		
 		if (parametrosFiltro) {

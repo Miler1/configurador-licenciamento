@@ -1,5 +1,6 @@
 package com.configuradorlicenciamento.taxaLicenciamento.repositories;
 
+import com.configuradorlicenciamento.licenca.models.Licenca;
 import com.configuradorlicenciamento.taxaLicenciamento.models.CodigoTaxaLicenciamento;
 import com.configuradorlicenciamento.taxaLicenciamento.models.TaxaLicenciamento;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,5 +13,7 @@ import java.util.List;
 public interface TaxaLicenciamentoRepository extends JpaRepository<TaxaLicenciamento, Integer>, JpaSpecificationExecutor<TaxaLicenciamento> {
 
     List<TaxaLicenciamento> findByCodigo(CodigoTaxaLicenciamento codigoTaxaLicenciamento);
+
+    List<TaxaLicenciamento> findByLicenca(Licenca licenca);
 
 }

@@ -6,7 +6,6 @@ import com.configuradorlicenciamento.configuracao.enums.Acao;
 import com.configuradorlicenciamento.configuracao.utils.DateUtil;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.configuracao.utils.csv.CustomMappingStrategy;
-import com.configuradorlicenciamento.documento.models.Documento;
 import com.configuradorlicenciamento.licenca.dtos.LicencaCsv;
 import com.configuradorlicenciamento.licenca.dtos.LicencaDTO;
 import com.configuradorlicenciamento.licenca.interfaces.ILicencaService;
@@ -52,6 +51,19 @@ public class LicencaController extends DefaultController {
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
         Licenca licenca = licencaService.editar(request, licencaDTO);
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(licenca);
+
+    }
+
+    @PostMapping(value = "/ativarDesativar/{idLicenca}")
+    public ResponseEntity<Licenca> ativarDesativar(HttpServletRequest request, @PathVariable("idLicenca") Integer idLicenca) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        Licenca licenca = licencaService.ativarDesativar(request, idLicenca);
 
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())

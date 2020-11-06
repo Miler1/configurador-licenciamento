@@ -145,11 +145,7 @@ export default {
 						.catch(error => {
 
 							console.error(error);
-							if(!item.ativo) {
-								snackbar.alert(ERROR_MESSAGES.requisitoTecnico.desativar);
-							} else {
-								snackbar.alert(ERROR_MESSAGES.requisitoTecnico.ativar);
-							}
+							snackbar.alert(error.message);
 
 						});
 
