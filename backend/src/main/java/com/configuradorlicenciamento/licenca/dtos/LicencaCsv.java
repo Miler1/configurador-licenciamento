@@ -21,7 +21,7 @@ public class LicencaCsv implements Serializable {
     private String nome;
 
     @CsvBindByName(column = "Prazo de validade (anos)")
-    @CsvBindByPosition(position = 2)
+    @CsvBindByPosition(position = 3)
     private String validadeEmAnos;
 
     @CsvBindByName(column = "Tipo")
@@ -29,7 +29,7 @@ public class LicencaCsv implements Serializable {
     private String sigla;
 
     @CsvBindByName(column = "Finalidade")
-    @CsvBindByPosition(position = 3)
+    @CsvBindByPosition(position = 2)
     private String finalidade;
 
     @CsvBindByName(column = "Status")
