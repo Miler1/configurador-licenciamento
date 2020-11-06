@@ -117,6 +117,7 @@ public class AtividadeLicenciavelController extends DefaultController {
         mappingStrategy.setType(AtividadeLicenciavelCsv.class);
 
         downloadCsv(atividadeService.listarAtividadesLicenciaveisParaCsv(), nome, mappingStrategy, response);
+
     }
 
     @GetMapping(value = "findById/{idAtividadeLicenciavel}")

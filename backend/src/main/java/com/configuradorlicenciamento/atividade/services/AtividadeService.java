@@ -281,12 +281,16 @@ public class AtividadeService implements IAtividadeService {
 
         relAtividadeParametroAtividadeService.salvar(atividade, atividadeLicenciavelDTO.getParametros().get(0));
 
-        historicoConfiguradorService.salvar(
-                request,
-                atividade.getId(),
-                FuncionalidadeConfigurador.Funcionalidades.ATIVIDADES_LICENCIAVEIS.getTipo(),
-                AcaoConfigurador.Acoes.CADASTRAR.getAcao()
-        );
+        if (atividadeLicenciavelDTO.getJustificativa() == null) {
+
+            historicoConfiguradorService.salvar(
+                    request,
+                    atividade.getId(),
+                    FuncionalidadeConfigurador.Funcionalidades.ATIVIDADES_LICENCIAVEIS.getTipo(),
+                    AcaoConfigurador.Acoes.CADASTRAR.getAcao()
+            );
+
+        }
 
         return atividade;
 
@@ -298,6 +302,8 @@ public class AtividadeService implements IAtividadeService {
         Optional<Atividade> atividadeSalva = atividadeRepository.findById(atividadeLicenciavelDTO.getDados().getId());
 
         Atividade atividadeAntiga;
+
+        Atividade atividadeAtual = new Atividade();
 
         if (atividadeSalva.isPresent()) {
 
@@ -311,7 +317,7 @@ public class AtividadeService implements IAtividadeService {
 
             atividadeLicenciavelDTO.getDados().setId(null);
 
-            Atividade atividadeAtual = salvarAtividadeLicenciavel(request, atividadeLicenciavelDTO);
+            atividadeAtual = salvarAtividadeLicenciavel(request, atividadeLicenciavelDTO);
 
             historicoConfiguradorService.editar(
                     request,
@@ -321,12 +327,9 @@ public class AtividadeService implements IAtividadeService {
                     AcaoConfigurador.Acoes.EDITAR.getAcao(),
                     atividadeLicenciavelDTO.getJustificativa());
 
-
-            return atividadeAtual;
-
         }
 
-        return null;
+        return atividadeAtual;
 
     }
 
