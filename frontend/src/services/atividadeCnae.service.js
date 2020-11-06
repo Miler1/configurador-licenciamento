@@ -6,6 +6,8 @@ export default {
 
 	editar: async (atividadeCnae) => ApiService.post('/atividadeCnae/editar', atividadeCnae),
 
+	ativarDesativar: async (idAtividadeCnae) => ApiService.post('atividadeCnae/ativarDesativar/' + idAtividadeCnae),
+
 	listar: async (parametrosFiltro) => {
 		
 		if (parametrosFiltro) {

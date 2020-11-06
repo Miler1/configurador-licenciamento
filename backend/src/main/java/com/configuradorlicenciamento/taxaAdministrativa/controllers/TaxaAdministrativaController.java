@@ -3,8 +3,8 @@ package com.configuradorlicenciamento.taxaAdministrativa.controllers;
 import com.configuradorlicenciamento.configuracao.components.VariaveisAmbientes;
 import com.configuradorlicenciamento.configuracao.controllers.DefaultController;
 import com.configuradorlicenciamento.configuracao.enums.Acao;
-import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.configuracao.utils.DateUtil;
+import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.configuracao.utils.csv.CustomMappingStrategy;
 import com.configuradorlicenciamento.taxaAdministrativa.dtos.TaxaAdministrativaCsv;
 import com.configuradorlicenciamento.taxaAdministrativa.dtos.TaxaAdministrativaDTO;
@@ -50,6 +50,19 @@ public class TaxaAdministrativaController extends DefaultController {
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
         TaxaAdministrativa taxaAdministrativa = taxaAdministrativaService.editar(request, taxaAdministrativaDTO);
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(taxaAdministrativa);
+
+    }
+
+    @PostMapping(value = "/ativarDesativar/{idTaxaAdministrativa}")
+    public ResponseEntity<TaxaAdministrativa> editar(HttpServletRequest request, @PathVariable("idTaxaAdministrativa") Integer idTaxaAdministrativa) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        TaxaAdministrativa taxaAdministrativa = taxaAdministrativaService.ativarDesativar(request, idTaxaAdministrativa);
 
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())

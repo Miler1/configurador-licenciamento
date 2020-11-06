@@ -256,8 +256,7 @@ export default {
 
 				if(result.value) {
 
-					item.ativo = !item.ativo;
-					TipologiaService.editar(item)
+					TipologiaService.ativarDesativar(item.id)
 						.then(() => {
 
 							if(!item.ativo) {
@@ -273,13 +272,7 @@ export default {
 						.catch(erro => {
 
 							console.error(erro);
-							if(!item.ativo) {
-								snackbar.alert(ERROR_MESSAGES.tipologia.desativar);
-							} else {
-								snackbar.alert(ERROR_MESSAGES.tipologia.ativar);
-							}
-
-							item.ativo = !item.ativo;
+							snackbar.alert(erro.message);
 
 						});
 				}
