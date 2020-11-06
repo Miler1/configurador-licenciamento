@@ -309,10 +309,9 @@ export default {
 
 				if(result.value) {
 
-					item.ativo = !item.ativo;
-					PerguntaService.editar(item)
+					PerguntaService.ativarDesativar(item.id)
 						.then(() => {
-							console.log('editar');
+
 							if(!item.ativo) {
 								snackbar.alert(SUCCESS_MESSAGES.pergunta.desativar, snackbar.type.SUCCESS);
 							} else {
@@ -326,14 +325,7 @@ export default {
 						.catch(erro => {
 
 							console.error(erro);
-
-							if(!item.ativo) {
-								snackbar.alert(ERROR_MESSAGES.pergunta.desativar);
-							} else {
-								snackbar.alert(ERROR_MESSAGES.pergunta.ativar);
-							}
-
-							item.ativo = !item.ativo;
+							snackbar.alert(erro.message);
 
 						});
 				}

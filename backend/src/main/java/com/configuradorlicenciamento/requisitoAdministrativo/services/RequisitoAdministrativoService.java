@@ -3,22 +3,17 @@ package com.configuradorlicenciamento.requisitoAdministrativo.services;
 import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
 import com.configuradorlicenciamento.configuracao.exceptions.ConflictException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
-
 import com.configuradorlicenciamento.documento.models.Documento;
 import com.configuradorlicenciamento.documento.repositories.DocumentoRepository;
-
 import com.configuradorlicenciamento.licenca.models.Licenca;
-
 import com.configuradorlicenciamento.requisitoAdministrativo.dtos.RequisitoAdministrativoCsv;
 import com.configuradorlicenciamento.requisitoAdministrativo.dtos.RequisitoAdministrativoDTO;
 import com.configuradorlicenciamento.requisitoAdministrativo.interfaces.IRequisitoAdministrativoService;
 import com.configuradorlicenciamento.requisitoAdministrativo.models.RequisitoAdministrativo;
 import com.configuradorlicenciamento.requisitoAdministrativo.repositories.RequisitoAdministrativoRepository;
 import com.configuradorlicenciamento.requisitoAdministrativo.specifications.RequisitoAdministrativoSpecification;
-
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLicenciamentoRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -73,7 +68,7 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
             requisitoAdministrativoList.add(requisitoAdministrativo);
         }
 
-        if(licencasExistentes.isEmpty()){
+        if (licencasExistentes.isEmpty()) {
             requisitoAdministrativoRepository.saveAll(requisitoAdministrativoList);
         } else {
             throw new ConflictException(REQUISITO_ADMINISTRATIVO_EXISTENTE + tratarLicencasParaErro(licencasExistentes));
@@ -116,6 +111,25 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
             }
         }
 
+        requisitoAdministrativo.setUsuarioLicenciamento(usuarioLicenciamento);
+        requisitoAdministrativo.setDataCadastro(new Date());
+
+        requisitoAdministrativoRepository.save(requisitoAdministrativo);
+
+        return requisitoAdministrativo;
+
+    }
+
+    @Override
+    public RequisitoAdministrativo ativarDesativar(HttpServletRequest request, Integer idRequisitoAdministrativo) {
+
+        Object login = request.getSession().getAttribute("login");
+
+        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
+
+        RequisitoAdministrativo requisitoAdministrativo = requisitoAdministrativoRepository.findById(idRequisitoAdministrativo).get();
+
+        requisitoAdministrativo.setAtivo(!requisitoAdministrativo.getAtivo());
         requisitoAdministrativo.setUsuarioLicenciamento(usuarioLicenciamento);
         requisitoAdministrativo.setDataCadastro(new Date());
 
@@ -170,15 +184,15 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
 
     }
 
-    private String tratarLicencasParaErro(List<String> licencasExistentes){
+    private String tratarLicencasParaErro(List<String> licencasExistentes) {
 
         StringBuilder licencas = new StringBuilder();
 
-        for(int i = 0; i < licencasExistentes.size(); i++){
+        for (int i = 0; i < licencasExistentes.size(); i++) {
 
             licencas.append(licencasExistentes.get(i));
 
-            if(i != licencasExistentes.size() - 1){
+            if (i != licencasExistentes.size() - 1) {
                 licencas.append(", ");
             } else {
                 licencas.append(". ");

@@ -155,8 +155,6 @@ export default {
 
 				if(result.value) {
 
-					item.ativo = !item.ativo;
-
 					AtividadeService.ativarDesativarAtividadeLicenciavel(item.id)
 						.then(() => {
 
