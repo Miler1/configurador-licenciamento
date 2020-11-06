@@ -110,6 +110,7 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
 
         historicoConfiguradorService.editar(
                 request,
+                null,
                 codigoTaxaLicenciamentoSalvo.getId(),
                 FuncionalidadeConfigurador.Funcionalidades.TAXA_LICENCIAMENTO.getTipo(),
                 AcaoConfigurador.Acoes.EDITAR.getAcao(),

@@ -36,5 +36,6 @@ public interface IAtividadeService {
 
     Atividade salvarRascunhoAtividadeLicenciavel(HttpServletRequest request, AtividadeLicenciavelDTO atividadeLicenciavelDTO);
 
-    Atividade ativarDesativar(Integer idAtividadeLicenciavel);
+    Atividade ativarDesativar(HttpServletRequest request, Integer idAtividadeLicenciavel);
+
 }

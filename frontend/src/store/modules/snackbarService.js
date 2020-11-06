@@ -28,7 +28,7 @@ export const actions = {
 };
 
 export const mutations = {
-	
+
 	[UPDATE_SNACKBAR]: (state, snackbar) => (state.snackbars = state.snackbars.concat(snackbar))
 
 };
