@@ -122,7 +122,7 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
     }
 
     @Override
-    public Atividade editarAtividadeLicenciavel(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO) {
+    public Atividade editarAtividadeDispensavel(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO) {
 
         Object login = request.getSession().getAttribute("login");
 
