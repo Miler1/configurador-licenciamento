@@ -169,25 +169,16 @@ export default {
 
 				window.scrollTo(0, 0);
 
-				let retorno = AtividadeService.cadastrarAtividadeLicenciavel(this.atividadeLicenciavel)
-					.then((response) => {
-						return true;
+				AtividadeService.cadastrarAtividadeLicenciavel(this.atividadeLicenciavel)
+					.then(() => {
+						this.handleSuccess();
 					}).catch(error => {
 
 						console.error(error);
 						this.atividadeLicenciavel = this.atividadeLicenciavelBkp;
 						this.handleError(error);
-						return false;
 
 					});
-
-				retorno.then( (value) => {
-
-					if (value) {
-						this.handleSuccess();
-					}
-
-				});
 
 			}
 
@@ -209,25 +200,16 @@ export default {
 
 						this.prepararDados();
 
-						const retorno = AtividadeService.editarAtividadeLicenciavel(this.atividadeLicenciavel)
+						AtividadeService.editarAtividadeLicenciavel(this.atividadeLicenciavel)
 							.then( (response) => {
-								return true;
+								this.handleSuccess();
 							})
 							.catch(error => {
 
 								console.error(error);
 								this.handleError(error, true);
-								return false;
 
 							});
-
-						retorno.then( (value) => {
-
-							if (value) {
-								this.handleSuccess();
-							}
-
-						});
 
 					}
 
