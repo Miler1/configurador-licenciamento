@@ -145,7 +145,6 @@ export default {
 					geoPonto: false,
 					geoLinha: false,
 					geoPoligono: false,
-					rascunho: null,
 				},
 				parametros: [],
 				justificativa: null,
@@ -194,11 +193,11 @@ export default {
 
 					let justificativa = result.value;
 
+					this.prepararDados();
+
 					if (justificativa && this.validar()) {
 
 						this.atividadeLicenciavel.justificativa = justificativa;
-
-						this.prepararDados();
 
 						AtividadeService.editarAtividadeLicenciavel(this.atividadeLicenciavel)
 							.then( (response) => {
@@ -321,6 +320,8 @@ export default {
 						this.atividadeLicenciavel =  JSON.parse(JSON.stringify(this.atividadeLicenciavelBkp) );
 
 						this.atividadeLicenciavel.dados.id = response.data.id;
+
+						this.atividadeLicenciavel.dados.rascunho = response.data.rascunho;
 
 						this.handleSuccess(false, true);
 

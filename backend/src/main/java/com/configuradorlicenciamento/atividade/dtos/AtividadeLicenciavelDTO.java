@@ -10,6 +10,8 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AtividadeLicenciavelDTO {
 
+    private Integer Id;
+
     private List<AtividadeCnaeDTO> cnaesAtividade;
 
     private AtividadeDTO dados;
