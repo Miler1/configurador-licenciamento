@@ -6,6 +6,8 @@ export default {
 
 	editar: async (pergunta) => ApiService.post('/pergunta/editar', pergunta),
 
+	ativarDesativar: async (idPergunta) => ApiService.post('/pergunta/ativarDesativar/' + idPergunta),
+
 	listar: async (parametrosFiltro) => {
 
 		if (parametrosFiltro) {

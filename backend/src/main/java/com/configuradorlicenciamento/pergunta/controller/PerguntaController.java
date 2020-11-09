@@ -6,7 +6,6 @@ import com.configuradorlicenciamento.configuracao.enums.Acao;
 import com.configuradorlicenciamento.configuracao.utils.DateUtil;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.configuracao.utils.csv.CustomMappingStrategy;
-import com.configuradorlicenciamento.licenca.models.Licenca;
 import com.configuradorlicenciamento.pergunta.dtos.PerguntaCsv;
 import com.configuradorlicenciamento.pergunta.dtos.PerguntaDTO;
 import com.configuradorlicenciamento.pergunta.interfaces.IPerguntaService;
@@ -17,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -46,7 +46,7 @@ public class PerguntaController extends DefaultController {
     }
 
     @GetMapping(value = "/relatorio")
-    public void relatorioCSV (HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void relatorioCSV(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
@@ -72,10 +72,23 @@ public class PerguntaController extends DefaultController {
 
     }
 
+    @PostMapping(value = "/ativarDesativar/{idPergunta}")
+    public ResponseEntity<Pergunta> ativarDesativar(HttpServletRequest request, @PathVariable("idPergunta") Integer idPergunta) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        Pergunta pergunta = perguntaService.ativarDesativar(request, idPergunta);
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(pergunta);
+
+    }
+
     @PostMapping(value = "/listar")
     public ResponseEntity<Page<Pergunta>> listar(HttpServletRequest request,
-                                                           @PageableDefault(size = 20) Pageable pageable,
-                                                           @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
+                                                 @PageableDefault(size = 20) Pageable pageable,
+                                                 @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 

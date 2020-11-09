@@ -134,8 +134,6 @@ export default {
 
 				if(result.value) {
 
-					item.ativo = !item.ativo;
-
 					AtividadeService.ativarDesativarAtividadeDispensavel(item.id)
 						.then(() => {
 

@@ -294,8 +294,7 @@ export default {
 
 				if(result.value) {
 
-					item.ativo = !item.ativo;
-					ParametroService.editar(item)
+					ParametroService.ativarDesativar(item.id)
 						.then(() => {
 
 							if(!item.ativo) {
@@ -311,14 +310,7 @@ export default {
 						.catch(error => {
 
 							console.error(error);
-
-							if(!item.ativo) {
-								snackbar.alert(ERROR_MESSAGES.parametro.desativar);
-							} else {
-								snackbar.alert(ERROR_MESSAGES.parametro.ativar);
-							}
-
-							item.ativo = !item.ativo;
+							snackbar.alert(error.message);
 
 						});
 

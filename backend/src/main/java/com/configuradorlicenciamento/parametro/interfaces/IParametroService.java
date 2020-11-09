@@ -12,15 +12,17 @@ import java.util.List;
 
 public interface IParametroService {
 
-   Parametro salvar(HttpServletRequest request, ParametroDTO parametroDTO);
+    Parametro salvar(HttpServletRequest request, ParametroDTO parametroDTO);
 
-   Page<Parametro> listar(Pageable pageable, FiltroPesquisa filtro);
+    Page<Parametro> listar(Pageable pageable, FiltroPesquisa filtro);
 
-   List<ParametroCsv> listarParametrosParaCsv() throws Exception;
+    List<ParametroCsv> listarParametrosParaCsv() throws Exception;
 
-   List<Parametro> listarParametros() throws Exception;
+    List<Parametro> listarParametros() throws Exception;
 
-   Parametro editar(HttpServletRequest request, ParametroDTO parametroDTO);
+    Parametro editar(HttpServletRequest request, ParametroDTO parametroDTO);
 
-   List<Parametro> findAtivos();
+    Parametro ativarDesativar(HttpServletRequest request, Integer idParametro);
+
+    List<Parametro> findAtivos();
 }

@@ -14,4 +14,7 @@ public interface RelAtividadeParametroAtividadeRepository extends JpaRepository<
     List<RelAtividadeParametroAtividade> findByAtividadeAndParametro(Atividade atividade, Parametro parametro);
 
     List<RelAtividadeParametroAtividade> findByAtividade(Atividade atividade);
+
+    List<RelAtividadeParametroAtividade> findByParametro(Parametro parametro);
+
 }

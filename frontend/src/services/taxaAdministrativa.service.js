@@ -6,6 +6,8 @@ export default {
 
 	editar: async (taxaAdministrativa) => ApiService.post('/taxaAdministrativa/editar', taxaAdministrativa),
 
+	ativarDesativar: async (idTaxaAdministrativa) => ApiService.post('/taxaAdministrativa/ativarDesativar/' + idTaxaAdministrativa),
+
 	listar: async (parametrosFiltro) => {
 
 		if (parametrosFiltro) {

@@ -94,7 +94,6 @@ const ERROR_MESSAGES = {
 		listagem: ER_BASE + 'listar os CNAEs dispensáveis. ',
 		ativar: ER_BASE + 'ativar o CNAE dispensável. ',
 		desativar: ER_BASE + 'desativar o CNAE dispensável. ',
-		desativarErro: "Não foi possível inativar o registro. Ele se encontra vinculado a uma atividade ativa no sistema. ",
 
 		cnaes: {
 			adicionarValores: ER_BASE + 'adicionar a relação CNAE/Tipologia. ',
@@ -114,7 +113,6 @@ const ERROR_MESSAGES = {
 		listagem: ER_BASE + 'listar as atividades licenciáveis. ',
 		ativar: ER_BASE + 'ativar a atividade licenciável. ',
 		desativar: ER_BASE + 'desativar a atividade licenciável. ',
-		desativarErro: "Não foi possível inativar o registro. Ele se encontra vinculado a uma atividade ativa no sistema. ",
 		salvarRascunho: ER_BASE + 'salvar rascunho da atividade licenciável. ',
 
 		atividades: {
