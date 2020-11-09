@@ -51,7 +51,7 @@ public class AtividadeDispensavelController extends DefaultController {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        Atividade atividade = atividadeDispensavelService.editarAtividadeLicenciavel(request, atividadeDispensavelDTO);
+        Atividade atividade = atividadeDispensavelService.editarAtividadeDispensavel(request, atividadeDispensavelDTO);
 
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
@@ -61,8 +61,8 @@ public class AtividadeDispensavelController extends DefaultController {
 
     @PostMapping(value = "listar")
     public ResponseEntity<Page<Atividade>> listar(HttpServletRequest request,
-                                                                        @PageableDefault(size = 20) Pageable pageable,
-                                                                        @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
+                                                  @PageableDefault(size = 20) Pageable pageable,
+                                                  @RequestBody FiltroPesquisa filtroPesquisa) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
@@ -86,6 +86,7 @@ public class AtividadeDispensavelController extends DefaultController {
         mappingStrategy.setType(AtividadeDispensavelCsv.class);
 
         downloadCsv(atividadeDispensavelService.listarAtividadesDispensaveisParaCsv(), nome, mappingStrategy, response);
+
     }
 
     @GetMapping(value = "findById/{idAtividadeDispensavel}")
@@ -107,7 +108,7 @@ public class AtividadeDispensavelController extends DefaultController {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        Atividade atividade = atividadeDispensavelService.ativarDesativar(idAtividadeDispensavel);
+        Atividade atividade = atividadeDispensavelService.ativarDesativar(request, idAtividadeDispensavel);
 
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())

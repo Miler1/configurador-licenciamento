@@ -63,6 +63,9 @@ public class Atividade implements Serializable {
     @NotNull(message = "{validacao.notnull}")
     private Boolean ativo;
 
+    @NotNull(message = "{validacao.notnull}")
+    private Boolean itemAntigo;
+
     private Boolean dentroEmpreendimento;
 
     @NotNull(message = "{validacao.notnull}")
@@ -106,19 +109,12 @@ public class Atividade implements Serializable {
     @JsonManagedReference
     private List<RelAtividadeParametroAtividade> parametros;
 
-    @NotNull(message = "{validacao.notnull}")
-    private Date dataCadastro;
-
-    @NotNull(message = "{validacao.notnull}")
-    @ManyToOne
-    @JoinColumn(name = "id_usuario_licenciamento", referencedColumnName = "id")
-    private UsuarioLicenciamento usuarioLicenciamento;
-
     @OneToMany(mappedBy="atividade")
     @JsonManagedReference
     private List<TipoCaracterizacaoAtividade> atividadesCnae;
 
     public Atividade(AtividadeBuilder atividadeBuilder) {
+
         this.nome = atividadeBuilder.nome;
         this.codigo = atividadeBuilder.codigo;
         this.tipologia = atividadeBuilder.tipologia;
@@ -128,6 +124,7 @@ public class Atividade implements Serializable {
         this.potencialPoluidor = atividadeBuilder.potencialPoluidor;
         this.siglaSetor = atividadeBuilder.siglaSetor;
         this.ativo = atividadeBuilder.ativo;
+        this.itemAntigo = atividadeBuilder.itemAntigo;
         this.dentroEmpreendimento = atividadeBuilder.dentroEmpreendimento;
         this.dentroMunicipio = atividadeBuilder.dentroMunicipio;
         this.requisitoTecnico = atividadeBuilder.requisitoTecnico;
@@ -137,22 +134,19 @@ public class Atividade implements Serializable {
         this.portesAtividade = atividadeBuilder.portesAtividade;
         this.tiposLicencas = atividadeBuilder.tiposLicencas;
         this.taxasLicenciamento = atividadeBuilder.taxasLicenciamento;
-        this.dataCadastro = atividadeBuilder.dataCadastro;
-        this.usuarioLicenciamento = atividadeBuilder.usuarioLicenciamento;
+
     }
 
-    public AtividadeLicenciavelCsv preparaAtividadeLicenciavelParaCsv() {
-        return new AtividadeLicenciavelCsv(this);
+    public AtividadeLicenciavelCsv preparaAtividadeLicenciavelParaCsv(Date dataCadastro, UsuarioLicenciamento usuarioLicenciamento) {
+        return new AtividadeLicenciavelCsv(this, dataCadastro, usuarioLicenciamento);
     }
 
-    public AtividadeDispensavelCsv preparaAtividadeDispensavelParaCsv() {
-        return new AtividadeDispensavelCsv(this);
+    public AtividadeDispensavelCsv preparaAtividadeDispensavelParaCsv(Date dataCadastro, UsuarioLicenciamento usuarioLicenciamento) {
+        return new AtividadeDispensavelCsv(this, dataCadastro, usuarioLicenciamento);
     }
 
     public CodigoTaxaLicenciamento recuperaCodigoTaxaLicenciamentobyTaxas() {
-
         return this.taxasLicenciamento.get(0).getCodigo();
-
     }
 
     public List<String> recuperaCodigosTiposAtividade() {
@@ -178,6 +172,7 @@ public class Atividade implements Serializable {
         private PotencialPoluidor potencialPoluidor;
         private String siglaSetor;
         private Boolean ativo;
+        private Boolean itemAntigo;
         private Boolean dentroEmpreendimento;
         private final Boolean dentroMunicipio;
         private RequisitoTecnico requisitoTecnico;
@@ -187,9 +182,6 @@ public class Atividade implements Serializable {
         private List<Licenca> tiposLicencas;
         private List<TaxaLicenciamento> taxasLicenciamento;
         private List<PorteAtividade> portesAtividade;
-        private Date dataCadastro;
-        private UsuarioLicenciamento usuarioLicenciamento;
-
 
         public AtividadeBuilder(Boolean dentroMunicipio) {
             this.dentroMunicipio = dentroMunicipio;
@@ -245,6 +237,11 @@ public class Atividade implements Serializable {
             return this;
         }
 
+        public AtividadeBuilder setItemAntigo(Boolean itemAntigo) {
+            this.itemAntigo = itemAntigo;
+            return this;
+        }
+
         public AtividadeBuilder setDentroEmpreendimento(Boolean dentroEmpreendimento) {
             this.dentroEmpreendimento = dentroEmpreendimento;
             return this;
@@ -277,16 +274,6 @@ public class Atividade implements Serializable {
 
         public AtividadeBuilder setPortesAtividade(List<PorteAtividade> portesAtividade) {
             this.portesAtividade = portesAtividade;
-            return this;
-        }
-
-        public AtividadeBuilder setDataCadastro(Date dataCadastro) {
-            this.dataCadastro = dataCadastro;
-            return this;
-        }
-
-        public AtividadeBuilder setUsuarioLicenciamento(UsuarioLicenciamento usuarioLicencimento) {
-            this.usuarioLicenciamento = usuarioLicencimento;
             return this;
         }
 

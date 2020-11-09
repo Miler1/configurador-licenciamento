@@ -14,10 +14,6 @@ import java.util.List;
 
 public interface IAtividadeService {
 
-    Atividade salvar(AtividadeDispensavelDTO.RelacaoCnaeTipologia atividadeDispensavelDTO);
-
-    Atividade editar(AtividadeDispensavelDTO.RelacaoCnaeTipologia atividadeDispensavelDTO, Atividade atividade);
-
     Page<Atividade> listarAtividadesLicenciaveis(Pageable pageable, FiltroPesquisa filtro);
 
     List<AtividadeLicenciavelCsv> listarAtividadesLicenciaveisParaCsv();
@@ -36,5 +32,6 @@ public interface IAtividadeService {
 
     Atividade salvarRascunhoAtividadeLicenciavel(HttpServletRequest request, AtividadeLicenciavelDTO atividadeLicenciavelDTO);
 
-    Atividade ativarDesativar(Integer idAtividadeLicenciavel);
+    Atividade ativarDesativar(HttpServletRequest request, Integer idAtividadeLicenciavel);
+
 }

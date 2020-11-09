@@ -12,11 +12,14 @@ import com.configuradorlicenciamento.atividade.repositories.AtividadeRepository;
 import com.configuradorlicenciamento.atividade.repositories.RelAtividadeParametroAtividadeRepository;
 import com.configuradorlicenciamento.atividade.repositories.TipoAtividadeRepository;
 import com.configuradorlicenciamento.atividade.specifications.AtividadeSpecification;
-import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.atividadeCnae.repositories.AtividadeCnaeRepository;
 import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
 import com.configuradorlicenciamento.configuracao.exceptions.ConflictException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
+import com.configuradorlicenciamento.historicoConfigurador.interfaces.IHistoricoConfiguradorService;
+import com.configuradorlicenciamento.historicoConfigurador.models.AcaoConfigurador;
+import com.configuradorlicenciamento.historicoConfigurador.models.FuncionalidadeConfigurador;
+import com.configuradorlicenciamento.historicoConfigurador.models.HistoricoConfigurador;
 import com.configuradorlicenciamento.licenca.models.Licenca;
 import com.configuradorlicenciamento.licenca.repositories.LicencaRepository;
 import com.configuradorlicenciamento.potencialPoluidor.models.PotencialPoluidor;
@@ -27,13 +30,11 @@ import com.configuradorlicenciamento.taxaLicenciamento.models.CodigoTaxaLicencia
 import com.configuradorlicenciamento.taxaLicenciamento.models.TaxaLicenciamento;
 import com.configuradorlicenciamento.taxaLicenciamento.repositories.CodigoTaxaLicenciamentoRepository;
 import com.configuradorlicenciamento.taxaLicenciamento.repositories.TaxaLicenciamentoRepository;
-import com.configuradorlicenciamento.atividade.dtos.AtividadeDispensavelDTO;
 import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.models.TipoCaracterizacaoAtividade;
 import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.repositories.TipoCaracterizacaoAtividadeRepository;
 import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.services.TipoCaracterizacaoAtividadeService;
 import com.configuradorlicenciamento.tipologia.models.Tipologia;
 import com.configuradorlicenciamento.tipologia.repositories.TipologiaRepository;
-import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLicenciamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -44,12 +45,11 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AtividadeService implements IAtividadeService {
+public class AtividadeLicenciavelService implements IAtividadeService {
 
     private static final String ATIVIDADE_EXISTENTE = "Já existe uma atividade com o mesmo código.";
 
@@ -98,65 +98,9 @@ public class AtividadeService implements IAtividadeService {
     @Autowired
     TipoCaracterizacaoAtividadeService tipoCaracterizacaoAtividadeService;
 
-    @Override
-    public Atividade salvar(AtividadeDispensavelDTO.RelacaoCnaeTipologia atividadeDispensavelDTO) {
+    @Autowired
+    IHistoricoConfiguradorService historicoConfiguradorService;
 
-        Optional<AtividadeCnae> atividadeCnae = atividadeCnaeRepository.findById(atividadeDispensavelDTO.getCnae().getId());
-
-        Optional<Tipologia> tipologia = tipologiaRepository.findById(atividadeDispensavelDTO.getTipologia().getId());
-
-        PotencialPoluidor potencialPoluidor = potencialPoluidorRepository.findByCodigo("I");
-
-        List<TipoAtividade> tiposAtividades = tipoAtividadeRepository.findAll();
-
-        Atividade atividade = new Atividade.AtividadeBuilder(!atividadeDispensavelDTO.getForaMunicipio())
-                .setNome(atividadeCnae.get().getNome())
-                .setTipologia(tipologia.get())
-                .setGeoLinha(true)
-                .setGeoPonto(true)
-                .setGeoPoligono(true)
-                .setCodigo("0000")
-                .setPotencialPoluidor(potencialPoluidor)
-                .setAtivo(true)
-                .setDentroEmpreendimento(false)
-                .setV1(false)
-                .setTiposAtividades(tiposAtividades)
-                .build();
-
-        atividadeRepository.save(atividade);
-
-        return atividade;
-
-    }
-
-    @Override
-    public Atividade editar(AtividadeDispensavelDTO.RelacaoCnaeTipologia atividadeDispensavelDTO, Atividade atividade) {
-
-        Optional<AtividadeCnae> atividadeCnae = atividadeCnaeRepository.findById(atividadeDispensavelDTO.getCnae().getId());
-
-        Optional<Tipologia> tipologia = tipologiaRepository.findById(atividadeDispensavelDTO.getTipologia().getId());
-
-        PotencialPoluidor potencialPoluidor = potencialPoluidorRepository.findByCodigo("I");
-
-        List<TipoAtividade> tiposAtividades = tipoAtividadeRepository.findAll();
-
-        atividadeCnae.ifPresent(cnae -> atividade.setNome(cnae.getNome()));
-        tipologia.ifPresent(atividade::setTipologia);
-        atividade.setGeoLinha(true);
-        atividade.setGeoPonto(true);
-        atividade.setGeoPoligono(true);
-        atividade.setCodigo("0000");
-        atividade.setPotencialPoluidor(potencialPoluidor);
-        atividade.setDentroEmpreendimento(false);
-        atividade.setDentroMunicipio(!atividadeDispensavelDTO.getForaMunicipio());
-        atividade.setV1(false);
-        atividade.setTiposAtividades(tiposAtividades);
-
-        atividadeRepository.save(atividade);
-
-        return atividade;
-
-    }
 
     @Override
     public Page<Atividade> listarAtividadesLicenciaveis(Pageable pageable, FiltroPesquisa filtro) {
@@ -178,8 +122,19 @@ public class AtividadeService implements IAtividadeService {
             boolean isRascunho = tipoAtividade.getRascunho();
 
             if (!isRascunho) {
-                dtos.add(tipoAtividade.preparaAtividadeLicenciavelParaCsv());
+
+                List<HistoricoConfigurador> historicos = historicoConfiguradorService.buscarHistoricoItem(
+                        FuncionalidadeConfigurador.Funcionalidades.ATIVIDADES_LICENCIAVEIS.getTipo(),
+                        tipoAtividade.getId()
+                );
+
+                dtos.add(tipoAtividade.preparaAtividadeLicenciavelParaCsv(
+                        !historicos.isEmpty() ? historicos.get(0).getDataCadastro() : null,
+                        !historicos.isEmpty() ? historicos.get(0).getUsuarioLicenciamento() : null
+                ));
+
             }
+
         }
 
         return dtos;
@@ -190,7 +145,8 @@ public class AtividadeService implements IAtividadeService {
     public List<Atividade> listarAtividadesLicenciaveis() {
 
         Specification<Atividade> specification = Specification.where(AtividadeSpecification.padrao()
-                .and(AtividadeSpecification.filtrarAtividadesLicenciaveis()));
+                .and(AtividadeSpecification.filtrarAtividadesLicenciaveis())
+                .and(AtividadeSpecification.filtrarAtividadesAtuais()));
 
         return atividadeRepository.findAll(specification, Sort.by("id"));
 
@@ -203,15 +159,11 @@ public class AtividadeService implements IAtividadeService {
             return this.editarAtividadeLicenciavel(request, atividadeLicenciavelDTO);
         }
 
-        Object login = request.getSession().getAttribute("login");
-
         boolean existeAtividade = atividadeRepository.existsByCodigo(atividadeLicenciavelDTO.getDados().getCodigoAtividade().trim());
 
-        if (existeAtividade) {
+        if (existeAtividade && atividadeLicenciavelDTO.getJustificativa() == null) {
             throw new ConflictException(ATIVIDADE_EXISTENTE);
         }
-
-        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
         Optional<Tipologia> tipologiaAtividade = tipologiaRepository.findById(
                 atividadeLicenciavelDTO.getDados().getTipologia().getId());
@@ -255,6 +207,7 @@ public class AtividadeService implements IAtividadeService {
                 .setPotencialPoluidor(potencialPoluidor.orElse(null))
                 .setSiglaSetor(atividadeLicenciavelDTO.getDados().getSetor())
                 .setAtivo(true)
+                .setItemAntigo(false)
                 .setDentroEmpreendimento(!atividadeLicenciavelDTO.getDados().getForaEmpreendimento())
                 .setRequisitoTecnico(requisitoTecnico.orElse(null))
                 .setV1(false)
@@ -263,8 +216,6 @@ public class AtividadeService implements IAtividadeService {
                 .setTiposLicencas(licencasAtividade)
                 .setTaxasLicenciamento(taxasLicenciamentoAtividade)
                 .setPortesAtividade(portesAtividade)
-                .setDataCadastro(new Date())
-                .setUsuarioLicenciamento(usuarioLicenciamento)
                 .build();
 
         atividadeRepository.save(atividade);
@@ -273,6 +224,17 @@ public class AtividadeService implements IAtividadeService {
 
         relAtividadeParametroAtividadeService.salvar(atividade, atividadeLicenciavelDTO.getParametros().get(0));
 
+        if (atividadeLicenciavelDTO.getJustificativa() == null) {
+
+            historicoConfiguradorService.salvar(
+                    request,
+                    atividade.getId(),
+                    FuncionalidadeConfigurador.Funcionalidades.ATIVIDADES_LICENCIAVEIS.getTipo(),
+                    AcaoConfigurador.Acoes.CADASTRAR.getAcao()
+            );
+
+        }
+
         return atividade;
 
     }
@@ -280,84 +242,56 @@ public class AtividadeService implements IAtividadeService {
     @Override
     public Atividade editarAtividadeLicenciavel(HttpServletRequest request, AtividadeLicenciavelDTO atividadeLicenciavelDTO) {
 
-        verificaCodigoParaEdicao(atividadeLicenciavelDTO);
+        verificarCodigoParaEdicao(atividadeLicenciavelDTO);
 
-        Object login = request.getSession().getAttribute("login");
+        Optional<Atividade> atividadeSalva = atividadeRepository.findById(atividadeLicenciavelDTO.getDados().getId());
 
-        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
+        Atividade atividadeAntiga;
 
-        Optional<Tipologia> tipologiaAtividade = tipologiaRepository.findById(atividadeLicenciavelDTO.getDados().getTipologia().getId());
+        Atividade atividadeAtual = new Atividade();
 
-        Optional<PotencialPoluidor> potencialPoluidor = potencialPoluidorRepository.findById(atividadeLicenciavelDTO.getDados().getPotencialPoluidor().getId());
+        if (atividadeSalva.isPresent()) {
 
-        Optional<RequisitoTecnico> requisitoTecnico = requisitoTecnicoRepository.findById(atividadeLicenciavelDTO.getDados().getRequisitoTecnico().getId());
+            atividadeAntiga = atividadeSalva.get();
 
-        List<TipoAtividade> tiposAtividade = new ArrayList<>();
+            atividadeAntiga.setAtivo(false);
 
-        atividadeLicenciavelDTO.getDados().getTiposAtividade().forEach(tipoAtividade ->
-                tiposAtividade.add(tipoAtividadeRepository.findByCodigo(tipoAtividade))
-        );
+            atividadeAntiga.setItemAntigo(true);
 
-        List<Licenca> licencasAtividade = new ArrayList<>();
+            atividadeRepository.save(atividadeAntiga);
 
-        atividadeLicenciavelDTO.getDados().getLicencas().forEach(licenca ->
-                licencasAtividade.add(licencaRepository.findById(licenca.getId()).get())
-        );
+            atividadeLicenciavelDTO.getDados().setId(null);
 
-        List<TaxaLicenciamento> taxasLicenciamentoAtividade = taxaLicenciamentoRepository.findByCodigo(
-                codigoTaxaLicenciamentoRepository.findById(atividadeLicenciavelDTO.getDados().getTaxaLicenciamento().getId()).get());
+            atividadeAtual = salvarAtividadeLicenciavel(request, atividadeLicenciavelDTO);
 
-        List<PorteAtividade> portesAtividade = porteAtividadeService.editar(atividadeLicenciavelDTO.getParametros());
+            historicoConfiguradorService.editar(
+                    request,
+                    atividadeAtual.getId(),
+                    atividadeAntiga.getId(),
+                    FuncionalidadeConfigurador.Funcionalidades.ATIVIDADES_LICENCIAVEIS.getTipo(),
+                    AcaoConfigurador.Acoes.EDITAR.getAcao(),
+                    atividadeLicenciavelDTO.getJustificativa());
 
-        Atividade atividadeSalva = atividadeRepository.findById(atividadeLicenciavelDTO.getDados().getId()).get();
-
-        boolean isRascunho = atividadeSalva.getRascunho();
-
-        if (isRascunho) {
-            atividadeSalva.setAtivo(true);
         }
 
-        atividadeSalva.setNome(atividadeLicenciavelDTO.getDados().getNomeAtividade());
-        atividadeSalva.setCodigo(atividadeLicenciavelDTO.getDados().getCodigoAtividade());
-        atividadeSalva.setTipologia(tipologiaAtividade.orElse(null));
-        atividadeSalva.setGeoPonto(atividadeLicenciavelDTO.getDados().getGeoPonto());
-        atividadeSalva.setGeoLinha(atividadeLicenciavelDTO.getDados().getGeoLinha());
-        atividadeSalva.setGeoPoligono(atividadeLicenciavelDTO.getDados().getGeoPoligono());
-        atividadeSalva.setPotencialPoluidor(potencialPoluidor.orElse(null));
-        atividadeSalva.setSiglaSetor(atividadeLicenciavelDTO.getDados().getSetor());
-        atividadeSalva.setDentroEmpreendimento(!atividadeLicenciavelDTO.getDados().getForaEmpreendimento());
-        atividadeSalva.setRequisitoTecnico(requisitoTecnico.orElse(null));
-        atividadeSalva.setV1(false);
-        atividadeSalva.setRascunho(false);
-        atividadeSalva.setTiposAtividades(tiposAtividade);
-        atividadeSalva.setTiposLicencas(licencasAtividade);
-        atividadeSalva.setTaxasLicenciamento(taxasLicenciamentoAtividade);
-        atividadeSalva.setPortesAtividade(portesAtividade);
-        atividadeSalva.setDataCadastro(new Date());
-        atividadeSalva.setUsuarioLicenciamento(usuarioLicenciamento);
-
-        atividadeRepository.save(atividadeSalva);
-
-        tipoCaracterizacaoAtividadeService.editarAtividadeLicenciavel(atividadeLicenciavelDTO.getCnaesAtividade(), atividadeSalva);
-
-        relAtividadeParametroAtividadeService.editar(atividadeSalva, atividadeLicenciavelDTO.getParametros().get(0));
-
-        return atividadeSalva;
+        return atividadeAtual;
 
     }
 
-    private void verificaCodigoParaEdicao(AtividadeLicenciavelDTO atividadeLicenciavelDTO) {
+    private void verificarCodigoParaEdicao(AtividadeLicenciavelDTO atividadeLicenciavelDTO) {
 
         boolean existeAtividade = atividadeRepository.existsByCodigo(atividadeLicenciavelDTO.getDados().getCodigoAtividade().trim());
 
         if (existeAtividade) {
 
-            Atividade atividade = atividadeRepository.findByCodigo(atividadeLicenciavelDTO.getDados().getCodigoAtividade().trim());
+            Atividade atividade = atividadeRepository.findByCodigoAndItemAntigo(atividadeLicenciavelDTO.getDados().getCodigoAtividade().trim(), false);
 
             if (!atividade.getId().equals(atividadeLicenciavelDTO.getDados().getId())) {
                 throw new ConflictException(ATIVIDADE_EXISTENTE);
             }
+
         }
+
     }
 
     @Override
@@ -379,15 +313,11 @@ public class AtividadeService implements IAtividadeService {
             return this.editarRascunhoAtividadeLicenciavel(request, atividadeLicenciavelDTO);
         }
 
-        Object login = request.getSession().getAttribute("login");
-
         boolean existeAtividade = atividadeRepository.existsByCodigo(atividadeLicenciavelDTO.getDados().getCodigoAtividade().trim());
 
         if (existeAtividade) {
             throw new ConflictException(ATIVIDADE_EXISTENTE);
         }
-
-        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
         Optional<Tipologia> tipologiaAtividade = Optional.ofNullable(null);
 
@@ -457,6 +387,7 @@ public class AtividadeService implements IAtividadeService {
                 .setPotencialPoluidor(potencialPoluidor.orElse(null))
                 .setSiglaSetor(atividadeLicenciavelDTO.getDados().getSetor())
                 .setAtivo(false)
+                .setItemAntigo(false)
                 .setDentroEmpreendimento(foraEmpreendimento.orElse(null))
                 .setRequisitoTecnico(requisitoTecnico.orElse(null))
                 .setV1(false)
@@ -465,8 +396,6 @@ public class AtividadeService implements IAtividadeService {
                 .setTiposLicencas(licencasAtividade)
                 .setTaxasLicenciamento(taxasLicenciamentoAtividade)
                 .setPortesAtividade(portesAtividade)
-                .setDataCadastro(new Date())
-                .setUsuarioLicenciamento(usuarioLicenciamento)
                 .build();
 
         atividadeRepository.save(atividade);
@@ -484,11 +413,7 @@ public class AtividadeService implements IAtividadeService {
     @Override
     public Atividade editarRascunhoAtividadeLicenciavel(HttpServletRequest request, AtividadeLicenciavelDTO atividadeLicenciavelDTO) {
 
-        Object login = request.getSession().getAttribute("login");
-
-        verificaCodigoParaEdicao(atividadeLicenciavelDTO);
-
-        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
+        verificarCodigoParaEdicao(atividadeLicenciavelDTO);
 
         Optional<Tipologia> tipologiaAtividade = Optional.ofNullable(null);
 
@@ -517,17 +442,21 @@ public class AtividadeService implements IAtividadeService {
         List<TipoAtividade> tiposAtividade = new ArrayList<>();
 
         if (atividadeLicenciavelDTO.getDados().getTiposAtividade() != null) {
+
             atividadeLicenciavelDTO.getDados().getTiposAtividade().forEach(tipoAtividade ->
                     tiposAtividade.add(tipoAtividadeRepository.findByCodigo(tipoAtividade))
             );
+
         }
 
         List<Licenca> licencasAtividade = new ArrayList<>();
 
         if (atividadeLicenciavelDTO.getDados().getLicencas() != null) {
+
             atividadeLicenciavelDTO.getDados().getLicencas().forEach(licenca ->
                     licencasAtividade.add(licencaRepository.findById(licenca.getId()).get())
             );
+
         }
 
         List<TaxaLicenciamento> taxasLicenciamentoAtividade = new ArrayList<>();
@@ -559,6 +488,7 @@ public class AtividadeService implements IAtividadeService {
         atividadeRascunhoSalva.setPotencialPoluidor(potencialPoluidor.orElse(null));
         atividadeRascunhoSalva.setSiglaSetor(atividadeLicenciavelDTO.getDados().getSetor());
         atividadeRascunhoSalva.setAtivo(false);
+        atividadeRascunhoSalva.setItemAntigo(false);
         atividadeRascunhoSalva.setDentroEmpreendimento(foraEmpreendimento.orElse(null));
         atividadeRascunhoSalva.setRequisitoTecnico(requisitoTecnico.orElse(null));
         atividadeRascunhoSalva.setV1(false);
@@ -567,8 +497,6 @@ public class AtividadeService implements IAtividadeService {
         atividadeRascunhoSalva.setTiposLicencas(licencasAtividade);
         atividadeRascunhoSalva.setTaxasLicenciamento(taxasLicenciamentoAtividade);
         atividadeRascunhoSalva.setPortesAtividade(portesAtividade);
-        atividadeRascunhoSalva.setDataCadastro(new Date());
-        atividadeRascunhoSalva.setUsuarioLicenciamento(usuarioLicenciamento);
         atividadeRascunhoSalva.setDentroMunicipio(false);
 
         atividadeRepository.save(atividadeRascunhoSalva);
@@ -586,7 +514,8 @@ public class AtividadeService implements IAtividadeService {
     private Specification<Atividade> preparaFiltroAtividadeLicenciavel(FiltroPesquisa filtro) {
 
         Specification<Atividade> specification = Specification.where(AtividadeSpecification.padrao()
-                .and(AtividadeSpecification.filtrarAtividadesLicenciaveis()));
+                .and(AtividadeSpecification.filtrarAtividadesLicenciaveis())
+                .and(AtividadeSpecification.filtrarAtividadesAtuais()));
 
         if (filtro.getStringPesquisa() != null) {
 
@@ -614,6 +543,7 @@ public class AtividadeService implements IAtividadeService {
         if (!atividade.getPortesAtividade().isEmpty() && atividade.getPortesAtividade().get(0).getParametroUm() != null) {
             relAtividadeParametroAtividadeUm = relAtividadeParametroAtividadeRepository.findByAtividadeAndParametro(atividade, atividade.getPortesAtividade().get(0).getParametroUm()).get(0);
         }
+
         if (!atividade.getPortesAtividade().isEmpty() && atividade.getPortesAtividade().get(0).getParametroDois() != null) {
             relAtividadeParametroAtividadeDois = relAtividadeParametroAtividadeRepository.findByAtividadeAndParametro(atividade, atividade.getPortesAtividade().get(0).getParametroDois()).get(0);
         }
@@ -626,7 +556,7 @@ public class AtividadeService implements IAtividadeService {
     }
 
     @Override
-    public Atividade ativarDesativar(Integer idAtividadeLicenciavel) {
+    public Atividade ativarDesativar(HttpServletRequest request, Integer idAtividadeLicenciavel) {
 
         Atividade atividade = atividadeRepository.findById(idAtividadeLicenciavel).orElseThrow(() ->
                 new ConfiguradorNotFoundException("Não foi possível encontrar a atividade licenciável com id: " + idAtividadeLicenciavel));
@@ -634,6 +564,17 @@ public class AtividadeService implements IAtividadeService {
         atividade.setAtivo(!atividade.getAtivo());
 
         atividadeRepository.save(atividade);
+
+        boolean ativo = atividade.getAtivo();
+
+        String acao = ativo ? AcaoConfigurador.Acoes.ATIVAR.getAcao() : AcaoConfigurador.Acoes.DESATIVAR.getAcao();
+
+        historicoConfiguradorService.salvar(
+                request,
+                atividade.getId(),
+                FuncionalidadeConfigurador.Funcionalidades.ATIVIDADES_LICENCIAVEIS.getTipo(),
+                acao
+        );
 
         return atividade;
 

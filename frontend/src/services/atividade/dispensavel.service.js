@@ -9,7 +9,7 @@ export default {
 	ativarDesativarAtividadeDispensavel: async (idAtividadeDispensavel) => ApiService.post('atividadeDispensavel/ativarDesativar/' + idAtividadeDispensavel ),
 
 	listarAtividadeDispensavel: async (parametrosFiltro) => {
-		
+
 		if (parametrosFiltro) {
 
 			return ApiService.post(`atividadeDispensavel/listar/?

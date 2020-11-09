@@ -7,7 +7,7 @@ export default {
 	editar: async (pergunta) => ApiService.post('/pergunta/editar', pergunta),
 
 	listar: async (parametrosFiltro) => {
-		
+
 		if (parametrosFiltro) {
 
 			return ApiService.post(`pergunta/listar/?
