@@ -117,8 +117,8 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
 
         historicoConfiguradorService.editar(
                 request,
-                null,
                 codigoTaxaLicenciamentoSalvo.getId(),
+                null,
                 FuncionalidadeConfigurador.Funcionalidades.TAXA_LICENCIAMENTO.getTipo(),
                 AcaoConfigurador.Acoes.EDITAR.getAcao(),
                 codigoTaxaLicenciamentoDTO.getJustificativa());
