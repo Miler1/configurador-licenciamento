@@ -61,6 +61,7 @@ public class AtividadeLicenciavelCsv implements Serializable {
         this.ativo = atividade.getAtivo() ? "Ativo" : "Inativo";
         this.dataCadastro = dataCadastro != null ? DateUtil.formataBrSimples(dataCadastro) : "-";
         this.usuarioLicenciamento = usuarioLicenciamento != null ? getNomeUsuario(usuarioLicenciamento) : "-";
+
     }
 
     private String getNomeUsuario(UsuarioLicenciamento usuario){

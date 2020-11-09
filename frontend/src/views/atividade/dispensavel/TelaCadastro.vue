@@ -117,7 +117,7 @@ export default {
 			atividadeDispensavel: {
 				cnaesTipologia: [],
 				perguntas: [],
-				justificativa
+				justificativa: null,
 			},
 			allowRedirect: false,
 			isCadastro: true,
@@ -147,6 +147,40 @@ export default {
 		},
 
 		editar() {
+
+			let acao = {};
+
+			acao.confirmar = (result) => {
+
+				if (result.value) {
+
+					let justificativa = result.value;
+
+					if (justificativa && this.validar()) {
+
+						this.prepararDados();
+
+						this.atividadeDispensavel.justificativa = justificativa;
+
+						AtividadeService.editarAtividadeDispensavel(this.atividadeDispensavel)
+							.then( () => {
+								this.handleSuccess(true);
+							})
+							.catch(error => {
+								this.handleError(error, true);
+							});
+
+					}
+
+				}
+
+			};
+
+			this.modalConfirmacao(acao);
+
+		},
+
+		modalConfirmacao(acao) {
 
 			this.$fire({
 
@@ -191,7 +225,7 @@ export default {
 
 					const campoJustificativa = document.getElementById("QA-input-atividade-dispensavel-justificativa");
 
-					let justificativa = campoJustificativa.value.replace(/\s/g, '');
+					let justificativa = campoJustificativa.value.trim();
 
 					if (justificativa) {
 						return justificativa;
@@ -215,27 +249,7 @@ export default {
 				}
 
 			}).then((result) => {
-
-				this.prepararDados();
-
-				if (result.value) {
-
-					let justificativa = result.value;
-
-					if (justificativa && this.validar()) {
-
-						AtividadeService.editarAtividadeDispensavel(this.atividadeDispensavel)
-							.then( () => {
-								this.handleSuccess(true);
-							})
-							.catch(error => {
-								this.handleError(error, true);
-							});
-
-					}
-
-				}
-
+				acao.confirmar(result);
 			}).catch((error) => {
 				console.error(error.message);
 			});

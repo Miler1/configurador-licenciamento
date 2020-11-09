@@ -144,7 +144,8 @@ export default {
 					tiposAtividade: [],
 					geoPonto: false,
 					geoLinha: false,
-					geoPoligono: false
+					geoPoligono: false,
+					rascunho: null,
 				},
 				parametros: [],
 				justificativa: null,
@@ -168,19 +169,10 @@ export default {
 
 				window.scrollTo(0, 0);
 
-				const retorno = AtividadeService.cadastrarAtividadeLicenciavel(this.atividadeLicenciavel)
+				let retorno = AtividadeService.cadastrarAtividadeLicenciavel(this.atividadeLicenciavel)
 					.then((response) => {
-
-						if (response.status === 200) {
-							return true;
-						}
-
-						snackbar.alert("Algo deu errado. Por favor, tente novamente mais tarde. ", snackbar.type.WARN);
-
-						return false;
-
-					})
-					.catch(error => {
+						return true;
+					}).catch(error => {
 
 						console.error(error);
 						this.atividadeLicenciavel = this.atividadeLicenciavelBkp;
@@ -189,9 +181,13 @@ export default {
 
 					});
 
-				if (retorno) {
-					this.handleSuccess();
-				}
+				retorno.then( (value) => {
+
+					if (value) {
+						this.handleSuccess();
+					}
+
+				});
 
 			}
 
@@ -199,73 +195,9 @@ export default {
 
 		editar() {
 
-			this.$fire({
+			let acao = {};
 
-				title: `<div><p class="title-modal-confirm">Confirmar edição - Atividade licenciável</p><div>`,
-				html:
-					`
-					<div class="row" id="row-justificativa-atividade-licenciavel" style="padding-top:15px">
-						<div class="col col-12" style="display:flex; flex-direction: column;">
-							<label id="label-justificativa" aria-hidden="true" class="v-label theme--light" style="text-align: left; padding-bottom:4px">Justificativa</label>
-							<div class="v-input v-textarea v-textarea--auto-grow v-textarea--no-resize theme--light v-text-field v-text-field--is-booted v-text-field--enclosed v-text-field--outlined" id="div-input">
-								<div class="v-input__control">
-									<div class="v-input__slot">
-										<fieldset>
-											<legend style="width: 0px;">
-												<span>​</span>
-											</legend>
-										</fieldset>
-										<div class="v-text-field__slot">
-											<textarea id="QA-input-atividade-licenciavel-justificativa" rows="4" placeholder="Digite aqui..." required="required"></textarea>
-										</div>
-									</div>
-									<div class="v-text-field__details">
-										<div class="v-messages theme--light">
-											<div class="v-messages__wrapper" id="texto-mensagem"></div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					`,
-				width: '580px',
-				showCancelButton: true,
-				confirmButtonColor:'#67C23A',
-				cancelButtonColor: '#FFF',
-				showCloseButton: true,
-				focusConfirm: false,
-				confirmButtonText: '<i class="fa fa-check-circle" style="left:0px"></i> Confirmar',
-				cancelButtonText: '<i class="fa fa-close"></i> Cancelar',
-				reverseButtons: true,
-				preConfirm: () => {
-
-					const campoJustificativa = document.getElementById("QA-input-atividade-licenciavel-justificativa");
-
-					let justificativa = campoJustificativa.value.replace(/\s/g, '');
-
-					if (justificativa) {
-						return justificativa;
-					} else {
-
-						const input = document.getElementById("div-input");
-						const mensagem = document.getElementById("texto-mensagem");
-
-						const classes = ["v-input--has-state", "v-text-field--placeholder", "error--text"];
-						input.classList.add(...classes);
-						input.style.color = "#ff5252";
-
-						mensagem.innerHTML = "Obrigatório";
-						mensagem.style.color = "#ff5252";
-						mensagem.style.caretColor = "#ff5252";
-
-						return false;
-
-					}
-
-				}
-
-			}).then((result) => {
+			acao.confirmar = (result) => {
 
 				if (result.value) {
 
@@ -279,15 +211,7 @@ export default {
 
 						const retorno = AtividadeService.editarAtividadeLicenciavel(this.atividadeLicenciavel)
 							.then( (response) => {
-
-								if (response.status === 200) {
-									return true;
-								}
-
-								snackbar.alert("Algo deu errado. Por favor, tente novamente mais tarde. ", snackbar.type.WARN);
-
-								return false;
-
+								return true;
 							})
 							.catch(error => {
 
@@ -297,17 +221,107 @@ export default {
 
 							});
 
-						if (retorno) {
-							this.handleSuccess(true);
-						}
+						retorno.then( (value) => {
+
+							if (value) {
+								this.handleSuccess();
+							}
+
+						});
 
 					}
 
 				}
 
-			}).catch((error) => {
-				console.log("error", error);
-			});
+			};
+
+			this.modalConfirmacao(acao);
+
+		},
+
+		modalConfirmacao(acao) {
+
+			if (this.atividadeLicenciavel.dados.rascunho) {
+
+				const result = {value: true};
+
+				acao.confirmar(result);
+
+			} else {
+
+				this.$fire({
+
+					title: `<div><p class="title-modal-confirm">Confirmar edição - Atividade licenciável</p><div>`,
+					html:
+						`
+						<div class="row" id="row-justificativa-atividade-licenciavel" style="padding-top:15px">
+							<div class="col col-12" style="display:flex; flex-direction: column;">
+								<label id="label-justificativa" aria-hidden="true" class="v-label theme--light" style="text-align: left; padding-bottom:4px">Justificativa</label>
+								<div class="v-input v-textarea v-textarea--auto-grow v-textarea--no-resize theme--light v-text-field v-text-field--is-booted v-text-field--enclosed v-text-field--outlined" id="div-input">
+									<div class="v-input__control">
+										<div class="v-input__slot">
+											<fieldset>
+												<legend style="width: 0px;">
+													<span>​</span>
+												</legend>
+											</fieldset>
+											<div class="v-text-field__slot">
+												<textarea id="QA-input-atividade-licenciavel-justificativa" rows="4" placeholder="Digite aqui..." required="required"></textarea>
+											</div>
+										</div>
+										<div class="v-text-field__details">
+											<div class="v-messages theme--light">
+												<div class="v-messages__wrapper" id="texto-mensagem"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						`,
+					width: '580px',
+					showCancelButton: true,
+					confirmButtonColor:'#67C23A',
+					cancelButtonColor: '#FFF',
+					showCloseButton: true,
+					focusConfirm: false,
+					confirmButtonText: '<i class="fa fa-check-circle" style="left:0px"></i> Confirmar',
+					cancelButtonText: '<i class="fa fa-close"></i> Cancelar',
+					reverseButtons: true,
+					preConfirm: () => {
+
+						const campoJustificativa = document.getElementById("QA-input-atividade-licenciavel-justificativa");
+
+						let justificativa = campoJustificativa.value.trim();
+
+						if (justificativa) {
+							return justificativa;
+						} else {
+
+							const input = document.getElementById("div-input");
+							const mensagem = document.getElementById("texto-mensagem");
+
+							const classes = ["v-input--has-state", "v-text-field--placeholder", "error--text"];
+							input.classList.add(...classes);
+							input.style.color = "#ff5252";
+
+							mensagem.innerHTML = "Obrigatório";
+							mensagem.style.color = "#ff5252";
+							mensagem.style.caretColor = "#ff5252";
+
+							return false;
+
+						}
+
+					}
+
+				}).then((result) => {
+					acao.confirmar(result);
+				}).catch((error) => {
+					console.log("error", error);
+				});
+
+			}
 
 		},
 

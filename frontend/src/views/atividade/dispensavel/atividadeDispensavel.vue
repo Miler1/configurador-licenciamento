@@ -70,10 +70,10 @@ export default {
 					this.dadosListagem.nomeItem = 'CNAEs dispensáveis';
 
 				})
-				.catch(erro => {
+				.catch(error => {
 
-					console.error(erro);
-					snackbar.alert(ERROR_MESSAGES.atividadeDispensavel.listagem + erro.message);
+					console.error(error);
+					snackbar.alert(ERROR_MESSAGES.atividadeDispensavel.listagem + error.message);
 
 				});
 
@@ -82,9 +82,7 @@ export default {
 		prepararDadosParaListagem(){
 
 			this.dadosListagem.content.forEach(dado => {
-
 				dado.codigoAtividadeCnae = dado.atividadesCnae[0].atividadeCnae.codigo;
-
 			});
 
 		},
@@ -95,6 +93,7 @@ export default {
 			this.parametrosFiltro.itemsPorPagina = 10;
 			this.parametrosFiltro.tipoOrdenacao = 'atividadeCnae.nome,asc';
 			this.parametrosFiltro.stringPesquisa = '';
+
 		},
 
 		abrirTelaCadastro() {
