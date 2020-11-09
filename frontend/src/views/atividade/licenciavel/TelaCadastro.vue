@@ -168,30 +168,17 @@ export default {
 
 				window.scrollTo(0, 0);
 
-				const retorno = AtividadeService.cadastrarAtividadeLicenciavel(this.atividadeLicenciavel)
-					.then((response) => {
-
-						if (response.status === 200) {
-							return true;
-						}
-
-						snackbar.alert("Algo deu errado. Por favor, tente novamente mais tarde. ", snackbar.type.WARN);
-
-						return false;
-
+				AtividadeService.cadastrarAtividadeLicenciavel(this.atividadeLicenciavel)
+					.then(() => {
+						this.handleSuccess();
 					})
 					.catch(error => {
 
 						console.error(error);
 						this.atividadeLicenciavel = this.atividadeLicenciavelBkp;
 						this.handleError(error);
-						return false;
 
 					});
-
-				if (retorno) {
-					this.handleSuccess();
-				}
 
 			}
 
@@ -277,29 +264,16 @@ export default {
 
 						this.prepararDados();
 
-						const retorno = AtividadeService.editarAtividadeLicenciavel(this.atividadeLicenciavel)
-							.then( (response) => {
-
-								if (response.status === 200) {
-									return true;
-								}
-
-								snackbar.alert("Algo deu errado. Por favor, tente novamente mais tarde. ", snackbar.type.WARN);
-
-								return false;
-
+						AtividadeService.editarAtividadeLicenciavel(this.atividadeLicenciavel)
+							.then(() => {
+								this.handleSuccess(true);
 							})
 							.catch(error => {
 
 								console.error(error);
 								this.handleError(error, true);
-								return false;
 
 							});
-
-						if (retorno) {
-							this.handleSuccess(true);
-						}
 
 					}
 
