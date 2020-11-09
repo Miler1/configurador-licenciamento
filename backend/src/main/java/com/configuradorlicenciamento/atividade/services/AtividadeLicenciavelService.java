@@ -265,14 +265,16 @@ public class AtividadeLicenciavelService implements IAtividadeService {
 
         if (atividadeSalva.isPresent()) {
 
+            //INICIO atividade antiga
             atividadeAntiga = atividadeSalva.get();
 
             atividadeAntiga.setAtivo(false);
-
             atividadeAntiga.setItemAntigo(true);
 
             atividadeRepository.save(atividadeAntiga);
+            //FIM atividade antiga
 
+            //INICIO atividade atual
             atividadeLicenciavelDTO.getDados().setId(null);
 
             atividadeAtual = salvarAtividadeLicenciavel(request, atividadeLicenciavelDTO);
@@ -285,6 +287,7 @@ public class AtividadeLicenciavelService implements IAtividadeService {
                     AcaoConfigurador.Acoes.EDITAR.getAcao(),
                     atividadeLicenciavelDTO.getJustificativa());
 
+            //FIM atividade atual
         }
 
         return atividadeAtual;
