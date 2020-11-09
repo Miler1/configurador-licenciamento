@@ -12,6 +12,7 @@ import com.opencsv.bean.CsvBindByPosition;
 import lombok.Getter;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -50,7 +51,7 @@ public class AtividadeLicenciavelCsv implements Serializable {
     @CsvBindByPosition(position = 7)
     private String usuarioLicenciamento;
 
-    public AtividadeLicenciavelCsv(Atividade atividade) {
+    public AtividadeLicenciavelCsv(Atividade atividade, Date dataCadastro, UsuarioLicenciamento usuarioLicenciamento) {
 
         this.codigo = atividade.getCodigo();
         this.nome = atividade.getNome();
@@ -58,9 +59,8 @@ public class AtividadeLicenciavelCsv implements Serializable {
         this.parametros = tratarParametrosParaCsv(atividade.getParametros());
         this.tiposLicencas = tratarLicencasParaCsv(atividade.getTiposLicencas());
         this.ativo = atividade.getAtivo() ? "Ativo" : "Inativo";
-        this.dataCadastro = atividade.getDataCadastro() != null ? DateUtil.formataBrSimples(atividade.getDataCadastro()) : "-";
-
-        this.usuarioLicenciamento = atividade.getUsuarioLicenciamento() != null ? getNomeUsuario(atividade.getUsuarioLicenciamento()) : "-";
+        this.dataCadastro = dataCadastro != null ? DateUtil.formataBrSimples(dataCadastro) : "-";
+        this.usuarioLicenciamento = usuarioLicenciamento != null ? getNomeUsuario(usuarioLicenciamento) : "-";
 
     }
 
