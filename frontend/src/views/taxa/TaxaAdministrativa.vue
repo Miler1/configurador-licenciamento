@@ -325,7 +325,7 @@ export default {
 			}).then((result) => {
 
 				if(result.value) {
-
+					item.ativo = !item.ativo;
 					TaxaAdministrativaService.ativarDesativar(item.id)
 						.then(() => {
 
@@ -348,6 +348,8 @@ export default {
 							} else {
 								snackbar.alert(ERROR_MESSAGES.taxaAdministrativa.ativar);
 							}
+
+							item.ativo = !item.ativo;
 
 						});
 
