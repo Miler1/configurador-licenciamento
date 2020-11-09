@@ -20,7 +20,7 @@ public class AtividadeSpecification {
         return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(criteriaBuilder.lower(root.get("codigo")), "0000");
     }
 
-    public static Specification<Atividade> filtrarAtividadesLicenciaveisAtuais() {
+    public static Specification<Atividade> filtrarAtividadesAtuais() {
         return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.isFalse(root.get("itemAntigo"));
     }
 
