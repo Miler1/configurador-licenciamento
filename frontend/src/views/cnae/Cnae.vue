@@ -251,7 +251,7 @@ export default {
 			}).then((result) => {
 
 				if(result.value) {
-
+					item.ativo = !item.ativo;
 					AtividadeCnaeService.ativarDesativar(item.id)
 						.then(() => {
 
@@ -268,6 +268,7 @@ export default {
 						.catch(erro => {
 
 							snackbar.alert(erro.message);
+							item.ativo = !item.ativo;
 
 						});
 				}

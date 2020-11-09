@@ -255,7 +255,7 @@ export default {
 			}).then((result) => {
 
 				if(result.value) {
-
+					item.ativo = !item.ativo;
 					TipologiaService.ativarDesativar(item.id)
 						.then(() => {
 
@@ -273,6 +273,7 @@ export default {
 
 							console.error(erro);
 							snackbar.alert(erro.message);
+							item.ativo = !item.ativo;
 
 						});
 				}
