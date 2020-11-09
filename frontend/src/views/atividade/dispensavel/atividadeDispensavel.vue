@@ -133,7 +133,7 @@ export default {
 			}).then((result) => {
 
 				if(result.value) {
-
+					item.ativo = !item.ativo;
 					AtividadeService.ativarDesativarAtividadeDispensavel(item.id)
 						.then(() => {
 
@@ -156,6 +156,8 @@ export default {
 							} else {
 								snackbar.alert(ERROR_MESSAGES.atividadeDispensavel.desativar);
 							}
+
+							item.ativo = !item.ativo;
 
 						});
 
