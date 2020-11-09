@@ -100,6 +100,7 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
                     .setGeoPoligono(true)
                     .setPotencialPoluidor(potencialPoluidor)
                     .setAtivo(true)
+                    .setItemAntigo(false)
                     .setDentroEmpreendimento(false)
                     .setV1(false)
                     .setRascunho(false)
@@ -140,17 +141,18 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
 
         Atividade atividadeAtual = new Atividade();
 
-
         if (atividadeSalva.isPresent()) {
 
+            //INICIO atividade antiga
             atividadeAntiga = atividadeSalva.get();
 
             atividadeAntiga.setAtivo(false);
-
             atividadeAntiga.setItemAntigo(true);
 
             atividadeRepository.save(atividadeAntiga);
+            //FIM atividade antiga
 
+            //INICIO atividade atual
             atividadeDispensavelDTO.setId(null);
 
             List<Atividade> atividades = salvarAtividadeDispensavel(request, atividadeDispensavelDTO);
@@ -165,6 +167,7 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
                     AcaoConfigurador.Acoes.EDITAR.getAcao(),
                     atividadeDispensavelDTO.getJustificativa());
 
+            //FIM atividade atual
         }
 
         return atividadeAtual;

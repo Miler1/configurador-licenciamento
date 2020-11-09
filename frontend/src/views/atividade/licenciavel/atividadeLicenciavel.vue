@@ -64,7 +64,6 @@ export default {
 		updatePagination(parametrosFiltro) {
 
 			AtividadeService.listarAtividadeLicenciavel(parametrosFiltro)
-
 				.then((response) => {
 
 					this.dadosListagem = response.data;
@@ -154,7 +153,7 @@ export default {
 			}).then((result) => {
 
 				if(result.value) {
-
+					item.ativo = !item.ativo;
 					AtividadeService.ativarDesativarAtividadeLicenciavel(item.id)
 						.then(() => {
 
@@ -178,8 +177,9 @@ export default {
 								snackbar.alert(ERROR_MESSAGES.atividadeLicenciavel.desativar);
 							}
 
-						});
+							item.ativo = !item.ativo;
 
+						});
 				}
 
 			}).catch((error) => {
@@ -215,22 +215,18 @@ export default {
 
 				if (result.value) {
 
-					let retorno = AtividadeService.excluirRascunhoAtividadeLicenciavel(item.id)
-						.then(() => {
+					AtividadeService.excluirRascunhoAtividadeLicenciavel(item.id)
+						.then((response) => {
 
 							snackbar.alert(SUCCESS_MESSAGES.atividadeLicenciavel.excluirRascunho, snackbar.type.SUCCESS);
+							this.updatePagination();
+							this.resetaDadosFiltragem();
 
 						})
 						.catch(error => {
 							console.log(error);
+							return false;
 						});
-
-					if (retorno) {
-
-						this.updatePagination();
-						this.resetaDadosFiltragem();
-
-					}
 
 				}
 

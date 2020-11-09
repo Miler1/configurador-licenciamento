@@ -155,13 +155,26 @@ public class AtividadeLicenciavelService implements IAtividadeService {
     @Override
     public Atividade salvarAtividadeLicenciavel(HttpServletRequest request, AtividadeLicenciavelDTO atividadeLicenciavelDTO) {
 
-        if (atividadeLicenciavelDTO.getDados().getId() != null) {
-            return this.editarAtividadeLicenciavel(request, atividadeLicenciavelDTO);
-        }
+        //caso exista justificativa, logo é uma edição
+        boolean existeJustificativa = atividadeLicenciavelDTO.getJustificativa() != null;
+
+        //caso exista id para atividade, logo é um rascunho ou vem da edição
+        boolean existeIdAtividadeDto = atividadeLicenciavelDTO.getDados().getId() != null;
 
         boolean existeAtividade = atividadeRepository.existsByCodigo(atividadeLicenciavelDTO.getDados().getCodigoAtividade().trim());
 
-        if (existeAtividade && atividadeLicenciavelDTO.getJustificativa() == null) {
+        //pode ser um rascunho para finalizar o cadastro ou uma edição
+        if (existeIdAtividadeDto && !existeJustificativa) {
+
+            boolean isRascunho = atividadeLicenciavelDTO.getDados().getRascunho();
+
+            if (isRascunho) {
+                return finalizarCadastroRascunho(request, atividadeLicenciavelDTO);
+            }
+
+        }
+
+        if (existeAtividade && !existeJustificativa) {
             throw new ConflictException(ATIVIDADE_EXISTENTE);
         }
 
@@ -224,7 +237,7 @@ public class AtividadeLicenciavelService implements IAtividadeService {
 
         relAtividadeParametroAtividadeService.salvar(atividade, atividadeLicenciavelDTO.getParametros().get(0));
 
-        if (atividadeLicenciavelDTO.getJustificativa() == null) {
+        if (existeAtividade) {
 
             historicoConfiguradorService.salvar(
                     request,
@@ -252,14 +265,16 @@ public class AtividadeLicenciavelService implements IAtividadeService {
 
         if (atividadeSalva.isPresent()) {
 
+            //INICIO atividade antiga
             atividadeAntiga = atividadeSalva.get();
 
             atividadeAntiga.setAtivo(false);
-
             atividadeAntiga.setItemAntigo(true);
 
             atividadeRepository.save(atividadeAntiga);
+            //FIM atividade antiga
 
+            //INICIO atividade atual
             atividadeLicenciavelDTO.getDados().setId(null);
 
             atividadeAtual = salvarAtividadeLicenciavel(request, atividadeLicenciavelDTO);
@@ -272,6 +287,7 @@ public class AtividadeLicenciavelService implements IAtividadeService {
                     AcaoConfigurador.Acoes.EDITAR.getAcao(),
                     atividadeLicenciavelDTO.getJustificativa());
 
+            //FIM atividade atual
         }
 
         return atividadeAtual;
@@ -294,6 +310,26 @@ public class AtividadeLicenciavelService implements IAtividadeService {
 
     }
 
+    private Atividade finalizarCadastroRascunho(HttpServletRequest request, AtividadeLicenciavelDTO atividadeLicenciavelDTO) {
+
+        Atividade atividade = this.editarRascunhoAtividadeLicenciavel(request, atividadeLicenciavelDTO);
+
+        if (atividade != null) {
+
+            historicoConfiguradorService.salvar(
+                    request,
+                    atividade.getId(),
+                    FuncionalidadeConfigurador.Funcionalidades.ATIVIDADES_LICENCIAVEIS.getTipo(),
+                    AcaoConfigurador.Acoes.CADASTRAR.getAcao()
+            );
+
+        }
+
+        return atividade;
+
+    }
+
+
     @Override
     public void excluirRascunhoAtividadeLicenciavel(HttpServletRequest request, Integer idAtividade) {
 
@@ -307,6 +343,7 @@ public class AtividadeLicenciavelService implements IAtividadeService {
 
     }
 
+    @Override
     public Atividade salvarRascunhoAtividadeLicenciavel(HttpServletRequest request, AtividadeLicenciavelDTO atividadeLicenciavelDTO) {
 
         if (atividadeLicenciavelDTO.getDados().getId() != null) {

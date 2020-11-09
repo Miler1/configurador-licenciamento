@@ -128,10 +128,10 @@ export default {
 			}).then((result) => {
 
 				if(result.value) {
-
+					item.ativo = !item.ativo;
 					RequisitoTecnicoService.ativarDesativar(item.id)
 						.then(() => {
-							
+
 							if(item.ativo) {
 								snackbar.alert(SUCCESS_MESSAGES.requisitoTecnico.desativar, snackbar.type.SUCCESS);
 							} else {
@@ -146,6 +146,7 @@ export default {
 
 							console.error(error);
 							snackbar.alert(error.message);
+							item.ativo = !item.ativo;
 
 						});
 
