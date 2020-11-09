@@ -14,10 +14,6 @@ import java.util.List;
 
 public interface IAtividadeService {
 
-    Atividade salvar(AtividadeDispensavelDTO.RelacaoCnaeTipologia atividadeDispensavelDTO);
-
-    Atividade editar(AtividadeDispensavelDTO.RelacaoCnaeTipologia atividadeDispensavelDTO, Atividade atividade);
-
     Page<Atividade> listarAtividadesLicenciaveis(Pageable pageable, FiltroPesquisa filtro);
 
     List<AtividadeLicenciavelCsv> listarAtividadesLicenciaveisParaCsv();

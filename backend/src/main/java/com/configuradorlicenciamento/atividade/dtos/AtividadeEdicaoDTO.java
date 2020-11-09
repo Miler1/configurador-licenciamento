@@ -43,7 +43,9 @@ public class AtividadeEdicaoDTO {
 
     private final List<Licenca> licencas;
 
-    public AtividadeEdicaoDTO (Atividade atividade) {
+    private final Boolean rascunho;
+
+    public AtividadeEdicaoDTO(Atividade atividade) {
 
         this.id = atividade.getId();
         this.nomeAtividade = atividade.getNome();
@@ -59,6 +61,7 @@ public class AtividadeEdicaoDTO {
         this.taxaLicenciamento = atividade.getTaxasLicenciamento().isEmpty() ? null : atividade.recuperaCodigoTaxaLicenciamentobyTaxas();
         this.tiposAtividade = atividade.recuperaCodigosTiposAtividade();
         this.licencas = atividade.getTiposLicencas();
+        this.rascunho = atividade.getRascunho();
 
     }
 

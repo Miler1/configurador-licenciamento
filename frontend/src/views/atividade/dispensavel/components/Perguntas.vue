@@ -84,7 +84,7 @@ export default {
 		}
 
 	},
-	
+
 	data: () => {
 
 		return {
@@ -175,6 +175,7 @@ export default {
 			};
 
 			this.modalConfirmacao(modal);
+
 		},
 
 		errorMessage(item) {
@@ -310,13 +311,14 @@ export default {
 	},
 
 	mounted() {
-		
+
 		if (this.$route.params.idAtividadeDispensavel) {
 
 			this.prepararLabelRespostasEsperadas(this.perguntas);
 			this.isCadastro = false;
 
 		}
+
 	},
 
 };
