@@ -212,10 +212,10 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
 
         Specification<Atividade> specification = getFiltro();
 
-        if (filtro.getStringPesquisa() != null) {
+        if (filtro.getStringPesquisa() != null && !filtro.getStringPesquisa().isEmpty()) {
 
-            specification = specification.and(AtividadeSpecification.atividadeNome(filtro.getStringPesquisa())
-                    .or(AtividadeSpecification.atividadeCodigo(filtro.getStringPesquisa())));
+            specification = specification.and(AtividadeSpecification.atividadeNomeCnae(filtro.getStringPesquisa())
+                    .or(AtividadeSpecification.atividadeCodigoCnae(filtro.getStringPesquisa())));
 
         }
 

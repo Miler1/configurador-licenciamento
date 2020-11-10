@@ -9,7 +9,7 @@ export default {
 	ativarDesativar: async (idTipologia) => ApiService.post('tipologia/ativarDesativar/' + idTipologia),
 
 	listar: async (parametrosFiltro) => {
-		
+
 		if (parametrosFiltro) {
 
 			return ApiService.post(`tipologia/listar/?

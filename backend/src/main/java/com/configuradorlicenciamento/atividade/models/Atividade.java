@@ -109,7 +109,7 @@ public class Atividade implements Serializable {
     @JsonManagedReference
     private List<RelAtividadeParametroAtividade> parametros;
 
-    @OneToMany(mappedBy="atividade")
+    @OneToMany(mappedBy = "atividade")
     @JsonManagedReference
     private List<TipoCaracterizacaoAtividade> atividadesCnae;
 
@@ -134,6 +134,7 @@ public class Atividade implements Serializable {
         this.portesAtividade = atividadeBuilder.portesAtividade;
         this.tiposLicencas = atividadeBuilder.tiposLicencas;
         this.taxasLicenciamento = atividadeBuilder.taxasLicenciamento;
+        this.atividadesCnae = atividadeBuilder.atividadesCnae;
 
     }
 
@@ -182,6 +183,7 @@ public class Atividade implements Serializable {
         private List<Licenca> tiposLicencas;
         private List<TaxaLicenciamento> taxasLicenciamento;
         private List<PorteAtividade> portesAtividade;
+        private List<TipoCaracterizacaoAtividade> atividadesCnae;
 
         public AtividadeBuilder(Boolean dentroMunicipio) {
             this.dentroMunicipio = dentroMunicipio;
@@ -274,6 +276,11 @@ public class Atividade implements Serializable {
 
         public AtividadeBuilder setPortesAtividade(List<PorteAtividade> portesAtividade) {
             this.portesAtividade = portesAtividade;
+            return this;
+        }
+
+        public AtividadeBuilder setAtividadesCnae(List<TipoCaracterizacaoAtividade> atividadesCnae) {
+            this.atividadesCnae = atividadesCnae;
             return this;
         }
 
