@@ -252,14 +252,6 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
 
     }
 
-    public Specification<Atividade> getFitro() {
-
-        return Specification.where(AtividadeSpecification.padrao()
-                .and(AtividadeSpecification.filtrarAtividadesDispensaveis())
-                .and(AtividadeSpecification.filtrarAtividadesAtuais()));
-
-    }
-
     @Override
     public AtividadeDispensavelEdicaoDTO findById(Integer idAtividadeDispensavel) {
 
@@ -280,6 +272,14 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
                 atividade.getTipologia(),
                 atividade.getDentroMunicipio(),
                 perguntas);
+
+    }
+
+    private Specification<Atividade> getFitro() {
+
+        return Specification.where(AtividadeSpecification.padrao()
+                .and(AtividadeSpecification.filtrarAtividadesDispensaveis())
+                .and(AtividadeSpecification.filtrarAtividadesAtuais()));
 
     }
 
