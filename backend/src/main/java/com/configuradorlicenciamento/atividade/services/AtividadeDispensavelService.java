@@ -77,7 +77,7 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
     IHistoricoConfiguradorService historicoConfiguradorService;
 
     @Override
-    public List<Atividade> salvarAtividadeDispensavel(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO) {
+    public List<Atividade> salvar(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO) {
 
         List<Atividade> atividades = new ArrayList<>();
 
@@ -133,7 +133,7 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
     }
 
     @Override
-    public Atividade editarAtividadeDispensavel(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO) {
+    public Atividade editar(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO) {
 
         Optional<Atividade> atividadeSalva = atividadeRepository.findById(atividadeDispensavelDTO.getId());
 
@@ -155,7 +155,7 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
             //INICIO atividade atual
             atividadeDispensavelDTO.setId(null);
 
-            List<Atividade> atividades = salvarAtividadeDispensavel(request, atividadeDispensavelDTO);
+            List<Atividade> atividades = salvar(request, atividadeDispensavelDTO);
 
             atividadeAtual = atividades.get(0);
 
@@ -200,24 +200,22 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
     }
 
     @Override
-    public Page<Atividade> listarAtividadesDispensaveis(Pageable pageable, FiltroPesquisa filtro) {
+    public Page<Atividade> listar(Pageable pageable, FiltroPesquisa filtro) {
 
-        Specification<Atividade> specification = preparaFiltroAtividadeDispensavel(filtro);
+        Specification<Atividade> specification = prepararFiltroAtividadeDispensavel(filtro);
 
         return atividadeRepository.findAll(specification, pageable);
 
     }
 
-    private Specification<Atividade> preparaFiltroAtividadeDispensavel(FiltroPesquisa filtro) {
+    private Specification<Atividade> prepararFiltroAtividadeDispensavel(FiltroPesquisa filtro) {
 
-        Specification<Atividade> specification = Specification.where(AtividadeSpecification.padrao()
-                .and(AtividadeSpecification.filtrarAtividadesDispensaveis())
-                .and(AtividadeSpecification.filtrarAtividadesAtuais()));
+        Specification<Atividade> specification = getFiltro();
 
-        if (filtro.getStringPesquisa() != null) {
+        if (filtro.getStringPesquisa() != null && !filtro.getStringPesquisa().isEmpty()) {
 
-            specification = specification.and(AtividadeSpecification.atividadeNome(filtro.getStringPesquisa())
-                    .or(AtividadeSpecification.atividadeCodigo(filtro.getStringPesquisa())));
+            specification = specification.and(AtividadeSpecification.atividadeNomeCnae(filtro.getStringPesquisa())
+                    .or(AtividadeSpecification.atividadeCodigoCnae(filtro.getStringPesquisa())));
 
         }
 
@@ -226,7 +224,12 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
     }
 
     @Override
-    public List<AtividadeDispensavelCsv> listarAtividadesDispensaveisParaCsv() {
+    public List<Atividade> listarAtividadesDispensaveis() {
+        return atividadeRepository.findAll(getFiltro(), Sort.by("id"));
+    }
+
+    @Override
+    public List<AtividadeDispensavelCsv> listarAtividadesParaCsv() {
 
         List<Atividade> atividades = listarAtividadesDispensaveis();
         List<AtividadeDispensavelCsv> dtos = new ArrayList<>();
@@ -246,16 +249,6 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
         }
 
         return dtos;
-
-    }
-
-    public List<Atividade> listarAtividadesDispensaveis() {
-
-        Specification<Atividade> specification = Specification.where(AtividadeSpecification.padrao()
-                .and(AtividadeSpecification.filtrarAtividadesDispensaveis())
-                .and(AtividadeSpecification.filtrarAtividadesAtuais()));
-
-        return atividadeRepository.findAll(specification, Sort.by("id"));
 
     }
 
@@ -279,6 +272,14 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
                 atividade.getTipologia(),
                 atividade.getDentroMunicipio(),
                 perguntas);
+
+    }
+
+    private Specification<Atividade> getFiltro() {
+
+        return Specification.where(AtividadeSpecification.padrao()
+                .and(AtividadeSpecification.filtrarAtividadesDispensaveis())
+                .and(AtividadeSpecification.filtrarAtividadesAtuais()));
 
     }
 
