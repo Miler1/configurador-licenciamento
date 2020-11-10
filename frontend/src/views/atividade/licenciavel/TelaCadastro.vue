@@ -201,7 +201,7 @@ export default {
 
 						AtividadeService.editarAtividadeLicenciavel(this.atividadeLicenciavel)
 							.then( (response) => {
-								this.handleSuccess();
+								this.handleSuccess(true);
 							})
 							.catch(error => {
 
