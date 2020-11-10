@@ -3,7 +3,8 @@ package com.configuradorlicenciamento.atividade.controllers;
 import com.configuradorlicenciamento.atividade.dtos.AtividadeLicenciavelCsv;
 import com.configuradorlicenciamento.atividade.dtos.AtividadeLicenciavelDTO;
 import com.configuradorlicenciamento.atividade.dtos.AtividadeLicenciavelEdicaoDTO;
-import com.configuradorlicenciamento.atividade.interfaces.IAtividadeService;
+import com.configuradorlicenciamento.atividade.interfaces.IAtividadeLicenciavelService;
+import com.configuradorlicenciamento.atividade.interfaces.IRascunhoService;
 import com.configuradorlicenciamento.atividade.models.Atividade;
 import com.configuradorlicenciamento.configuracao.components.VariaveisAmbientes;
 import com.configuradorlicenciamento.configuracao.controllers.DefaultController;
@@ -30,14 +31,24 @@ public class AtividadeLicenciavelController extends DefaultController {
     private static final String HEADER_CORS = "Access-Control-Allow-Origin";
 
     @Autowired
-    IAtividadeService atividadeService;
+    IAtividadeLicenciavelService atividadeService;
+
+    @Autowired
+    IRascunhoService rascunhoService;
 
     @PostMapping(value = "salvar")
     public ResponseEntity<Atividade> salvar(HttpServletRequest request, @Valid @RequestBody AtividadeLicenciavelDTO atividadeLicenciavelDTO) throws Exception {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        Atividade atividade = atividadeService.salvarAtividadeLicenciavel(request, atividadeLicenciavelDTO);
+        Atividade atividade;
+
+        //caso exista id para atividade, logo é um rascunho para finalizar cadastro
+        if (atividadeLicenciavelDTO.getDados().getId() != null) {
+            atividade = rascunhoService.finalizarCadastro(request, atividadeLicenciavelDTO);
+        } else {
+            atividade = atividadeService.salvar(request, atividadeLicenciavelDTO);
+        }
 
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
@@ -50,43 +61,11 @@ public class AtividadeLicenciavelController extends DefaultController {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        Atividade atividade = atividadeService.editarAtividadeLicenciavel(request, atividadeLicenciavelDTO);
+        Atividade atividade = atividadeService.editar(request, atividadeLicenciavelDTO);
 
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
                 .body(atividade);
-
-    }
-
-    @PostMapping(value = "salvarRascunho")
-    public ResponseEntity<Atividade> salvarRascunho(HttpServletRequest request, @Valid @RequestBody AtividadeLicenciavelDTO atividadeLicenciavelDTO) throws Exception {
-
-        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
-
-        Atividade atividade;
-
-        if (atividadeLicenciavelDTO.getDados().getId() == null) {
-            atividade = atividadeService.salvarRascunhoAtividadeLicenciavel(request, atividadeLicenciavelDTO);
-        } else {
-            atividade = atividadeService.editarRascunhoAtividadeLicenciavel(request, atividadeLicenciavelDTO);
-        }
-
-        return ResponseEntity.ok()
-                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
-                .body(atividade);
-
-    }
-
-    @PostMapping(value = "excluirRascunho/{idAtividadeLicenciavel}")
-    public ResponseEntity<String> excluirRascunho(HttpServletRequest request, @PathVariable("idAtividadeLicenciavel") Integer idAtividadeLicenciavel) throws Exception {
-
-        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
-
-        atividadeService.excluirRascunhoAtividadeLicenciavel(request, idAtividadeLicenciavel);
-
-        return ResponseEntity.ok()
-                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
-                .body("{validacao.deleteRascunho}");
 
     }
 
@@ -97,7 +76,7 @@ public class AtividadeLicenciavelController extends DefaultController {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        Page<Atividade> atividades = atividadeService.listarAtividadesLicenciaveis(pageable, filtroPesquisa);
+        Page<Atividade> atividades = atividadeService.listar(pageable, filtroPesquisa);
 
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
@@ -116,7 +95,7 @@ public class AtividadeLicenciavelController extends DefaultController {
         CustomMappingStrategy<AtividadeLicenciavelCsv> mappingStrategy = new CustomMappingStrategy<>();
         mappingStrategy.setType(AtividadeLicenciavelCsv.class);
 
-        downloadCsv(atividadeService.listarAtividadesLicenciaveisParaCsv(), nome, mappingStrategy, response);
+        downloadCsv(atividadeService.listarAtividadesParaCsv(), nome, mappingStrategy, response);
 
     }
 
@@ -144,6 +123,38 @@ public class AtividadeLicenciavelController extends DefaultController {
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
                 .body(atividade);
+
+    }
+
+    @PostMapping(value = "salvarRascunho")
+    public ResponseEntity<Atividade> salvarRascunho(HttpServletRequest request, @Valid @RequestBody AtividadeLicenciavelDTO atividadeLicenciavelDTO) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        Atividade atividade;
+
+        if (atividadeLicenciavelDTO.getDados().getId() == null) {
+            atividade = rascunhoService.salvar(request, atividadeLicenciavelDTO);
+        } else {
+            atividade = rascunhoService.editar(request, atividadeLicenciavelDTO);
+        }
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body(atividade);
+
+    }
+
+    @PostMapping(value = "excluirRascunho/{idAtividadeLicenciavel}")
+    public ResponseEntity<String> excluirRascunho(HttpServletRequest request, @PathVariable("idAtividadeLicenciavel") Integer idAtividadeLicenciavel) throws Exception {
+
+        verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
+
+        rascunhoService.excluir(request, idAtividadeLicenciavel);
+
+        return ResponseEntity.ok()
+                .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
+                .body("{validacao.deleteRascunho}");
 
     }
 

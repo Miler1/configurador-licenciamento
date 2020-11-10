@@ -38,7 +38,7 @@ public class AtividadeDispensavelController extends DefaultController {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        List<Atividade> atividades = atividadeDispensavelService.salvarAtividadeDispensavel(request, atividadeDispensavelDTO);
+        List<Atividade> atividades = atividadeDispensavelService.salvar(request, atividadeDispensavelDTO);
 
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
@@ -51,7 +51,7 @@ public class AtividadeDispensavelController extends DefaultController {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        Atividade atividade = atividadeDispensavelService.editarAtividadeDispensavel(request, atividadeDispensavelDTO);
+        Atividade atividade = atividadeDispensavelService.editar(request, atividadeDispensavelDTO);
 
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
@@ -66,7 +66,7 @@ public class AtividadeDispensavelController extends DefaultController {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        Page<Atividade> atividades = atividadeDispensavelService.listarAtividadesDispensaveis(pageable, filtroPesquisa);
+        Page<Atividade> atividades = atividadeDispensavelService.listar(pageable, filtroPesquisa);
 
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
@@ -85,7 +85,7 @@ public class AtividadeDispensavelController extends DefaultController {
         CustomMappingStrategy<AtividadeDispensavelCsv> mappingStrategy = new CustomMappingStrategy<>();
         mappingStrategy.setType(AtividadeDispensavelCsv.class);
 
-        downloadCsv(atividadeDispensavelService.listarAtividadesDispensaveisParaCsv(), nome, mappingStrategy, response);
+        downloadCsv(atividadeDispensavelService.listarAtividadesParaCsv(), nome, mappingStrategy, response);
 
     }
 
