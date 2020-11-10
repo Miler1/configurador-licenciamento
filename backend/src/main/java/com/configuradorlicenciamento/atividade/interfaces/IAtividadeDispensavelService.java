@@ -13,15 +13,18 @@ import java.util.List;
 
 public interface IAtividadeDispensavelService {
 
-    List<Atividade> salvarAtividadeDispensavel(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO);
+    List<Atividade> salvar(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO);
 
-    Atividade editarAtividadeDispensavel(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO);
+    Atividade editar(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO);
 
     Atividade ativarDesativar(HttpServletRequest request, Integer idAtividadeDispensavel);
 
-    Page<Atividade> listarAtividadesDispensaveis(Pageable pageable, FiltroPesquisa filtro);
+    Page<Atividade> listar(Pageable pageable, FiltroPesquisa filtro);
 
-    List<AtividadeDispensavelCsv> listarAtividadesDispensaveisParaCsv();
+    List<Atividade> listarAtividadesDispensaveis();
+
+    List<AtividadeDispensavelCsv> listarAtividadesParaCsv();
 
     AtividadeDispensavelEdicaoDTO findById(Integer idAtividadeDispensavel);
+
 }
