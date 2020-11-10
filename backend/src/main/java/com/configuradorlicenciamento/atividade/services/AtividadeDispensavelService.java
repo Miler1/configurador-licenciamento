@@ -79,6 +79,20 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
     @Override
     public List<Atividade> salvar(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO) {
 
+        boolean statusAtivoAtual;
+
+        boolean statusAtivoAntigo = true;
+
+        if (atividadeDispensavelDTO.getJustificativa() != null) {
+
+            statusAtivoAntigo = this.getStatusAtivoItemAntigo(atividadeDispensavelDTO);
+
+            atividadeDispensavelDTO.setId(null);
+
+        }
+
+        statusAtivoAtual = statusAtivoAntigo;
+
         List<Atividade> atividades = new ArrayList<>();
 
         atividadeDispensavelDTO.getCnaesTipologia().forEach(cnaeTipologia -> {
@@ -99,7 +113,7 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
                     .setGeoPonto(true)
                     .setGeoPoligono(true)
                     .setPotencialPoluidor(potencialPoluidor)
-                    .setAtivo(true)
+                    .setAtivo(statusAtivoAtual)
                     .setItemAntigo(false)
                     .setDentroEmpreendimento(false)
                     .setV1(false)
@@ -135,40 +149,26 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
     @Override
     public Atividade editar(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO) {
 
-        Optional<Atividade> atividadeSalva = atividadeRepository.findById(atividadeDispensavelDTO.getId());
+        Atividade atividadeAntiga = buscarAtividade(atividadeDispensavelDTO.getId());
 
-        Atividade atividadeAntiga;
+        Atividade atividadeAtual;
 
-        Atividade atividadeAtual = new Atividade();
+        atividadeAntiga.setAtivo(false);
+        atividadeAntiga.setItemAntigo(true);
 
-        if (atividadeSalva.isPresent()) {
+        atividadeRepository.save(atividadeAntiga);
 
-            //INICIO atividade antiga
-            atividadeAntiga = atividadeSalva.get();
+        List<Atividade> atividades = salvar(request, atividadeDispensavelDTO);
 
-            atividadeAntiga.setAtivo(false);
-            atividadeAntiga.setItemAntigo(true);
+        atividadeAtual = atividades.get(0);
 
-            atividadeRepository.save(atividadeAntiga);
-            //FIM atividade antiga
-
-            //INICIO atividade atual
-            atividadeDispensavelDTO.setId(null);
-
-            List<Atividade> atividades = salvar(request, atividadeDispensavelDTO);
-
-            atividadeAtual = atividades.get(0);
-
-            historicoConfiguradorService.editar(
-                    request,
-                    atividadeAtual.getId(),
-                    atividadeAntiga.getId(),
-                    FuncionalidadeConfigurador.Funcionalidades.CNAES_DISPENSAVEIS.getTipo(),
-                    AcaoConfigurador.Acoes.EDITAR.getAcao(),
-                    atividadeDispensavelDTO.getJustificativa());
-
-            //FIM atividade atual
-        }
+        historicoConfiguradorService.editar(
+                request,
+                atividadeAtual.getId(),
+                atividadeAntiga.getId(),
+                FuncionalidadeConfigurador.Funcionalidades.CNAES_DISPENSAVEIS.getTipo(),
+                AcaoConfigurador.Acoes.EDITAR.getAcao(),
+                atividadeDispensavelDTO.getJustificativa());
 
         return atividadeAtual;
 
@@ -177,8 +177,7 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
     @Override
     public Atividade ativarDesativar(HttpServletRequest request, Integer idAtividadeDispensavel) {
 
-        Atividade atividade = atividadeRepository.findById(idAtividadeDispensavel).orElseThrow(() ->
-                new ConfiguradorNotFoundException("Não foi possível encontrar a atividade dispensável com id: " + idAtividadeDispensavel));
+        Atividade atividade = buscarAtividade(idAtividadeDispensavel);
 
         atividade.setAtivo(!atividade.getAtivo());
 
@@ -205,21 +204,6 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
         Specification<Atividade> specification = prepararFiltroAtividadeDispensavel(filtro);
 
         return atividadeRepository.findAll(specification, pageable);
-
-    }
-
-    private Specification<Atividade> prepararFiltroAtividadeDispensavel(FiltroPesquisa filtro) {
-
-        Specification<Atividade> specification = getFiltro();
-
-        if (filtro.getStringPesquisa() != null && !filtro.getStringPesquisa().isEmpty()) {
-
-            specification = specification.and(AtividadeSpecification.atividadeNomeCnae(filtro.getStringPesquisa())
-                    .or(AtividadeSpecification.atividadeCodigoCnae(filtro.getStringPesquisa())));
-
-        }
-
-        return specification;
 
     }
 
@@ -255,9 +239,7 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
     @Override
     public AtividadeDispensavelEdicaoDTO findById(Integer idAtividadeDispensavel) {
 
-        Atividade atividade = atividadeRepository.findById(idAtividadeDispensavel).orElseThrow(() ->
-                new ConfiguradorNotFoundException("Não foi possível encontrar o cnae dispensável. "));
-
+        Atividade atividade = buscarAtividade(idAtividadeDispensavel);
 
         List<RelAtividadePergunta> relAtividadePerguntas = relAtividadePerguntaRepository.findByAtividade(atividade);
 
@@ -275,11 +257,41 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
 
     }
 
+    private Atividade buscarAtividade(Integer idAtividadeDispensavel) {
+
+        return atividadeRepository.findById(idAtividadeDispensavel).orElseThrow(() ->
+                new ConfiguradorNotFoundException("Não foi possível encontrar a atividade dispensável com id: " + idAtividadeDispensavel));
+
+    }
+
+    private Boolean getStatusAtivoItemAntigo(AtividadeDispensavelDTO atividadeDispensavelDTO) {
+
+        Atividade atividadeAntiga = buscarAtividade(atividadeDispensavelDTO.getId());
+
+        return atividadeAntiga.getAtivo();
+
+    }
+
     private Specification<Atividade> getFiltro() {
 
         return Specification.where(AtividadeSpecification.padrao()
                 .and(AtividadeSpecification.filtrarAtividadesDispensaveis())
                 .and(AtividadeSpecification.filtrarAtividadesAtuais()));
+
+    }
+
+    private Specification<Atividade> prepararFiltroAtividadeDispensavel(FiltroPesquisa filtro) {
+
+        Specification<Atividade> specification = getFiltro();
+
+        if (filtro.getStringPesquisa() != null) {
+
+            specification = specification.and(AtividadeSpecification.atividadeNome(filtro.getStringPesquisa())
+                    .or(AtividadeSpecification.atividadeCodigo(filtro.getStringPesquisa())));
+
+        }
+
+        return specification;
 
     }
 

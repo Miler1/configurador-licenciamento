@@ -33,7 +33,7 @@ public class TipoCaracterizacaoAtividadeService implements ITipoCaracterizacaoAt
                 .setDispensaLicenciamento(true)
                 .setLicenciamentoDeclaratorio(false)
                 .setLicenciamentoSimplificado(false)
-                .setAtivo(true)
+                .setAtivo(!atividade.getItemAntigo())
                 .build();
 
         tipoCaracterizacaoAtividadeRepository.save(tipoCaracterizacaoAtividade);
@@ -53,7 +53,7 @@ public class TipoCaracterizacaoAtividadeService implements ITipoCaracterizacaoAt
                     .setDispensaLicenciamento(false)
                     .setLicenciamentoDeclaratorio(false)
                     .setLicenciamentoSimplificado(true)
-                    .setAtivo(true)
+                    .setAtivo(!atividade.getItemAntigo())
                     .build();
 
             tipoCaracterizacaoAtividadeRepository.save(tipoCaracterizacaoAtividade);
