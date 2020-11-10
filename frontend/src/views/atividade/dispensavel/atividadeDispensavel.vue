@@ -80,9 +80,11 @@ export default {
 		},
 
 		prepararDadosParaListagem(){
+
 			this.dadosListagem.content.forEach(dado => {
 				dado.codigoAtividadeCnae = dado.atividadesCnae[0].atividadeCnae.codigo;
 			});
+
 		},
 
 		resetaDadosFiltragem() {
@@ -142,7 +144,7 @@ export default {
 							}
 
 							this.updatePagination();
-							this.resetaDadosFiltragem();
+							// this.resetaDadosFiltragem();
 
 						})
 						.catch(error => {
