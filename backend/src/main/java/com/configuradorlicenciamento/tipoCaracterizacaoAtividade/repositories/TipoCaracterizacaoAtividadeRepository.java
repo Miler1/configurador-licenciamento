@@ -16,4 +16,6 @@ public interface TipoCaracterizacaoAtividadeRepository extends JpaRepository<Tip
 
     List<TipoCaracterizacaoAtividade> findByAtividadeCnae(AtividadeCnae atividadeCnae);
 
+    List<TipoCaracterizacaoAtividade> findByAtividadeCnaeAndDispensaLicenciamento(AtividadeCnae atividadeCnae, Boolean dispensaLicenciamento);
+
 }
