@@ -210,7 +210,7 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
 
     private Specification<Atividade> prepararFiltroAtividadeDispensavel(FiltroPesquisa filtro) {
 
-        Specification<Atividade> specification = getFitro();
+        Specification<Atividade> specification = getFiltro();
 
         if (filtro.getStringPesquisa() != null) {
 
@@ -225,7 +225,7 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
 
     @Override
     public List<Atividade> listarAtividadesDispensaveis() {
-        return atividadeRepository.findAll(getFitro(), Sort.by("id"));
+        return atividadeRepository.findAll(getFiltro(), Sort.by("id"));
     }
 
     @Override
@@ -275,7 +275,7 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
 
     }
 
-    private Specification<Atividade> getFitro() {
+    private Specification<Atividade> getFiltro() {
 
         return Specification.where(AtividadeSpecification.padrao()
                 .and(AtividadeSpecification.filtrarAtividadesDispensaveis())

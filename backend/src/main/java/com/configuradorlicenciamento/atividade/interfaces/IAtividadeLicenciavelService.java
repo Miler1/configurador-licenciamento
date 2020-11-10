@@ -1,6 +1,5 @@
 package com.configuradorlicenciamento.atividade.interfaces;
 
-import com.configuradorlicenciamento.atividade.dtos.AtividadeDispensavelCsv;
 import com.configuradorlicenciamento.atividade.dtos.AtividadeLicenciavelCsv;
 import com.configuradorlicenciamento.atividade.dtos.AtividadeLicenciavelDTO;
 import com.configuradorlicenciamento.atividade.dtos.AtividadeLicenciavelEdicaoDTO;
