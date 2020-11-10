@@ -40,6 +40,10 @@
 				:items-per-page="itensPerPage",
 				@update:options="sortBy"
 			)
+
+			template(v-slot:item.atividadesCnae='{ item }')
+				span {{item.atividadesCnae ? item.codigoAtividadeCnae : ' ‒'}}
+
 			template(v-slot:item.validadeEmAnos='{ item }')
 				span {{item.validadeEmAnos ? item.validadeEmAnos : ' ‒'}}
 

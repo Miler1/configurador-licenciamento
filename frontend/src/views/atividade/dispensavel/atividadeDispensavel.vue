@@ -80,11 +80,13 @@ export default {
 		},
 
 		prepararDadosParaListagem(){
-
+			let array = [];
 			this.dadosListagem.content.forEach(dado => {
 				dado.codigoAtividadeCnae = dado.atividadesCnae[0].atividadeCnae.codigo;
+				array.push(Number(dado.codigoAtividadeCnae));
+				array.sort((a,b) => ((a < b ? b - a : a > b ? a - b : 0)));
 			});
-
+			console.log(array);
 		},
 
 		resetaDadosFiltragem() {
