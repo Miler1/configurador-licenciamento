@@ -81,6 +81,23 @@ public class AtividadeCnaeService implements IAtividadeCnaeService {
 
         atividadeCnaeRepository.save(atividadeCnaeSalva.get());
 
+        List<TipoCaracterizacaoAtividade> tipoCaracterizacaoAtividadeList = tipoCaracterizacaoAtividadeRepository.findByAtividadeCnaeAndDispensaLicenciamento(atividadeCnaeSalva.get(), true);
+
+        tipoCaracterizacaoAtividadeList.forEach(tipoCaracterizacaoAtividade -> {
+
+            Atividade atividade = atividadeRepository.findById(tipoCaracterizacaoAtividade.getAtividade().getId()).get();
+
+            boolean itemAntigo = atividade.getItemAntigo();
+
+            if (!itemAntigo) {
+                atividade.setNome(atividadeCnaeDTO.getNome());
+                atividadeRepository.save(atividade);
+            }
+
+
+
+        });
+
         return atividadeCnaeSalva.get();
 
     }
