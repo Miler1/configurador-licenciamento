@@ -100,6 +100,8 @@ public class AtividadeLicenciavelService implements IAtividadeLicenciavelService
     @Override
     public Atividade salvar(HttpServletRequest request, AtividadeLicenciavelDTO atividadeLicenciavelDTO) {
 
+        boolean ativo = true;
+
         boolean existeAtividade = atividadeRepository.existsByCodigo(atividadeLicenciavelDTO.getDados().getCodigoAtividade().trim());
 
         //caso exista justificativa, logo é uma atividade para editar
@@ -141,6 +143,10 @@ public class AtividadeLicenciavelService implements IAtividadeLicenciavelService
 
         List<PorteAtividade> portesAtividade = porteAtividadeService.salvar(atividadeLicenciavelDTO.getParametros());
 
+        if (existeJustificativa) {
+            ativo = atividadeLicenciavelDTO.getDados().getAtivo();
+        }
+
         Atividade atividade = new Atividade.AtividadeBuilder(false)
                 .setNome(atividadeLicenciavelDTO.getDados().getNomeAtividade())
                 .setCodigo(atividadeLicenciavelDTO.getDados().getCodigoAtividade().trim())
@@ -150,7 +156,7 @@ public class AtividadeLicenciavelService implements IAtividadeLicenciavelService
                 .setGeoPoligono(atividadeLicenciavelDTO.getDados().getGeoPoligono())
                 .setPotencialPoluidor(potencialPoluidor.orElse(null))
                 .setSiglaSetor(atividadeLicenciavelDTO.getDados().getSetor())
-                .setAtivo(true)
+                .setAtivo(ativo)
                 .setItemAntigo(false)
                 .setDentroEmpreendimento(!atividadeLicenciavelDTO.getDados().getForaEmpreendimento())
                 .setRequisitoTecnico(requisitoTecnico.orElse(null))
@@ -164,11 +170,11 @@ public class AtividadeLicenciavelService implements IAtividadeLicenciavelService
 
         atividadeRepository.save(atividade);
 
-        tipoCaracterizacaoAtividadeService.salvarAtividadeLicenciavel(atividadeLicenciavelDTO.getCnaesAtividade(), atividade);
-
         relAtividadeParametroAtividadeService.salvar(atividade, atividadeLicenciavelDTO.getParametros().get(0));
 
-        if (existeAtividade) {
+        tipoCaracterizacaoAtividadeService.salvarAtividadeLicenciavel(atividadeLicenciavelDTO.getCnaesAtividade(), atividade);
+
+        if (!existeJustificativa) {
 
             historicoConfiguradorService.salvar(
                     request,
@@ -188,38 +194,36 @@ public class AtividadeLicenciavelService implements IAtividadeLicenciavelService
 
         verificarCodigoParaEdicao(atividadeLicenciavelDTO);
 
-        Optional<Atividade> atividadeSalva = atividadeRepository.findById(atividadeLicenciavelDTO.getDados().getId());
+        Atividade atividadeAntiga = buscarAtividade(atividadeLicenciavelDTO.getDados().getId());
 
-        Atividade atividadeAntiga;
+        Atividade atividadeAtual;
 
-        Atividade atividadeAtual = new Atividade();
+        //INICIO atividade antiga
+        atividadeLicenciavelDTO.getDados().setAtivo(atividadeAntiga.getAtivo());
 
-        if (atividadeSalva.isPresent()) {
+        atividadeAntiga.setAtivo(false);
+        atividadeAntiga.setItemAntigo(true);
 
-            //INICIO atividade antiga
-            atividadeAntiga = atividadeSalva.get();
+        tipoCaracterizacaoAtividadeService.editarAtividadeLicenciavel(atividadeLicenciavelDTO.getCnaesAtividade(), atividadeAntiga);
 
-            atividadeAntiga.setAtivo(false);
-            atividadeAntiga.setItemAntigo(true);
+        atividadeRepository.save(atividadeAntiga);
+        //FIM atividade antiga
 
-            atividadeRepository.save(atividadeAntiga);
-            //FIM atividade antiga
+        //INICIO atividade atual
+        atividadeLicenciavelDTO.getDados().setId(null);
 
-            //INICIO atividade atual
-            atividadeLicenciavelDTO.getDados().setId(null);
+        atividadeAtual = salvar(request, atividadeLicenciavelDTO);
 
-            atividadeAtual = salvar(request, atividadeLicenciavelDTO);
+        historicoConfiguradorService.editar(
+                request,
+                atividadeAtual.getId(),
+                atividadeAntiga.getId(),
+                FuncionalidadeConfigurador.Funcionalidades.ATIVIDADES_LICENCIAVEIS.getTipo(),
+                AcaoConfigurador.Acoes.EDITAR.getAcao(),
+                atividadeLicenciavelDTO.getJustificativa());
 
-            historicoConfiguradorService.editar(
-                    request,
-                    atividadeAtual.getId(),
-                    atividadeAntiga.getId(),
-                    FuncionalidadeConfigurador.Funcionalidades.ATIVIDADES_LICENCIAVEIS.getTipo(),
-                    AcaoConfigurador.Acoes.EDITAR.getAcao(),
-                    atividadeLicenciavelDTO.getJustificativa());
+        //FIM atividade atual
 
-            //FIM atividade atual
-        }
 
         return atividadeAtual;
 
@@ -273,8 +277,7 @@ public class AtividadeLicenciavelService implements IAtividadeLicenciavelService
     @Override
     public Atividade ativarDesativar(HttpServletRequest request, Integer idAtividadeLicenciavel) {
 
-        Atividade atividade = atividadeRepository.findById(idAtividadeLicenciavel).orElseThrow(() ->
-                new ConfiguradorNotFoundException("Não foi possível encontrar a atividade licenciável com id: " + idAtividadeLicenciavel));
+        Atividade atividade = buscarAtividade(idAtividadeLicenciavel);
 
         atividade.setAtivo(!atividade.getAtivo());
 
@@ -298,8 +301,7 @@ public class AtividadeLicenciavelService implements IAtividadeLicenciavelService
     @Override
     public AtividadeLicenciavelEdicaoDTO findById(Integer idAtividadeLicenciavel) {
 
-        Atividade atividade = atividadeRepository.findById(idAtividadeLicenciavel).orElseThrow(() ->
-                new ConfiguradorNotFoundException("Não foi possível encontrar a atividade licenciável. "));
+        Atividade atividade = buscarAtividade(idAtividadeLicenciavel);
 
         List<TipoCaracterizacaoAtividade> tiposCaracterizacaoAtividade = tipoCaracterizacaoAtividadeRepository.findByAtividade(atividade);
 
@@ -318,6 +320,13 @@ public class AtividadeLicenciavelService implements IAtividadeLicenciavelService
                 tiposCaracterizacaoAtividade,
                 relAtividadeParametroAtividadeUm != null ? relAtividadeParametroAtividadeUm.getDescricaoUnidade() : null,
                 relAtividadeParametroAtividadeDois != null ? relAtividadeParametroAtividadeDois.getDescricaoUnidade() : null);
+
+    }
+
+    private Atividade buscarAtividade(Integer idAtividadeLicenciavel) {
+
+        return atividadeRepository.findById(idAtividadeLicenciavel).orElseThrow(() ->
+                new ConfiguradorNotFoundException("Não foi possível encontrar a atividade licenciável. "));
 
     }
 

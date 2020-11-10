@@ -80,6 +80,10 @@ public class AtividadeDTO {
     @NotBlank(message = "{validacao.notBlank}")
     private Boolean rascunho;
 
+    @NotNull(message = "{validacao.notnull}")
+    @NotBlank(message = "{validacao.notBlank}")
+    private Boolean ativo;
+
     private List<RelAtividadeParametroAtividadeDTO> atividadesParametro;
 
     private List<PorteAtividadeDTO> portesAtividade;
