@@ -32,8 +32,7 @@ import java.util.Optional;
 public class ParametroService implements IParametroService {
 
     private static final String PARAMETRO_EXISTENTE = "Já existe um parâmetro com o mesmo código.";
-
-    private static final String VINCULO_EXISTENTE = "Não é possível inativar o registro pois, ele se encontra vinculado a uma atividade ativa no sistema.";
+    private static final String VINCULO_ATIVIDADE_LICENCIAVEL = "Erro! Não foi possível desativar/ativar o parâmetro. Ele se encontra vinculado a uma atividade licenciável ativa no sistema.";
 
     @Autowired
     ParametroRepository parametroRepository;
@@ -130,7 +129,7 @@ public class ParametroService implements IParametroService {
             boolean ativo = atividade.getAtivo();
 
             if (ativo) {
-                throw new ConflictException(VINCULO_EXISTENTE);
+                throw new ConflictException(VINCULO_ATIVIDADE_LICENCIAVEL);
             }
 
         });
