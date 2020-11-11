@@ -153,6 +153,7 @@ export default {
 			atividadeLicenciavelBkp: {},
 			allowRedirect: false,
 			isCadastro: true,
+			isRascunho:false,
 			buttonMinWidth: "9em"
 		};
 
@@ -222,7 +223,7 @@ export default {
 
 		modalConfirmacao(acao) {
 
-			if (this.atividadeLicenciavel.dados.rascunho) {
+			if (this.isRascunho) {
 
 				const result = {value: true};
 
@@ -591,7 +592,7 @@ export default {
 
 				title: '<p class="title-modal-confirm">Confirmar cancelamento - Atividade licenciável</p>',
 
-				html: this.isCadastro ?
+				html: this.isCadastro || this.isRascunho ?
 					`<p class="message-modal-confirm">Ao cancelar o cadastro, todas as informações que não foram salvas serão perdidas.</p>
 					<p class="message-modal-confirm">
 						<b>Tem certeza que deseja cancelar o cadastro? Esta opção não poderá ser desfeita e todas as informações que não foram salvas serão perdidas.</b>
@@ -696,6 +697,10 @@ export default {
 
 					if (this.atividadeLicenciavel.dados.foraEmpreendimento !== null) {
 						this.$refs.telaAtividades.$refs.toggleOptionsForaEmpreendimento.setModel(this.atividadeLicenciavel.dados.foraEmpreendimento.toString());
+					}
+
+					if (this.atividadeLicenciavel.dados.rascunho) {
+						this.isRascunho = true;
 					}
 
 				})
