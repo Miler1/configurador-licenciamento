@@ -187,7 +187,7 @@ export default {
 				title: `<div><p class="title-modal-confirm">Confirmar edição - Atividade dispensável</p><div>`,
 				html:
 					`
-					<div class="row" id="row-justificativa-atividade-licenciavel" style="padding-top:15px">
+					<div class="row" id="row-justificativa-atividade-dispensavel" style="padding-top:15px">
 						<div class="col col-12" style="display:flex; flex-direction: column;">
 							<label id="label-justificativa" aria-hidden="true" class="v-label theme--light" style="text-align: left; padding-bottom:4px">Justificativa</label>
 							<div class="v-input v-textarea v-textarea--auto-grow v-textarea--no-resize theme--light v-text-field v-text-field--is-booted v-text-field--enclosed v-text-field--outlined" id="div-input">

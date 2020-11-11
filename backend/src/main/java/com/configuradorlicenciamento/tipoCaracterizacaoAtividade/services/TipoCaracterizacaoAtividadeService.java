@@ -63,6 +63,17 @@ public class TipoCaracterizacaoAtividadeService implements ITipoCaracterizacaoAt
     }
 
     @Override
+    public void editarAtividadeDispensavel(AtividadeCnaeDTO atividadesCnae, Atividade atividade) {
+
+        List<TipoCaracterizacaoAtividade> tipoCaracterizacaoAtividades = tipoCaracterizacaoAtividadeRepository.findByAtividade(atividade);
+
+        tipoCaracterizacaoAtividades.forEach(tipoCaracterizacaoAtividade -> tipoCaracterizacaoAtividadeRepository.delete(tipoCaracterizacaoAtividade));
+
+        this.salvarAtividadeDispensavel(atividadesCnae, atividade);
+
+    }
+
+    @Override
     public void editarAtividadeLicenciavel(List<AtividadeCnaeDTO> atividadesCnae, Atividade atividade) {
 
         List<TipoCaracterizacaoAtividade> tipoCaracterizacaoAtividades = tipoCaracterizacaoAtividadeRepository.findByAtividade(atividade);
