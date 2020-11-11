@@ -83,9 +83,16 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
 
         boolean statusAtivoAntigo = true;
 
-        if (atividadeDispensavelDTO.getJustificativa() != null) {
+        //caso exista justificativa, logo é uma atividade para editar
+        boolean existeJustificativa = atividadeDispensavelDTO.getJustificativa() != null;
 
-            statusAtivoAntigo = this.getStatusAtivoItemAntigo(atividadeDispensavelDTO);
+        if (existeJustificativa) {
+
+            Atividade atividadeAntiga = buscarAtividade(atividadeDispensavelDTO.getId());
+
+            statusAtivoAntigo = atividadeAntiga.getAtivo();
+
+            salvarAtividadeAntiga(atividadeDispensavelDTO, atividadeAntiga);
 
             atividadeDispensavelDTO.setId(null);
 
@@ -129,7 +136,7 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
 
             atividades.add(atividade);
 
-            if (atividadeDispensavelDTO.getJustificativa() == null) {
+            if (!existeJustificativa) {
 
                 historicoConfiguradorService.salvar(
                         request,
@@ -149,23 +156,16 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
     @Override
     public Atividade editar(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO) {
 
-        Atividade atividadeAntiga = buscarAtividade(atividadeDispensavelDTO.getId());
-
-        Atividade atividadeAtual;
-
-        atividadeAntiga.setAtivo(false);
-        atividadeAntiga.setItemAntigo(true);
-
-        atividadeRepository.save(atividadeAntiga);
+        Integer idAtividadeAntiga = atividadeDispensavelDTO.getId();
 
         List<Atividade> atividades = salvar(request, atividadeDispensavelDTO);
 
-        atividadeAtual = atividades.get(0);
+        Atividade atividadeAtual = atividades.get(0);
 
         historicoConfiguradorService.editar(
                 request,
                 atividadeAtual.getId(),
-                atividadeAntiga.getId(),
+                idAtividadeAntiga,
                 FuncionalidadeConfigurador.Funcionalidades.CNAES_DISPENSAVEIS.getTipo(),
                 AcaoConfigurador.Acoes.EDITAR.getAcao(),
                 atividadeDispensavelDTO.getJustificativa());
@@ -264,11 +264,17 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
 
     }
 
-    private Boolean getStatusAtivoItemAntigo(AtividadeDispensavelDTO atividadeDispensavelDTO) {
+    private void salvarAtividadeAntiga(AtividadeDispensavelDTO atividadeDispensavelDTO, Atividade atividadeAntiga) {
 
-        Atividade atividadeAntiga = buscarAtividade(atividadeDispensavelDTO.getId());
+        atividadeAntiga.setAtivo(false);
+        atividadeAntiga.setItemAntigo(true);
 
-        return atividadeAntiga.getAtivo();
+        atividadeRepository.save(atividadeAntiga);
+
+        atividadeDispensavelDTO.getCnaesTipologia().forEach(cnaeTipologia -> {
+                    tipoCaracterizacaoAtividadeService.editarAtividadeDispensavel(cnaeTipologia.getCnae(), atividadeAntiga);
+                }
+        );
 
     }
 
