@@ -45,13 +45,13 @@ public class AtividadeLicenciavelCsv implements Serializable {
 
     @CsvBindByName(column = "Data de cadastro")
     @CsvBindByPosition(position = 6)
-    private String dataCadastro;
+    private String dataAcao;
 
     @CsvBindByName(column = "Usuário")
     @CsvBindByPosition(position = 7)
     private String usuarioLicenciamento;
 
-    public AtividadeLicenciavelCsv(Atividade atividade, Date dataCadastro, UsuarioLicenciamento usuarioLicenciamento) {
+    public AtividadeLicenciavelCsv(Atividade atividade, Date dataAcao, UsuarioLicenciamento usuarioLicenciamento) {
 
         this.codigo = atividade.getCodigo();
         this.nome = atividade.getNome();
@@ -59,7 +59,7 @@ public class AtividadeLicenciavelCsv implements Serializable {
         this.parametros = tratarParametrosParaCsv(atividade.getParametros());
         this.tiposLicencas = tratarLicencasParaCsv(atividade.getTiposLicencas());
         this.ativo = atividade.getAtivo() ? "Ativo" : "Inativo";
-        this.dataCadastro = dataCadastro != null ? DateUtil.formataBrSimples(dataCadastro) : "-";
+        this.dataAcao = dataAcao != null ? DateUtil.formataBrSimples(dataAcao) : "-";
         this.usuarioLicenciamento = usuarioLicenciamento != null ? getNomeUsuario(usuarioLicenciamento) : "-";
 
     }

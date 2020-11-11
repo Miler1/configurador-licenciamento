@@ -30,17 +30,17 @@ public class CodigoTaxaLicenciamentoCsv implements Serializable {
 
     @CsvBindByName(column = "Data de cadastro")
     @CsvBindByPosition(position = 3)
-    private String dataCadastro;
+    private String dataAcao;
 
     @CsvBindByName(column = "Usuário")
     @CsvBindByPosition(position = 4)
     private String usuarioLicenciamento;
 
-    public CodigoTaxaLicenciamentoCsv(CodigoTaxaLicenciamento codigoTaxaLicenciamento, Date dataCadastro, UsuarioLicenciamento usuarioLicenciamento) {
+    public CodigoTaxaLicenciamentoCsv(CodigoTaxaLicenciamento codigoTaxaLicenciamento, Date dataAcao, UsuarioLicenciamento usuarioLicenciamento) {
         this.codigo = codigoTaxaLicenciamento.getCodigo();
         this.descricao = codigoTaxaLicenciamento.getDescricao();
         this.status = codigoTaxaLicenciamento.getAtivo() ? "Ativo" : "Inativo";
-        this.dataCadastro = dataCadastro != null ? DateUtil.formataBrSimples(dataCadastro) : "-";
+        this.dataAcao = dataAcao != null ? DateUtil.formataBrSimples(dataAcao) : "-";
         this.usuarioLicenciamento = usuarioLicenciamento != null ? getNomeUsuario(usuarioLicenciamento) : "-";
     }
 

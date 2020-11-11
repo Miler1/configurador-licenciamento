@@ -61,8 +61,8 @@ public class CodigoTaxaLicenciamento implements Serializable {
 
     }
 
-    public CodigoTaxaLicenciamentoCsv prepararParaCsv(Date dataCadastro, UsuarioLicenciamento usuarioLicenciamento) {
-        return new CodigoTaxaLicenciamentoCsv(this, dataCadastro, usuarioLicenciamento);
+    public CodigoTaxaLicenciamentoCsv prepararParaCsv(Date dataAcao, UsuarioLicenciamento usuarioLicenciamento) {
+        return new CodigoTaxaLicenciamentoCsv(this, dataAcao, usuarioLicenciamento);
     }
 
 }
