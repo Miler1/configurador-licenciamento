@@ -196,23 +196,13 @@ public class AtividadeLicenciavelService implements IAtividadeLicenciavelService
 
         Atividade atividadeAntiga = buscarAtividade(atividadeLicenciavelDTO.getDados().getId());
 
-        Atividade atividadeAtual;
-
-        //INICIO atividade antiga
         atividadeLicenciavelDTO.getDados().setAtivo(atividadeAntiga.getAtivo());
 
-        atividadeAntiga.setAtivo(false);
-        atividadeAntiga.setItemAntigo(true);
+        salvarAtividadeAntiga(atividadeLicenciavelDTO, atividadeAntiga);
 
-        tipoCaracterizacaoAtividadeService.editarAtividadeLicenciavel(atividadeLicenciavelDTO.getCnaesAtividade(), atividadeAntiga);
-
-        atividadeRepository.save(atividadeAntiga);
-        //FIM atividade antiga
-
-        //INICIO atividade atual
         atividadeLicenciavelDTO.getDados().setId(null);
 
-        atividadeAtual = salvar(request, atividadeLicenciavelDTO);
+        Atividade atividadeAtual = salvar(request, atividadeLicenciavelDTO);
 
         historicoConfiguradorService.editar(
                 request,
@@ -221,9 +211,6 @@ public class AtividadeLicenciavelService implements IAtividadeLicenciavelService
                 FuncionalidadeConfigurador.Funcionalidades.ATIVIDADES_LICENCIAVEIS.getTipo(),
                 AcaoConfigurador.Acoes.EDITAR.getAcao(),
                 atividadeLicenciavelDTO.getJustificativa());
-
-        //FIM atividade atual
-
 
         return atividadeAtual;
 
@@ -327,6 +314,17 @@ public class AtividadeLicenciavelService implements IAtividadeLicenciavelService
 
         return atividadeRepository.findById(idAtividadeLicenciavel).orElseThrow(() ->
                 new ConfiguradorNotFoundException("Não foi possível encontrar a atividade licenciável. "));
+
+    }
+
+    private void salvarAtividadeAntiga(AtividadeLicenciavelDTO atividadeLicenciavelDTO, Atividade atividadeAntiga) {
+
+        atividadeAntiga.setAtivo(false);
+        atividadeAntiga.setItemAntigo(true);
+
+        tipoCaracterizacaoAtividadeService.editarAtividadeLicenciavel(atividadeLicenciavelDTO.getCnaesAtividade(), atividadeAntiga);
+
+        atividadeRepository.save(atividadeAntiga);
 
     }
 
