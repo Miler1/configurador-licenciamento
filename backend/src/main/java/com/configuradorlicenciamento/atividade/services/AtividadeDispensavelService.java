@@ -226,7 +226,7 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
             );
 
             dtos.add(atividade.preparaAtividadeDispensavelParaCsv(
-                    !historicos.isEmpty() ? historicos.get(0).getDataCadastro() : null,
+                    !historicos.isEmpty() ? historicos.get(0).getDataAcao() : null,
                     !historicos.isEmpty() ? historicos.get(0).getUsuarioLicenciamento() : null
             ));
 

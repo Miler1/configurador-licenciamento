@@ -138,12 +138,12 @@ public class Atividade implements Serializable {
 
     }
 
-    public AtividadeLicenciavelCsv preparaAtividadeLicenciavelParaCsv(Date dataCadastro, UsuarioLicenciamento usuarioLicenciamento) {
-        return new AtividadeLicenciavelCsv(this, dataCadastro, usuarioLicenciamento);
+    public AtividadeLicenciavelCsv preparaAtividadeLicenciavelParaCsv(Date dataAcao, UsuarioLicenciamento usuarioLicenciamento) {
+        return new AtividadeLicenciavelCsv(this, dataAcao, usuarioLicenciamento);
     }
 
-    public AtividadeDispensavelCsv preparaAtividadeDispensavelParaCsv(Date dataCadastro, UsuarioLicenciamento usuarioLicenciamento) {
-        return new AtividadeDispensavelCsv(this, dataCadastro, usuarioLicenciamento);
+    public AtividadeDispensavelCsv preparaAtividadeDispensavelParaCsv(Date dataAcao, UsuarioLicenciamento usuarioLicenciamento) {
+        return new AtividadeDispensavelCsv(this, dataAcao, usuarioLicenciamento);
     }
 
     public CodigoTaxaLicenciamento recuperaCodigoTaxaLicenciamentobyTaxas() {
