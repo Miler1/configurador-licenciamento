@@ -72,7 +72,7 @@ public class HistoricoConfiguradorService implements IHistoricoConfiguradorServi
 
         FuncionalidadeConfigurador funcionalidadeConfigurador = funcionadeRepository.findByTipo(funcionalidade);
 
-        return historicoRepository.findByFuncionalidadeAndIdItemOrderByDataCadastroDesc(
+        return historicoRepository.findByFuncionalidadeAndIdItemOrderByDataAcaoDesc(
                 funcionalidadeConfigurador, idItem);
 
     }
