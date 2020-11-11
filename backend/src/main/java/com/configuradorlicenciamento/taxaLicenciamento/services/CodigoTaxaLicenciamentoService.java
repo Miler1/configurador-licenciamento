@@ -35,8 +35,7 @@ import java.util.List;
 public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoService {
 
     public static final String TAXA_EXISTENTE = "Já existe uma tabela com o mesmo código.";
-
-    private static final String VINCULO_EXISTENTE = "Não é possível inativar o registro pois, ele se encontra vinculado a uma atividade ativa no sistema.";
+    private static final String VINCULO_ATIVIDADE_LICENCIAVEL = "Erro! Não foi possível desativar/ativar a tabela de taxas de licenciamento. Ela se encontra vinculada a uma atividade licenciável ativa no sistema.";
 
     @Autowired
     CodigoTaxaLicenciamentoRepository codigoTaxaLicenciamentoRepository;
@@ -143,7 +142,7 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
                 boolean ativo = atividade.getAtivo();
 
                 if (ativo) {
-                    throw new ConflictException(VINCULO_EXISTENTE);
+                    throw new ConflictException(VINCULO_ATIVIDADE_LICENCIAVEL);
                 }
 
             });

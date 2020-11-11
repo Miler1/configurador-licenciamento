@@ -30,7 +30,8 @@ import java.util.Optional;
 @Service
 public class AtividadeCnaeService implements IAtividadeCnaeService {
 
-    private static final String VINCULO_EXISTENTE = "Não é possível inativar o registro pois, ele se encontra vinculado a uma atividade ativa no sistema.";
+    private static final String VINCULO_ATIVIDADE_LICENCIAVEL = "Erro! Não foi possível desativar/ativar o grupo de requisito técnico. Ele se encontra vinculado a uma atividade licenciável ativa no sistema.";
+    private static final String VINCULO_ATIVIDADE_DISPENSAVEL = "Erro! Não foi possível desativar/ativar a pergunta. Ela se encontra vinculada a uma atividade dispensável ativa no sistema.";
 
     @Autowired
     AtividadeCnaeRepository atividadeCnaeRepository;
@@ -94,8 +95,6 @@ public class AtividadeCnaeService implements IAtividadeCnaeService {
                 atividadeRepository.save(atividade);
             }
 
-
-
         });
 
         return atividadeCnaeSalva.get();
@@ -119,9 +118,11 @@ public class AtividadeCnaeService implements IAtividadeCnaeService {
 
             boolean ativo = atividade.getAtivo();
 
-            if (ativo) {
-                throw new ConflictException(VINCULO_EXISTENTE);
-            }
+            boolean dispensaLicenciamento = tipoCaracterizacaoAtividade.getDispensaLicenciamento();
+
+            if (ativo && dispensaLicenciamento) {
+                throw new ConflictException(VINCULO_ATIVIDADE_DISPENSAVEL);
+            } else if (ativo) throw new ConflictException(VINCULO_ATIVIDADE_LICENCIAVEL);
 
         });
 

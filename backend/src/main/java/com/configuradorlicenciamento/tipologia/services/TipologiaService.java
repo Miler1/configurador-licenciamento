@@ -30,8 +30,8 @@ import java.util.Optional;
 public class TipologiaService implements ITipologiaService {
 
     private static final String TIPOLOGIA_EXISTENTE = "Já existe uma tipologia com o mesmo nome ou semelhante.";
-
-    private static final String VINCULO_EXISTENTE = "Não é possível inativar o registro pois, ele se encontra vinculado a uma atividade ativa no sistema.";
+    private static final String VINCULO_ATIVIDADE_LICENCIAVEL = "Erro! Não foi possível desativar/ativar a tipologia. Ela se encontra vinculada a uma atividade licenciável ativa no sistema.";
+    private static final String VINCULO_ATIVIDADE_DISPENSAVEL = "Erro! Não foi possível desativar/ativar a tipologia. Ela se encontra vinculada a uma atividade dispensável ativa no sistema.";
 
     @Autowired
     TipologiaRepository tipologiaRepository;
@@ -121,8 +121,12 @@ public class TipologiaService implements ITipologiaService {
 
             boolean ativo = atividade.getAtivo();
 
-            if (ativo) {
-                throw new ConflictException(VINCULO_EXISTENTE);
+            String codigo = atividade.getCodigo();
+
+            if (ativo && !codigo.equals("0000")) {
+                throw new ConflictException(VINCULO_ATIVIDADE_LICENCIAVEL);
+            } else if (ativo) {
+                throw new ConflictException(VINCULO_ATIVIDADE_DISPENSAVEL);
             }
 
         });
