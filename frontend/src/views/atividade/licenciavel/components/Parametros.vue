@@ -65,7 +65,7 @@
 								v-text-field#QA-input-descricao-unidade-1(
 									outlined,
 									color="#E0E0E0",
-									:placeholder="(!parametroUm.descricaoUnicade && disableParametros(1)) ? 'Não informada' : this.placeholderDescricao1",
+									:placeholder="(!parametroUm.descricaoUnicade && disableParametros(1)) ? parametroUm.descricaoUnidade : this.placeholderDescricao1",
 									v-model="parametroUm.descricaoUnidade",
 									@click.native="resetErrorMessage",
 									:disabled="disableParametros(1)"
@@ -87,7 +87,7 @@
 											min="0",
 											ref="valorminimoUm",
 											@click.native="resetErrorMessage",
-											:placeholder="validaValoresLimites(index, 'MINIMO') ? '0': ''",
+											:placeholder="validarValoresLimites(index, 'MINIMO') ? '0': ''",
 											:error-messages="errorMessage(valor.minimo, null, 1, index, 'MINIMO', false)",
 											:disabled="disableParametros(1, index, 'MINIMO')"
 											required,
@@ -114,7 +114,7 @@
 											min="0",
 											ref="valormaximoUm",
 											@click.native="resetErrorMessage",
-											:placeholder="validaValoresLimites(index, 'MAXIMO') ? 'Indeterminado': ''",
+											:placeholder="validarValoresLimites(index, 'MAXIMO') ? 'Indeterminado': ''",
 											:error-messages="errorMessage(valor.maximo, null, 1, index, 'MAXIMO', false)",
 											:disabled="disableParametros(1, index, 'MAXIMO')"
 											required,
@@ -160,7 +160,7 @@
 								v-text-field#QA-input-descricao-unidade-2(
 									outlined,
 									color="#E0E0E0",
-									:placeholder="(!parametroDois.descricaoUnicade && disableParametros(2)) ? 'Não informada' : this.placeholderDescricao2",
+									:placeholder="(!parametroDois.descricaoUnicade && disableParametros(2)) ? parametroDois.descricaoUnidade : this.placeholderDescricao2",
 									v-model="parametroDois.descricaoUnidade",
 									@click.native="resetErrorMessage",
 									required,
@@ -182,7 +182,7 @@
 											min="0",
 											ref="valorminimoDois",
 											@click.native="resetErrorMessage",
-											:placeholder="validaValoresLimites(index, 'MINIMO') ? '0': ''",
+											:placeholder="validarValoresLimites(index, 'MINIMO') ? '0': ''",
 											:error-messages="errorMessage(valor.minimo, null, 2, index, 'MINIMO', false)",
 											:disabled="disableParametros(2, index, 'MINIMO')",
 											required,
@@ -209,7 +209,7 @@
 											min="0",
 											ref="valormaximoDois",
 											@click.native="resetErrorMessage",
-											:placeholder="validaValoresLimites(index, 'MAXIMO') ? 'Indeterminado': ''",
+											:placeholder="validarValoresLimites(index, 'MAXIMO') ? 'Indeterminado': ''",
 											:error-messages="errorMessage(valor.maximo, null, 2, index, 'MAXIMO', false)",
 											:disabled="disableParametros(2, index, 'MAXIMO')",
 											required,
@@ -370,7 +370,7 @@ export default {
 
 		errorMessage(item, isInclusao, numeroParametro, index, tipo, check) {
 
-			if (this.validaValoresLimites(index, tipo)){
+			if (this.validarValoresLimites(index, tipo)){
 				return '';
 			}
 
@@ -480,7 +480,7 @@ export default {
 			let parametrosAnterior = [... this.parametros];
 			this.parametros.length = 0;
 
-			let dadoParametro = {
+			let dadoParametroUm = {
 				parametroUm: null,
 				limiteInferiorUm: null,
 				limiteSuperiorUm: null,
@@ -517,11 +517,11 @@ export default {
 
 					}
 
-					this.parametros.push({... dadoParametro});
+					this.parametros.push({...dadoParametro});
 
 				});
 
-				this.headerListagem = [... HEADER];
+				this.headerListagem = [...HEADER];
 				this.headerListagem.splice(3,3);
 
 			} else {
@@ -598,7 +598,7 @@ export default {
 			return this.tipoParametro === 'COMPOSTO';
 		},
 
-		validaValoresLimites(index, tipo) {
+		validarValoresLimites(index, tipo) {
 			return (tipo === 'MINIMO' && index === 0) || (tipo === 'MAXIMO' && index === 3);
 		},
 
@@ -608,7 +608,7 @@ export default {
 				return true;
 			}
 
-			if (this.validaValoresLimites(index, tipo)) {
+			if (this.validarValoresLimites(index, tipo)) {
 				return true;
 			}
 
@@ -761,7 +761,9 @@ export default {
 	mounted() {
 
 		if (this.parametros.length !== 0) {
+
 			this.ordenarParametros();
+
 			if (this.parametros.length === 4) {
 
 				this.$refs.toggleAtividadeLicenciavelParametro.setModel(this.optionsTipoParametro[0].value);
