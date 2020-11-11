@@ -34,8 +34,8 @@ import java.util.Optional;
 public class DocumentoService implements IDocumentoService {
 
     public static final String DOCUMENTO_EXISTENTE = "Já existe um documento com o mesmo nome.";
-
-    private static final String VINCULO_EXISTENTE = "Não é possível inativar o registro pois, ele se encontra vinculado a uma atividade ativa no sistema.";
+    private static final String VINCULO_REQUISITO_ADMINISTRATIVO = "Erro! Não foi possível desativar/ativar o documento. Ele se encontra vinculado a um requisito administrativo ativo no sistema.";
+    private static final String VINCULO_REQUISITO_TECNICO = "Erro! Não foi possível desativar/ativar o documento. Ele se encontra vinculado a um grupo de requisito técnico ativo no sistema.";
 
     @Autowired
     DocumentoRepository documentoRepository;
@@ -184,7 +184,7 @@ public class DocumentoService implements IDocumentoService {
             boolean ativo = requisitoTecnico.getAtivo();
 
             if (ativo) {
-                throw new ConflictException(VINCULO_EXISTENTE);
+                throw new ConflictException(VINCULO_REQUISITO_TECNICO);
             }
 
         });
@@ -196,7 +196,7 @@ public class DocumentoService implements IDocumentoService {
             boolean ativo = requisitoAdministrativo.getAtivo();
 
             if (ativo) {
-                throw new ConflictException(VINCULO_EXISTENTE);
+                throw new ConflictException(VINCULO_REQUISITO_ADMINISTRATIVO);
             }
 
         });

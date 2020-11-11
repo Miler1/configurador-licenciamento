@@ -32,7 +32,7 @@ import java.util.List;
 @Service
 public class RequisitoTecnicoService implements IRequisitoTecnicoService {
 
-    private static final String VINCULO_EXISTENTE = "Não é possível inativar o registro pois, ele se encontra vinculado a uma atividade ativa no sistema.";
+    private static final String VINCULO_ATIVIDADE_LICENCIAVEL = "Erro! Não foi possível desativar/ativar o grupo de requisito técnico. Ele se encontra vinculado a uma atividade licenciável ativa no sistema.";
 
     @Autowired
     RequisitoTecnicoRepository requisitoTecnicoRepository;
@@ -122,7 +122,7 @@ public class RequisitoTecnicoService implements IRequisitoTecnicoService {
             boolean ativo = atividade.getAtivo();
 
             if (ativo) {
-                throw new ConflictException(VINCULO_EXISTENTE);
+                throw new ConflictException(VINCULO_ATIVIDADE_LICENCIAVEL);
             }
 
         });

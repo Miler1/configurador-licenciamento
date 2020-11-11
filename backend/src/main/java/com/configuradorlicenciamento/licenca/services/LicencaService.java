@@ -40,8 +40,10 @@ import java.util.Optional;
 public class LicencaService implements ILicencaService {
 
     private static final String LICENCA_EXISTENTE = "Já existe uma licença com o mesmo tipo.";
-
-    private static final String VINCULO_EXISTENTE = "Não é possível inativar o registro pois, ele se encontra vinculado a uma atividade ativa no sistema.";
+    private static final String VINCULO_TAXA_LICENCIAMENTO = "Erro! Não foi possível desativar/ativar a licença. Ela se encontra vinculada a uma tabela de taxas de licenciamento ativa no sistema.";
+    private static final String VINCULO_REQUISITO_ADMINISTRATIVO = "Erro! Não foi possível desativar/ativar a licença. Ela se encontra vinculada a um requisito administrativo ativo no sistema.";
+    private static final String VINCULO_REQUISITO_TECNICO = "Erro! Não foi possível desativar/ativar a licença. Ela se encontra vinculada a um grupo de requisito técnico ativo no sistema.";
+    private static final String VINCULO_ATIVIDADE_LICENCIAVEL = "Erro! Não foi possível desativar/ativar a licença. Ela se encontra vinculada a uma atividade licenciável ativa no sistema.";
 
     @Autowired
     LicencaRepository licencaRepository;
@@ -150,7 +152,7 @@ public class LicencaService implements ILicencaService {
             boolean ativo = codigoTaxaLicenciamento.getAtivo();
 
             if (ativo) {
-                throw new ConflictException(VINCULO_EXISTENTE);
+                throw new ConflictException(VINCULO_TAXA_LICENCIAMENTO);
             }
 
         });
@@ -162,7 +164,7 @@ public class LicencaService implements ILicencaService {
             boolean ativo = requisitoAdministrativo.getAtivo();
 
             if (ativo) {
-                throw new ConflictException(VINCULO_EXISTENTE);
+                throw new ConflictException(VINCULO_REQUISITO_ADMINISTRATIVO);
             }
 
         });
@@ -176,7 +178,7 @@ public class LicencaService implements ILicencaService {
             boolean ativo = requisitoTecnico.getAtivo();
 
             if (ativo) {
-                throw new ConflictException(VINCULO_EXISTENTE);
+                throw new ConflictException(VINCULO_REQUISITO_TECNICO);
             }
 
         });
@@ -190,7 +192,7 @@ public class LicencaService implements ILicencaService {
             boolean ativo = atividade.getAtivo();
 
             if (ativo) {
-                throw new ConflictException(VINCULO_EXISTENTE);
+                throw new ConflictException(VINCULO_ATIVIDADE_LICENCIAVEL);
             }
 
         });
