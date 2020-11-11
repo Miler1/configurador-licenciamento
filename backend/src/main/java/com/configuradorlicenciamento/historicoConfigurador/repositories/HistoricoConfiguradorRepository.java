@@ -12,10 +12,10 @@ import java.util.List;
 @Repository
 public interface HistoricoConfiguradorRepository extends JpaRepository<HistoricoConfigurador, Integer>, JpaSpecificationExecutor<HistoricoConfigurador> {
 
-    List<HistoricoConfigurador> findByFuncionalidadeAndIdItemOrderByDataCadastroDesc(
+    List<HistoricoConfigurador> findByFuncionalidadeAndIdItemOrderByDataAcaoDesc(
             FuncionalidadeConfigurador funcionalidade, Integer idItem);
 
-    List<HistoricoConfigurador> findByFuncionalidadeAndAcaoAndIdItemOrderByDataCadastroDesc(
+    List<HistoricoConfigurador> findByFuncionalidadeAndAcaoAndIdItemOrderByDataAcaoDesc(
             FuncionalidadeConfigurador funcionalidade, AcaoConfigurador acao, Integer idItem);
 
 }

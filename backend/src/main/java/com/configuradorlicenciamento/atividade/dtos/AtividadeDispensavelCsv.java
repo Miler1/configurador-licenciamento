@@ -32,21 +32,21 @@ public class AtividadeDispensavelCsv implements Serializable {
     @CsvBindByPosition(position = 3)
     private String ativo;
 
-    @CsvBindByName(column = "Data de cadastro")
+    @CsvBindByName(column = "Data da ação")
     @CsvBindByPosition(position = 4)
-    private String dataCadastro;
+    private String dataAcao;
 
     @CsvBindByName(column = "Usuário")
     @CsvBindByPosition(position = 5)
     private String usuarioLicenciamento;
 
-    public AtividadeDispensavelCsv(Atividade atividade, Date dataCadastro, UsuarioLicenciamento usuarioLicenciamento) {
+    public AtividadeDispensavelCsv(Atividade atividade, Date dataAcao, UsuarioLicenciamento usuarioLicenciamento) {
 
         this.codigoCnae = atividade.getAtividadesCnae().isEmpty() ? "-" : atividade.getAtividadesCnae().get(0).getAtividadeCnae().getCodigo();
         this.descricaoCnae = atividade.getNome();
         this.tipologiaCnae = atividade.getTipologia().getNome();
         this.ativo = atividade.getAtivo() ? "Ativo" : "Inativo";
-        this.dataCadastro = dataCadastro != null ? DateUtil.formataBrSimples(dataCadastro) : "-";
+        this.dataAcao = dataAcao != null ? DateUtil.formataBrSimples(dataAcao) : "-";
         this.usuarioLicenciamento = usuarioLicenciamento != null ? getNomeUsuario(usuarioLicenciamento) : "-";
 
     }

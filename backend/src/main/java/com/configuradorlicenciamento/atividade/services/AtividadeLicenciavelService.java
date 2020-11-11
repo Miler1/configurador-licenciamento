@@ -262,7 +262,7 @@ public class AtividadeLicenciavelService implements IAtividadeLicenciavelService
                 );
 
                 dtos.add(tipoAtividade.preparaAtividadeLicenciavelParaCsv(
-                        !historicos.isEmpty() ? historicos.get(0).getDataCadastro() : null,
+                        !historicos.isEmpty() ? historicos.get(0).getDataAcao() : null,
                         !historicos.isEmpty() ? historicos.get(0).getUsuarioLicenciamento() : null
                 ));
 
