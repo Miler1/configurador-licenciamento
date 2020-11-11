@@ -32,7 +32,7 @@ import java.util.Optional;
 @Service
 public class PerguntaService implements IPerguntaService {
 
-    private static final String VINCULO_EXISTENTE = "Não é possível inativar o registro pois, ele se encontra vinculado a uma atividade ativa no sistema.";
+    private static final String VINCULO_ATIVIDADE_DISPENSAVEL = "Erro! Não foi possível desativar/ativar a pergunta. Ela se encontra vinculada a uma atividade dispensável ativa no sistema.";
 
     @Autowired
     PerguntaRepository perguntaRepository;
@@ -132,7 +132,7 @@ public class PerguntaService implements IPerguntaService {
             boolean ativo = atividade.getAtivo();
 
             if (ativo) {
-                throw new ConflictException(VINCULO_EXISTENTE);
+                throw new ConflictException(VINCULO_ATIVIDADE_DISPENSAVEL);
             }
 
         });
