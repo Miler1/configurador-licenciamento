@@ -401,7 +401,7 @@ export default {
 				}
 				if (tipo === 'MAXIMO' && item) {
 
-					return (this.errorMessageEmpty || (item && (parseFloat(item.replace(",", ".")) > parseFloat(parametro.valores[index].minimo.replace(",", ".")))) ? '' : this.errorMessageMax);
+					return (this.errorMessageEmpty || (item && (parseFloat(item.replace(/[\D]+/g, '')) > parseFloat(parametro.valores[index].minimo.replace(/[\D]+/g, '')))) ? '' : this.errorMessageMax);
 				}
 
 			}
@@ -458,8 +458,8 @@ export default {
 
 				if (!parametro.valores[i].maximo
 					|| !parametro.valores[i + 1].minimo
-					|| parseFloat(parametro.valores[i].maximo.replace(",", ".")) !== parseFloat(parametro.valores[i + 1].minimo.replace(",","."))
-					|| parseFloat(parametro.valores[i].maximo.replace(",", ".")) <= parseFloat(parametro.valores[i].minimo.replace(",","."))
+					|| parseFloat(parametro.valores[i].maximo.replace(/[\D]+/g, '')) !== parseFloat(parametro.valores[i + 1].minimo.replace(/[\D]+/g, ''))
+					|| parseFloat(parametro.valores[i].maximo.replace(/[\D]+/g, '')) <= parseFloat(parametro.valores[i].minimo.replace(/[\D]+/g, ''))
 					|| (!parametro.valores[i + 1].limiteInferiorIncluso && !parametro.valores[i].limiteSuperiorIncluso)) {
 
 					valido = false;
