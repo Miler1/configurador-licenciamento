@@ -104,7 +104,7 @@ public class AtividadeLicenciavelService implements IAtividadeLicenciavelService
 
         boolean existeAtividade = atividadeRepository.existsByCodigo(atividadeLicenciavelDTO.getDados().getCodigoAtividade().trim());
 
-        //caso exista justificativa, logo é uma atividade para editar
+        //caso exista justificativa, logo é uma atividade editada que precisa manter histórico
         boolean existeJustificativa = atividadeLicenciavelDTO.getJustificativa() != null;
 
         if (existeAtividade && !existeJustificativa) {
@@ -202,6 +202,7 @@ public class AtividadeLicenciavelService implements IAtividadeLicenciavelService
 
         atividadeLicenciavelDTO.getDados().setId(null);
 
+        //Gerar novo registro para manter histórico
         Atividade atividadeAtual = salvar(request, atividadeLicenciavelDTO);
 
         historicoConfiguradorService.editar(
