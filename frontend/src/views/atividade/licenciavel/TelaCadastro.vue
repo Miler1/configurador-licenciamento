@@ -291,11 +291,6 @@ export default {
 							mensagem.style.color = "#ff5252";
 							mensagem.style.caretColor = "#ff5252";
 
-							campoJustificativa.setAttribute("margin-top", "10px");
-							campoJustificativa.setAttribute("width", "100%");
-							campoJustificativa.setAttribute("resize", "none");
-							campoJustificativa.setAttribute("padding-right", "12px");
-
 							return false;
 
 						}
