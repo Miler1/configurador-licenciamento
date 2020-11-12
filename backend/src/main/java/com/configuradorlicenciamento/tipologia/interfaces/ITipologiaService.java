@@ -16,6 +16,8 @@ public interface ITipologiaService {
 
     Tipologia editar(HttpServletRequest request, TipologiaDTO tipologiaDTO);
 
+    Tipologia ativarDesativar(HttpServletRequest request, Integer idTipologia);
+
     List<Tipologia> listarTipologia() throws Exception;
 
     List<TipologiaCsv> listarTipologiaParaCsv() throws Exception;

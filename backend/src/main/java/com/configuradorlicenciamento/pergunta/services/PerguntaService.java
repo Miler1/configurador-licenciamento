@@ -1,9 +1,13 @@
 package com.configuradorlicenciamento.pergunta.services;
 
+import com.configuradorlicenciamento.atividade.models.Atividade;
+import com.configuradorlicenciamento.atividade.models.RelAtividadePergunta;
+import com.configuradorlicenciamento.atividade.repositories.AtividadeRepository;
+import com.configuradorlicenciamento.atividade.repositories.RelAtividadePerguntaRepository;
 import com.configuradorlicenciamento.configuracao.exceptions.ConflictException;
+import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.pergunta.dtos.PerguntaCsv;
-import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.pergunta.dtos.PerguntaDTO;
 import com.configuradorlicenciamento.pergunta.interfaces.IPerguntaService;
 import com.configuradorlicenciamento.pergunta.models.Pergunta;
@@ -13,9 +17,9 @@ import com.configuradorlicenciamento.resposta.repositories.RespostaRepository;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLicenciamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -28,11 +32,19 @@ import java.util.Optional;
 @Service
 public class PerguntaService implements IPerguntaService {
 
+    private static final String VINCULO_ATIVIDADE_DISPENSAVEL = "Erro! Não foi possível desativar/ativar a pergunta. Ela se encontra vinculada a uma atividade dispensável ativa no sistema.";
+
     @Autowired
     PerguntaRepository perguntaRepository;
 
     @Autowired
     RespostaRepository respostaRepository;
+
+    @Autowired
+    RelAtividadePerguntaRepository relAtividadePerguntaRepository;
+
+    @Autowired
+    AtividadeRepository atividadeRepository;
 
     @Autowired
     UsuarioLicenciamentoRepository usuarioLicenciamentoRepository;
@@ -49,7 +61,7 @@ public class PerguntaService implements IPerguntaService {
         Specification<Pergunta> specification = Specification.where(PerguntaSpecification.padrao());
         specification = specification.and(PerguntaSpecification.matchTitulo(perguntaDTO.getTexto()));
 
-        if(!perguntaRepository.findAll(specification).isEmpty()){
+        if (!perguntaRepository.findAll(specification).isEmpty()) {
             throw new ConflictException("Já existe uma pergunta com o mesmo título.");
         }
 
@@ -81,7 +93,7 @@ public class PerguntaService implements IPerguntaService {
                     Specification<Pergunta> specification = Specification.where(PerguntaSpecification.padrao());
                     specification = specification.and(PerguntaSpecification.matchTitulo(perguntaDTO.getTexto()));
 
-                    if(!perguntaRepository.findAll(specification).isEmpty() && !pergunta.getTexto().equals(perguntaDTO.getTexto())) {
+                    if (!perguntaRepository.findAll(specification).isEmpty() && !pergunta.getTexto().equals(perguntaDTO.getTexto())) {
                         throw new ConflictException("Já existe uma pergunta com o mesmo título.");
                     }
 
@@ -102,11 +114,48 @@ public class PerguntaService implements IPerguntaService {
 
     }
 
+    @Override
+    public Pergunta ativarDesativar(HttpServletRequest request, Integer idPergunta) {
+
+        Object login = request.getSession().getAttribute("login");
+
+        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
+
+        Pergunta perguntaExistente = perguntaRepository.findById(idPergunta).get();
+
+        List<RelAtividadePergunta> relAtividadePerguntaList = relAtividadePerguntaRepository.findByPergunta(perguntaExistente);
+
+        relAtividadePerguntaList.forEach(relAtividadePergunta -> {
+
+            Atividade atividade = atividadeRepository.findById(relAtividadePergunta.getAtividade().getId()).get();
+
+            boolean ativo = atividade.getAtivo();
+
+            if (ativo) {
+                throw new ConflictException(VINCULO_ATIVIDADE_DISPENSAVEL);
+            }
+
+        });
+
+        Optional<Pergunta> perguntaSalva = perguntaRepository.findById(idPergunta)
+                .map(pergunta -> {
+                    pergunta.setAtivo(!perguntaExistente.getAtivo());
+                    pergunta.setUsuarioLicenciamento(usuarioLicenciamento);
+                    pergunta.setDataCadastro(new Date());
+                    return pergunta;
+                });
+
+        perguntaRepository.save(perguntaSalva.get());
+
+        return perguntaSalva.get();
+
+    }
+
     public void tratarPergunta(PerguntaDTO pergunta) {
 
         String textoPergunta = StringUtil.tratarEspacos(pergunta.getTexto());
 
-        if(!textoPergunta.endsWith("?")){
+        if (!textoPergunta.endsWith("?")) {
             textoPergunta = textoPergunta + "?";
         }
 

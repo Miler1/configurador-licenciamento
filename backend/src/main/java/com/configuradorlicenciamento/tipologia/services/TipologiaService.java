@@ -1,7 +1,9 @@
 package com.configuradorlicenciamento.tipologia.services;
 
-import com.configuradorlicenciamento.configuracao.exceptions.ConflictException;
+import com.configuradorlicenciamento.atividade.models.Atividade;
+import com.configuradorlicenciamento.atividade.repositories.AtividadeRepository;
 import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
+import com.configuradorlicenciamento.configuracao.exceptions.ConflictException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.tipologia.dtos.TipologiaCsv;
 import com.configuradorlicenciamento.tipologia.dtos.TipologiaDTO;
@@ -28,9 +30,14 @@ import java.util.Optional;
 public class TipologiaService implements ITipologiaService {
 
     private static final String TIPOLOGIA_EXISTENTE = "Já existe uma tipologia com o mesmo nome ou semelhante.";
+    private static final String VINCULO_ATIVIDADE_LICENCIAVEL = "Erro! Não foi possível desativar/ativar a tipologia. Ela se encontra vinculada a uma atividade licenciável ativa no sistema.";
+    private static final String VINCULO_ATIVIDADE_DISPENSAVEL = "Erro! Não foi possível desativar/ativar a tipologia. Ela se encontra vinculada a uma atividade dispensável ativa no sistema.";
 
     @Autowired
     TipologiaRepository tipologiaRepository;
+
+    @Autowired
+    AtividadeRepository atividadeRepository;
 
     @Autowired
     UsuarioLicenciamentoRepository usuarioLicenciamentoRepository;
@@ -97,6 +104,44 @@ public class TipologiaService implements ITipologiaService {
 
         return tipologia;
 
+    }
+
+    @Override
+    public Tipologia ativarDesativar(HttpServletRequest request, Integer idTipologia) {
+
+        Object login = request.getSession().getAttribute("login");
+
+        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
+
+        Tipologia tipologiaExistente = tipologiaRepository.findById(idTipologia).get();
+
+        List<Atividade> atividadesList = atividadeRepository.findByTipologia(tipologiaExistente);
+
+        atividadesList.forEach(atividade -> {
+
+            boolean ativo = atividade.getAtivo();
+
+            String codigo = atividade.getCodigo();
+
+            if (ativo && !codigo.equals("0000")) {
+                throw new ConflictException(VINCULO_ATIVIDADE_LICENCIAVEL);
+            } else if (ativo) {
+                throw new ConflictException(VINCULO_ATIVIDADE_DISPENSAVEL);
+            }
+
+        });
+
+        Optional<Tipologia> tipologiaSalva = tipologiaRepository.findById(idTipologia)
+                .map(tipologia -> {
+                    tipologia.setAtivo(!tipologiaExistente.getAtivo());
+                    tipologia.setUsuarioLicenciamento(usuarioLicenciamento);
+                    tipologia.setDataCadastro(new Date());
+                    return tipologia;
+                });
+
+        tipologiaRepository.save(tipologiaSalva.get());
+
+        return tipologiaSalva.get();
     }
 
     @Override

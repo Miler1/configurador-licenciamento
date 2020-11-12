@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface IHistoricoConfiguradorService {
 
-    void salvar(HttpServletRequest request, Integer idTabela, String funcionalidade, String acao);
+    void salvar(HttpServletRequest request, Integer idItem, String funcionalidade, String acao);
 
-    void editar(HttpServletRequest request, Integer idTabela, String funcionalidade, String acao, String justificativa);
+    void editar(HttpServletRequest request, Integer idItemAtual, Integer idItemAntigo, String funcionalidade, String acao, String justificativa);
 
     List<HistoricoConfigurador> buscarHistoricoItem(String funcionalidade, Integer idItem);
 

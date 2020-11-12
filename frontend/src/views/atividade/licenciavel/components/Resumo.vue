@@ -65,7 +65,7 @@
 						p.label-atividade {{atividadeLicenciavel.parametros[0].parametroUm.codigo}} - {{atividadeLicenciavel.parametros[0].parametroUm.nome}}
 					v-col(cols="12", md="6")
 						v-label Descrição da unidade do parâmetro 1
-						p.label-atividade {{atividadeLicenciavel.parametros[0].descricaoUnidadeUm ? atividadeLicenciavel.parametros[0].descricaoUnidadeUm : "Não informada"}}
+						p.label-atividade {{atividadeLicenciavel.parametros[0].descricaoUnidadeUm ? atividadeLicenciavel.parametros[0].descricaoUnidadeUm : atividadeLicenciavel.parametros[0].parametroUm.nome}}
 
 				v-row(v-if="atividadeLicenciavel.parametros[0].parametroDois")
 					v-col(cols="12", md="6")
@@ -73,7 +73,7 @@
 						p.label-atividade {{atividadeLicenciavel.parametros[0].parametroDois.codigo}} - {{atividadeLicenciavel.parametros[0].parametroDois.nome}}
 					v-col(cols="12", md="6")
 						v-label Descrição da unidade do parâmetro 2
-						p.label-atividade {{atividadeLicenciavel.parametros[0].descricaoUnidadeDois ? atividadeLicenciavel.parametros[0].descricaoUnidadeDois : "Não informada"}}
+						p.label-atividade {{atividadeLicenciavel.parametros[0].descricaoUnidadeDois ? atividadeLicenciavel.parametros[0].descricaoUnidadeDois : atividadeLicenciavel.parametros[0].parametroUm.nome}}
 
 	GridListagemInclusao.mt-7(
 		:tituloListagem="tituloListagemParametro",
@@ -183,7 +183,6 @@ export default {
 			this.headerParametro.splice(3,3);
 
 		}
-
 
 	}
 

@@ -50,7 +50,7 @@ public class HistoricoConfiguradorService implements IHistoricoConfiguradorServi
     }
 
     @Override
-    public void editar(HttpServletRequest request, Integer idTabela, String funcionalidade, String acao, String justificativa) {
+    public void editar(HttpServletRequest request, Integer idItemAtual, Integer idItemAntigo, String funcionalidade, String acao, String justificativa) {
 
         Object login = request.getSession().getAttribute("login");
 
@@ -61,7 +61,7 @@ public class HistoricoConfiguradorService implements IHistoricoConfiguradorServi
         AcaoConfigurador acaoConfigurador = acaoRepository.findByAcao(acao);
 
         HistoricoConfigurador historicoConfigurador = new HistoricoConfigurador(
-                idTabela, funcionalidadeConfigurador, acaoConfigurador, justificativa, new Date(), usuarioLicenciamento);
+                idItemAtual, idItemAntigo, funcionalidadeConfigurador, acaoConfigurador, justificativa, new Date(), usuarioLicenciamento);
 
         historicoRepository.save(historicoConfigurador);
 
@@ -72,7 +72,7 @@ public class HistoricoConfiguradorService implements IHistoricoConfiguradorServi
 
         FuncionalidadeConfigurador funcionalidadeConfigurador = funcionadeRepository.findByTipo(funcionalidade);
 
-        return historicoRepository.findByFuncionalidadeAndIdItemOrderByDataCadastroDesc(
+        return historicoRepository.findByFuncionalidadeAndIdItemOrderByDataAcaoDesc(
                 funcionalidadeConfigurador, idItem);
 
     }

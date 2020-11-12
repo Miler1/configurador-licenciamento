@@ -236,7 +236,7 @@
 				color="#E0E0E0",
 				placeholder="Digite aqui...",
 				rows="3",
-				auto-grow
+				auto-grow,
 				v-model="justificativa",
 				:error-messages="errorMessage(justificativa, false, false)",
 				@click.native="resetErrorMessage",

@@ -33,7 +33,7 @@ public class TipoCaracterizacaoAtividadeService implements ITipoCaracterizacaoAt
                 .setDispensaLicenciamento(true)
                 .setLicenciamentoDeclaratorio(false)
                 .setLicenciamentoSimplificado(false)
-                .setAtivo(true)
+                .setAtivo(!atividade.getItemAntigo())
                 .build();
 
         tipoCaracterizacaoAtividadeRepository.save(tipoCaracterizacaoAtividade);
@@ -53,12 +53,23 @@ public class TipoCaracterizacaoAtividadeService implements ITipoCaracterizacaoAt
                     .setDispensaLicenciamento(false)
                     .setLicenciamentoDeclaratorio(false)
                     .setLicenciamentoSimplificado(true)
-                    .setAtivo(true)
+                    .setAtivo(!atividade.getItemAntigo())
                     .build();
 
             tipoCaracterizacaoAtividadeRepository.save(tipoCaracterizacaoAtividade);
 
         });
+
+    }
+
+    @Override
+    public void editarAtividadeDispensavel(AtividadeCnaeDTO atividadesCnae, Atividade atividade) {
+
+        List<TipoCaracterizacaoAtividade> tipoCaracterizacaoAtividades = tipoCaracterizacaoAtividadeRepository.findByAtividade(atividade);
+
+        tipoCaracterizacaoAtividades.forEach(tipoCaracterizacaoAtividade -> tipoCaracterizacaoAtividadeRepository.delete(tipoCaracterizacaoAtividade));
+
+        this.salvarAtividadeDispensavel(atividadesCnae, atividade);
 
     }
 

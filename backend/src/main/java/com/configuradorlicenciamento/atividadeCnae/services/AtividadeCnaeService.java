@@ -1,23 +1,28 @@
 package com.configuradorlicenciamento.atividadeCnae.services;
 
+import com.configuradorlicenciamento.atividade.models.Atividade;
+import com.configuradorlicenciamento.atividade.repositories.AtividadeRepository;
 import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeCsv;
 import com.configuradorlicenciamento.atividadeCnae.dtos.AtividadeCnaeDTO;
 import com.configuradorlicenciamento.atividadeCnae.interfaces.IAtividadeCnaeService;
 import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.atividadeCnae.repositories.AtividadeCnaeRepository;
 import com.configuradorlicenciamento.atividadeCnae.specifications.AtividadeCnaeSpecification;
+import com.configuradorlicenciamento.configuracao.exceptions.ConflictException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
+import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.models.TipoCaracterizacaoAtividade;
+import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.repositories.TipoCaracterizacaoAtividadeRepository;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLicenciamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -25,11 +30,20 @@ import java.util.Optional;
 @Service
 public class AtividadeCnaeService implements IAtividadeCnaeService {
 
+    private static final String VINCULO_ATIVIDADE_LICENCIAVEL = "Erro! Não foi possível desativar/ativar o grupo de requisito técnico. Ele se encontra vinculado a uma atividade licenciável ativa no sistema.";
+    private static final String VINCULO_ATIVIDADE_DISPENSAVEL = "Erro! Não foi possível desativar/ativar a pergunta. Ela se encontra vinculada a uma atividade dispensável ativa no sistema.";
+
     @Autowired
     AtividadeCnaeRepository atividadeCnaeRepository;
 
     @Autowired
     UsuarioLicenciamentoRepository usuarioLicenciamentoRepository;
+
+    @Autowired
+    TipoCaracterizacaoAtividadeRepository tipoCaracterizacaoAtividadeRepository;
+
+    @Autowired
+    AtividadeRepository atividadeRepository;
 
     @Override
     public AtividadeCnae salvar(HttpServletRequest request, AtividadeCnaeDTO atividadeCnaeDTO) {
@@ -63,6 +77,60 @@ public class AtividadeCnaeService implements IAtividadeCnaeService {
                     atividadeCnae.setUsuarioLicenciamento(usuarioLicenciamento);
                     atividadeCnae.setDataCadastro(new Date());
                     atividadeCnae.setAtivo(atividadeCnaeDTO.getAtivo());
+                    return atividadeCnae;
+                });
+
+        atividadeCnaeRepository.save(atividadeCnaeSalva.get());
+
+        List<TipoCaracterizacaoAtividade> tipoCaracterizacaoAtividadeList = tipoCaracterizacaoAtividadeRepository.findByAtividadeCnaeAndDispensaLicenciamento(atividadeCnaeSalva.get(), true);
+
+        tipoCaracterizacaoAtividadeList.forEach(tipoCaracterizacaoAtividade -> {
+
+            Atividade atividade = atividadeRepository.findById(tipoCaracterizacaoAtividade.getAtividade().getId()).get();
+
+            boolean itemAntigo = atividade.getItemAntigo();
+
+            if (!itemAntigo) {
+                atividade.setNome(atividadeCnaeDTO.getNome());
+                atividadeRepository.save(atividade);
+            }
+
+        });
+
+        return atividadeCnaeSalva.get();
+
+    }
+
+    @Override
+    public AtividadeCnae ativarDesativar(HttpServletRequest request, Integer idAtividadeCnae) {
+
+        Object login = request.getSession().getAttribute("login");
+
+        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
+
+        AtividadeCnae atividadeCnaeExistente = atividadeCnaeRepository.findById(idAtividadeCnae).get();
+
+        List<TipoCaracterizacaoAtividade> tipoCaracterizacaoAtividadeList = tipoCaracterizacaoAtividadeRepository.findByAtividadeCnae(atividadeCnaeExistente);
+
+        tipoCaracterizacaoAtividadeList.forEach(tipoCaracterizacaoAtividade -> {
+
+            Atividade atividade = atividadeRepository.findById(tipoCaracterizacaoAtividade.getAtividade().getId()).get();
+
+            boolean ativo = atividade.getAtivo();
+
+            boolean dispensaLicenciamento = tipoCaracterizacaoAtividade.getDispensaLicenciamento();
+
+            if (ativo && dispensaLicenciamento) {
+                throw new ConflictException(VINCULO_ATIVIDADE_DISPENSAVEL);
+            } else if (ativo) throw new ConflictException(VINCULO_ATIVIDADE_LICENCIAVEL);
+
+        });
+
+        Optional<AtividadeCnae> atividadeCnaeSalva = atividadeCnaeRepository.findById(idAtividadeCnae)
+                .map(atividadeCnae -> {
+                    atividadeCnae.setAtivo(!atividadeCnaeExistente.getAtivo());
+                    atividadeCnae.setDataCadastro(new Date());
+                    atividadeCnae.setUsuarioLicenciamento(usuarioLicenciamento);
                     return atividadeCnae;
                 });
 

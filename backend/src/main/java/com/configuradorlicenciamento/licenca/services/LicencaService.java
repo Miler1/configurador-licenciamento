@@ -1,5 +1,7 @@
 package com.configuradorlicenciamento.licenca.services;
 
+import com.configuradorlicenciamento.atividade.models.Atividade;
+import com.configuradorlicenciamento.atividade.repositories.AtividadeRepository;
 import com.configuradorlicenciamento.configuracao.exceptions.ConflictException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
 import com.configuradorlicenciamento.configuracao.utils.StringUtil;
@@ -9,6 +11,16 @@ import com.configuradorlicenciamento.licenca.interfaces.ILicencaService;
 import com.configuradorlicenciamento.licenca.models.Licenca;
 import com.configuradorlicenciamento.licenca.repositories.LicencaRepository;
 import com.configuradorlicenciamento.licenca.specifications.LicencaSpecification;
+import com.configuradorlicenciamento.requisitoAdministrativo.models.RequisitoAdministrativo;
+import com.configuradorlicenciamento.requisitoAdministrativo.repositories.RequisitoAdministrativoRepository;
+import com.configuradorlicenciamento.requisitoTecnico.models.RequisitoTecnico;
+import com.configuradorlicenciamento.requisitoTecnico.models.TipoLicencaGrupoDocumento;
+import com.configuradorlicenciamento.requisitoTecnico.repositories.RequisitoTecnicoRepository;
+import com.configuradorlicenciamento.requisitoTecnico.repositories.TipoLicencaGrupoDocumentoRepository;
+import com.configuradorlicenciamento.taxaLicenciamento.models.CodigoTaxaLicenciamento;
+import com.configuradorlicenciamento.taxaLicenciamento.models.TaxaLicenciamento;
+import com.configuradorlicenciamento.taxaLicenciamento.repositories.CodigoTaxaLicenciamentoRepository;
+import com.configuradorlicenciamento.taxaLicenciamento.repositories.TaxaLicenciamentoRepository;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLicenciamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +40,31 @@ import java.util.Optional;
 public class LicencaService implements ILicencaService {
 
     private static final String LICENCA_EXISTENTE = "Já existe uma licença com o mesmo tipo.";
+    private static final String VINCULO_TAXA_LICENCIAMENTO = "Erro! Não foi possível desativar/ativar a licença. Ela se encontra vinculada a uma tabela de taxas de licenciamento ativa no sistema.";
+    private static final String VINCULO_REQUISITO_ADMINISTRATIVO = "Erro! Não foi possível desativar/ativar a licença. Ela se encontra vinculada a um requisito administrativo ativo no sistema.";
+    private static final String VINCULO_REQUISITO_TECNICO = "Erro! Não foi possível desativar/ativar a licença. Ela se encontra vinculada a um grupo de requisito técnico ativo no sistema.";
+    private static final String VINCULO_ATIVIDADE_LICENCIAVEL = "Erro! Não foi possível desativar/ativar a licença. Ela se encontra vinculada a uma atividade licenciável ativa no sistema.";
 
     @Autowired
     LicencaRepository licencaRepository;
+
+    @Autowired
+    TaxaLicenciamentoRepository taxaLicenciamentoRepository;
+
+    @Autowired
+    RequisitoAdministrativoRepository requisitoAdministrativoRepository;
+
+    @Autowired
+    RequisitoTecnicoRepository requisitoTecnicoRepository;
+
+    @Autowired
+    TipoLicencaGrupoDocumentoRepository tipoLicencaGrupoDocumentoRepository;
+
+    @Autowired
+    CodigoTaxaLicenciamentoRepository codigoTaxaLicenciamentoRepository;
+
+    @Autowired
+    AtividadeRepository atividadeRepository;
 
     @Autowired
     UsuarioLicenciamentoRepository usuarioLicenciamentoRepository;
@@ -91,6 +125,83 @@ public class LicencaService implements ILicencaService {
                     licenca.setUsuarioLicenciamento(usuarioLicenciamento);
                     licenca.setDataCadastro(new Date());
                     licenca.setAtivo(licencaDTO.getAtivo());
+                    return licenca;
+                });
+
+        licencaRepository.save(licencaSalva.get());
+
+        return licencaSalva.get();
+
+    }
+
+    @Override
+    public Licenca ativarDesativar(HttpServletRequest request, Integer idLicenca) {
+
+        Object login = request.getSession().getAttribute("login");
+
+        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
+
+        Licenca licencaExistente = licencaRepository.findById(idLicenca).get();
+
+        List<TaxaLicenciamento> taxaLicenciamentoList = taxaLicenciamentoRepository.findByLicenca(licencaExistente);
+
+        taxaLicenciamentoList.forEach(taxaLicenciamento -> {
+
+            CodigoTaxaLicenciamento codigoTaxaLicenciamento = codigoTaxaLicenciamentoRepository.findById(taxaLicenciamento.getCodigo().getId()).get();
+
+            boolean ativo = codigoTaxaLicenciamento.getAtivo();
+
+            if (ativo) {
+                throw new ConflictException(VINCULO_TAXA_LICENCIAMENTO);
+            }
+
+        });
+
+        List<RequisitoAdministrativo> requisitoAdministrativoList = requisitoAdministrativoRepository.findByLicenca(licencaExistente);
+
+        requisitoAdministrativoList.forEach(requisitoAdministrativo -> {
+
+            boolean ativo = requisitoAdministrativo.getAtivo();
+
+            if (ativo) {
+                throw new ConflictException(VINCULO_REQUISITO_ADMINISTRATIVO);
+            }
+
+        });
+
+        List<TipoLicencaGrupoDocumento> tipoLicencaGrupoDocumentoList = tipoLicencaGrupoDocumentoRepository.findByLicenca(licencaExistente);
+
+        tipoLicencaGrupoDocumentoList.forEach(tipoLicencaGrupoDocumento -> {
+
+            RequisitoTecnico requisitoTecnico = requisitoTecnicoRepository.findById(tipoLicencaGrupoDocumento.getRequisitoTecnico().getId()).get();
+
+            boolean ativo = requisitoTecnico.getAtivo();
+
+            if (ativo) {
+                throw new ConflictException(VINCULO_REQUISITO_TECNICO);
+            }
+
+        });
+
+        List<Atividade> atividadesList = atividadeRepository.findByTiposLicencas(licencaExistente);
+
+        atividadesList.forEach(atividadeBusca -> {
+
+            Atividade atividade = atividadeRepository.findById(atividadeBusca.getId()).get();
+
+            boolean ativo = atividade.getAtivo();
+
+            if (ativo) {
+                throw new ConflictException(VINCULO_ATIVIDADE_LICENCIAVEL);
+            }
+
+        });
+
+        Optional<Licenca> licencaSalva = licencaRepository.findById(idLicenca)
+                .map(licenca -> {
+                    licenca.setAtivo(!licencaExistente.getAtivo());
+                    licenca.setUsuarioLicenciamento(usuarioLicenciamento);
+                    licenca.setDataCadastro(new Date());
                     return licenca;
                 });
 

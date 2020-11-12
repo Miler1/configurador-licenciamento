@@ -46,7 +46,7 @@
 				v-col.min-width-215(cols="12", xl="2", lg="2", md="4", v-if="taxaAdministrativa.isento == 'false'")
 					ToggleOptions(
 						ref="toggleAtividadeDispensavel",
-						labelOption="Atividades dispensáveis",
+						labelOption="CNAE dispensável",
 						idToggle="QA-btn-toggle-atividade-dispensavel",
 						:errorMessage="errorMessage",
 						:options="optionsAtividadeDispensavel",
@@ -56,7 +56,7 @@
 				v-col.min-width-215(cols="12", xl="2", lg="2", md="4", v-if="taxaAdministrativa.isento == 'false'")
 					ToggleOptions(
 						ref="toggleAtividadeLicenciavel",
-						labelOption="Atividades licenciáveis",
+						labelOption="Atividade licenciável",
 						idToggle="QA-btn-toggle-atividade-licenciavel",
 						:errorMessage="errorMessage",
 						:options="optionsAtividadeLicenciavel",

@@ -1,30 +1,32 @@
 package com.configuradorlicenciamento.atividade.services;
 
 import com.configuradorlicenciamento.atividade.dtos.AtividadeDispensavelCsv;
+import com.configuradorlicenciamento.atividade.dtos.AtividadeDispensavelDTO;
+import com.configuradorlicenciamento.atividade.dtos.AtividadeDispensavelEdicaoDTO;
 import com.configuradorlicenciamento.atividade.interfaces.IAtividadeDispensavelService;
+import com.configuradorlicenciamento.atividade.interfaces.IRelAtividadePerguntaService;
 import com.configuradorlicenciamento.atividade.models.Atividade;
+import com.configuradorlicenciamento.atividade.models.RelAtividadePergunta;
 import com.configuradorlicenciamento.atividade.models.TipoAtividade;
 import com.configuradorlicenciamento.atividade.repositories.AtividadeRepository;
+import com.configuradorlicenciamento.atividade.repositories.RelAtividadePerguntaRepository;
 import com.configuradorlicenciamento.atividade.repositories.TipoAtividadeRepository;
 import com.configuradorlicenciamento.atividade.specifications.AtividadeSpecification;
 import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.atividadeCnae.repositories.AtividadeCnaeRepository;
 import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
+import com.configuradorlicenciamento.historicoConfigurador.interfaces.IHistoricoConfiguradorService;
+import com.configuradorlicenciamento.historicoConfigurador.models.AcaoConfigurador;
+import com.configuradorlicenciamento.historicoConfigurador.models.FuncionalidadeConfigurador;
+import com.configuradorlicenciamento.historicoConfigurador.models.HistoricoConfigurador;
 import com.configuradorlicenciamento.pergunta.models.Pergunta;
 import com.configuradorlicenciamento.pergunta.repositories.PerguntaRepository;
 import com.configuradorlicenciamento.potencialPoluidor.models.PotencialPoluidor;
 import com.configuradorlicenciamento.potencialPoluidor.repositories.PotencialPoluidorRepository;
-import com.configuradorlicenciamento.atividade.dtos.AtividadeDispensavelDTO;
-import com.configuradorlicenciamento.atividade.dtos.AtividadeDispensavelEdicaoDTO;
-import com.configuradorlicenciamento.atividade.interfaces.IRelAtividadePerguntaService;
-import com.configuradorlicenciamento.atividade.models.RelAtividadePergunta;
-import com.configuradorlicenciamento.atividade.repositories.RelAtividadePerguntaRepository;
-import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.repositories.TipoCaracterizacaoAtividadeRepository;
 import com.configuradorlicenciamento.tipoCaracterizacaoAtividade.services.TipoCaracterizacaoAtividadeService;
 import com.configuradorlicenciamento.tipologia.models.Tipologia;
 import com.configuradorlicenciamento.tipologia.repositories.TipologiaRepository;
-import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLicenciamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,7 +37,6 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,12 +73,32 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
     @Autowired
     TipoCaracterizacaoAtividadeService tipoCaracterizacaoAtividadeService;
 
+    @Autowired
+    IHistoricoConfiguradorService historicoConfiguradorService;
+
     @Override
-    public List<Atividade> salvarAtividadeDispensavel(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO) {
+    public List<Atividade> salvar(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO) {
 
-        Object login = request.getSession().getAttribute("login");
+        boolean statusAtivoAtual;
 
-        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
+        boolean statusAtivoAntigo = true;
+
+        //caso exista justificativa, logo é uma atividade para editar
+        boolean existeJustificativa = atividadeDispensavelDTO.getJustificativa() != null;
+
+        if (existeJustificativa) {
+
+            Atividade atividadeAntiga = buscarAtividade(atividadeDispensavelDTO.getId());
+
+            statusAtivoAntigo = atividadeAntiga.getAtivo();
+
+            salvarAtividadeAntiga(atividadeDispensavelDTO, atividadeAntiga);
+
+            atividadeDispensavelDTO.setId(null);
+
+        }
+
+        statusAtivoAtual = statusAtivoAntigo;
 
         List<Atividade> atividades = new ArrayList<>();
 
@@ -99,13 +120,12 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
                     .setGeoPonto(true)
                     .setGeoPoligono(true)
                     .setPotencialPoluidor(potencialPoluidor)
-                    .setAtivo(true)
+                    .setAtivo(statusAtivoAtual)
+                    .setItemAntigo(false)
                     .setDentroEmpreendimento(false)
                     .setV1(false)
                     .setRascunho(false)
                     .setTiposAtividades(tiposAtividades)
-                    .setDataCadastro(new Date())
-                    .setUsuarioLicenciamento(usuarioLicenciamento)
                     .build();
 
             atividadeRepository.save(atividade);
@@ -116,108 +136,110 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
 
             atividades.add(atividade);
 
+            if (!existeJustificativa) {
+
+                historicoConfiguradorService.salvar(
+                        request,
+                        atividade.getId(),
+                        FuncionalidadeConfigurador.Funcionalidades.CNAES_DISPENSAVEIS.getTipo(),
+                        AcaoConfigurador.Acoes.CADASTRAR.getAcao()
+                );
+
+            }
+
         });
 
         return atividades;
+
     }
 
     @Override
-    public Atividade editarAtividadeLicenciavel(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO) {
+    public Atividade editar(HttpServletRequest request, AtividadeDispensavelDTO atividadeDispensavelDTO) {
 
-        Object login = request.getSession().getAttribute("login");
+        Integer idAtividadeAntiga = atividadeDispensavelDTO.getId();
 
-        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
+        List<Atividade> atividades = salvar(request, atividadeDispensavelDTO);
 
-        AtividadeDispensavelDTO.RelacaoCnaeTipologia cnaeTipologia = atividadeDispensavelDTO.getCnaesTipologia().get(0);
+        Atividade atividadeAtual = atividades.get(0);
 
-        Atividade atividade = atividadeRepository.findById(atividadeDispensavelDTO.getId()).orElse(null);
+        historicoConfiguradorService.editar(
+                request,
+                atividadeAtual.getId(),
+                idAtividadeAntiga,
+                FuncionalidadeConfigurador.Funcionalidades.CNAES_DISPENSAVEIS.getTipo(),
+                AcaoConfigurador.Acoes.EDITAR.getAcao(),
+                atividadeDispensavelDTO.getJustificativa());
 
-        Optional<AtividadeCnae> atividadeCnae = atividadeCnaeRepository.findById(cnaeTipologia.getCnae().getId());
+        return atividadeAtual;
 
-        Optional<Tipologia> tipologia = tipologiaRepository.findById(cnaeTipologia.getTipologia().getId());
-
-        atividadeCnae.ifPresent(cnae -> {
-            assert atividade != null;
-            atividade.setNome(cnae.getNome());
-        });
-        assert atividade != null;
-        tipologia.ifPresent(atividade::setTipologia);
-        atividade.setDentroMunicipio(!cnaeTipologia.getForaMunicipio());
-        atividade.setDataCadastro(new Date());
-        atividade.setUsuarioLicenciamento(usuarioLicenciamento);
-
-        atividadeRepository.save(atividade);
-
-        relAtividadePerguntaService.editar(atividade, atividadeDispensavelDTO.getPerguntas());
-
-        return atividade;
     }
 
     @Override
-    public Atividade ativarDesativar(Integer idAtividadeDispensavel) {
+    public Atividade ativarDesativar(HttpServletRequest request, Integer idAtividadeDispensavel) {
 
-        Atividade atividade = atividadeRepository.findById(idAtividadeDispensavel).orElseThrow(() ->
-                new ConfiguradorNotFoundException("Não foi possível encontrar a atividade dispensável com id: " + idAtividadeDispensavel));
+        Atividade atividade = buscarAtividade(idAtividadeDispensavel);
 
         atividade.setAtivo(!atividade.getAtivo());
 
-        return atividadeRepository.save(atividade);
+        boolean ativo = atividade.getAtivo();
+
+        String acao = ativo ? AcaoConfigurador.Acoes.ATIVAR.getAcao() : AcaoConfigurador.Acoes.DESATIVAR.getAcao();
+
+        atividadeRepository.save(atividade);
+
+        historicoConfiguradorService.salvar(
+                request,
+                atividade.getId(),
+                FuncionalidadeConfigurador.Funcionalidades.CNAES_DISPENSAVEIS.getTipo(),
+                acao
+        );
+
+        return atividade;
+
     }
 
     @Override
-    public Page<Atividade> listarAtividadesDispensaveis(Pageable pageable, FiltroPesquisa filtro) {
+    public Page<Atividade> listar(Pageable pageable, FiltroPesquisa filtro) {
 
-        Specification<Atividade> specification = preparaFiltroAtividadeDispensavel(filtro);
+        Specification<Atividade> specification = prepararFiltroAtividadeDispensavel(filtro);
 
         return atividadeRepository.findAll(specification, pageable);
 
     }
 
-    private Specification<Atividade> preparaFiltroAtividadeDispensavel(FiltroPesquisa filtro) {
-
-        Specification<Atividade> specification = Specification.where(AtividadeSpecification.padrao()
-                .and(AtividadeSpecification.filtrarAtividadesDispensaveis()));
-
-        if (filtro.getStringPesquisa() != null) {
-
-            specification = specification.and(AtividadeSpecification.atividadeNome(filtro.getStringPesquisa())
-                    .or(AtividadeSpecification.atividadeCodigo(filtro.getStringPesquisa())));
-
-        }
-
-        return specification;
-
+    @Override
+    public List<Atividade> listarAtividadesDispensaveis() {
+        return atividadeRepository.findAll(getFiltro(), Sort.by("id"));
     }
 
     @Override
-    public List<AtividadeDispensavelCsv> listarAtividadesDispensaveisParaCsv() {
+    public List<AtividadeDispensavelCsv> listarAtividadesParaCsv() {
 
         List<Atividade> atividades = listarAtividadesDispensaveis();
         List<AtividadeDispensavelCsv> dtos = new ArrayList<>();
 
         for (Atividade atividade : atividades) {
-            dtos.add(atividade.preparaAtividadeDispensavelParaCsv());
+
+            List<HistoricoConfigurador> historicos = historicoConfiguradorService.buscarHistoricoItem(
+                    FuncionalidadeConfigurador.Funcionalidades.CNAES_DISPENSAVEIS.getTipo(),
+                    atividade.getId()
+            );
+
+            dtos.add(atividade.preparaAtividadeDispensavelParaCsv(
+                    !historicos.isEmpty() ? historicos.get(0).getDataAcao() : null,
+                    !historicos.isEmpty() ? historicos.get(0).getUsuarioLicenciamento() : null
+            ));
+
         }
 
         return dtos;
 
     }
 
-    public List<Atividade> listarAtividadesDispensaveis() {
-
-        Specification<Atividade> specification = Specification.where(AtividadeSpecification.padrao()
-                .and(AtividadeSpecification.filtrarAtividadesDispensaveis()));
-
-        return atividadeRepository.findAll(specification, Sort.by("id"));
-
-    }
-
     @Override
     public AtividadeDispensavelEdicaoDTO findById(Integer idAtividadeDispensavel) {
 
-        Atividade atividade = atividadeRepository.findById(idAtividadeDispensavel).orElseThrow(() ->
-                new ConfiguradorNotFoundException("Não foi possível encontrar o cnae dispensável. "));
-
+        Atividade atividade = buscarAtividade(idAtividadeDispensavel);
 
         List<RelAtividadePergunta> relAtividadePerguntas = relAtividadePerguntaRepository.findByAtividade(atividade);
 
@@ -234,4 +256,49 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
                 perguntas);
 
     }
+
+    private Atividade buscarAtividade(Integer idAtividadeDispensavel) {
+
+        return atividadeRepository.findById(idAtividadeDispensavel).orElseThrow(() ->
+                new ConfiguradorNotFoundException("Não foi possível encontrar a atividade dispensável com id: " + idAtividadeDispensavel));
+
+    }
+
+    private void salvarAtividadeAntiga(AtividadeDispensavelDTO atividadeDispensavelDTO, Atividade atividadeAntiga) {
+
+        atividadeAntiga.setAtivo(false);
+        atividadeAntiga.setItemAntigo(true);
+
+        atividadeRepository.save(atividadeAntiga);
+
+        atividadeDispensavelDTO.getCnaesTipologia().forEach(cnaeTipologia -> {
+                    tipoCaracterizacaoAtividadeService.editarAtividadeDispensavel(cnaeTipologia.getCnae(), atividadeAntiga);
+                }
+        );
+
+    }
+
+    private Specification<Atividade> getFiltro() {
+
+        return Specification.where(AtividadeSpecification.padrao()
+                .and(AtividadeSpecification.filtrarAtividadesDispensaveis())
+                .and(AtividadeSpecification.filtrarAtividadesAtuais()));
+
+    }
+
+    private Specification<Atividade> prepararFiltroAtividadeDispensavel(FiltroPesquisa filtro) {
+
+        Specification<Atividade> specification = getFiltro();
+
+        if (filtro.getStringPesquisa() != null) {
+
+            specification = specification.and(AtividadeSpecification.atividadeNome(filtro.getStringPesquisa())
+                    .or(AtividadeSpecification.atividadeCodigo(filtro.getStringPesquisa())));
+
+        }
+
+        return specification;
+
+    }
+
 }

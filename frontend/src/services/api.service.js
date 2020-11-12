@@ -20,7 +20,6 @@ const ApiService = {
 			}
 
 			countRequest++;
-
 			return config;
 		}, (error) => {
 			countRequest--;
@@ -171,13 +170,11 @@ const ApiService = {
 	},
 
 	verificarLoading () {
-		if (countRequest <= 0) {
-			setTimeout(() => {
-				loading.hide();
 
-				countRequest = 0;
-			}, 400);
+		if (countRequest <= 0) {
+			loading.hide();
 		}
+
 	}
 };
 

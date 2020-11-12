@@ -6,8 +6,10 @@ export default {
 
 	editar: async (parametro) => ApiService.post('/parametro/editar', parametro),
 
+	ativarDesativar: async (idParametro) => ApiService.post('/parametro/ativarDesativar/' + idParametro),
+
 	listar: async (parametrosFiltro) => {
-		
+
 		if (parametrosFiltro) {
 
 			return ApiService.post(`parametro/listar/?

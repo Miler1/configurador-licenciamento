@@ -356,10 +356,9 @@ export default {
 			}).then((result) => {
 
 				if(result.value) {
-
 					item.ativo = !item.ativo;
 					item.finalidade = this.prepararDadosEditar(item.finalidade);
-					LicencaService.editar(item)
+					LicencaService.ativarDesativar(item.id)
 						.then(() => {
 
 							if(!item.ativo) {
@@ -375,13 +374,7 @@ export default {
 						.catch(error => {
 
 							console.error(error);
-
-							if(!item.ativo) {
-								snackbar.alert(ERROR_MESSAGES.licenca.desativar);
-							} else {
-								snackbar.alert(ERROR_MESSAGES.licenca.ativar);
-							}
-
+							snackbar.alert(error.message);
 							item.ativo = !item.ativo;
 
 						});

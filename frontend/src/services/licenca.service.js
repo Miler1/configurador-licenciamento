@@ -6,8 +6,10 @@ export default {
 
 	editar: async (licenca) => ApiService.post('/licenca/editar', licenca),
 
+	ativarDesativar: async (idLicenca) => ApiService.post('licenca/ativarDesativar/' + idLicenca ),
+
 	listar: async (parametrosFiltro) => {
-		
+
 		if (parametrosFiltro) {
 
 			return ApiService.post(`licenca/listar/?

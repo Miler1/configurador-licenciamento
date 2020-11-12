@@ -8,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.List;
 
 public interface IAtividadeCnaeService {
@@ -16,6 +15,8 @@ public interface IAtividadeCnaeService {
     AtividadeCnae salvar(HttpServletRequest request, AtividadeCnaeDTO atividadeCnaeDTO);
 
     AtividadeCnae editar(HttpServletRequest request, AtividadeCnaeDTO atividadeCnaeDTO);
+
+    AtividadeCnae ativarDesativar(HttpServletRequest request, Integer idAtividadeCnae);
 
     List<AtividadeCnae> listarCnaes() throws Exception;
 

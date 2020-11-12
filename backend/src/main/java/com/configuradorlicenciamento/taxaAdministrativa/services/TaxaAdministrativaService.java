@@ -10,12 +10,11 @@ import com.configuradorlicenciamento.taxaAdministrativa.repositories.TaxaAdminis
 import com.configuradorlicenciamento.taxaAdministrativa.specifications.TaxaAdministrativaSpecification;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLicenciamentoRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -88,6 +87,29 @@ public class TaxaAdministrativaService implements ITaxaAdministrativaService {
                     taxaAdministrativa.setAtividadeDispensavel(taxaAdministrativaDTO.getAtividadeDispensavel());
                     taxaAdministrativa.setAtividadeLicenciavel(taxaAdministrativaDTO.getAtividadeLicenciavel());
                     taxaAdministrativa.setAtivo(taxaAdministrativaDTO.getAtivo());
+                    taxaAdministrativa.setUsuarioLicenciamento(usuarioLicenciamento);
+                    taxaAdministrativa.setDataCadastro(new Date());
+                    return taxaAdministrativa;
+                });
+
+        taxaAdministrativaRepository.save(taxaAdministrativaSalva.get());
+
+        return taxaAdministrativaSalva.get();
+
+    }
+
+    @Override
+    public TaxaAdministrativa ativarDesativar(HttpServletRequest request, Integer idTaxaAdministrativa) {
+
+        Object login = request.getSession().getAttribute("login");
+
+        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
+
+        TaxaAdministrativa taxaAdministrativaExistente = taxaAdministrativaRepository.findById(idTaxaAdministrativa).get();
+
+        Optional<TaxaAdministrativa> taxaAdministrativaSalva = taxaAdministrativaRepository.findById(idTaxaAdministrativa)
+                .map(taxaAdministrativa -> {
+                    taxaAdministrativa.setAtivo(!taxaAdministrativaExistente.getAtivo());
                     taxaAdministrativa.setUsuarioLicenciamento(usuarioLicenciamento);
                     taxaAdministrativa.setDataCadastro(new Date());
                     return taxaAdministrativa;

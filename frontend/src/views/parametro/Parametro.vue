@@ -293,9 +293,8 @@ export default {
 			}).then((result) => {
 
 				if(result.value) {
-
 					item.ativo = !item.ativo;
-					ParametroService.editar(item)
+					ParametroService.ativarDesativar(item.id)
 						.then(() => {
 
 							if(!item.ativo) {
@@ -311,13 +310,7 @@ export default {
 						.catch(error => {
 
 							console.error(error);
-
-							if(!item.ativo) {
-								snackbar.alert(ERROR_MESSAGES.parametro.desativar);
-							} else {
-								snackbar.alert(ERROR_MESSAGES.parametro.ativar);
-							}
-
+							snackbar.alert(error.message);
 							item.ativo = !item.ativo;
 
 						});

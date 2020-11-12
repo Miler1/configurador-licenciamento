@@ -240,9 +240,8 @@ export default {
 			}).then((result) => {
 
 				if(result.value) {
-
 					item.ativo = !item.ativo;
-					DocumentoService.editar(item)
+					DocumentoService.ativarDesativar(item.id)
 						.then(() => {
 
 							if(!item.ativo) {
@@ -258,12 +257,7 @@ export default {
 						.catch(erro => {
 
 							console.error(erro);
-							if(!item.ativo) {
-								snackbar.alert(ERROR_MESSAGES.documento.desativar);
-							} else {
-								snackbar.alert(ERROR_MESSAGES.documento.ativar);
-							}
-
+							snackbar.alert(erro.message);
 							item.ativo = !item.ativo;
 
 						});

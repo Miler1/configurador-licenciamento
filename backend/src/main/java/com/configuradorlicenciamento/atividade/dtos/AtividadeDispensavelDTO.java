@@ -18,6 +18,8 @@ public class AtividadeDispensavelDTO {
 
     private Integer id;
 
+    private String justificativa;
+
     @NotNull(message = "{validacao.notnull}")
     @NotBlank(message = "{validacao.notBlank}")
     private List<RelacaoCnaeTipologia> cnaesTipologia;

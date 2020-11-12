@@ -1,5 +1,7 @@
 package com.configuradorlicenciamento.requisitoTecnico.services;
 
+import com.configuradorlicenciamento.atividade.models.Atividade;
+import com.configuradorlicenciamento.atividade.repositories.AtividadeRepository;
 import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
 import com.configuradorlicenciamento.configuracao.exceptions.ConflictException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
@@ -30,11 +32,16 @@ import java.util.List;
 @Service
 public class RequisitoTecnicoService implements IRequisitoTecnicoService {
 
+    private static final String VINCULO_ATIVIDADE_LICENCIAVEL = "Erro! Não foi possível desativar/ativar o grupo de requisito técnico. Ele se encontra vinculado a uma atividade licenciável ativa no sistema.";
+
     @Autowired
     RequisitoTecnicoRepository requisitoTecnicoRepository;
 
     @Autowired
     UsuarioLicenciamentoRepository usuarioLicenciamentoRepository;
+
+    @Autowired
+    AtividadeRepository atividadeRepository;
 
     @Autowired
     ITipoLicencaGrupoDocumentoService tipoLicencaGrupoDocumentoService;
@@ -99,12 +106,30 @@ public class RequisitoTecnicoService implements IRequisitoTecnicoService {
     }
 
     @Override
-    public RequisitoTecnico ativarDesativar(Integer idRequisito) {
+    public RequisitoTecnico ativarDesativar(HttpServletRequest request, Integer idRequisito) {
+
+        Object login = request.getSession().getAttribute("login");
+
+        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
 
         RequisitoTecnico requisitoTecnico = requisitoTecnicoRepository.findById(idRequisito).orElseThrow(() ->
                 new ConfiguradorNotFoundException("Não Foi possível Ativar/Desativar o Requisito"));
 
+        List<Atividade> atividadesList = atividadeRepository.findByRequisitoTecnico(requisitoTecnico);
+
+        atividadesList.forEach(atividade -> {
+
+            boolean ativo = atividade.getAtivo();
+
+            if (ativo) {
+                throw new ConflictException(VINCULO_ATIVIDADE_LICENCIAVEL);
+            }
+
+        });
+
         requisitoTecnico.setAtivo(!requisitoTecnico.getAtivo());
+        requisitoTecnico.setUsuarioLicenciamento(usuarioLicenciamento);
+        requisitoTecnico.setDataCadastro(new Date());
 
         requisitoTecnicoRepository.save(requisitoTecnico);
 

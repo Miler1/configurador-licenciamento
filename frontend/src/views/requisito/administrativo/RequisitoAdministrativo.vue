@@ -277,9 +277,8 @@ export default {
 			}).then((result) => {
 
 				if(result.value) {
-
 					item.ativo = !item.ativo;
-					RequisitoAdministrativoService.editar(item)
+					RequisitoAdministrativoService.ativarDesativar(item.id)
 						.then(() => {
 
 							if(!item.ativo) {

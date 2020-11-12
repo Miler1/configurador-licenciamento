@@ -1,5 +1,7 @@
 package com.configuradorlicenciamento.taxaLicenciamento.services;
 
+import com.configuradorlicenciamento.atividade.models.Atividade;
+import com.configuradorlicenciamento.atividade.repositories.AtividadeRepository;
 import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
 import com.configuradorlicenciamento.configuracao.exceptions.ConflictException;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
@@ -33,12 +35,16 @@ import java.util.List;
 public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoService {
 
     public static final String TAXA_EXISTENTE = "Já existe uma tabela com o mesmo código.";
+    private static final String VINCULO_ATIVIDADE_LICENCIAVEL = "Erro! Não foi possível desativar/ativar a tabela de taxas de licenciamento. Ela se encontra vinculada a uma atividade licenciável ativa no sistema.";
 
     @Autowired
     CodigoTaxaLicenciamentoRepository codigoTaxaLicenciamentoRepository;
 
     @Autowired
     UsuarioLicenciamentoRepository usuarioLicenciamentoRepository;
+
+    @Autowired
+    AtividadeRepository atividadeRepository;
 
     @Autowired
     ITaxaLicenciamentoService taxaLicenciamentoService;
@@ -111,6 +117,7 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
         historicoConfiguradorService.editar(
                 request,
                 codigoTaxaLicenciamentoSalvo.getId(),
+                null,
                 FuncionalidadeConfigurador.Funcionalidades.TAXA_LICENCIAMENTO.getTipo(),
                 AcaoConfigurador.Acoes.EDITAR.getAcao(),
                 codigoTaxaLicenciamentoDTO.getJustificativa());
@@ -124,6 +131,23 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
 
         CodigoTaxaLicenciamento codigoTaxaLicenciamento = codigoTaxaLicenciamentoRepository.findById(idTaxaLicenciamento).orElseThrow(() ->
                 new ConfiguradorNotFoundException("Não Foi possível Ativar/Desativar a taxa de licenciamento"));
+
+        List<TaxaLicenciamento> taxasLicencasList = taxaLicenciamentoService.findByCodigo(codigoTaxaLicenciamento);
+
+        taxasLicencasList.forEach(taxasLicencas -> {
+
+            List<Atividade> atividadesList = atividadeRepository.findByTaxasLicenciamento(taxasLicencas);
+            atividadesList.forEach(atividade -> {
+
+                boolean ativo = atividade.getAtivo();
+
+                if (ativo) {
+                    throw new ConflictException(VINCULO_ATIVIDADE_LICENCIAVEL);
+                }
+
+            });
+
+        });
 
         codigoTaxaLicenciamento.setAtivo(!codigoTaxaLicenciamento.getAtivo());
 
@@ -172,7 +196,7 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
             );
 
             dtos.add(codigoTaxaLicenciamento.prepararParaCsv(
-                    !historicos.isEmpty() ? historicos.get(0).getDataCadastro() : null,
+                    !historicos.isEmpty() ? historicos.get(0).getDataAcao() : null,
                     !historicos.isEmpty() ? historicos.get(0).getUsuarioLicenciamento() : null)
             );
 

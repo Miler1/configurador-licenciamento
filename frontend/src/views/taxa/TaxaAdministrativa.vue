@@ -325,10 +325,8 @@ export default {
 			}).then((result) => {
 
 				if(result.value) {
-
 					item.ativo = !item.ativo;
-
-					TaxaAdministrativaService.editar(item)
+					TaxaAdministrativaService.ativarDesativar(item.id)
 						.then(() => {
 
 							if (!item.ativo) {

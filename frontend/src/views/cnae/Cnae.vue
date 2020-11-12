@@ -251,9 +251,8 @@ export default {
 			}).then((result) => {
 
 				if(result.value) {
-
 					item.ativo = !item.ativo;
-					AtividadeCnaeService.editar(item)
+					AtividadeCnaeService.ativarDesativar(item.id)
 						.then(() => {
 
 							if (!item.ativo) {
@@ -268,14 +267,7 @@ export default {
 						})
 						.catch(erro => {
 
-							console.error(erro);
-
-							if(!item.ativo) {
-								snackbar.alert(ERROR_MESSAGES.cnae.desativar);
-							} else {
-								snackbar.alert(ERROR_MESSAGES.cnae.ativar);
-							}
-
+							snackbar.alert(erro.message);
 							item.ativo = !item.ativo;
 
 						});

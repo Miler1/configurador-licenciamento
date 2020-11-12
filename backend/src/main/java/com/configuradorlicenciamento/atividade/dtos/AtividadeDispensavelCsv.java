@@ -10,6 +10,7 @@ import com.opencsv.bean.CsvBindByPosition;
 import lombok.Getter;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -31,27 +32,26 @@ public class AtividadeDispensavelCsv implements Serializable {
     @CsvBindByPosition(position = 3)
     private String ativo;
 
-    @CsvBindByName(column = "Data de cadastro")
+    @CsvBindByName(column = "Data da ação")
     @CsvBindByPosition(position = 4)
-    private String dataCadastro;
+    private String dataAcao;
 
     @CsvBindByName(column = "Usuário")
     @CsvBindByPosition(position = 5)
     private String usuarioLicenciamento;
 
-    public AtividadeDispensavelCsv(Atividade atividade) {
+    public AtividadeDispensavelCsv(Atividade atividade, Date dataAcao, UsuarioLicenciamento usuarioLicenciamento) {
 
         this.codigoCnae = atividade.getAtividadesCnae().isEmpty() ? "-" : atividade.getAtividadesCnae().get(0).getAtividadeCnae().getCodigo();
         this.descricaoCnae = atividade.getNome();
         this.tipologiaCnae = atividade.getTipologia().getNome();
         this.ativo = atividade.getAtivo() ? "Ativo" : "Inativo";
-        this.dataCadastro = atividade.getDataCadastro() != null ? DateUtil.formataBrSimples(atividade.getDataCadastro()) : "-";
-
-        this.usuarioLicenciamento = atividade.getUsuarioLicenciamento() != null ? getNomeUsuario(atividade.getUsuarioLicenciamento()) : "-";
+        this.dataAcao = dataAcao != null ? DateUtil.formataBrSimples(dataAcao) : "-";
+        this.usuarioLicenciamento = usuarioLicenciamento != null ? getNomeUsuario(usuarioLicenciamento) : "-";
 
     }
 
-    private String getNomeUsuario(UsuarioLicenciamento usuario){
+    private String getNomeUsuario(UsuarioLicenciamento usuario) {
         return EntradaUnicaWS.ws.buscarPessoaFisicaPeloCpf(usuario.getLogin()).nome;
     }
 
