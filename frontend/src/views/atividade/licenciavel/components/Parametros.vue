@@ -480,7 +480,7 @@ export default {
 			let parametrosAnterior = [... this.parametros];
 			this.parametros.length = 0;
 
-			let dadoParametroUm = {
+			let dadoParametro = {
 				parametroUm: null,
 				limiteInferiorUm: null,
 				limiteSuperiorUm: null,

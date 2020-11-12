@@ -83,7 +83,7 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
 
         boolean statusAtivoAntigo = true;
 
-        //caso exista justificativa, logo é uma atividade para editar
+        //caso exista justificativa, logo é uma atividade editada que precisa manter histórico
         boolean existeJustificativa = atividadeDispensavelDTO.getJustificativa() != null;
 
         if (existeJustificativa) {
@@ -104,18 +104,30 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
 
         atividadeDispensavelDTO.getCnaesTipologia().forEach(cnaeTipologia -> {
 
-            Optional<AtividadeCnae> atividadeCnae = atividadeCnaeRepository.findById(cnaeTipologia.getCnae().getId());
+            AtividadeCnae atividadeCnae = new AtividadeCnae();
 
-            Optional<Tipologia> tipologia = tipologiaRepository.findById(cnaeTipologia.getTipologia().getId());
+            Optional<AtividadeCnae> atividadeCnaeSalva = atividadeCnaeRepository.findById(cnaeTipologia.getCnae().getId());
+
+            if (atividadeCnaeSalva.isPresent()) {
+                atividadeCnae = atividadeCnaeSalva.get();
+            }
+
+            Tipologia tipologia = new Tipologia();
+
+            Optional<Tipologia> tipologiaSalva = tipologiaRepository.findById(cnaeTipologia.getTipologia().getId());
+
+            if (tipologiaSalva.isPresent()) {
+                tipologia = tipologiaSalva.get();
+            }
 
             PotencialPoluidor potencialPoluidor = potencialPoluidorRepository.findByCodigo("I");
 
             List<TipoAtividade> tiposAtividades = tipoAtividadeRepository.findAll();
 
             Atividade atividade = new Atividade.AtividadeBuilder(!cnaeTipologia.getForaMunicipio())
-                    .setNome(atividadeCnae.get().getNome())
+                    .setNome(atividadeCnae.getNome())
                     .setCodigo("0000")
-                    .setTipologia(tipologia.get())
+                    .setTipologia(tipologia)
                     .setGeoLinha(true)
                     .setGeoPonto(true)
                     .setGeoPoligono(true)

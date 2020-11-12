@@ -30,8 +30,8 @@ import java.util.Optional;
 @Service
 public class AtividadeCnaeService implements IAtividadeCnaeService {
 
-    private static final String VINCULO_ATIVIDADE_LICENCIAVEL = "Erro! Não foi possível desativar/ativar o grupo de requisito técnico. Ele se encontra vinculado a uma atividade licenciável ativa no sistema.";
-    private static final String VINCULO_ATIVIDADE_DISPENSAVEL = "Erro! Não foi possível desativar/ativar a pergunta. Ela se encontra vinculada a uma atividade dispensável ativa no sistema.";
+    private static final String VINCULO_ATIVIDADE_LICENCIAVEL = "Erro! Não foi possível desativar/ativar o CNAE. Ele se encontra vinculado a uma atividade licenciável ativa no sistema.";
+    private static final String VINCULO_ATIVIDADE_DISPENSAVEL = "Erro! Não foi possível desativar/ativar o CNAE. Ele se encontra vinculado a uma atividade dispensável ativa no sistema.";
 
     @Autowired
     AtividadeCnaeRepository atividadeCnaeRepository;
