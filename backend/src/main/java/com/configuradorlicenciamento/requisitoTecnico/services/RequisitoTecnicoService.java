@@ -119,9 +119,11 @@ public class RequisitoTecnicoService implements IRequisitoTecnicoService {
 
         atividadesList.forEach(atividade -> {
 
+            String codigo = atividade.getCodigo();
+
             boolean ativo = atividade.getAtivo();
 
-            if (ativo) {
+            if (ativo && !codigo.equals("0000")) {
                 throw new ConflictException(VINCULO_ATIVIDADE_LICENCIAVEL);
             }
 
