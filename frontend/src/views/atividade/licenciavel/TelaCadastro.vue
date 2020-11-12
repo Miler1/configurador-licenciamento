@@ -241,7 +241,7 @@ export default {
 								<label id="label-justificativa" aria-hidden="true" class="v-label theme--light" style="text-align: left; padding-bottom:4px">Justificativa</label>
 								<div class="v-input v-textarea v-textarea--auto-grow v-textarea--no-resize theme--light v-text-field v-text-field--is-booted v-text-field--enclosed v-text-field--outlined" id="div-input">
 									<div class="v-input__control">
-										<div class="v-input__slot style="padding: 0">
+										<div class="v-input__slot style="padding-right: 0px !important">
 											<fieldset aria-hidden="true">
 												<legend style="width: 0px;">
 													<span>​</span>
@@ -290,11 +290,6 @@ export default {
 							mensagem.innerHTML = "Obrigatório";
 							mensagem.style.color = "#ff5252";
 							mensagem.style.caretColor = "#ff5252";
-
-							campoJustificativa.setAttribute("margin-top", "10px");
-							campoJustificativa.setAttribute("width", "100%");
-							campoJustificativa.setAttribute("resize", "none");
-							campoJustificativa.setAttribute("padding-right", "12px");
 
 							return false;
 
