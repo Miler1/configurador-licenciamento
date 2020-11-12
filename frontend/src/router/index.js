@@ -34,7 +34,7 @@ const routes = [
 
 		children: [
 			{
-				path: '/', 
+				path: '/',
 				redirect: to => {
 					return 'cnae';
 				}
@@ -76,7 +76,7 @@ const routes = [
 			},
 
 			// TAXA ADMINISTRATIVA
-			{	
+			{
 				path: 'taxa-administrativa',
 				name: 'TaxaAdministrativa',
 				component: () => import('@/views/taxa/TaxaAdministrativa.vue')
@@ -167,9 +167,9 @@ const routes = [
 			},
 
 			// UNDERCONSTRUCTION
-			{ 
-				path: '*', 
-				component: () => import('@/views/UnderConstruction.vue') 
+			{
+				path: '*',
+				component: () => import('@/views/UnderConstruction.vue')
 			}
 		]
 	},
@@ -216,7 +216,7 @@ function BuscaUsuarioLogado(next) {
 		.catch(() => {
 			next(false);
 		});
-	
+
 }
 
 // function getPermissaoPelaRota (path, next) {
