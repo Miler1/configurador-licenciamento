@@ -261,7 +261,6 @@ export default {
 							</div>
 						</div>
 						`,
-					width: '580px',
 					showCancelButton: true,
 					confirmButtonColor:'#67C23A',
 					cancelButtonColor: '#FFF',
@@ -674,6 +673,26 @@ export default {
 			if (dados.taxaLicenciamento != null) {
 				dados.taxaLicenciamento.textoExibicao = dados.taxaLicenciamento.codigo + ' - ' + dados.taxaLicenciamento.descricao;
 			}
+
+			this.atividadeLicenciavel.parametros.forEach(parametro => {
+
+				if (parametro.limiteInferiorUm) {
+					parametro.limiteInferiorUm = (parseFloat(parametro.limiteInferiorUm).toFixed(2)).toString().replace('.', ',');
+				}
+
+				if (parametro.limiteSuperiorUm) {
+					parametro.limiteSuperiorUm = (parseFloat(parametro.limiteSuperiorUm).toFixed(2)).toString().replace('.', ',');
+				}
+
+				if (parametro.limiteInferiorDois) {
+					parametro.limiteInferiorDois = (parseFloat(parametro.limiteInferiorDois).toFixed(2)).toString().replace('.', ',');
+				}
+
+				if (parametro.limiteSuperiorDois) {
+					parametro.limiteSuperiorDois = (parseFloat(parametro.limiteSuperiorDois).toFixed(2)).toString().replace('.', ',');
+				}
+
+			});
 
 		}
 

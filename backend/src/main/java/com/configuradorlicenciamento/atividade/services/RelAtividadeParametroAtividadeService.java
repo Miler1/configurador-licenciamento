@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RelAtividadeParametroAtividadeService implements IRelAtividadeParametroAtividadeService {
@@ -26,15 +27,11 @@ public class RelAtividadeParametroAtividadeService implements IRelAtividadeParam
     public void salvar(Atividade atividade, PorteAtividadeDTO parametro) {
 
         if (parametro.getParametroUm() != null) {
-
             this.salvarParametro(atividade, parametro.getParametroUm(), parametro.getDescricaoUnidadeUm());
-
         }
 
         if (parametro.getParametroDois() != null) {
-
             this.salvarParametro(atividade, parametro.getParametroDois(), parametro.getDescricaoUnidadeDois());
-
         }
 
     }
@@ -46,17 +43,12 @@ public class RelAtividadeParametroAtividadeService implements IRelAtividadeParam
 
         relAtividadeParametroAtividades.forEach(relAtividadeParametroAtividade -> relAtividadeParametroAtividadeRepository.delete(relAtividadeParametroAtividade));
 
-
         if (parametro.getParametroUm() != null) {
-
             this.salvarParametro(atividade, parametro.getParametroUm(), parametro.getDescricaoUnidadeUm());
-
         }
 
         if (parametro.getParametroDois() != null) {
-
             this.salvarParametro(atividade, parametro.getParametroDois(), parametro.getDescricaoUnidadeDois());
-
         }
 
     }
@@ -72,19 +64,27 @@ public class RelAtividadeParametroAtividadeService implements IRelAtividadeParam
 
     }
 
-    public void salvarParametro(Atividade atividade, ParametroDTO parametro, String descricaoUnidade) {
+    public void salvarParametro(Atividade atividade, ParametroDTO parametroDto, String descricaoUnidade) {
 
-        Parametro parametroSalvo = parametroRepository.findById(parametro.getId()).get();
+        Optional<Parametro> parametroSalvo = parametroRepository.findById(parametroDto.getId());
 
-        String descricao = (descricaoUnidade == null || descricaoUnidade.equals("")) ? parametroSalvo.getNome() : descricaoUnidade;
+        Parametro parametro;
 
-        RelAtividadeParametroAtividade relAtividadeParametroAtividade = new RelAtividadeParametroAtividade
-                .RelAtividadeParametroAtividadeBuilder(descricao)
-                .setAtividade(atividade)
-                .setParametro(parametroSalvo)
-                .build();
+        if (parametroSalvo.isPresent()) {
 
-        relAtividadeParametroAtividadeRepository.save(relAtividadeParametroAtividade);
+            parametro = parametroSalvo.get();
+
+            String descricao = (descricaoUnidade == null || descricaoUnidade.equals("")) ? parametro.getNome() : descricaoUnidade;
+
+            RelAtividadeParametroAtividade relAtividadeParametroAtividade = new RelAtividadeParametroAtividade
+                    .RelAtividadeParametroAtividadeBuilder(descricao)
+                    .setAtividade(atividade)
+                    .setParametro(parametro)
+                    .build();
+
+            relAtividadeParametroAtividadeRepository.save(relAtividadeParametroAtividade);
+
+        }
 
     }
 
