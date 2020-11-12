@@ -108,8 +108,13 @@ public class RascunhoService implements IRascunhoService {
                 licencasAtividade.add(licencaRepository.findById(licenca.getId()).get())
         );
 
-        List<TaxaLicenciamento> taxasLicenciamentoAtividade = taxaLicenciamentoRepository.findByCodigo(
-                codigoTaxaLicenciamentoRepository.findById(atividadeLicenciavelDTO.getDados().getTaxaLicenciamento().getId()).get());
+        List<TaxaLicenciamento> taxasLicenciamentoAtividade = new ArrayList<>();
+
+        Optional<CodigoTaxaLicenciamento> taxaLicenciamentoAtividadeSalva = codigoTaxaLicenciamentoRepository.findById(atividadeLicenciavelDTO.getDados().getTaxaLicenciamento().getId());
+
+        if (taxaLicenciamentoAtividadeSalva.isPresent()) {
+            taxasLicenciamentoAtividade = taxaLicenciamentoRepository.findByCodigo(taxaLicenciamentoAtividadeSalva.get());
+        }
 
         List<PorteAtividade> portesAtividade = porteAtividadeService.editar(atividadeLicenciavelDTO.getParametros());
 
@@ -330,34 +335,42 @@ public class RascunhoService implements IRascunhoService {
             portesAtividade = porteAtividadeService.editar(atividadeLicenciavelDTO.getParametros());
         }
 
-        Atividade atividadeRascunhoSalva = atividadeRepository.findById(atividadeLicenciavelDTO.getDados().getId()).get();
+        Atividade atividadeRascunhoSalva = new Atividade();
 
-        atividadeRascunhoSalva.setNome(atividadeLicenciavelDTO.getDados().getNomeAtividade());
-        atividadeRascunhoSalva.setCodigo(atividadeLicenciavelDTO.getDados().getCodigoAtividade());
-        atividadeRascunhoSalva.setTipologia(tipologiaAtividade.orElse(null));
-        atividadeRascunhoSalva.setGeoPonto(atividadeLicenciavelDTO.getDados().getGeoPonto());
-        atividadeRascunhoSalva.setGeoLinha(atividadeLicenciavelDTO.getDados().getGeoLinha());
-        atividadeRascunhoSalva.setGeoPoligono(atividadeLicenciavelDTO.getDados().getGeoPoligono());
-        atividadeRascunhoSalva.setPotencialPoluidor(potencialPoluidor.orElse(null));
-        atividadeRascunhoSalva.setSiglaSetor(atividadeLicenciavelDTO.getDados().getSetor());
-        atividadeRascunhoSalva.setAtivo(false);
-        atividadeRascunhoSalva.setItemAntigo(false);
-        atividadeRascunhoSalva.setDentroEmpreendimento(foraEmpreendimento.orElse(null));
-        atividadeRascunhoSalva.setRequisitoTecnico(requisitoTecnico.orElse(null));
-        atividadeRascunhoSalva.setV1(false);
-        atividadeRascunhoSalva.setRascunho(true);
-        atividadeRascunhoSalva.setTiposAtividades(tiposAtividade);
-        atividadeRascunhoSalva.setTiposLicencas(licencasAtividade);
-        atividadeRascunhoSalva.setTaxasLicenciamento(taxasLicenciamentoAtividade);
-        atividadeRascunhoSalva.setPortesAtividade(portesAtividade);
-        atividadeRascunhoSalva.setDentroMunicipio(false);
+        Optional<Atividade> atividadeRascunho = atividadeRepository.findById(atividadeLicenciavelDTO.getDados().getId());
 
-        atividadeRepository.save(atividadeRascunhoSalva);
+        if (atividadeRascunho.isPresent()) {
 
-        tipoCaracterizacaoAtividadeService.editarAtividadeLicenciavel(atividadeLicenciavelDTO.getCnaesAtividade(), atividadeRascunhoSalva);
+            atividadeRascunhoSalva = atividadeRascunho.get();
 
-        if (!atividadeLicenciavelDTO.getParametros().isEmpty()) {
-            relAtividadeParametroAtividadeService.editar(atividadeRascunhoSalva, atividadeLicenciavelDTO.getParametros().get(0));
+            atividadeRascunhoSalva.setNome(atividadeLicenciavelDTO.getDados().getNomeAtividade());
+            atividadeRascunhoSalva.setCodigo(atividadeLicenciavelDTO.getDados().getCodigoAtividade());
+            atividadeRascunhoSalva.setTipologia(tipologiaAtividade.orElse(null));
+            atividadeRascunhoSalva.setGeoPonto(atividadeLicenciavelDTO.getDados().getGeoPonto());
+            atividadeRascunhoSalva.setGeoLinha(atividadeLicenciavelDTO.getDados().getGeoLinha());
+            atividadeRascunhoSalva.setGeoPoligono(atividadeLicenciavelDTO.getDados().getGeoPoligono());
+            atividadeRascunhoSalva.setPotencialPoluidor(potencialPoluidor.orElse(null));
+            atividadeRascunhoSalva.setSiglaSetor(atividadeLicenciavelDTO.getDados().getSetor());
+            atividadeRascunhoSalva.setAtivo(false);
+            atividadeRascunhoSalva.setItemAntigo(false);
+            atividadeRascunhoSalva.setDentroEmpreendimento(foraEmpreendimento.orElse(null));
+            atividadeRascunhoSalva.setRequisitoTecnico(requisitoTecnico.orElse(null));
+            atividadeRascunhoSalva.setV1(false);
+            atividadeRascunhoSalva.setRascunho(true);
+            atividadeRascunhoSalva.setTiposAtividades(tiposAtividade);
+            atividadeRascunhoSalva.setTiposLicencas(licencasAtividade);
+            atividadeRascunhoSalva.setTaxasLicenciamento(taxasLicenciamentoAtividade);
+            atividadeRascunhoSalva.setPortesAtividade(portesAtividade);
+            atividadeRascunhoSalva.setDentroMunicipio(false);
+
+            atividadeRepository.save(atividadeRascunhoSalva);
+
+            tipoCaracterizacaoAtividadeService.editarAtividadeLicenciavel(atividadeLicenciavelDTO.getCnaesAtividade(), atividadeRascunhoSalva);
+
+            if (!atividadeLicenciavelDTO.getParametros().isEmpty()) {
+                relAtividadeParametroAtividadeService.editar(atividadeRascunhoSalva, atividadeLicenciavelDTO.getParametros().get(0));
+            }
+
         }
 
         return atividadeRascunhoSalva;
