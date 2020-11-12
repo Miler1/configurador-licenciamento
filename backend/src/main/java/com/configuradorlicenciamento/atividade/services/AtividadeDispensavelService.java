@@ -304,8 +304,8 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
 
         if (filtro.getStringPesquisa() != null) {
 
-            specification = specification.and(AtividadeSpecification.atividadeNome(filtro.getStringPesquisa())
-                    .or(AtividadeSpecification.atividadeCodigo(filtro.getStringPesquisa())));
+            specification = specification.and(AtividadeSpecification.atividadeNomeCnae(filtro.getStringPesquisa())
+                    .or(AtividadeSpecification.atividadeCodigoCnae(filtro.getStringPesquisa())));
 
         }
 
