@@ -138,8 +138,10 @@ const ApiService = {
 	},
 
 	handling401 () {
-		setTimeout(() => snackbar.alert(ERROR_MESSAGES.unauthorized), 500);
-		window.location.hash = '#/login';
+		if (countRequest == 0) {
+			setTimeout(() => snackbar.alert(ERROR_MESSAGES.unauthorized), 500);
+			window.location.hash = '#/login';
+		}
 	},
 
 	handling500 () {
