@@ -131,7 +131,9 @@ public class PerguntaService implements IPerguntaService {
 
             boolean ativo = atividade.getAtivo();
 
-            if (ativo) {
+            String codigo = atividade.getCodigo();
+
+            if (ativo && codigo.equals("0000")) {
                 throw new ConflictException(VINCULO_ATIVIDADE_DISPENSAVEL);
             }
 
