@@ -1,5 +1,5 @@
 const HEADER = [
-	{ text: 'Código', value: 'atividadesCnae', width: '155px'},
+	{ text: 'Código', value: 'atividadesCnae', sortable: false, width: '155px'},
 	{ text: 'Nome', value: 'nome'},
 	{ text: 'Tipologia', value: 'tipologia.nome'},
 	{ text: 'Status', value: 'ativo', width: '145px'},
