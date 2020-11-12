@@ -76,10 +76,10 @@ public class RelAtividadeParametroAtividadeService implements IRelAtividadeParam
 
         Parametro parametroSalvo = parametroRepository.findById(parametro.getId()).get();
 
-        String descricaoUm = (descricaoUnidade != null) ? descricaoUnidade : parametroSalvo.getNome();
+        String descricao = (descricaoUnidade == null || descricaoUnidade.equals("")) ? parametroSalvo.getNome() : descricaoUnidade;
 
         RelAtividadeParametroAtividade relAtividadeParametroAtividade = new RelAtividadeParametroAtividade
-                .RelAtividadeParametroAtividadeBuilder(descricaoUm)
+                .RelAtividadeParametroAtividadeBuilder(descricao)
                 .setAtividade(atividade)
                 .setParametro(parametroSalvo)
                 .build();
@@ -87,4 +87,5 @@ public class RelAtividadeParametroAtividadeService implements IRelAtividadeParam
         relAtividadeParametroAtividadeRepository.save(relAtividadeParametroAtividade);
 
     }
+
 }
