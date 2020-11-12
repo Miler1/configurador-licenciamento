@@ -187,11 +187,11 @@ export default {
 				title: `<div><p class="title-modal-confirm">Confirmar edição - Atividade dispensável</p><div>`,
 				html:
 					`
-					<div class="row" id="row-justificativa-atividade-dispensavel" style="padding-top:15px">
-						<div class="col col-12" style="display:flex; flex-direction: column;">
+					<div class="row" id="row-justificativa-atividade-dispensavel" style="padding-top: 15px">
+						<div class="col col-12" style="display: flex; flex-direction: column; padding-bottom: 0">
 							<label id="label-justificativa" aria-hidden="true" class="v-label theme--light" style="text-align: left; padding-bottom:4px">Justificativa</label>
 							<div class="v-input v-textarea v-textarea--auto-grow v-textarea--no-resize theme--light v-text-field v-text-field--is-booted v-text-field--enclosed v-text-field--outlined" id="div-input">
-								<div class="v-input__control">
+								<div class="v-input__control style="padding: 0">
 									<div class="v-input__slot">
 										<fieldset>
 											<legend style="width: 0px;">
@@ -199,7 +199,7 @@ export default {
 											</legend>
 										</fieldset>
 										<div class="v-text-field__slot">
-											<textarea id="QA-input-atividade-dispensavel-justificativa" rows="4" placeholder="Digite aqui..." required="required"></textarea>
+											<textarea id="QA-input-atividade-dispensavel-justificativa" rows="4" placeholder="Digite aqui..." required="required" style="margin-top: 10px; width: 100%; resize: none; padding-right: 12px"></textarea>
 										</div>
 									</div>
 									<div class="v-text-field__details">
