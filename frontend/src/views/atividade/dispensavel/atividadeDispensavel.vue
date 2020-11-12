@@ -67,7 +67,6 @@ export default {
 
 					this.dadosListagem = response.data;
 					this.prepararDadosParaListagem();
-					// console.log(response.data);
 					this.dadosListagem.nomeItem = 'CNAEs dispensáveis';
 
 				})
@@ -81,13 +80,9 @@ export default {
 		},
 
 		prepararDadosParaListagem(){
-			let array = [];
 			this.dadosListagem.content.forEach(dado => {
 				dado.codigoAtividadeCnae = dado.atividadesCnae[0].atividadeCnae.codigo;
-				array.push(dado.atividadesCnae[0].atividadeCnae);
 			});
-			array.sort((a,b) => (a < b ? -1 : a > b ? 1 : 0));
-			console.log(array);
 		},
 
 		resetaDadosFiltragem() {
