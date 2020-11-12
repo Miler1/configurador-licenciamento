@@ -189,9 +189,11 @@ public class LicencaService implements ILicencaService {
 
             Atividade atividade = atividadeRepository.findById(atividadeBusca.getId()).get();
 
+            String codigo = atividade.getCodigo();
+
             boolean ativo = atividade.getAtivo();
 
-            if (ativo) {
+            if (ativo && !codigo.equals("0000")) {
                 throw new ConflictException(VINCULO_ATIVIDADE_LICENCIAVEL);
             }
 
