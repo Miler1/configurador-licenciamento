@@ -1,5 +1,6 @@
 package com.configuradorlicenciamento.taxaLicenciamento.services;
 
+import com.configuradorlicenciamento.atividade.interfaces.IAtividadeLicenciavelService;
 import com.configuradorlicenciamento.configuracao.exceptions.ConflictException;
 import com.configuradorlicenciamento.licenca.models.Licenca;
 import com.configuradorlicenciamento.licenca.repositories.LicencaRepository;
@@ -35,6 +36,9 @@ public class TaxaLicenciamentoService implements ITaxaLicenciamentoService {
     @Autowired
     LicencaRepository licencaRepository;
 
+    @Autowired
+    IAtividadeLicenciavelService atividadeLicenciavelService;
+
     @Override
     public void salvar(List<TaxaLicenciamentoDTO> listTaxasLicenciamento, CodigoTaxaLicenciamento codigoTaxaLicenciamento) {
 
@@ -50,6 +54,7 @@ public class TaxaLicenciamentoService implements ITaxaLicenciamentoService {
         List<TaxaLicenciamento> taxasLicenciamento = taxaLicenciamentoRepository.findByCodigo(codigoTaxaLicenciamento);
 
         taxasLicenciamento.forEach(taxaLicenciamento -> {
+
             if (taxasLicenciamentoDTO.stream().noneMatch(taxaLicenciamentoDTO ->
                     taxaLicenciamento.getId().equals(taxaLicenciamentoDTO.getId())
             )) {
@@ -61,14 +66,23 @@ public class TaxaLicenciamentoService implements ITaxaLicenciamentoService {
                 }
 
             }
+
         });
 
-        taxasLicenciamentoDTO.forEach(taxaLicenciamentoDTO -> {
-            if (taxaLicenciamentoDTO.getId() != null) {
-                taxaLicenciamentoRepository.save(montaObjetoParaEditar(taxaLicenciamentoDTO, codigoTaxaLicenciamento));
+        taxasLicenciamentoDTO.forEach(taxaLicenciamento-> {
+
+            if (taxaLicenciamento.getId() != null) {
+                taxaLicenciamentoRepository.save(montaObjetoParaEditar(taxaLicenciamento, codigoTaxaLicenciamento));
             } else {
-                taxaLicenciamentoRepository.save(montaObjetoParaSalvar(taxaLicenciamentoDTO, codigoTaxaLicenciamento));
+
+                taxaLicenciamentoRepository.save(montaObjetoParaSalvar(taxaLicenciamento, codigoTaxaLicenciamento));
+
+                Optional<TaxaLicenciamento> taxa = taxaLicenciamentoRepository.findById(taxasLicenciamentoDTO.get(0).getId());
+
+                taxa.ifPresent(licenciamento -> atividadeLicenciavelService.vincularNovaTaxa(taxa.get()));
+
             }
+
         });
 
     }
