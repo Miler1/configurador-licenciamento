@@ -35,7 +35,7 @@ import java.util.List;
 public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoService {
 
     public static final String TAXA_EXISTENTE = "Já existe uma tabela com o mesmo código.";
-    private static final String VINCULO_ATIVIDADE_LICENCIAVEL = "Erro! Não foi possível desativar/ativar a tabela de taxas de licenciamento. Ela se encontra vinculada a uma atividade licenciável ativa no sistema.";
+    private static final String VINCULO_ATIVIDADE_LICENCIAVEL = "Ela se encontra vinculada a uma atividade licenciável ativa no sistema.";
 
     @Autowired
     CodigoTaxaLicenciamentoRepository codigoTaxaLicenciamentoRepository;
@@ -129,8 +129,7 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
     @Override
     public CodigoTaxaLicenciamento ativarDesativar(HttpServletRequest request, Integer idTaxaLicenciamento) {
 
-        CodigoTaxaLicenciamento codigoTaxaLicenciamento = codigoTaxaLicenciamentoRepository.findById(idTaxaLicenciamento).orElseThrow(() ->
-                new ConfiguradorNotFoundException("Não Foi possível Ativar/Desativar a taxa de licenciamento"));
+        CodigoTaxaLicenciamento codigoTaxaLicenciamento = buscarCodigoTaxaLicenciamento(idTaxaLicenciamento);
 
         List<TaxaLicenciamento> taxasLicencasList = taxaLicenciamentoService.findByCodigo(codigoTaxaLicenciamento);
 
@@ -211,10 +210,9 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
     @Override
     public CodigoTaxaLicenciamentoEdicaoDTO findById(Integer idTaxaLicenciamento) {
 
-        CodigoTaxaLicenciamento codigoTaxaLicenciamento = codigoTaxaLicenciamentoRepository.findById(idTaxaLicenciamento).orElseThrow(() ->
-                new ConfiguradorNotFoundException("Não foi encontrada taxa de licenciamento com o Id " + idTaxaLicenciamento));
+        CodigoTaxaLicenciamento codigoTaxaLicenciamento = buscarCodigoTaxaLicenciamento(idTaxaLicenciamento);
 
-        List<TaxaLicenciamento> taxasLicencas = taxaLicenciamentoService.findByCodigo(codigoTaxaLicenciamento);
+                List < TaxaLicenciamento > taxasLicencas = taxaLicenciamentoService.findByCodigo(codigoTaxaLicenciamento);
 
         return new CodigoTaxaLicenciamentoEdicaoDTO(codigoTaxaLicenciamento, taxasLicencas);
 
@@ -235,6 +233,13 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
         }
 
         return specification;
+
+    }
+
+    private CodigoTaxaLicenciamento buscarCodigoTaxaLicenciamento(Integer idTaxaLicenciamento) {
+
+        return codigoTaxaLicenciamentoRepository.findById(idTaxaLicenciamento).orElseThrow(() ->
+                new ConfiguradorNotFoundException("Não foi possível encontrar a taxa de licenciamento."));
 
     }
 
