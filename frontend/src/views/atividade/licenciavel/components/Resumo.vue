@@ -73,7 +73,7 @@
 						p.label-atividade {{atividadeLicenciavel.parametros[0].parametroDois.codigo}} - {{atividadeLicenciavel.parametros[0].parametroDois.nome}}
 					v-col(cols="12", md="6")
 						v-label Descrição da unidade do parâmetro 2
-						p.label-atividade {{atividadeLicenciavel.parametros[0].descricaoUnidadeDois ? atividadeLicenciavel.parametros[0].descricaoUnidadeDois : atividadeLicenciavel.parametros[0].parametroUm.nome}}
+						p.label-atividade {{atividadeLicenciavel.parametros[0].descricaoUnidadeDois ? atividadeLicenciavel.parametros[0].descricaoUnidadeDois : atividadeLicenciavel.parametros[0].parametroDois.nome}}
 
 	GridListagemInclusao.mt-7(
 		:tituloListagem="tituloListagemParametro",
