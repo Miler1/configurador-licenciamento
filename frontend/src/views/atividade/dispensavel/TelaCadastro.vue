@@ -184,7 +184,7 @@ export default {
 
 			this.$fire({
 
-				title: `<div><p class="title-modal-confirm">Confirmar edição - Atividade dispensável</p><div>`,
+				title: `<div><p class="title-modal-confirm">Confirmar edição - CNAE dispensável</p><div>`,
 				html:
 					`
 					<div class="row" id="row-justificativa-atividade-dispensavel" style="padding-top: 15px">
@@ -212,7 +212,6 @@ export default {
 						</div>
 					</div>
 					`,
-				width: '580px',
 				showCancelButton: true,
 				confirmButtonColor:'#67C23A',
 				cancelButtonColor: '#FFF',
