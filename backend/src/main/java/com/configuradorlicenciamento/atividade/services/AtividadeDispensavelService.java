@@ -221,7 +221,7 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
 
     @Override
     public List<Atividade> listarAtividadesDispensaveis() {
-        return atividadeRepository.findAll(getFiltro(), Sort.by("id"));
+        return atividadeRepository.findAll(getFiltro(), Sort.by("nome"));
     }
 
     @Override
