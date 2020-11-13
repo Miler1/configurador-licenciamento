@@ -55,7 +55,7 @@ public class AtividadeLicenciavelCsv implements Serializable {
 
         this.codigo = atividade.getCodigo();
         this.nome = atividade.getNome();
-        this.tipologia = atividade.getTipologia().getNome();
+        this.tipologia = atividade.getTipologia() != null ? atividade.getTipologia().getNome() : "";
         this.parametros = tratarParametrosParaCsv(atividade.getParametros());
         this.tiposLicencas = tratarLicencasParaCsv(atividade.getTiposLicencas());
         this.ativo = atividade.getAtivo() ? "Ativo" : "Inativo";

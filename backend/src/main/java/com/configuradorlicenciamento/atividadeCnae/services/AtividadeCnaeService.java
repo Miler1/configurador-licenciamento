@@ -165,7 +165,7 @@ public class AtividadeCnaeService implements IAtividadeCnaeService {
 
     @Override
     public List<AtividadeCnae> listarCnaes() {
-        return atividadeCnaeRepository.findAll(Sort.by("codigo"));
+        return atividadeCnaeRepository.findAll(Sort.by("nome"));
     }
 
     @Override
