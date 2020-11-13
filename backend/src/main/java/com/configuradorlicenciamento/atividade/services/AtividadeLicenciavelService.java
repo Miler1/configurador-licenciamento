@@ -228,7 +228,7 @@ public class AtividadeLicenciavelService implements IAtividadeLicenciavelService
 
     @Override
     public List<Atividade> listarAtividadesLicenciaveis() {
-        return atividadeRepository.findAll(getFiltro(), Sort.by("id"));
+        return atividadeRepository.findAll(getFiltro(), Sort.by("nome"));
     }
 
     @Override

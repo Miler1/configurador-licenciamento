@@ -167,7 +167,7 @@ public class TipologiaService implements ITipologiaService {
 
     @Override
     public List<Tipologia> listarTipologia() {
-        return tipologiaRepository.findAll(Sort.by("codigo"));
+        return tipologiaRepository.findAll(Sort.by("nome"));
     }
 
     @Override
