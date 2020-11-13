@@ -191,7 +191,7 @@ export default {
 						<div class="col col-12" style="display: flex; flex-direction: column; padding-bottom: 0">
 							<label id="label-justificativa" aria-hidden="true" class="v-label theme--light" style="text-align: left; padding-bottom:4px">Justificativa</label>
 							<div class="v-input v-textarea v-textarea--auto-grow v-textarea--no-resize theme--light v-text-field v-text-field--is-booted v-text-field--enclosed v-text-field--outlined" id="div-input">
-								<div class="v-input__control style="padding-right: 0px !important">
+								<div class="v-input__control" style="padding-right: 0px !important">
 									<div class="v-input__slot">
 										<fieldset>
 											<legend style="width: 0px;">
