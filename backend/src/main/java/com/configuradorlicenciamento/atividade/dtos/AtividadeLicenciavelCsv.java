@@ -3,6 +3,7 @@ package com.configuradorlicenciamento.atividade.dtos;
 import com.configuradorlicenciamento.atividade.models.Atividade;
 import com.configuradorlicenciamento.atividade.models.RelAtividadeParametroAtividade;
 import com.configuradorlicenciamento.configuracao.utils.DateUtil;
+import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.entradaUnica.services.EntradaUnicaWS;
 import com.configuradorlicenciamento.licenca.models.Licenca;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
@@ -10,8 +11,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;
 import lombok.Getter;
+import org.apache.tomcat.util.codec.binary.StringUtils;
 
 import java.io.Serializable;
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 
@@ -53,7 +57,7 @@ public class AtividadeLicenciavelCsv implements Serializable {
 
     public AtividadeLicenciavelCsv(Atividade atividade, Date dataAcao, UsuarioLicenciamento usuarioLicenciamento) {
 
-        this.codigo = atividade.getCodigo();
+        this.codigo = StringUtil.manterCodigoTexto(atividade.getCodigo());
         this.nome = atividade.getNome();
         this.tipologia = atividade.getTipologia() != null ? atividade.getTipologia().getNome() : "";
         this.parametros = tratarParametrosParaCsv(atividade.getParametros());

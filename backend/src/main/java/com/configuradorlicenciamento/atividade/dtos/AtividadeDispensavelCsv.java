@@ -2,6 +2,7 @@ package com.configuradorlicenciamento.atividade.dtos;
 
 import com.configuradorlicenciamento.atividade.models.Atividade;
 import com.configuradorlicenciamento.configuracao.utils.DateUtil;
+import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.entradaUnica.services.EntradaUnicaWS;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -42,7 +43,7 @@ public class AtividadeDispensavelCsv implements Serializable {
 
     public AtividadeDispensavelCsv(Atividade atividade, Date dataAcao, UsuarioLicenciamento usuarioLicenciamento) {
 
-        this.codigoCnae = atividade.getAtividadesCnae().isEmpty() ? "-" : atividade.getAtividadesCnae().get(0).getAtividadeCnae().getCodigo();
+        this.codigoCnae = atividade.getAtividadesCnae().isEmpty() ? "-" : StringUtil.manterCodigoTexto(atividade.getAtividadesCnae().get(0).getAtividadeCnae().getCodigo());
         this.descricaoCnae = atividade.getNome();
         this.tipologiaCnae = atividade.getTipologia().getNome();
         this.ativo = atividade.getAtivo() ? "Ativo" : "Inativo";
