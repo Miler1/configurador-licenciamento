@@ -77,9 +77,14 @@ public class TaxaLicenciamentoService implements ITaxaLicenciamentoService {
 
                 taxaLicenciamentoRepository.save(montaObjetoParaSalvar(taxaLicenciamento, codigoTaxaLicenciamento));
 
-                Optional<TaxaLicenciamento> taxa = taxaLicenciamentoRepository.findById(taxasLicenciamentoDTO.get(0).getId());
+                //se não for a unica taxa da tabela, ento tentar vincular
+                if (taxasLicenciamentoDTO.get(0).getId() != null) {
 
-                taxa.ifPresent(licenciamento -> atividadeLicenciavelService.vincularNovaTaxa(taxa.get()));
+                    Optional<TaxaLicenciamento> taxa = taxaLicenciamentoRepository.findById(taxasLicenciamentoDTO.get(0).getId());
+
+                    taxa.ifPresent(licenciamento -> atividadeLicenciavelService.vincularNovaTaxa(taxa.get()));
+
+                }
 
             }
 
