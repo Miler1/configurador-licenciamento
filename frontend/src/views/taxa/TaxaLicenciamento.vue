@@ -102,7 +102,7 @@ export default {
 
 			this.$fire({
 
-				title: item.ativo ? 
+				title: item.ativo ?
 					'<p class="title-modal-confirm">Desativar tabela de taxas de licenciamento - ' + item.codigo+ '</p>' :
 					'<p class="title-modal-confirm">Ativar tabela de taxas de licenciamento - ' + item.codigo+ '</p>',
 
@@ -143,8 +143,10 @@ export default {
 						})
 						.catch(error => {
 
+							let message = ERROR_MESSAGES.taxaLicenciamento.ativarDesativar + error.message;
+
 							console.error(error);
-							snackbar.alert(error.message);
+							snackbar.alert(message);
 							item.ativo = !item.ativo;
 
 						});

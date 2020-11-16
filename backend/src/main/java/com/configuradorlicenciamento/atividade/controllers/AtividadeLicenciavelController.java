@@ -31,7 +31,7 @@ public class AtividadeLicenciavelController extends DefaultController {
     private static final String HEADER_CORS = "Access-Control-Allow-Origin";
 
     @Autowired
-    IAtividadeLicenciavelService atividadeService;
+    IAtividadeLicenciavelService atividadeLicenciavelService;
 
     @Autowired
     IRascunhoService rascunhoService;
@@ -47,7 +47,7 @@ public class AtividadeLicenciavelController extends DefaultController {
         if (atividadeLicenciavelDTO.getDados().getId() != null) {
             atividade = rascunhoService.finalizarCadastro(request, atividadeLicenciavelDTO);
         } else {
-            atividade = atividadeService.salvar(request, atividadeLicenciavelDTO);
+            atividade = atividadeLicenciavelService.salvar(request, atividadeLicenciavelDTO);
         }
 
         return ResponseEntity.ok()
@@ -61,7 +61,7 @@ public class AtividadeLicenciavelController extends DefaultController {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        Atividade atividade = atividadeService.editar(request, atividadeLicenciavelDTO);
+        Atividade atividade = atividadeLicenciavelService.editar(request, atividadeLicenciavelDTO);
 
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
@@ -76,7 +76,7 @@ public class AtividadeLicenciavelController extends DefaultController {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        Page<Atividade> atividades = atividadeService.listar(pageable, filtroPesquisa);
+        Page<Atividade> atividades = atividadeLicenciavelService.listar(pageable, filtroPesquisa);
 
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
@@ -95,7 +95,7 @@ public class AtividadeLicenciavelController extends DefaultController {
         CustomMappingStrategy<AtividadeLicenciavelCsv> mappingStrategy = new CustomMappingStrategy<>();
         mappingStrategy.setType(AtividadeLicenciavelCsv.class);
 
-        downloadCsv(atividadeService.listarAtividadesParaCsv(), nome, mappingStrategy, response);
+        downloadCsv(atividadeLicenciavelService.listarAtividadesParaCsv(), nome, mappingStrategy, response);
 
     }
 
@@ -105,7 +105,7 @@ public class AtividadeLicenciavelController extends DefaultController {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        AtividadeLicenciavelEdicaoDTO atividadeLicenciavelEdicaoDTO = atividadeService.findById(idAtividadeDispensavel);
+        AtividadeLicenciavelEdicaoDTO atividadeLicenciavelEdicaoDTO = atividadeLicenciavelService.findById(idAtividadeDispensavel);
 
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())
@@ -118,7 +118,7 @@ public class AtividadeLicenciavelController extends DefaultController {
 
         verificarPermissao(request, Acao.GERENCIAR_LICENCIAMENTO);
 
-        Atividade atividade = atividadeService.ativarDesativar(request, idAtividadeLicenciavel);
+        Atividade atividade = atividadeLicenciavelService.ativarDesativar(request, idAtividadeLicenciavel);
 
         return ResponseEntity.ok()
                 .header(HEADER_CORS, VariaveisAmbientes.baseUrlFrontend())

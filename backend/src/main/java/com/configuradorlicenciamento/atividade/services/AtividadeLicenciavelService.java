@@ -26,6 +26,7 @@ import com.configuradorlicenciamento.potencialPoluidor.models.PotencialPoluidor;
 import com.configuradorlicenciamento.potencialPoluidor.repositories.PotencialPoluidorRepository;
 import com.configuradorlicenciamento.requisitoTecnico.models.RequisitoTecnico;
 import com.configuradorlicenciamento.requisitoTecnico.repositories.RequisitoTecnicoRepository;
+import com.configuradorlicenciamento.taxaLicenciamento.dtos.TaxaLicenciamentoDTO;
 import com.configuradorlicenciamento.taxaLicenciamento.models.CodigoTaxaLicenciamento;
 import com.configuradorlicenciamento.taxaLicenciamento.models.TaxaLicenciamento;
 import com.configuradorlicenciamento.taxaLicenciamento.repositories.CodigoTaxaLicenciamentoRepository;
@@ -228,7 +229,7 @@ public class AtividadeLicenciavelService implements IAtividadeLicenciavelService
 
     @Override
     public List<Atividade> listarAtividadesLicenciaveis() {
-        return atividadeRepository.findAll(getFiltro(), Sort.by("id"));
+        return atividadeRepository.findAll(getFiltro(), Sort.by("nome"));
     }
 
     @Override
@@ -308,6 +309,38 @@ public class AtividadeLicenciavelService implements IAtividadeLicenciavelService
                 tiposCaracterizacaoAtividade,
                 relAtividadeParametroAtividadeUm != null ? relAtividadeParametroAtividadeUm.getDescricaoUnidade() : null,
                 relAtividadeParametroAtividadeDois != null ? relAtividadeParametroAtividadeDois.getDescricaoUnidade() : null);
+
+    }
+
+    @Override
+    public void vincularNovaTaxa(TaxaLicenciamento taxaLicenciamento) {
+
+        //buscar todas as atividades vincuadas a taxaLicenciamento
+        List<Atividade> atividadesLicenciaveis = atividadeRepository.findAllByTaxasLicenciamento(taxaLicenciamento);
+
+        //verificar se existe atividade vinculada a essa tabela
+        if (!atividadesLicenciaveis.isEmpty()) {
+
+            //editar atividade com a nova lista de taxas
+            atividadesLicenciaveis.forEach(atividade -> {
+
+                List<TaxaLicenciamento> taxasLicenciamentoAtividade = new ArrayList<>();
+
+                Optional<CodigoTaxaLicenciamento> codigoTaxaLicenciamento =
+                        codigoTaxaLicenciamentoRepository.findById(taxaLicenciamento.codigo.getId());
+
+                if (codigoTaxaLicenciamento.isPresent()) {
+                    taxasLicenciamentoAtividade = taxaLicenciamentoRepository.findByCodigo(codigoTaxaLicenciamento.get());
+                }
+
+                atividade.setTaxasLicenciamento(taxasLicenciamentoAtividade);
+
+                atividadeRepository.save(atividade);
+
+            });
+
+        }
+
 
     }
 

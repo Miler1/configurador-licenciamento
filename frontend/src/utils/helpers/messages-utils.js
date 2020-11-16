@@ -77,6 +77,7 @@ const ERROR_MESSAGES = {
 		ativar: ER_BASE + 'ativar a tabela de taxas de licenciamento. ',
 		desativar: ER_BASE + 'desativar a tabela de taxas de licenciamento. ',
 		adicionarValores: ER_BASE + 'adicionar a taxa de licenciamento. ',
+		ativarDesativar: ER_BASE + 'desativar/ativar a tabela de taxas de licenciamento. ',
 	},
 
 	taxaAdministrativa: {
