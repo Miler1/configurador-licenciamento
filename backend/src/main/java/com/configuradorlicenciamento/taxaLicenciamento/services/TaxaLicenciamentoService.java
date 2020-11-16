@@ -22,7 +22,7 @@ import java.util.Optional;
 @Service
 public class TaxaLicenciamentoService implements ITaxaLicenciamentoService {
 
-    public static final String TAXA_VINCULADA = "É necessário desvincular a taxa antes de deletá-la";
+    public static final String TAXA_VINCULADA = "É necessário desvincular a tabela de todas as atividades licenciáveis antes de deletá-la.";
 
     @Autowired
     TaxaLicenciamentoRepository taxaLicenciamentoRepository;
