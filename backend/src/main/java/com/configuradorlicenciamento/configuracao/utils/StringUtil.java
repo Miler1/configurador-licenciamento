@@ -140,4 +140,14 @@ public class StringUtil {
 
     }
 
+    public static String manterCodigoTexto(String str) {
+        return str+"\t";
+    }
+
+    public static String manterNomeTexto(String str) {
+        char ch1 = str.charAt(0);
+        if (ch1 == '0') return str+"\t";
+        return str;
+    }
+
 }

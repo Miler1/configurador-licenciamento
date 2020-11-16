@@ -1,6 +1,5 @@
 package com.configuradorlicenciamento.resposta.dtos;
 
-import com.configuradorlicenciamento.pergunta.dtos.PerguntaDTO;
 import com.configuradorlicenciamento.resposta.models.Resposta;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
