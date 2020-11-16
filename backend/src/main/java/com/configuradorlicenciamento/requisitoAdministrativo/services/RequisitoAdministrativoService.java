@@ -151,7 +151,7 @@ public class RequisitoAdministrativoService implements IRequisitoAdministrativoS
     @Override
     public List<RequisitoAdministrativoCsv> listarRequisitosAdministrativosParaCsv() {
 
-        List<RequisitoAdministrativo> requisitosAdministrativos = requisitoAdministrativoRepository.findAll(Sort.by("documento"));
+        List<RequisitoAdministrativo> requisitosAdministrativos = requisitoAdministrativoRepository.findAll(Sort.by("documento.nome", "licenca.sigla"));
         List<RequisitoAdministrativoCsv> dtos = new ArrayList<>();
 
         for (RequisitoAdministrativo requisitoAdministrativo : requisitosAdministrativos) {

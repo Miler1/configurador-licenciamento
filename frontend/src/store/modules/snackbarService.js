@@ -1,9 +1,5 @@
-import {
-	SET_SNACKBAR
-} from '../actions.type';
-import {
-	UPDATE_SNACKBAR
-} from '../mutations.type';
+import {SET_SNACKBAR} from '../actions.type';
+import {UPDATE_SNACKBAR} from '../mutations.type';
 
 const INITIAL_STATE = {
 	snackbars: []
