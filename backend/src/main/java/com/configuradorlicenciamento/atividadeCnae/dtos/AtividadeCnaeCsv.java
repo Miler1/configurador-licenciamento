@@ -2,6 +2,7 @@ package com.configuradorlicenciamento.atividadeCnae.dtos;
 
 import com.configuradorlicenciamento.atividadeCnae.models.AtividadeCnae;
 import com.configuradorlicenciamento.configuracao.utils.DateUtil;
+import com.configuradorlicenciamento.configuracao.utils.StringUtil;
 import com.configuradorlicenciamento.entradaUnica.services.EntradaUnicaWS;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -37,7 +38,7 @@ public class AtividadeCnaeCsv implements Serializable {
 
     public AtividadeCnaeCsv(AtividadeCnae cnae) {
 
-        this.codigo = cnae.getCodigo();
+        this.codigo = StringUtil.manterCodigoTexto(cnae.getCodigo());
         this.nome = cnae.getNome();
         this.ativo = cnae.getAtivo() ? "Ativo" : "Inativo";
         this.dataCadastro = cnae.getDataCadastro() != null ? DateUtil.formataBrSimples(cnae.getDataCadastro()) : "-";
