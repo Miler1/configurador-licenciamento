@@ -341,7 +341,6 @@ public class AtividadeLicenciavelService implements IAtividadeLicenciavelService
 
         }
 
-
     }
 
     private Atividade buscarAtividade(Integer idAtividadeLicenciavel) {
