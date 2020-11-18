@@ -34,7 +34,7 @@ public class RequisitoAdministrativoCsv {
     private String status;
 
     @CsvBindByPosition(position = 5)
-    @CsvBindByName(column = "Data de Cadastro")
+    @CsvBindByName(column = "Data de cadastro")
     private String dataCadastro;
 
     @CsvBindByPosition(position = 6)
