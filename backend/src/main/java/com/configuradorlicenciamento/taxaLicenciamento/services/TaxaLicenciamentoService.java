@@ -1,6 +1,7 @@
 package com.configuradorlicenciamento.taxaLicenciamento.services;
 
 import com.configuradorlicenciamento.atividade.interfaces.IAtividadeLicenciavelService;
+import com.configuradorlicenciamento.atividade.models.Atividade;
 import com.configuradorlicenciamento.configuracao.exceptions.ConflictException;
 import com.configuradorlicenciamento.licenca.models.Licenca;
 import com.configuradorlicenciamento.licenca.repositories.LicencaRepository;
@@ -51,25 +52,10 @@ public class TaxaLicenciamentoService implements ITaxaLicenciamentoService {
     @Override
     public void editar(List<TaxaLicenciamentoDTO> taxasLicenciamentoDTO, CodigoTaxaLicenciamento codigoTaxaLicenciamento) {
 
-        List<TaxaLicenciamento> taxasLicenciamento = taxaLicenciamentoRepository.findByCodigo(codigoTaxaLicenciamento);
+        validarPrepararParaEditar(taxasLicenciamentoDTO, codigoTaxaLicenciamento);
 
-        taxasLicenciamento.forEach(taxaLicenciamento -> {
-
-            if (taxasLicenciamentoDTO.stream().noneMatch(taxaLicenciamentoDTO ->
-                    taxaLicenciamento.getId().equals(taxaLicenciamentoDTO.getId())
-            )) {
-
-                try {
-                    taxaLicenciamentoRepository.delete(taxaLicenciamento);
-                } catch (Exception e) {
-                    throw new ConflictException(TAXA_VINCULADA);
-                }
-
-            }
-
-        });
-
-        taxasLicenciamentoDTO.forEach(taxaLicenciamento-> {
+        taxasLicenciamentoDTO.forEach(taxaLicenciamento ->
+        {
 
             if (taxaLicenciamento.getId() != null) {
                 taxaLicenciamentoRepository.save(montaObjetoParaEditar(taxaLicenciamento, codigoTaxaLicenciamento));
@@ -77,7 +63,7 @@ public class TaxaLicenciamentoService implements ITaxaLicenciamentoService {
 
                 taxaLicenciamentoRepository.save(montaObjetoParaSalvar(taxaLicenciamento, codigoTaxaLicenciamento));
 
-                //se não for a unica taxa da tabela, ento tentar vincular
+                //se não for a única taxa da tabela, então tentar vincular
                 if (taxasLicenciamentoDTO.get(0).getId() != null) {
 
                     Optional<TaxaLicenciamento> taxa = taxaLicenciamentoRepository.findById(taxasLicenciamentoDTO.get(0).getId());
@@ -93,8 +79,8 @@ public class TaxaLicenciamentoService implements ITaxaLicenciamentoService {
     }
 
     @Override
-    public List<TaxaLicenciamento> findByCodigo(CodigoTaxaLicenciamento codigoTaxaLicenciamento) {
-        return taxaLicenciamentoRepository.findByCodigo(codigoTaxaLicenciamento);
+    public List<TaxaLicenciamento> buscarTabelaTaxas(CodigoTaxaLicenciamento codigoTaxaLicenciamento) {
+        return taxaLicenciamentoRepository.findByCodigoAndAtivo(codigoTaxaLicenciamento, true);
     }
 
     public TaxaLicenciamento montaObjetoParaSalvar(TaxaLicenciamentoDTO tDTO, CodigoTaxaLicenciamento
@@ -111,12 +97,13 @@ public class TaxaLicenciamentoService implements ITaxaLicenciamentoService {
                 .setLicenca(licenca)
                 .setPorteEmpreendimento(porteEmpreendimento)
                 .setPotencialPoluidor(potencialPoluidor)
+                .setAtivo(true)
                 .build();
 
     }
 
-    public TaxaLicenciamento montaObjetoParaEditar(TaxaLicenciamentoDTO taxaLicenciamentoDTO, CodigoTaxaLicenciamento
-            codigoTaxaLicenciamento) {
+    public TaxaLicenciamento montaObjetoParaEditar(TaxaLicenciamentoDTO
+                                                           taxaLicenciamentoDTO, CodigoTaxaLicenciamento codigoTaxaLicenciamento) {
 
         PorteEmpreendimento porteEmpreendimento = porteEmpreendimentoRepository.findById(taxaLicenciamentoDTO.getIdPorteEmpreendimento()).orElseThrow(RuntimeException::new);
 
@@ -124,18 +111,68 @@ public class TaxaLicenciamentoService implements ITaxaLicenciamentoService {
 
         Licenca licenca = licencaRepository.findById(taxaLicenciamentoDTO.getIdTipoLicenca()).orElseThrow(RuntimeException::new);
 
-        Optional<TaxaLicenciamento> taxaLicenciamentoSalvo = taxaLicenciamentoRepository.findById(taxaLicenciamentoDTO.getId())
-                .map(taxaLicenciamento -> {
-                    taxaLicenciamento.setCodigo(codigoTaxaLicenciamento);
-                    taxaLicenciamento.setPorteEmpreendimento(porteEmpreendimento);
-                    taxaLicenciamento.setLicenca(licenca);
-                    taxaLicenciamento.setPotencialPoluidor(potencialPoluidor);
-                    taxaLicenciamento.setValor(taxaLicenciamentoDTO.getValor());
-                    return taxaLicenciamento;
-                });
+        TaxaLicenciamento taxaLicenciamento = new TaxaLicenciamento();
 
-        return taxaLicenciamentoSalvo.get();
+        Optional<TaxaLicenciamento> taxaLicenciamentoSalvo = taxaLicenciamentoRepository.findById(taxaLicenciamentoDTO.getId());
 
+        if (taxaLicenciamentoSalvo.isPresent()) {
+
+            taxaLicenciamento = taxaLicenciamentoSalvo.get();
+
+            taxaLicenciamento.setCodigo(codigoTaxaLicenciamento);
+            taxaLicenciamento.setPorteEmpreendimento(porteEmpreendimento);
+            taxaLicenciamento.setLicenca(licenca);
+            taxaLicenciamento.setPotencialPoluidor(potencialPoluidor);
+            taxaLicenciamento.setValor(taxaLicenciamentoDTO.getValor());
+
+        }
+
+        return taxaLicenciamento;
+
+    }
+
+    private void validarPrepararParaEditar(List<TaxaLicenciamentoDTO> taxasLicenciamentoDTO, CodigoTaxaLicenciamento codigoTaxaLicenciamento) {
+
+        List<TaxaLicenciamento> taxasLicenciamento = taxaLicenciamentoRepository.findByCodigoAndAtivo(codigoTaxaLicenciamento, true);
+
+        taxasLicenciamento.forEach(taxaLicenciamento -> {
+
+            boolean removeuTaxa = taxasLicenciamentoDTO.stream().noneMatch(taxaLicenciamentoDTO ->
+                    taxaLicenciamento.getId().equals(taxaLicenciamentoDTO.getId()));
+
+            if (removeuTaxa) {
+
+                List<Atividade> atividades = atividadeLicenciavelService.buscarAtividadeTaxaVinculada(taxaLicenciamento);
+
+                if (!atividades.isEmpty()) {
+
+                    //não é permitido remover taxa da tabela vinculada com uma atividade atual
+                    boolean existeVinculoAtual = atividades.stream().anyMatch(atividade -> !atividade.getItemAntigo());
+
+                    if (existeVinculoAtual) {
+                        throw new ConflictException(TAXA_VINCULADA);
+                    }
+
+                    //inativar taxa removida
+                    if (taxaLicenciamento.ativo) {
+
+                        taxaLicenciamento.setAtivo(false);
+                        taxaLicenciamentoRepository.save(taxaLicenciamento);
+
+                    }
+
+                } else {
+                    taxaLicenciamentoRepository.delete(taxaLicenciamento);
+                }
+
+            }
+
+        });
+
+    }
+
+    public List<TaxaLicenciamento> buscarTaxasAtivas(CodigoTaxaLicenciamento codigoTaxaLicenciamento) {
+        return taxaLicenciamentoRepository.findByCodigoAndAtivo(codigoTaxaLicenciamento, true);
     }
 
 }

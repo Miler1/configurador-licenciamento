@@ -12,6 +12,8 @@ public interface ITaxaLicenciamentoService {
 
     void editar(List<TaxaLicenciamentoDTO> taxasLicenciamentoDTO, CodigoTaxaLicenciamento codigoTaxaLicenciamento);
 
-    List<TaxaLicenciamento> findByCodigo(CodigoTaxaLicenciamento codigoTaxaLicenciamento);
+    List<TaxaLicenciamento> buscarTabelaTaxas(CodigoTaxaLicenciamento codigoTaxaLicenciamento);
+
+    List<TaxaLicenciamento> buscarTaxasAtivas(CodigoTaxaLicenciamento codigoTaxaLicenciamento);
 
 }

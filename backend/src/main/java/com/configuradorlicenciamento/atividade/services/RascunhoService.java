@@ -221,11 +221,9 @@ public class RascunhoService implements IRascunhoService {
 
         if (atividadeLicenciavelDTO.getDados().getTaxaLicenciamento() != null) {
 
-            Optional<CodigoTaxaLicenciamento> codigoTaxaLicenciamento = codigoTaxaLicenciamentoRepository.findById(atividadeLicenciavelDTO.getDados().getTaxaLicenciamento().getId());
+            CodigoTaxaLicenciamento codigoTaxaLicenciamento = codigoTaxaLicenciamentoRepository.findByCodigo(atividadeLicenciavelDTO.getDados().getTaxaLicenciamento().getCodigo());
 
-            if (codigoTaxaLicenciamento.isPresent()) {
-                taxasLicenciamentoAtividade = taxaLicenciamentoRepository.findByCodigo(codigoTaxaLicenciamento.get());
-            }
+            taxasLicenciamentoAtividade = taxaLicenciamentoRepository.findByCodigoAndAtivo(codigoTaxaLicenciamento, true);
 
         }
 
@@ -321,11 +319,9 @@ public class RascunhoService implements IRascunhoService {
 
         if (atividadeLicenciavelDTO.getDados().getTaxaLicenciamento() != null) {
 
-            Optional<CodigoTaxaLicenciamento> codigoTaxaLicenciamento = codigoTaxaLicenciamentoRepository.findById(atividadeLicenciavelDTO.getDados().getTaxaLicenciamento().getId());
+            CodigoTaxaLicenciamento codigoTaxaLicenciamento = codigoTaxaLicenciamentoRepository.findByCodigo(atividadeLicenciavelDTO.getDados().getTaxaLicenciamento().getCodigo());
 
-            if (codigoTaxaLicenciamento.isPresent()) {
-                taxasLicenciamentoAtividade = taxaLicenciamentoRepository.findByCodigo(codigoTaxaLicenciamento.get());
-            }
+            taxasLicenciamentoAtividade = taxaLicenciamentoRepository.findByCodigoAndAtivo(codigoTaxaLicenciamento, true);
 
         }
 
