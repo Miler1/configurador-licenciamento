@@ -28,7 +28,7 @@ public class DocumentoCsv implements Serializable {
     private String status;
 
     @CsvBindByPosition(position = 3)
-    @CsvBindByName(column = "Data de Cadastro")
+    @CsvBindByName(column = "Data de cadastro")
     private String dataCadastro;
 
     @CsvBindByPosition(position = 4)
