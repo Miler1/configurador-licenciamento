@@ -131,7 +131,7 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
 
         CodigoTaxaLicenciamento codigoTaxaLicenciamento = buscarCodigoTaxaLicenciamento(idTaxaLicenciamento);
 
-        List<TaxaLicenciamento> taxasLicencasList = taxaLicenciamentoService.findByCodigo(codigoTaxaLicenciamento);
+        List<TaxaLicenciamento> taxasLicencasList = taxaLicenciamentoService.buscarTabelaTaxas(codigoTaxaLicenciamento);
 
         taxasLicencasList.forEach(taxasLicencas -> {
 
@@ -212,7 +212,7 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
 
         CodigoTaxaLicenciamento codigoTaxaLicenciamento = buscarCodigoTaxaLicenciamento(idTaxaLicenciamento);
 
-                List < TaxaLicenciamento > taxasLicencas = taxaLicenciamentoService.findByCodigo(codigoTaxaLicenciamento);
+        List<TaxaLicenciamento> taxasLicencas = taxaLicenciamentoService.buscarTaxasAtivas(codigoTaxaLicenciamento);
 
         return new CodigoTaxaLicenciamentoEdicaoDTO(codigoTaxaLicenciamento, taxasLicencas);
 
@@ -239,7 +239,7 @@ public class CodigoTaxaLicenciamentoService implements ICodigoTaxaLicenciamentoS
     private CodigoTaxaLicenciamento buscarCodigoTaxaLicenciamento(Integer idTaxaLicenciamento) {
 
         return codigoTaxaLicenciamentoRepository.findById(idTaxaLicenciamento).orElseThrow(() ->
-                new ConfiguradorNotFoundException("Não foi possível encontrar a taxa de licenciamento."));
+                new ConfiguradorNotFoundException("Não foi possível encontrar a tabela de taxas de licenciamento."));
 
     }
 

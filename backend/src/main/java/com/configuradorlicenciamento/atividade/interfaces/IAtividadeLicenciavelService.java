@@ -5,7 +5,6 @@ import com.configuradorlicenciamento.atividade.dtos.AtividadeLicenciavelDTO;
 import com.configuradorlicenciamento.atividade.dtos.AtividadeLicenciavelEdicaoDTO;
 import com.configuradorlicenciamento.atividade.models.Atividade;
 import com.configuradorlicenciamento.configuracao.utils.FiltroPesquisa;
-import com.configuradorlicenciamento.taxaLicenciamento.dtos.TaxaLicenciamentoDTO;
 import com.configuradorlicenciamento.taxaLicenciamento.models.TaxaLicenciamento;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,4 +30,5 @@ public interface IAtividadeLicenciavelService {
 
     void vincularNovaTaxa(TaxaLicenciamento taxaLicenciamento);
 
+    List<Atividade> buscarAtividadeTaxaVinculada(TaxaLicenciamento taxaLicenciamento);
 }

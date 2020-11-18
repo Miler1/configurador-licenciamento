@@ -26,7 +26,6 @@ import com.configuradorlicenciamento.potencialPoluidor.models.PotencialPoluidor;
 import com.configuradorlicenciamento.potencialPoluidor.repositories.PotencialPoluidorRepository;
 import com.configuradorlicenciamento.requisitoTecnico.models.RequisitoTecnico;
 import com.configuradorlicenciamento.requisitoTecnico.repositories.RequisitoTecnicoRepository;
-import com.configuradorlicenciamento.taxaLicenciamento.dtos.TaxaLicenciamentoDTO;
 import com.configuradorlicenciamento.taxaLicenciamento.models.CodigoTaxaLicenciamento;
 import com.configuradorlicenciamento.taxaLicenciamento.models.TaxaLicenciamento;
 import com.configuradorlicenciamento.taxaLicenciamento.repositories.CodigoTaxaLicenciamentoRepository;
@@ -133,14 +132,12 @@ public class AtividadeLicenciavelService implements IAtividadeLicenciavelService
                 licencasAtividade.add(licencaRepository.findById(licenca.getId()).get())
         );
 
-        List<TaxaLicenciamento> taxasLicenciamentoAtividade = new ArrayList<>();
+        List<TaxaLicenciamento> taxasLicenciamentoAtividade;
 
-        Optional<CodigoTaxaLicenciamento> codigoTaxaLicenciamento = codigoTaxaLicenciamentoRepository.findById(
-                atividadeLicenciavelDTO.getDados().getTaxaLicenciamento().getId());
+        CodigoTaxaLicenciamento codigoTaxaLicenciamento = codigoTaxaLicenciamentoRepository.findByCodigo(
+                atividadeLicenciavelDTO.getDados().getTaxaLicenciamento().getCodigo());
 
-        if (codigoTaxaLicenciamento.isPresent()) {
-            taxasLicenciamentoAtividade = taxaLicenciamentoRepository.findByCodigo(codigoTaxaLicenciamento.get());
-        }
+        taxasLicenciamentoAtividade = taxaLicenciamentoRepository.findByCodigoAndAtivo(codigoTaxaLicenciamento, true);
 
         List<PorteAtividade> portesAtividade = porteAtividadeService.salvar(atividadeLicenciavelDTO.getParametros());
 
@@ -313,10 +310,15 @@ public class AtividadeLicenciavelService implements IAtividadeLicenciavelService
     }
 
     @Override
+    public List<Atividade> buscarAtividadeTaxaVinculada(TaxaLicenciamento taxaLicenciamento) {
+        return atividadeRepository.findAllByTaxasLicenciamento(taxaLicenciamento);
+    }
+
+    @Override
     public void vincularNovaTaxa(TaxaLicenciamento taxaLicenciamento) {
 
         //buscar todas as atividades vincuadas a taxaLicenciamento
-        List<Atividade> atividadesLicenciaveis = atividadeRepository.findAllByTaxasLicenciamento(taxaLicenciamento);
+        List<Atividade> atividadesLicenciaveis = buscarAtividadeTaxaVinculada(taxaLicenciamento);
 
         //verificar se existe atividade vinculada a essa tabela
         if (!atividadesLicenciaveis.isEmpty()) {
@@ -330,7 +332,7 @@ public class AtividadeLicenciavelService implements IAtividadeLicenciavelService
                         codigoTaxaLicenciamentoRepository.findById(taxaLicenciamento.codigo.getId());
 
                 if (codigoTaxaLicenciamento.isPresent()) {
-                    taxasLicenciamentoAtividade = taxaLicenciamentoRepository.findByCodigo(codigoTaxaLicenciamento.get());
+                    taxasLicenciamentoAtividade = taxaLicenciamentoRepository.findByCodigoAndAtivo(codigoTaxaLicenciamento.get(), true);
                 }
 
                 atividade.setTaxasLicenciamento(taxasLicenciamentoAtividade);
