@@ -6,3 +6,7 @@ GRANT USAGE ON SCHEMA public TO configurador_ap;
 
 ALTER DEFAULT PRIVILEGES FOR USER configurador_ap IN SCHEMA licenciamento
     GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO configurador_ap;
+
+GRANT ALL PRIVILEGES ON SCHEMA licenciamento TO configurador_ap;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA licenciamento TO configurador_ap;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA licenciamento TO configurador_ap;
