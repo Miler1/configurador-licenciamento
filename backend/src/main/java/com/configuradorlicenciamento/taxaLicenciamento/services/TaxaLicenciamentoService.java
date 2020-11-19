@@ -56,14 +56,14 @@ public class TaxaLicenciamentoService implements ITaxaLicenciamentoService {
 
         taxasLicenciamentoDTO.forEach(taxaLicenciamento ->
         {
-
+            
             if (taxaLicenciamento.getId() != null) {
                 taxaLicenciamentoRepository.save(montaObjetoParaEditar(taxaLicenciamento, codigoTaxaLicenciamento));
             } else {
 
                 taxaLicenciamentoRepository.save(montaObjetoParaSalvar(taxaLicenciamento, codigoTaxaLicenciamento));
 
-                //se não for a única taxa da tabela, então tentar vincular
+                //se não for a única taxa da tabela, então tentar inclui-la com as atividades vinculadas
                 if (taxasLicenciamentoDTO.get(0).getId() != null) {
 
                     Optional<TaxaLicenciamento> taxa = taxaLicenciamentoRepository.findById(taxasLicenciamentoDTO.get(0).getId());
@@ -146,23 +146,21 @@ public class TaxaLicenciamentoService implements ITaxaLicenciamentoService {
 
                 if (!atividades.isEmpty()) {
 
-                    //não é permitido remover taxa da tabela vinculada com uma atividade atual
+                    //não é permitido remover taxa da tabela que está vinculada com uma atividade atual
                     boolean existeVinculoAtual = atividades.stream().anyMatch(atividade -> !atividade.getItemAntigo());
 
                     if (existeVinculoAtual) {
                         throw new ConflictException(TAXA_VINCULADA);
                     }
 
-                    //inativar taxa removida
-                    if (taxaLicenciamento.ativo) {
+                }
 
-                        taxaLicenciamento.setAtivo(false);
-                        taxaLicenciamentoRepository.save(taxaLicenciamento);
+                //inativar taxa removida
+                if (taxaLicenciamento.ativo) {
 
-                    }
+                    taxaLicenciamento.setAtivo(false);
+                    taxaLicenciamentoRepository.save(taxaLicenciamento);
 
-                } else {
-                    taxaLicenciamentoRepository.delete(taxaLicenciamento);
                 }
 
             }
