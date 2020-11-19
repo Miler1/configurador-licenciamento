@@ -28,32 +28,39 @@ public class TaxaLicenciamento implements Serializable {
 
     @NotNull(message = "{validacao.notnull}")
     @ManyToOne
-    @JoinColumn(name="id_porte_empreendimento")
+    @JoinColumn(name = "id_porte_empreendimento")
     private PorteEmpreendimento porteEmpreendimento;
 
     @NotNull(message = "{validacao.notnull}")
     @ManyToOne
-    @JoinColumn(name="id_potencial_poluidor")
+    @JoinColumn(name = "id_potencial_poluidor")
     public PotencialPoluidor potencialPoluidor;
 
     @NotNull(message = "{validacao.notnull}")
     @ManyToOne
-    @JoinColumn(name="id_tipo_licenca", referencedColumnName="id")
+    @JoinColumn(name = "id_tipo_licenca", referencedColumnName = "id")
     private Licenca licenca;
 
     @NotNull(message = "{validacao.notnull}")
     @OneToOne
-    @JoinColumn(name="codigo", referencedColumnName = "id")
+    @JoinColumn(name = "codigo", referencedColumnName = "id")
     public CodigoTaxaLicenciamento codigo;
+
+    @NotNull(message = "{validacao.notnull}")
+    @Column(name = "ativo")
+    public boolean ativo;
 
     private String valor;
 
     public TaxaLicenciamento(TaxaLicenciamento.TaxaLicenciamentoBuilder builder) {
+
         this.codigo = builder.codigo;
         this.licenca = builder.licenca;
         this.porteEmpreendimento = builder.porteEmpreendimento;
         this.potencialPoluidor = builder.potencialPoluidor;
         this.valor = builder.valor;
+        this.ativo = builder.ativo;
+
     }
 
     public static class TaxaLicenciamentoBuilder {
@@ -63,6 +70,7 @@ public class TaxaLicenciamento implements Serializable {
         private PorteEmpreendimento porteEmpreendimento;
         private PotencialPoluidor potencialPoluidor;
         private String valor;
+        private boolean ativo;
 
         public TaxaLicenciamentoBuilder(TaxaLicenciamentoDTO taxaLicenciamentoDTO) {
             this.valor = taxaLicenciamentoDTO.getValor();
@@ -88,6 +96,15 @@ public class TaxaLicenciamento implements Serializable {
             return this;
         }
 
-        public TaxaLicenciamento build() { return new TaxaLicenciamento(this); }
+        public TaxaLicenciamento.TaxaLicenciamentoBuilder setAtivo(boolean ativo) {
+            this.ativo = ativo;
+            return this;
+        }
+
+        public TaxaLicenciamento build() {
+            return new TaxaLicenciamento(this);
+        }
+
     }
+
 }

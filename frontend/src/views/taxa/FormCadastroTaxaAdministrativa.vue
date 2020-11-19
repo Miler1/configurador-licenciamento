@@ -42,7 +42,7 @@
 						required,
 						dense
 					)
-				
+
 				v-col.min-width-215(cols="12", xl="2", lg="2", md="4", v-if="taxaAdministrativa.isento == 'false'")
 					ToggleOptions(
 						ref="toggleAtividadeDispensavel",
@@ -52,7 +52,7 @@
 						:options="optionsAtividadeDispensavel",
 						@changeOption="taxaAdministrativa.atividadeDispensavel = $event"
 					)
-				
+
 				v-col.min-width-215(cols="12", xl="2", lg="2", md="4", v-if="taxaAdministrativa.isento == 'false'")
 					ToggleOptions(
 						ref="toggleAtividadeLicenciavel",
@@ -71,7 +71,7 @@
 					v-btn#QA-btn-cadastrar-taxa-administrativa(@click="submit", large, color="#84A98C")
 						v-icon(color="white") {{iconBotaoCadastrarEditar}}
 						span.label-btn-cadastrar {{labelBotaoCadastrarEditar}}
-  
+
 </template>
 
 <script>
@@ -80,7 +80,7 @@ import { VMoney } from 'v-money';
 import ToggleOptions from "@/components/ToggleOptions";
 
 export default {
-	
+
 	name: 'FormCadastroTaxaAdministrativa',
 
 	components: {
