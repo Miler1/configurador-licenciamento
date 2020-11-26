@@ -162,6 +162,7 @@ public class PerguntaService implements IPerguntaService {
         }
 
         pergunta.setTexto(textoPergunta);
+
     }
 
     public List<Pergunta> listarPerguntas() {
@@ -178,6 +179,7 @@ public class PerguntaService implements IPerguntaService {
         }
 
         return dtos;
+
     }
 
     public Page<Pergunta> listar(Pageable pageable, FiltroPesquisa filtro) {

@@ -257,8 +257,19 @@ public class AtividadeDispensavelService implements IAtividadeDispensavelService
 
         List<Pergunta> perguntas = new ArrayList<>();
 
-        relAtividadePerguntas.forEach(atividadePergunta -> perguntas.add(
-                perguntaRepository.findById(atividadePergunta.getPergunta().getId()).get()));
+        for (int i = 0; i < relAtividadePerguntas.size(); i++) {
+
+            Optional<Pergunta> perguntaExistente = perguntaRepository.findById(relAtividadePerguntas.get(i).getPergunta().getId());
+
+            perguntaExistente.ifPresent(perguntas::add);
+
+            int ordemPergunta = relAtividadePerguntas.get(i).getOrdem();
+
+            if (ordemPergunta > 0) {
+                perguntas.get(i).setOrdem(ordemPergunta);
+            }
+
+        }
 
         return new AtividadeDispensavelEdicaoDTO(
                 atividade.getId(),

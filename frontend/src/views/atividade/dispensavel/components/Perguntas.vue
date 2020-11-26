@@ -279,6 +279,7 @@ export default {
 				});
 
 			});
+
 		},
 
 		filtroSelect(item, query, itemText) {
@@ -302,7 +303,6 @@ export default {
 			.then(resposta => {
 
 				this.perguntasCadastradas = resposta.data;
-
 				this.prepararLabelRespostasEsperadas(this.perguntasCadastradas);
 				this.filtrarPerguntasDisponiveis();
 
