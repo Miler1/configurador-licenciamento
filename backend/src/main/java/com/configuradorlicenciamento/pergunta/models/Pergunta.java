@@ -58,6 +58,9 @@ public class Pergunta implements Serializable {
     @JoinColumn(name = "id_pergunta")
     private List<Resposta> respostas;
 
+    @Transient
+    public Integer ordem;
+
     public void setRespostas(List<RespostaDTO> respostas) {
 
         if (this.respostas == null) {
