@@ -445,6 +445,8 @@ export default {
 				cnaeTipologia.foraMunicipio = cnaeTipologia.foraMunicipio ? 'false' : 'true';
 			});
 
+			this.atividadeDispensavel.perguntas.sort((p1, p2) => p1.ordem - p2.ordem);
+
 		}
 
 	},

@@ -15,8 +15,7 @@ export default {
 			return ApiService.post(`requisitoAdministrativo/listar/?
 						page=${parametrosFiltro.pagina > 0 ? parametrosFiltro.pagina : 0}
 						&size=${parametrosFiltro.itemsPorPagina > 0 ? parametrosFiltro.itemsPorPagina : 10}
-						&sort=${parametrosFiltro.tipoOrdenacaoDocumento ? parametrosFiltro.tipoOrdenacaoDocumento : 'documento.nome,asc'},
-						&sort=${parametrosFiltro.tipoOrdenacaoLicenca ? parametrosFiltro.tipoOrdenacaoLicenca : 'licenca.sigla,asc'}`,
+						&sort=${parametrosFiltro.tipoOrdenacao ? parametrosFiltro.tipoOrdenacao : 'documento.nome,asc'}`,
 
 			parametrosFiltro
 			);

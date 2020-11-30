@@ -75,8 +75,7 @@ export default {
 			parametrosFiltro: {
 				pagina: 0,
 				itemsPorPagina: 10,
-				tipoOrdenacaoDocumento: 'documento.nome,asc',
-				tipoOrdenacaoLicenca: 'licenca.sigla,asc',
+				tipoOrdenacao: 'documento.nome,asc',
 				stringPesquisa: ''
 			},
 			isCadastro: true,
@@ -110,8 +109,7 @@ export default {
 
 			this.parametrosFiltro.pagina = 0;
 			this.parametrosFiltro.itemsPorPagina = 10;
-			this.parametrosFiltro.tipoOrdenacaoDocumento = 'documento.nome,asc';
-			this.parametrosFiltro.tipoOrdenacaoLicenca = 'licenca.sigla,asc';
+			this.parametrosFiltro.tipoOrdenacao = 'documento.nome,asc';
 			this.parametrosFiltro.stringPesquisa = '';
 
 		},

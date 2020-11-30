@@ -24,6 +24,8 @@ public class PerguntaEdicaoDTO {
 
     private Boolean ativo;
 
+    private Integer ordem;
+
     private List<RespostaEdicaoDTO> respostas;
 
     public PerguntaEdicaoDTO(Pergunta pergunta) {
@@ -32,6 +34,7 @@ public class PerguntaEdicaoDTO {
         this.texto = pergunta.getTexto();
         this.codigo = pergunta.getCodigo();
         this.ativo = pergunta.getAtivo();
+        this.ordem = pergunta.getOrdem();
 
         this.respostas = new ArrayList<>();
 
