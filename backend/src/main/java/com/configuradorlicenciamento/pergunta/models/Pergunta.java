@@ -3,7 +3,6 @@ package com.configuradorlicenciamento.pergunta.models;
 import com.configuradorlicenciamento.configuracao.utils.GlobalReferences;
 import com.configuradorlicenciamento.pergunta.dtos.PerguntaCsv;
 import com.configuradorlicenciamento.pergunta.dtos.PerguntaDTO;
-import com.configuradorlicenciamento.resposta.dtos.RespostaDTO;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -54,32 +53,12 @@ public class Pergunta implements Serializable {
 
     @ToString.Exclude
     @NotNull(message = "{validacao.notnull}")
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_pergunta")
     private List<Resposta> respostas;
 
     @Transient
     public Integer ordem;
-
-    public void setRespostas(List<RespostaDTO> respostas) {
-
-        if (this.respostas == null) {
-            this.respostas = new ArrayList<>();
-        } else {
-            this.respostas.clear();
-        }
-
-        for (RespostaDTO resposta : respostas) {
-
-            Resposta entidade = new Resposta.RespostaBuilder(resposta)
-                    .setDataCadastro(this.dataCadastro)
-                    .setUsuarioLicencimento(this.usuarioLicenciamento)
-                    .build();
-
-            this.respostas.add(entidade);
-        }
-
-    }
 
     public Pergunta(PerguntaBuilder builder) {
         this.texto = builder.texto;
