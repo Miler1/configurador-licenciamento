@@ -13,6 +13,9 @@ import com.configuradorlicenciamento.pergunta.interfaces.IPerguntaService;
 import com.configuradorlicenciamento.pergunta.models.Pergunta;
 import com.configuradorlicenciamento.pergunta.repositories.PerguntaRepository;
 import com.configuradorlicenciamento.pergunta.specifications.PerguntaSpecification;
+import com.configuradorlicenciamento.resposta.dtos.RespostaDTO;
+import com.configuradorlicenciamento.resposta.interfaces.IRespostaService;
+import com.configuradorlicenciamento.resposta.models.Resposta;
 import com.configuradorlicenciamento.resposta.repositories.RespostaRepository;
 import com.configuradorlicenciamento.usuariolicenciamento.models.UsuarioLicenciamento;
 import com.configuradorlicenciamento.usuariolicenciamento.repositories.UsuarioLicenciamentoRepository;
@@ -49,6 +52,9 @@ public class PerguntaService implements IPerguntaService {
     @Autowired
     UsuarioLicenciamentoRepository usuarioLicenciamentoRepository;
 
+    @Autowired
+    IRespostaService respostaService;
+
     @Override
     public Pergunta salvar(HttpServletRequest request, PerguntaDTO perguntaDTO) {
 
@@ -70,7 +76,7 @@ public class PerguntaService implements IPerguntaService {
                 .setUsuarioLicencimento(usuarioLicenciamento)
                 .build();
 
-        pergunta.setRespostas(perguntaDTO.getRespostas());
+        pergunta.setRespostas(getRespostas(request, perguntaDTO.getRespostas()));
 
         perguntaRepository.save(pergunta);
 
@@ -102,7 +108,7 @@ public class PerguntaService implements IPerguntaService {
                     pergunta.setTipoPergunta(perguntaDTO.getTipoPergunta());
                     pergunta.setDataCadastro(new Date());
                     pergunta.setAtivo(perguntaDTO.getAtivo());
-                    pergunta.setRespostas(perguntaDTO.getRespostas());
+                    pergunta.setRespostas(this.getRespostas(request, perguntaDTO.getRespostas()));
                     pergunta.setUsuarioLicenciamento(usuarioLicenciamento);
                     pergunta.setTipoLocalizacaoEmpreendimento(perguntaDTO.getTipoLocalizacaoEmpreendimento());
                     return pergunta;
@@ -188,6 +194,42 @@ public class PerguntaService implements IPerguntaService {
 
         return perguntaRepository.findAll(specification, pageable);
 
+    }
+
+    @Override
+    public List<Resposta> getRespostas(HttpServletRequest request, List<RespostaDTO> respostas) {
+
+        Object login = request.getSession().getAttribute("login");
+        UsuarioLicenciamento usuarioLicenciamento = usuarioLicenciamentoRepository.findByLogin(login.toString());
+
+        if (respostas == null) {
+            respostas = new ArrayList<>();
+        }
+
+        List<Resposta> novasRespostas = new ArrayList<>();
+
+        for (RespostaDTO resposta : respostas) {
+
+            if (resposta.getId() != null) {
+                Resposta respostaSalva = respostaService.buscaResposta(resposta.getId());
+                respostaSalva.setTexto(resposta.getTexto());
+                respostaSalva.setPermiteLicenciamento(resposta.getPermiteLicenciamento());
+                respostaSalva.setUsuarioLicenciamento(usuarioLicenciamento);
+                respostaSalva.setDataCadastro(new Date());
+                respostaRepository.save(respostaSalva);
+                novasRespostas.add(respostaSalva);
+
+            } else {
+                Resposta entidade = new Resposta.RespostaBuilder(resposta)
+                        .setDataCadastro(new Date())
+                        .setUsuarioLicencimento(usuarioLicenciamento)
+                        .build();
+                novasRespostas.add(entidade);
+            }
+
+        }
+
+        return novasRespostas;
     }
 
     private Specification<Pergunta> preparaFiltro(FiltroPesquisa filtro) {
