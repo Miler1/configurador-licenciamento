@@ -13,7 +13,7 @@
 						:color='snackbar.color',
 						top,
 						:style='`padding-top: ${(index * 60) + 8}px;`')
-				
+
 				v-icon.mr-4 {{snackbar.icon}}
 
 				span {{snackbar.text}}
@@ -45,8 +45,8 @@ export default {
 
 <style lang="less">
 
-html{ 
-	
+html{
+
 	overflow-y: auto !important;
 
 	body{
@@ -101,7 +101,7 @@ html{
 		.v-snack__wrapper {
 			max-width: 80%;
 		}
-	
+
 	}
 }
 
