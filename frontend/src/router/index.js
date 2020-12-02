@@ -182,6 +182,17 @@ const routes = [
 		meta: {
 			title: 'Login | Configurador do Licenciamento Ambiental'
 		},
+	},
+
+	{
+		path: '/versao',
+		name: 'Versao',
+		component: () => import('@/views/versao/Versao.vue'),
+
+		meta: {
+			title: 'Versão | Configurador do Licenciamento Ambiental'
+		},
+
 	}
 ];
 

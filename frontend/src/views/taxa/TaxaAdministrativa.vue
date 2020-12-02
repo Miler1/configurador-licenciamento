@@ -30,7 +30,7 @@
 			:ativarDesativarItem="ativarDesativarItem",
 			:parametrosFiltro="parametrosFiltro"
 		)
-  
+
 </template>
 
 <script>
@@ -91,7 +91,7 @@ export default {
 			},
 		};
 	},
-	
+
 	methods: {
 
 		clear() {
@@ -127,7 +127,7 @@ export default {
 			this.parametrosFiltro.stringPesquisa = '';
 
 		},
-		
+
 		submit() {
 
 			if (this.checkForm()) {
@@ -168,7 +168,7 @@ export default {
 				.catch(error => {
 
 					this.handlerError(error, true);
-					
+
 				});
 
 		},
@@ -231,7 +231,7 @@ export default {
 				if (!this.errorMessageEmpty && value === 0.0) { return 'Obrigatório'; }
 
 			}
-			
+
 			return this.errorMessageEmpty || value ? '' : 'Obrigatório';
 		},
 
@@ -240,7 +240,7 @@ export default {
 			let message = edicao ? SUCCESS_MESSAGES.editar : SUCCESS_MESSAGES.cadastro;
 
 			snackbar.alert(message, snackbar.type.SUCCESS);
-			
+
 			this.clear();
 			this.updatePagination();
 			this.resetarDadosFiltragem();
@@ -362,9 +362,9 @@ export default {
 		},
 
 		updatePagination(parametrosFiltro) {
-			
+
 			TaxaAdministrativaService.listar(parametrosFiltro)
-				
+
 				.then((response) => {
 
 					this.dadosListagem = response.data;
@@ -376,7 +376,7 @@ export default {
 					console.error(error);
 
 					snackbar.alert(ERROR_MESSAGES.taxaAdministrativa.listagem);
-					
+
 				});
 
 		},
