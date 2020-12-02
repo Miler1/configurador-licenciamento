@@ -7,7 +7,6 @@ import org.springframework.core.SpringVersion;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 
