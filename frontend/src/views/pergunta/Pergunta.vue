@@ -180,7 +180,7 @@ export default {
 
 						});
 				}
-				
+
 			} else {
 				this.errorMessageEmpty = false;
 			}
@@ -261,13 +261,13 @@ export default {
 					console.error(erro);
 
 					snackbar.alert(ERROR_MESSAGES.pergunta.listagem);
-					
+
 				});
 
 		},
 
 		editarItem(item) {
-			
+
 			this.dadosPanel.panel = [0];
 			this.dadosPanel.title = "Editar pergunta";
 			this.dadosPanel.tipo = "edição";
@@ -280,10 +280,10 @@ export default {
 		},
 
 		ativarDesativarItem(item) {
-			
+
 			this.$fire({
 
-				title: item.ativo ? 
+				title: item.ativo ?
 					'<p class="title-modal-confirm">Desativar pergunta - ' + item.texto+ '</p>' :
 					'<p class="title-modal-confirm">Ativar pergunta - ' + item.texto+ '</p>',
 
