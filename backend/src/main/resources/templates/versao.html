@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css">
+
+    <script data-main="/js/app" src="/webjars/jquery/3.4.1/jquery.js"></script>
+
+    <title>Versão | Configurador do Licenciamento Ambiental</title>
+
+    <style>
+
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        #conteudo-geral {
+            margin: 0;
+        }
+
+        .jumbotron {
+            background-color: rgba(255, 255, 255, 0.91);
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            height: auto;
+            padding: 1rem;
+            margin: 0;
+            width: 375px;
+        }
+
+        label {
+            margin: 0;
+        }
+
+        .table-bg {
+            background-color: white;
+        }
+
+        h4 tr > td {
+            color: #333333;
+        }
+
+        tr > td {
+            font-size: 14px;
+        }
+
+        @media (min-width: 1200px) {
+            .container {
+                width: 600px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body th:style="'background: url(/images/bg_login.jpeg) no-repeat center center fixed;'">
+
+<div class="container">
+    <div class="jumbotron">
+        <div class="text-center">
+            <img th:src="@{/images/logo_configurador_licenciamento.png}">
+            <h5><strong class="text-uppercase" th:text="${name}"></strong></h5>
+        </div>
+        <div>
+            <table id="conteudo-geral" class="table table-bordered table-bg">
+                <tbody>
+                <tr>
+                    <td class="col-md-6">BRANCH/TAG</td>
+                    <td><label class="text-uppercase" th:text="${release}"></label></td>
+                </tr>
+                <tr>
+                    <td class="col-md-6">DATA DO DEPLOY</td>
+                    <td><label class="text-uppercase" th:text="${update}"></label></td>
+                </tr>
+                <tr>
+                    <td class="col-md-6">PATH</td>
+                    <td><label class="text-uppercase" th:text="${path}"></label></td>
+                </tr>
+                <tr>
+                    <td class="col-md-6">VERSÃO DO SPRING</td>
+                    <td><label class="text-uppercase" th:text="${spring}"></label></td>
+                </tr>
+                <tr>
+                    <td class="col-md-6">VERSÃO DO JAVA</td>
+                    <td><label class="text-uppercase" th:text="${java}"></label></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>
