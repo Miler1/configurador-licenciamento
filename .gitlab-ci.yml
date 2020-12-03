@@ -33,6 +33,7 @@ deploy_dev:
         - cd /builds/amapa/configurador-licenciamento/backend
         - echo "" >> /builds/amapa/configurador-licenciamento/backend/src/main/resources/application-test.properties
         - echo "server.update=$(TZ='America/Sao_Paulo' date +%d-%m-%Y\ %H:%M:%S)" >> /builds/amapa/configurador-licenciamento/backend/src/main/resources/application-test.properties
+        - echo "server.version=$(git branch | sed -n -e 's/^* (.*)/\1/p')" >> /builds/amapa/configurador-licenciamento/backend/src/main/resources/application-test.properties
         - mvn clean
         - mvn compile
         - mvn package
