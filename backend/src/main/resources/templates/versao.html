@@ -19,10 +19,16 @@
 
     <title>Versão | Configurador do Licenciamento Ambiental</title>
 
-    <style>
+    <style th:inline="text">
 
         body {
-            background: url("../static/img/bg_login.aeeab4e5.jpeg") no-repeat center fixed;
+            align-content: center;
+            background-size: cover;
+            justify-content: center;
+            max-width: 100% !important;
+            padding: 0;
+            position: fixed;
+            background: url{[[@{url("/img/bg_login.aeeab4e5.jpeg")}]]} no-repeat center fixed;
         }
 
         html, body {
@@ -82,7 +88,7 @@
 
 </head>
 
-<body th:style="'background: url(/img/bg_login.aeeab4e5.jpeg) no-repeat center center fixed;'">
+<body>
 
 <div class="container">
     <div class="jumbotron">
