@@ -21,6 +21,10 @@
 
     <style>
 
+        body {
+            background: url("static/images/bg_login.jpeg") no-repeat center fixed;
+        }
+
         html, body {
             width: 100%;
             height: 100%;
@@ -83,16 +87,12 @@
 <div class="container">
     <div class="jumbotron">
         <div class="text-center">
-            <img width="300px" th:src="@{/images/logo_configurador_licenciamento.png}">
+            <img src="images/logo_configurador_licenciamento.png" th:src="@{/images/logo_configurador_licenciamento.png}">
             <h4><strong class="text-uppercase" th:text="${name}"></strong></h4>
         </div>
         <div id="div-table">
             <table id="conteudo-geral" class="table table-bordered table-bg">
                 <tbody>
-                <tr>
-                    <td class="col-md-6">BRANCH/TAG</td>
-                    <td><label class="text-uppercase" th:text="${release}"></label></td>
-                </tr>
                 <tr>
                     <td class="col-md-6">DATA DO DEPLOY</td>
                     <td><label class="text-uppercase" th:text="${update}"></label></td>
