@@ -19,7 +19,6 @@ public class Versao extends DefaultController {
     public String versao(Model model) {
 
         model.addAttribute("name", configProp.getConfigValue("spring.application.name"));
-        model.addAttribute("release", configProp.getConfigValue("server.version"));
         model.addAttribute("update", configProp.getConfigValue("server.update"));
         model.addAttribute("spring", SpringVersion.getVersion());
         model.addAttribute("java", configProp.getConfigValue("app.java.version"));
