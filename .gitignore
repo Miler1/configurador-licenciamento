@@ -45,7 +45,8 @@ backend/!.mvn/wrapper/maven-wrapper.jar
 backend/!**/src/main/**
 backend/!**/src/test/**
 backend/logs/**
-backend/src/main/resources/static/
+backend/src/main/resources/static/*
+!backend/src/main/resources/static/images
 
 ### STS ###
 backend/.apt_generated
