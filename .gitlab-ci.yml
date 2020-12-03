@@ -55,6 +55,8 @@ deploy_homologation:
         - update-alternatives --set java /opt/jdk-14.0.1/bin/java
         - export JAVA_HOME=/opt/jdk-14.0.1
         - cd /builds/amapa/configurador-licenciamento/backend
+        - echo "" >> /builds/amapa/configurador-licenciamento/backend/src/main/resources/application-homolog.properties
+        - echo "server.update=$(TZ='America/Sao_Paulo' date +%d-%m-%Y\ %H:%M:%S)" >> /builds/amapa/configurador-licenciamento/backend/src/main/resources/application-homolog.properties
         - mvn clean
         - mvn compile
         - mvn package
