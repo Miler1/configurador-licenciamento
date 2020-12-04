@@ -8,6 +8,7 @@ build:
     only:
         - development
         - homologation
+        - production
     stage: build
     script:
         - bash /n 14.6.0
@@ -64,4 +65,30 @@ deploy_homologation:
         - vpnc-connect /etc/vpnc/vpn-prodap
         - sshpass -p "$SSH_HOST_HOMOLOG_SENHA" scp -P 15012 -v -o StrictHostKeyChecking=no /builds/amapa/configurador-licenciamento/backend/target/*.jar $SSH_HOST_HOMOLOG_USER@$SSH_HOST_HOMOLOG:/dados/var/spring/configurador-licenciamento/configuradorlicenciamento-0.0.1.jar;
         - sshpass -p "$SSH_HOST_HOMOLOG_SENHA" ssh -p 15012 -tt -o StrictHostKeyChecking=no $SSH_HOST_HOMOLOG_USER@$SSH_HOST_HOMOLOG 'sudo /usr/bin/systemctl restart configurador-licenciamento.service;'
+        - vpnc-disconnect
+
+deploy_production:
+    only:
+        - production
+    stage: deploy
+    script:
+        #Frontend
+        - bash /n 14.6.0
+        - cd /builds/amapa/configurador-licenciamento/frontend
+        - rm -f package-lock.json
+        - npm install
+        - npm run prod
+        #Backend
+        - update-alternatives --set java /opt/jdk-14.0.1/bin/java
+        - export JAVA_HOME=/opt/jdk-14.0.1
+        - cd /builds/amapa/configurador-licenciamento/backend
+        - echo "" >> /builds/amapa/configurador-licenciamento/backend/src/main/resources/application-prod.properties
+        - echo "server.update=$(TZ='America/Sao_Paulo' date +%d-%m-%Y\ %H:%M:%S)" >> /builds/amapa/configurador-licenciamento/backend/src/main/resources/application-prod.properties
+        - mvn clean
+        - mvn compile
+        - mvn package
+
+        - vpnc-connect /etc/vpnc/vpn-prodap
+        - sshpass -p "$SSH_HOST_PROD_SENHA" scp -P 15012 -v -o StrictHostKeyChecking=no /builds/amapa/configurador-licenciamento/backend/target/*.jar $SSH_HOST_PROD_USER@$SSH_HOST_PROD:/var/application/configurador-licenciamento/configuradorlicenciamento-0.0.1.jar;
+        - sshpass -p "$SSH_HOST_PROD_SENHA" ssh -p 15012 -tt -o StrictHostKeyChecking=no $SSH_HOST_PROD_USER@$SSH_HOST_PROD 'sudo /usr/bin/systemctl restart configurador-licenciamento.service;'
         - vpnc-disconnect
