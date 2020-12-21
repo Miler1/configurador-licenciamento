@@ -172,7 +172,7 @@ public class PerguntaService implements IPerguntaService {
     }
 
     public List<Pergunta> listarPerguntas() {
-        return perguntaRepository.findByAtivo(true, Sort.by("texto"));
+        return perguntaRepository.findAll(PerguntaSpecification.padrao(), Sort.by("texto"));
     }
 
     public List<PerguntaCsv> listarPerguntaParaCsv() {
