@@ -47,7 +47,7 @@
 						v-icon(left) mdi-login
 						span Entrar
 			v-col#col-esqueci-senha(cols="12", align="start")
-				a#link-esquecida-senha(:href="urlEntradaUnica") Esqueci minha senha
+				a#link-esqueci-senha(:href="urlEntradaUnica") Esqueci minha senha
 
 </template>
 
