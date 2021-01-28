@@ -2,8 +2,14 @@
 
 v-navigation-drawer(app v-model='drawer', :mini-variant.sync='mini', dark, color='#84A98C')
 	v-list-item.px-2.mb-8.mt-3
-		v-btn(icon, @click.stop='mini = !mini')
-			v-icon mdi-menu
+		v-tooltip(top)
+			template(v-slot:activator="{ on }")
+				v-btn(icon, v-on="on" @click.stop='mini = !mini')
+					v-icon mdi-menu
+			div(v-if="mini")
+				span Expandir menu
+			div(v-else)
+				span Ocultar menu
 
 		a(:href="homepage")
 			v-img(contain :src="require('@/assets/img/logo_config_branca.png')" height="50px", width="180px")
@@ -25,7 +31,7 @@ v-navigation-drawer(app v-model='drawer', :mini-variant.sync='mini', dark, color
 
 							div(v-if="selected[index]")
 								span Ocultar menu
-							div(v-if="!selected[index]")
+							div(v-else)
 								span Expandir menu
 					v-list-item.pl-12(v-for='(child, i) in item.children' :key='child.title' :to='child.path')
 						v-list-item-icon(v-if='child.icon')
@@ -109,6 +115,9 @@ export default {
 
 	created() {
 
+		let src = '';
+		let url = '/#/home/cnae';
+
 		this.menuSelected = window.location.hash.split('#');
 
 		this.items.forEach((item, index) => {
@@ -126,7 +135,13 @@ export default {
 
 		});
 
-		this.homepage = window.location.origin + '/#/home/cnae';
+		if (process.env.NODE_ENV !== 'development') {
+			src = process.env.VUE_APP_URL_CONFIGURADOR + url;
+		} else {
+			src = window.location.origin;
+		}
+
+		this.homepage = src;
 
 	}
 
