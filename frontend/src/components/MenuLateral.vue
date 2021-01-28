@@ -30,9 +30,9 @@ v-navigation-drawer(app v-model='drawer', :mini-variant.sync='mini', dark, color
 										| {{ item.title }}
 
 							div(v-if="selected[index]")
-								span Ocultar menu
+								span Ocultar submenu
 							div(v-else)
-								span Expandir menu
+								span Expandir submenu
 					v-list-item.pl-12(v-for='(child, i) in item.children' :key='child.title' :to='child.path')
 						v-list-item-icon(v-if='child.icon')
 							v-icon {{ child.icon }}
