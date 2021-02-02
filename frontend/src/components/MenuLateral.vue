@@ -12,7 +12,7 @@ v-navigation-drawer(app v-model='drawer', :mini-variant.sync='mini', dark, color
 				span Ocultar menu
 
 		a(:href="homepage")
-			v-img(contain :src="require('@/assets/img/logo_config_branca.png')" height="50px", width="180px")
+			v-img(contain :src="require('@/assets/img/logo_config_branca.png')" height="50px", width="204px")
 
 
 	v-list(dense)
