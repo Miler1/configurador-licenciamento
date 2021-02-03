@@ -12,7 +12,7 @@ v-navigation-drawer(app v-model='drawer', :mini-variant.sync='mini', dark, color
 				span Ocultar menu
 
 		a(:href="homepage")
-			v-img(contain :src="require('@/assets/img/logo_config_branca.png')" height="50px", width="180px")
+			v-img(contain :src="require('@/assets/img/logo_config_branca.png')" height="50px", width="204px")
 
 
 	v-list(dense)
@@ -30,9 +30,9 @@ v-navigation-drawer(app v-model='drawer', :mini-variant.sync='mini', dark, color
 										| {{ item.title }}
 
 							div(v-if="selected[index]")
-								span Ocultar menu
+								span Ocultar submenu
 							div(v-else)
-								span Expandir menu
+								span Expandir submenu
 					v-list-item.pl-12(v-for='(child, i) in item.children' :key='child.title' :to='child.path')
 						v-list-item-icon(v-if='child.icon')
 							v-icon {{ child.icon }}
