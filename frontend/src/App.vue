@@ -105,7 +105,8 @@ html{
 		.row {
 			margin-left: -12px !important;
 			margin-right: -12px !important;
-			margin: 0;
+			margin-top: 0 !important;
+			margin-bottom: 0 !important;
 		}
 
 	}
