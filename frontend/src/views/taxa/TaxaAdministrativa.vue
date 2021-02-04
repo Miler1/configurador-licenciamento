@@ -289,8 +289,14 @@ export default {
 
 				that.$refs.formCadastroTaxaAdministrativa.setTextFieldValor(item.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2}));
 				that.$refs.formCadastroTaxaAdministrativa.$refs.toggleOptionsIsento.setModel(that.taxaAdministrativa.isento);
-				that.$refs.formCadastroTaxaAdministrativa.$refs.toggleAtividadeDispensavel.setModel(that.taxaAdministrativa.atividadeDispensavel);
-				that.$refs.formCadastroTaxaAdministrativa.$refs.toggleAtividadeLicenciavel.setModel(that.taxaAdministrativa.atividadeLicenciavel);
+
+				if (that.$refs.formCadastroTaxaAdministrativa.$refs.toggleAtividadeDispensavel !== undefined) {
+					that.$refs.formCadastroTaxaAdministrativa.$refs.toggleAtividadeDispensavel.setModel(that.taxaAdministrativa.atividadeDispensavel);
+				}
+
+				if (that.$refs.formCadastroTaxaAdministrativa.$refs.toggleAtividadeLicenciavel !== undefined) {
+					that.$refs.formCadastroTaxaAdministrativa.$refs.toggleAtividadeLicenciavel.setModel(that.taxaAdministrativa.atividadeLicenciavel);
+				}
 
 			}, 100);
 

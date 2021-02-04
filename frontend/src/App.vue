@@ -102,6 +102,13 @@ html{
 			max-width: 80%;
 		}
 
+		.row {
+			margin-left: -12px !important;
+			margin-right: -12px !important;
+			margin-top: 0 !important;
+			margin-bottom: 0 !important;
+		}
+
 	}
 }
 

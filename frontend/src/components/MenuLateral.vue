@@ -2,22 +2,37 @@
 
 v-navigation-drawer(app v-model='drawer', :mini-variant.sync='mini', dark, color='#84A98C')
 	v-list-item.px-2.mb-8.mt-3
-		v-btn(icon, @click.stop='mini = !mini')
-			v-icon mdi-menu
-		v-img(contain :src="require('@/assets/img/logo_config_branca.png')" height="50px", width="180px")
-	
+		v-tooltip(top)
+			template(v-slot:activator="{ on }")
+				v-btn(icon, v-on="on" @click.stop='mini = !mini')
+					v-icon mdi-menu
+			div(v-if="mini")
+				span Expandir menu
+			div(v-else)
+				span Ocultar menu
+
+		a(:href="homepage")
+			v-img(contain :src="require('@/assets/img/logo_config_branca.png')" height="50px", width="204px")
+
 
 	v-list(dense)
 		v-list-item-group(v-model="active", dark, mandatory, color="#fff")
-			template(v-for='item in items')
-				v-list-group(v-if='item.children' :key='item.title' color="#fff")
+			template(v-for='(item, index) in items')
+				v-list-group(v-if='item.children' :value="item.children[pos] !== undefined ? menuSelected[1] === item.children[pos].path : ''" :key='item.title' color="#fff")
 					template(v-slot:activator)
-						v-list-item-icon
-							v-icon(v-if='item.icon.vuetify') {{ item.icon.value }}
-							i(v-else :class='item.icon.value').fs-21.pl-1
-						v-list-item-content
-							v-list-item-title
-								| {{ item.title }}
+						v-tooltip(top, open-on-click :key='index')
+							template(v-slot:activator="{ on, attrs }")
+								v-list-item-icon(v-on="on" v-bind="attrs" @click="menuActionClick(items, index)")
+									v-icon(v-if='item.icon.vuetify') {{ item.icon.value }}
+									i(v-else :class='item.icon.value').fs-21.pl-1
+								v-list-item-content(v-on="on" v-bind="attrs" @click="menuActionClick(items, index)")
+									v-list-item-title
+										| {{ item.title }}
+
+							div(v-if="selected[index]")
+								span Ocultar submenu
+							div(v-else)
+								span Expandir submenu
 					v-list-item.pl-12(v-for='(child, i) in item.children' :key='child.title' :to='child.path')
 						v-list-item-icon(v-if='child.icon')
 							v-icon {{ child.icon }}
@@ -41,6 +56,10 @@ export default {
 
 	data: () => ({
 		drawer: true,
+		homepage: null,
+		selected: [],
+		menuSelected: null,
+		pos: null,
 		items: [
 			{ title: 'CNAE', icon: {vuetify: true, value: 'fa fa-industry'}, path: '/home/cnae'},
 			{ title: 'Licença', icon: {vuetify: true, value: 'mdi-file-check-outline'}, path: '/home/licenca'},
@@ -71,6 +90,61 @@ export default {
 		mini: false,
 		active: 1
 	}),
+
+	methods: {
+
+		menuActionClick(items, index) {
+
+			items.forEach((item, i) => {
+
+				if (item.children) {
+
+					if (this.selected[i] != this.selected[index]) {
+						this.selected[i] = false;
+					}
+
+				}
+
+			});
+
+			this.selected[index] = !this.selected[index];
+
+		},
+
+	},
+
+	created() {
+
+		let src = '';
+		let url = '/#/home/cnae';
+
+		this.menuSelected = window.location.hash.split('#');
+
+		this.items.forEach((item, index) => {
+
+			if (item.children) {
+
+				if (item.children.findIndex(e => e.path === this.menuSelected[1]) > -1) {
+
+					this.pos = item.children.findIndex(e => e.path === this.menuSelected[1]);
+					this.selected[index] = !this.selected[index];
+
+				}
+
+			}
+
+		});
+
+		if (process.env.NODE_ENV !== 'development') {
+			src = process.env.VUE_APP_URL_CONFIGURADOR + url;
+		} else {
+			src = window.location.origin;
+		}
+
+		this.homepage = src;
+
+	}
+
 };
 
 </script>
