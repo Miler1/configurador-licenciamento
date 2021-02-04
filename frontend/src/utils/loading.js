@@ -7,7 +7,7 @@ image.style.cssText = 'z-index: 9999';
 
 const container = document.createElement('div');
 container.appendChild(image);
-container.style.position = 'absolute';
+container.style.position = 'fixed';
 container.style.top = 0;
 container.style.height = '100vh';
 container.style.backgroundColor = 'rgba(255, 255, 255, 0.4)';
