@@ -132,9 +132,11 @@ export default {
 
 		resetLoginError() {
 
-			if (this.errors.login) {
-				this.errors.login = false;
-			}
+			setTimeout(() => {
+				if (this.errors.login) {
+					this.errors.login = false;
+				}
+			}, 90000);
 
 		},
 
