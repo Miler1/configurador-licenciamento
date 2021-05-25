@@ -1,6 +1,7 @@
 package com.configuradorlicenciamento.entradaUnica.services;
 
 import br.ufla.lemaf.beans.pessoa.Usuario;
+import com.configuradorlicenciamento.configuracao.components.VariaveisAmbientes;
 import com.configuradorlicenciamento.configuracao.exceptions.ConfiguradorNotFoundException;
 import com.configuradorlicenciamento.entradaUnica.dtos.AutenticacaoDTO;
 import com.configuradorlicenciamento.entradaUnica.interfaces.IAutenticacaoService;
@@ -46,6 +47,7 @@ public class AutenticacaoService implements IAutenticacaoService {
 		Usuario usuarioEntradaUnica;
 
 		try {
+			this.verificarCadastro(autenticacao.getLogin());
 			usuarioEntradaUnica = EntradaUnicaWS.ws.login(autenticacao.getLogin(), autenticacao.getPassword());
 		} catch (Exception e){
 			throw new ConfiguradorNotFoundException(e.getMessage());
@@ -67,6 +69,15 @@ public class AutenticacaoService implements IAutenticacaoService {
 
 		return new Autenticacao(usuarioEntradaUnica);
 
+	}
+
+	private void verificarCadastro(String login) throws Exception {
+		login = login.replace(".", "").replace("-", "").replace("/", "");
+		boolean cadastroRealizado = EntradaUnicaWS.ws.verificarCadastroUsuario(login);
+		if (!cadastroRealizado) {
+			String urlCadastroUnificado = VariaveisAmbientes.entradaUnicaCadastroUnificado();
+			throw new Exception("Usuário não encontrado, favor finalizar o cadastro em: " + urlCadastroUnificado);
+		}
 	}
 
 	@Override

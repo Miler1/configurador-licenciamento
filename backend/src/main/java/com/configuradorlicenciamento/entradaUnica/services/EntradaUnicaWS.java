@@ -113,4 +113,25 @@ public class EntradaUnicaWS extends CadastroUnificadoPessoaService {
 
 	}
 
+	public boolean verificarCadastroUsuario(String login) {
+
+		String urlVerificaCadastro = VariaveisAmbientes.entradaUnicaPortalSeguracao() + "/usuario/verificarCadastro/" + login;
+
+		try {
+
+			WSHttpClientRequest request = new WSHttpClientRequest(MGAHttpClient.TPRequest.GET, urlVerificaCadastro, 10000);
+
+			WSHttpResponse response = request.execute();
+
+			return response.getBody().equals("true");
+
+		} catch (Exception e) {
+
+			System.out.println(e.getMessage());
+
+		}
+
+		return false;
+
+	}
 }
