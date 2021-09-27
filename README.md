@@ -98,3 +98,4 @@ mvn --version
 ### IntelliJ
 Usando o IntelliJ, é necessário importar a pasta `{dir-projeto}/backend`. Durante a importação, selecione a opção que permite que o download das dependências seja feita de forma automática.
 
+How Access: http://homologacao.sistemas.sema.ap.gov.br/configurador/#/login
